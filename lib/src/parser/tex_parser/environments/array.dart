@@ -1,0 +1,330 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2013-2019 Khan Academy and other contributors
+// Copyright (c) 2020 znjameswu <znjameswu@gmail.com>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+import '../../../ast/nodes/leftright.dart';
+import '../../../ast/nodes/math_atom.dart';
+import '../../../ast/nodes/matrix.dart';
+import '../../../ast/nodes/style.dart';
+import '../../../ast/options.dart';
+import '../../../ast/size.dart';
+import '../../../ast/style.dart';
+import '../../../ast/syntax_tree.dart';
+import '../define_environment.dart';
+import '../functions/base.dart';
+import '../macros.dart';
+import '../parse_error.dart';
+
+import '../parser.dart';
+
+const arrayEntries = {
+  [
+    'array',
+    'darray',
+  ]: EnvSpec(
+    numArgs: 1,
+    handler: _arrayHandler,
+  ),
+  [
+    'matrix',
+    'pmatrix',
+    'bmatrix',
+    'Bmatrix',
+    'vmatrix',
+    'Vmatrix',
+  ]: EnvSpec(
+    numArgs: 0,
+    handler: _matrixHandler,
+  ),
+  ['smallmatrix']: EnvSpec(numArgs: 0, handler: _smallMatrixHandler),
+  ['subarray']: EnvSpec(numArgs: 1, handler: _subArrayHandler),
+};
+
+enum ColSeparationType {
+  align,
+  alignat,
+  small,
+}
+
+List<MatrixSeparatorStyle> getHLines(TexParser parser) {
+  // Return an array. The array length = number of hlines.
+  // Each element in the array tells if the line is dashed.
+  final hlineInfo = <MatrixSeparatorStyle>[];
+  parser.consumeSpaces();
+  var next = parser.fetch().text;
+  while (next == '\\hline' || next == '\\hdashline') {
+    parser.consume();
+    hlineInfo.add(next == '\\hdashline'
+        ? MatrixSeparatorStyle.dashed
+        : MatrixSeparatorStyle.solid);
+    parser.consumeSpaces();
+    next = parser.fetch().text;
+  }
+  return hlineInfo;
+}
+
+/// Parse the body of the environment, with rows delimited by \\ and
+/// columns delimited by &, and create a nested list in row-major order
+/// with one group per cell.  If given an optional argument style
+/// ('text', 'display', etc.), then each cell is cast into that style.
+MatrixNode parseArray(
+  TexParser parser, {
+  bool hskipBeforeAndAfter = false,
+  double arrayStretch,
+  List<MatrixSeparatorStyle> separators,
+  List<MatrixColumnAlign> colAligns,
+  MathStyle style,
+  bool isSmall = false,
+}) {
+  // Parse body of array with \\ temporarily mapped to \cr
+  parser.macroExpander.beginGroup();
+  parser.macroExpander.macros.set('\\\\', MacroDefinition.fromString('\\cr'));
+
+  // Get current arraystretch if it's not set by the environment
+  if (arrayStretch == null) {
+    final stretch = parser.macroExpander.expandMacroAsText('\\arraystretch');
+    if (stretch == null) {
+      // Default \arraystretch from lttab.dtx
+      arrayStretch = 1.0;
+    } else {
+      arrayStretch = double.tryParse(stretch);
+      if (arrayStretch == null || arrayStretch < 0) {
+        throw ParseError('Invalid \\arraystretch: $stretch');
+      }
+    }
+  }
+
+  // Start group for first cell
+  parser.macroExpander.beginGroup();
+
+  var row = <EquationRowNode>[];
+  final body = [row];
+  final rowGaps = <Measurement>[];
+  final hLinesBeforeRow = <MatrixSeparatorStyle>[];
+
+  // Test for \hline at the top of the array.
+  hLinesBeforeRow.add(getHLines(parser).last);
+
+  while (true) {
+    // Parse each cell in its own group (namespace)
+    final cellBody =
+        parser.parseExpression(breakOnInfix: false, breakOnTokenText: '\\cr');
+    parser.macroExpander.endGroup();
+    parser.macroExpander.beginGroup();
+
+    final cell = style == null
+        ? cellBody.wrapWithEquationRow()
+        : StyleNode(
+            children: cellBody,
+            options: PartialOptions(style: style),
+          ).wrapWithEquationRow();
+    row.add(cell);
+
+    final next = parser.fetch().text;
+    if (next == '&') {
+      parser.consume();
+      break;
+    } else if (next == '\\end') {
+      // Arrays terminate newlines with `\crcr` which consumes a `\cr` if
+      // the last line is empty.
+      // NOTE: Currently, `cell` is the last item added into `row`.
+      if (row.length == 1 && cell is StyleNode && cell.children.isEmpty) {
+        body.removeLast();
+      }
+      if (hLinesBeforeRow.length < body.length + 1) {
+        hLinesBeforeRow.add(MatrixSeparatorStyle.none);
+      }
+      break;
+    } else if (next == '\\cr') {
+      final cr = assertNodeType<CrNode>(
+          parser.parseArgNode(mode: null, optional: false));
+      rowGaps.add(cr.size);
+
+      // check for \hline(s) following the row separator
+      hLinesBeforeRow.add(getHLines(parser).last);
+
+      row = [];
+      body.add(row);
+    } else {
+      throw ParseError('Expected & or \\\\ or \\cr or \\end', parser.nextToken);
+    }
+  }
+
+  // End cell group
+  parser.macroExpander.endGroup();
+  // End array group defining \\
+  parser.macroExpander.endGroup();
+
+  return MatrixNode(
+    body: body,
+    columnLines: separators,
+    columnAligns: colAligns,
+    rowSpacing: rowGaps,
+    arrayStretch: arrayStretch,
+    hskipBeforeAndAfter:
+        isSmall ? 5.0.pt : (5.0 / 18).em, // TODO: options.havingStyle(script)
+  );
+}
+
+/// Decides on a style for cells in an array according to whether the given
+/// environment name starts with the letter 'd'.
+MathStyle _dCellStyle(String envName) =>
+    envName.substring(0, 1) == 'd' ? MathStyle.display : MathStyle.text;
+
+// const _alignMap = {
+//   'c': 'center',
+//   'l': 'left',
+//   'r': 'right',
+// };
+
+// class ColumnConf {
+//   final List<String> separators;
+//   final List<_AlignSpec> aligns;
+//   // final bool hskipBeforeAndAfter;
+//   // final double arrayStretch;
+//   ColumnConf({
+//     @required this.separators,
+//     @required this.aligns,
+//     // this.hskipBeforeAndAfter = false,
+//     // this.arrayStretch = 1,
+//   });
+// }
+
+GreenNode _arrayHandler(TexParser parser, EnvContext context) {
+  final symArg = parser.parseArgNode(mode: null, optional: false);
+  final colalign = symArg is MathAtomNode
+      ? [symArg]
+      : assertNodeType<EquationRowNode>(symArg).children;
+  final separators = <MatrixSeparatorStyle>[];
+  final aligns = <MatrixColumnAlign>[];
+  var alignSpecified = true;
+  bool lastIsSeparator;
+  for (final nde in colalign) {
+    final node = assertNodeType<MathAtomNode>(nde);
+    final ca = node.text;
+    switch (ca) {
+      case 'l':
+      case 'c':
+      case 'r':
+        aligns.add(const {
+          'l': MatrixColumnAlign.left,
+          'r': MatrixColumnAlign.right,
+          'c': MatrixColumnAlign.center,
+        }[ca]);
+        if (alignSpecified) {
+          separators.add(MatrixSeparatorStyle.none);
+        }
+        alignSpecified = true;
+        lastIsSeparator = false;
+        break;
+      case '|':
+      case ':':
+        separators.add(const {
+          '|': MatrixSeparatorStyle.solid,
+          ':': MatrixSeparatorStyle.dashed,
+        }[ca]);
+        if (!alignSpecified) {
+          aligns.add(MatrixColumnAlign.center);
+        }
+        alignSpecified = false;
+        lastIsSeparator = true;
+        break;
+      default:
+        throw ParseError('Unknown column alignment: $ca');
+    }
+  }
+  if (!lastIsSeparator) {
+    separators.add(null);
+  }
+  return parseArray(
+    parser,
+    separators: separators,
+    colAligns: aligns,
+    hskipBeforeAndAfter: true,
+    style: _dCellStyle(context.envName),
+  );
+}
+
+GreenNode _matrixHandler(TexParser parser, EnvContext context) {
+  final delimiters = const {
+    'matrix': null,
+    'pmatrix': ['(', ')'],
+    'bmatrix': ['[', ']'],
+    'Bmatrix': ['\\{', '\\}'],
+    'vmatrix': ['|', '|'],
+    'Vmatrix': ['\\Vert', '\\Vert'],
+  }[context.envName];
+  final res = parseArray(
+    parser,
+    hskipBeforeAndAfter: false,
+    style: _dCellStyle(context.envName),
+  );
+  return delimiters == null
+      ? res
+      : LeftRightNode(
+          leftDelim: delimiters[0],
+          rightDelim: delimiters[1],
+          body: [
+            [res].wrapWithEquationRow()
+          ],
+        );
+}
+
+GreenNode _smallMatrixHandler(TexParser parser, EnvContext context) =>
+    parseArray(
+      parser,
+      arrayStretch: 0.5,
+      style: MathStyle.script,
+      isSmall: true,
+    );
+
+GreenNode _subArrayHandler(TexParser parser, EnvContext context) {
+  // Parsing of {subarray} is similar to {array}
+  final symArg = parser.parseArgNode(mode: null, optional: false);
+  final colalign = symArg is MathAtomNode
+      ? [symArg]
+      : assertNodeType<EquationRowNode>(symArg).children;
+  // final separators = <MatrixSeparatorStyle>[];
+  final aligns = <MatrixColumnAlign>[];
+  for (final nde in colalign) {
+    final node = assertNodeType<MathAtomNode>(nde);
+    final ca = node.text;
+    if (ca == 'l' || ca == 'c') {
+      aligns.add(ca == 'l' ? MatrixColumnAlign.left : MatrixColumnAlign.center);
+    }
+    throw ParseError('Unknown column alignment: $ca');
+  }
+  if (aligns.length >= 1) {
+    throw ParseError('{subarray} can contain only one column');
+  }
+  final res = parseArray(
+    parser,
+    colAligns: aligns,
+    hskipBeforeAndAfter: false,
+    arrayStretch: 0.5,
+    style: MathStyle.script,
+  );
+  if (res.body[0].length > 1) {
+    throw ParseError('{subarray} can contain only one column');
+  }
+  return res;
+}
