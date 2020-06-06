@@ -1,14 +1,19 @@
-# flutter_math
+# Flutter Math
 
-A new Flutter package project.
+Math display and editing with no WebViews or Javascript whatsoever. Pure Flutter.
 
-## Getting Started
+## Work in Progress!
+This is a personal project with no promise!
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+This project is heavily inspired by [KaTeX](https://github.com/KaTeX/KaTeX), [MathJax](https://github.com/mathjax/MathJax) and [Zefyr](https://github.com/memspace/zefyr).
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+The TeX parser is basically a Dart port of the parser from KaTeX project.
+
+### Goals
+- [ ] : TeX math parsing
+- [ ] : AST rendering in flutter
+- [ ] : TeX output
+- [ ] : [UnicodeMath](https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.1.pdf)-style editing
+- [ ] : MathML parsing and encoding
+- [ ] : UnicodeMath parsing and encoding
+- [ ] : Support MathJax fonts
