@@ -2,7 +2,7 @@ name: flutter_math
 description: Math equation rendering with pure Flutter.
 version: 0.0.1
 author: znjameswu <znjameswu@gmail.com>
-homepage:
+homepage: https://github.com/znjameswu/flutter_math
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -22,7 +22,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
@@ -53,3 +56,14 @@ flutter:
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Katex_Main
+      fonts:
+        - asset: katex_fonts/fonts/KaTeX_Main-Regular.ttf
+        - asset: katex_fonts/fonts/KaTeX_Math-Italic.ttf
+          style: italic
+        - asset: katex_fonts/fonts/KaTeX_Main-Bold.ttf
+          weight: 700
+        - asset: katex_fonts/fonts/KaTeX_Math-BoldItalic.ttf
+          weight: 700
+          style: italic
