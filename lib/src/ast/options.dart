@@ -141,9 +141,9 @@ class Options {
 class PartialOptions {
   final MathStyle style;
   final Color color;
-  // final Size size;
-  SizeMode get size => sizeUnderTextStyle.underStyle(style);
-  final SizeMode sizeUnderTextStyle;
+  final SizeMode size;
+  // SizeMode get size => sizeUnderTextStyle.underStyle(style);
+  // final SizeMode sizeUnderTextStyle;
   final bool phantom;
   final FontOptions textFontOptions;
   final FontOptions mathFontOptions;
@@ -158,8 +158,8 @@ class PartialOptions {
   const PartialOptions({
     this.style,
     this.color,
-    // @required this.size,
-    this.sizeUnderTextStyle,
+    this.size,
+    // this.sizeUnderTextStyle,
     this.phantom,
     this.textFontOptions,
     this.mathFontOptions,

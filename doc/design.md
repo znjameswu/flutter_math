@@ -30,6 +30,7 @@ KaTeX functionalities that need further investigation
 - phantom
 - raisebox
 - rule
+- underline
 
 
 KaTeX functionalities that we won't support
@@ -37,6 +38,7 @@ KaTeX functionalities that we won't support
 - includegraphics
 - lap
 - mathchoice
+- smash
 
 
 The AST uses Roslyn's immutable Red-Green Tree (without deduplication features) to construct the AST. And the GreenNodes are completely stateless and context-free.

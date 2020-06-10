@@ -4,7 +4,7 @@
 // Copyright (c) 2020 znjameswu <znjameswu@gmail.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
+// of this software and associated documentation files (the 'Software'), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
@@ -13,7 +13,7 @@
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -23,18 +23,25 @@
 
 part of latex_base;
 
-const _operatorNameEntries = {
-  ['\\operatorname', '\\operatorname*']:
-      FunctionSpec(numArgs: 1, handler: _operatorNameHandler),
+const _stylingEntries = {
+  [
+    '\\displaystyle',
+    '\\textstyle',
+    '\\scriptstyle',
+    '\\scriptscriptstyle',
+  ]: FunctionSpec(
+    numArgs: 0,
+    allowedInText: true,
+    handler: _stylingHandler,
+  ),
 };
-GreenNode _operatorNameHandler(TexParser parser, FunctionContext context) {
-  final name = parser.parseArgNode(mode: null, optional: false);
-  final body = parser.parseGroup(context.funcName,
-          optional: false, greediness: 1, mode: null, consumeSpaces: true) ??
-      EquationRowNode(children: []);
 
-  return FunctionNode(
-    functionName: name.wrapWithEquationRow(),
-    argument: body.wrapWithEquationRow(),
+GreenNode _stylingHandler(TexParser parser, FunctionContext context) {
+  final body = parser.parseExpression(
+      breakOnInfix: true, breakOnTokenText: context.breakOnTokenText);
+  final style = parseMathStyle(context.funcName.substring(1));
+  return StyleNode(
+    children: body,
+    options: PartialOptions(style: style),
   );
 }

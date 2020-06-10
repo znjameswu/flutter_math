@@ -186,7 +186,7 @@ class TexParser {
   }
 
   GreenNode _parseAtom(String breakOnTokenText) {
-    final base = this._parseGroup('atom',
+    final base = this.parseGroup('atom',
         optional: false, greediness: null, breakOnTokenText: breakOnTokenText);
 
     if (this.mode == Mode.text) {
@@ -267,7 +267,7 @@ class TexParser {
     final symbolToken = this.fetch();
     final symbol = symbolToken.text;
     this.consume();
-    final group = this._parseGroup(
+    final group = this.parseGroup(
       symbol == '_' ? 'subscript' : 'superscript',
       optional: false,
       greediness: TexParser.supsubGreediness,
@@ -292,7 +292,7 @@ class TexParser {
     this.nextToken = null;
   }
 
-  /// [_parseGroup] Return a row if encounters [] or {}. Returns single function
+  /// [parseGroup] Return a row if encounters [] or {}. Returns single function
   /// node or a single symbol otherwise.
   ///
   ///
@@ -306,7 +306,7 @@ class TexParser {
   /// bracket-enclosed group.
   /// If `mode` is present, switches to that mode while parsing the group,
   /// and switches back after.
-  GreenNode _parseGroup(
+  GreenNode parseGroup(
     String name, {
     bool optional,
     int greediness,
@@ -668,7 +668,7 @@ class TexParser {
     // if (consumeSpaces) {
     //   this.consumeSpaces();
     // }
-    final res = this._parseGroup(
+    final res = this.parseGroup(
       currArgParsingContext.name,
       optional: optional,
       greediness: currArgParsingContext.funcData.greediness,

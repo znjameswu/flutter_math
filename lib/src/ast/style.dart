@@ -20,6 +20,17 @@ enum MathStyleDiff {
   text,
 }
 
+MathStyle parseMathStyle(String string) => const {
+      'display': MathStyle.display,
+      'displayCramped': MathStyle.displayCramped,
+      'text': MathStyle.text,
+      'textCramped': MathStyle.textCramped,
+      'script': MathStyle.script,
+      'scriptCramped': MathStyle.scriptCramped,
+      'scriptscript': MathStyle.scriptscript,
+      'scriptscriptCramped': MathStyle.scriptscriptCramped,
+    }[string];
+
 extension MathStyleExt on MathStyle {
   // MathStyle get pureStyle => MathStyle.values[(this.index / 2).floor()];
 
