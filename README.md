@@ -10,7 +10,7 @@ This project is heavily inspired by [KaTeX](https://github.com/KaTeX/KaTeX), [Ma
 The TeX parser is basically a Dart port of the parser from KaTeX project.
 
 ### Goals
-- [ ] : TeX math parsing
+- [x] : TeX math parsing (See [design doc](doc/design.md))
 - [ ] : AST rendering in flutter
 - [ ] : TeX output
 - [ ] : [UnicodeMath](https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.1.pdf)-style editing
