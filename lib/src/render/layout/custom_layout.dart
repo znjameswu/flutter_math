@@ -23,6 +23,9 @@ abstract class CustomLayoutDelegate<T> {
 
   double computeDistanceToActualBaseline(
       TextBaseline baseline, Map<T, RenderBox> childrenTable);
+
+      
+  void additionalPaint(PaintingContext context, Offset offset) {}
 }
 
 class CustomLayoutParentData<T> extends ContainerBoxParentData<RenderBox> {
@@ -203,6 +206,7 @@ class RenderCustomLayout<T> extends RenderBox
   @override
   void paint(PaintingContext context, Offset offset) {
     defaultPaint(context, offset);
+    delegate.additionalPaint(context, offset);
   }
 
   @override

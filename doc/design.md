@@ -17,6 +17,7 @@ The AST of this project has a very similar structure compared with MathML, the A
 - Math functions with limit-like subscript and superscript will not be adaptive to different styles. This is due to the design of AST, and is in accordance with UnicodeMath designs. This is different from TeX spec.
 - \color commands inside a block will NOT affect right delimiters. This is different from KaTeX and in accordance with MathJax. It is more consistent for our AST design better.
 - Matrix won't render multiple \hlines and || column separators, just as MathJax won't either.
+- \dfrac, \tfrac ... will be rendered slightly different from KaTeX and will be in line with MathJax's rendering behavior. KaTeX has an `adjustStyle` function whose behvior we have no intention to follow. 
 
 
 KaTeX functionalities that need further investigation

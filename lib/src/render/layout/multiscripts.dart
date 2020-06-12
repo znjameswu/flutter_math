@@ -280,7 +280,6 @@ Tuple2<double, double> calculateUV({
 
   // TexBook Rule 18a
   final h = isComputingIntrinsics ? baseSize : base.layoutHeight;
-  base.layoutHeight;
   final d = baseSize - h;
   var u = 0.0;
   var v = 0.0;
