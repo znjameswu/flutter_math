@@ -35,7 +35,7 @@ class Multiscripts extends StatelessWidget {
     Key key,
     this.alignPostscripts = false,
     @required this.italic,
-    @required this.isCharacterBox,
+    @required this.isBaseCharacterBox,
     @required this.baseOptions,
     this.subOptions,
     this.supOptions,
@@ -47,12 +47,16 @@ class Multiscripts extends StatelessWidget {
     this.presub,
     this.presup,
   })  : assert(base != null && baseOptions != null),
+        assert((sup == null) == (supOptions == null)),
+        assert((sub == null) == (subOptions == null)),
+        assert((presup == null) == (presupOptions == null)),
+        assert((presub == null) == (presubOptions == null)),
         assert(italic != null),
         super(key: key);
 
   final bool alignPostscripts;
-  final double italic;
-  final bool isCharacterBox;
+  final Measurement italic;
+  final bool isBaseCharacterBox;
 
   final Options baseOptions;
   final Options subOptions;
@@ -72,6 +76,7 @@ class Multiscripts extends StatelessWidget {
       delegate: MultiscriptsLayoutDelegate(
         alignPostscripts: alignPostscripts,
         italic: italic,
+        isBaseCharacterBox: isBaseCharacterBox,
         baseOptions: baseOptions,
         subOptions: subOptions,
         supOptions: supOptions,
@@ -112,7 +117,7 @@ class Multiscripts extends StatelessWidget {
 // 445-446, rules 18(a-f).
 class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
   final bool alignPostscripts;
-  final double italic;
+  final Measurement italic;
 
   final bool isBaseCharacterBox;
   final Options baseOptions;
@@ -148,6 +153,7 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
     Map<_ScriptPos, RenderBox> childrenTable,
     bool isComputingIntrinsics,
   }) {
+    final italic = this.italic.toLpUnder(baseOptions);
     final base = childrenTable[_ScriptPos.base];
     final sub = childrenTable[_ScriptPos.sub];
     final sup = childrenTable[_ScriptPos.sup];
