@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/ast/nodes/math_atom.dart';
 import 'package:provider/provider.dart';
 
 import '../render/layout/eq_row.dart';
@@ -468,7 +469,11 @@ class EquationRowNode extends ParentableNode<GreenNode>
   @override
   final List<GreenNode> children;
 
-  Measurement get italic => throw UnimplementedError();
+  Measurement get italic => flattenedChildList.isEmpty
+      ? Measurement.zero
+      : (flattenedChildList.last is MathAtomNode
+          ? (flattenedChildList.last as MathAtomNode).italic
+          : Measurement.zero);
 
   @override
   int computeWidth() =>

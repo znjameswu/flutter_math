@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/ast/size.dart';
 
 import '../../parser/tex_parser/symbols.dart';
 import '../../parser/tex_parser/types.dart';
@@ -19,6 +20,9 @@ class MathAtomNode extends LeafNode {
   AtomType _atomType;
   AtomType get atomType =>
       _atomType ??= symbols[Mode.math][text].group.atomType ?? AtomType.ord;
+
+  Measurement get italic => throw UnimplementedError();
+
   MathAtomNode({
     this.text,
     this.fontOptions,
@@ -48,4 +52,3 @@ class MathAtomNode extends LeafNode {
   @override
   AtomType get rightType => AtomType.ord;
 }
-
