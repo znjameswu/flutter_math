@@ -8,8 +8,9 @@ extension RenderBoxOffsetExt on RenderBox {
     (this.parentData as BoxParentData).offset = value;
   }
 
-  double get height => this.getDistanceToBaseline(TextBaseline.alphabetic);
+  double get layoutHeight =>
+      this.getDistanceToBaseline(TextBaseline.alphabetic);
 
-  double get depth =>
+  double get layoutDepth =>
       this.size.height - this.getDistanceToBaseline(TextBaseline.alphabetic);
 }

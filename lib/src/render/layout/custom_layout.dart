@@ -65,7 +65,7 @@ class CustomLayoutId<T> extends ParentDataWidget<CustomLayoutParentData<T>> {
   }
 
   @override
-  Type get debugTypicalAncestorWidgetClass => getTypeOf<CustomLayout<T>>() ;
+  Type get debugTypicalAncestorWidgetClass => getTypeOf<CustomLayout<T>>();
 }
 
 class CustomLayout<T> extends MultiChildRenderObjectWidget {
@@ -228,6 +228,8 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
     Axis layoutDirection,
     double Function(RenderBox child) childSize,
     Map<T, RenderBox> childrenTable,
+    // This indicates you cannot use some functionalities including baseline.
+    bool isComputingIntrinsics,
   });
 
   @override
@@ -239,10 +241,11 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
     Map<T, RenderBox> childrenTable,
   }) =>
       performIntrinsicLayout(
-              layoutDirection: sizingDirection,
-              childSize: (child) => childSize(child, double.infinity),
-              childrenTable: childrenTable)
-          .size;
+        layoutDirection: sizingDirection,
+        childSize: (child) => childSize(child, double.infinity),
+        childrenTable: childrenTable,
+        isComputingIntrinsics: true,
+      ).size;
 
   @override
   Size performLayout(
@@ -252,6 +255,7 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
       layoutDirection: Axis.horizontal,
       childSize: (child) => child.size.width,
       childrenTable: childrenTable,
+      isComputingIntrinsics: false,
     );
     final vconf = performIntrinsicLayout(
       layoutDirection: Axis.vertical,
@@ -259,8 +263,7 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
       childrenTable: childrenTable,
     );
     childrenTable.forEach((id, child) =>
-        child.offset =
-            Offset(hconf.offsetTable[id], vconf.offsetTable[id]));
+        child.offset = Offset(hconf.offsetTable[id], vconf.offsetTable[id]));
     return Size(hconf.size, vconf.size);
   }
 }

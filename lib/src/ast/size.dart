@@ -27,9 +27,12 @@ enum Unit {
   px, // \pdfpxdimen defaults to 1 bp in pdfTeX and LuaTeX
 
   ex, // The height of 'x'
-  em, // The width of 'M', which is often the size of the font
+  em, // The width of 'M', which is often the size of the font. ()
   mu,
+
   lp, // Flutter's logical pixel (96 lp per inch)
+  cssEm, // Unit used for font metrics. Analogous to KaTeX's internal unit, but
+  // always scale with options.
 }
 
 extension UnitExt on Unit {
@@ -53,6 +56,7 @@ extension UnitExt on Unit {
     Unit.mu: null,
     // https://api.flutter.dev/flutter/dart-ui/Window/devicePixelRatio.html
     Unit.lp: 72.27 / 96,
+    Unit.cssEm: null,
   };
   double get toPt => _ptPerUnit[this];
 
@@ -80,7 +84,8 @@ extension UnitExtOnString on String {
         'ex': Unit.ex,
         'em': Unit.em,
         'mu': Unit.mu,
-        // lp,
+        'lp': Unit.lp,
+        'cssEm': Unit.cssEm,
       }[this];
 }
 
@@ -89,42 +94,73 @@ class Measurement {
   final Unit unit;
   const Measurement({this.value, this.unit});
 
-  double toPtUnder(Options options) =>
-      this.toCssEmUnder(options) * options.fontMetrics.ptPerEm;
-
-  double toLpUnder(Options options) => toPtUnder(options) / Unit.lp.toPt;
-
-  double toCssEmUnder(Options options) {
-    double scale;
+  double toPtUnder(Options options) {
     if (unit.toPt != null) {
       // Absolute units
-      scale = unit.toPt / options.fontMetrics.ptPerEm / options.sizeMultiplier;
-      // Unscale to make absolute units
-    } else if (unit == Unit.mu) {
-      // `mu` units scale with scriptstyle/scriptscriptstyle.
-      scale = options.fontMetrics.cssEmPerMu;
+      return value * unit.toPt;
     } else {
-      // Other relative units always refer to the *textstyle* font
-      // in the current size.
-      final unitOptions = options.style.isTight()
-          ? options.havingStyle(options.style.atLeastText())
-          : options;
       switch (unit) {
+        // `mu` units scale with scriptstyle/scriptscriptstyle.
+        case Unit.mu:
+          return value *
+              options.fontMetrics.cssEmPerMu *
+              options.fontMetrics.ptPerEm *
+              options.sizeMultiplier;
+        // `ex` and `em` always refer to the *textstyle* font
+        // in the current size.
         case Unit.ex:
-          scale = unitOptions.fontMetrics.xHeight;
-          break;
+          return value *
+              options.fontMetrics.xHeight *
+              options.fontMetrics.ptPerEm *
+              options.havingStyle(options.style.atLeastText()).sizeMultiplier;
         case Unit.em:
-          scale = unitOptions.fontMetrics.quad;
-          break;
+          return value *
+              options.fontMetrics.quad *
+              options.fontMetrics.ptPerEm *
+              options.havingStyle(options.style.atLeastText()).sizeMultiplier;
+        case Unit.cssEm:
+          return value * options.fontMetrics.ptPerEm * options.sizeMultiplier;
         default:
           throw ArgumentError("Invalid unit: '${unit.toString()}'");
       }
-      if (unitOptions != options) {
-        scale *= unitOptions.sizeMultiplier / options.sizeMultiplier;
-      }
     }
-    return math.min(value * scale, options.maxSize);
   }
+
+  double toLpUnder(Options options) => toPtUnder(options) / Unit.lp.toPt;
+
+  // // Following code is from unit.js/calculateSize. It is only applicable to KaTeX's rendering mechanism.
+  // double toEmUnder(Options options) {
+  //   double scale;
+  //   if (unit.toPt != null) {
+  //     // Absolute units
+  //     scale = unit.toPt / options.fontMetrics.ptPerEm / options.sizeMultiplier;
+  //     // Unscale to make absolute units
+  //   } else if (unit == Unit.mu) {
+  //     // `mu` units scale with scriptstyle/scriptscriptstyle.
+  //     scale = options.fontMetrics.cssEmPerMu;
+  //   } else {
+  //     // Other relative units always refer to the *textstyle* font
+  //     // in the current size.
+  //     // isTight() means current style is script/scriptscript.
+  //     final unitOptions = options.style.isTight()
+  //         ? options.havingStyle(options.style.atLeastText())
+  //         : options;
+  //     switch (unit) {
+  //       case Unit.ex:
+  //         scale = unitOptions.fontMetrics.xHeight;
+  //         break;
+  //       case Unit.em:
+  //         scale = unitOptions.fontMetrics.quad;
+  //         break;
+  //       default:
+  //         throw ArgumentError("Invalid unit: '${unit.toString()}'");
+  //     }
+  //     if (unitOptions != options) {
+  //       scale *= unitOptions.sizeMultiplier / options.sizeMultiplier;
+  //     }
+  //   }
+  //   return math.min(value * scale, options.maxSize);
+  // }
 
   static const zero = Measurement(value: 0, unit: Unit.pt);
 }
@@ -145,7 +181,10 @@ extension MeasurementExtOnNum on double {
   Measurement get ex => Measurement(value: this, unit: Unit.ex);
   Measurement get em => Measurement(value: this, unit: Unit.em);
   Measurement get mu => Measurement(value: this, unit: Unit.mu);
+  Measurement get lp => Measurement(value: this, unit: Unit.lp);
+  Measurement get cssEm => Measurement(value: this, unit: Unit.cssEm);
 }
+
 enum SizeMode {
   tiny,
   size2,

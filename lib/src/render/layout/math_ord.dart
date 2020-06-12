@@ -5,7 +5,6 @@ import '../utils/nullable_plus.dart';
 import '../utils/render_box_offset.dart';
 import 'custom_layout.dart';
 
-
 class MathOrd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,10 +29,12 @@ class MathOrdLayoutDelegate extends IntrinsicLayoutDelegate<int> {
       );
 
   @override
-  AxisConfiguration<int> performIntrinsicLayout(
-      {Axis layoutDirection,
-      double Function(RenderBox child) childSize,
-      Map<int, RenderBox> childrenTable}) {
+  AxisConfiguration<int> performIntrinsicLayout({
+    Axis layoutDirection,
+    double Function(RenderBox child) childSize,
+    Map<int, RenderBox> childrenTable,
+    bool isComputingIntrinsics,
+  }) {
     if (layoutDirection == Axis.horizontal) {
       return AxisConfiguration(
         size: childrenTable[0].size.width,
@@ -50,7 +51,6 @@ class MathOrdLayoutDelegate extends IntrinsicLayoutDelegate<int> {
     }
   }
 }
-
 
 Text makeOrdText(String a) {
   return Text(

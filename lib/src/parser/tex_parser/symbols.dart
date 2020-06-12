@@ -106,7 +106,7 @@ void defineSymbol(
     [bool acceptUnicodeChar = false]) {
   _symbols[mode][name] = CharInfo(font: font, group: group, replace: replace);
   if (acceptUnicodeChar && replace != null) {
-    symbols[mode][replace] = symbols[mode][name];
+    _symbols[mode][replace] = symbols[mode][name];
   }
 }
 
