@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../render/layout/eq_row.dart';
 import '../widgets/scope.dart';
 import 'options.dart';
+import 'size.dart';
 import 'spacing.dart';
 
 /// Root of Roslyn's Red-Green Tree
@@ -466,6 +467,8 @@ class EquationRowNode extends ParentableNode<GreenNode>
     with PositionDependentMixin {
   @override
   final List<GreenNode> children;
+
+  Measurement get italic => throw UnimplementedError();
 
   @override
   int computeWidth() =>

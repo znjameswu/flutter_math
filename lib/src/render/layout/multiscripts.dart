@@ -2,13 +2,12 @@ import 'dart:math' as math;
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/ast/font_metrics.dart';
-import 'package:flutter_math/src/ast/options.dart';
-import 'package:flutter_math/src/ast/style.dart';
 import 'package:tuple/tuple.dart';
-import '../../ast/size.dart';
-import '../utils/nullable_plus.dart';
 
+import '../../ast/options.dart';
+import '../../ast/size.dart';
+import '../../ast/style.dart';
+import '../utils/nullable_plus.dart';
 import '../utils/render_box_offset.dart';
 import 'custom_layout.dart';
 
@@ -47,10 +46,11 @@ class Multiscripts extends StatelessWidget {
     this.presub,
     this.presup,
   })  : assert(base != null && baseOptions != null),
-        assert((sup == null) == (supOptions == null)),
-        assert((sub == null) == (subOptions == null)),
-        assert((presup == null) == (presupOptions == null)),
-        assert((presub == null) == (presubOptions == null)),
+        assert(sup == null || supOptions != null),
+        assert(sub == null || subOptions != null),
+        assert(presup == null || presupOptions != null),
+        assert(presub == null || presubOptions != null),
+        assert(sup != null || sub != null || presub != null || presup != null),
         assert(italic != null),
         super(key: key);
 
