@@ -273,7 +273,7 @@ class RenderEquationRow extends RenderBox
     assert(_debugHasNecessaryDirections);
     assert(constraints != null);
 
-    assert(spacings.length == childCount - 1);
+    assert(spacings.length == childCount - 1 || childCount == 0);
 
     var allocatedSize = 0.0; // Sum of the sizes of the non-flexible children.
     maxHeightAboveBaseline = 0.0;

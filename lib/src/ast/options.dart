@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../font/metrics/font_metrics.dart';
 import 'font_metrics.dart';
@@ -18,7 +19,7 @@ class Options {
   final FontOptions mathFontOptions;
   double get sizeMultiplier => this.size.sizeMultiplier;
   final double maxSize;
-  final num minRuleThickness; //???
+  // final num minRuleThickness; //???
   // final bool isBlank;
   // final bool mathord;
   // final bool textord;
@@ -34,9 +35,20 @@ class Options {
     @required this.textFontOptions,
     @required this.mathFontOptions,
     @required this.maxSize,
-    @required this.minRuleThickness,
+    // @required this.minRuleThickness,
     // @required this.tableColCount,
   });
+
+  static const displayOptions = Options(
+    style: MathStyle.display,
+    color: Colors.black,
+    sizeUnderTextStyle: SizeMode.normalsize,
+    phantom: false,
+    textFontOptions: FontOptions(),
+    mathFontOptions: FontOptions(),
+    maxSize: double.infinity
+    // minRuleThickness: 
+  );
 
   // Options discardNonInheritable() {
   //   if (tableColCount == 0) return this;
@@ -121,7 +133,7 @@ class Options {
     FontOptions textFontOptions,
     FontOptions mathFontOptions,
     double maxSize,
-    num minRuleThickness,
+    // num minRuleThickness,
     int tableColCount,
   }) {
     return Options(
@@ -132,7 +144,7 @@ class Options {
       textFontOptions: textFontOptions ?? this.textFontOptions,
       mathFontOptions: mathFontOptions ?? this.mathFontOptions,
       maxSize: maxSize ?? this.maxSize,
-      minRuleThickness: minRuleThickness ?? this.minRuleThickness,
+      // minRuleThickness: minRuleThickness ?? this.minRuleThickness,
       // tableColCount: tableColCount ?? this.tableColCount,
     );
   }

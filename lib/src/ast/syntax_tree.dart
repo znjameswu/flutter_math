@@ -1,13 +1,13 @@
-import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/ast/nodes/math_atom.dart';
 import 'package:provider/provider.dart';
 
 import '../render/layout/eq_row.dart';
 import '../widgets/scope.dart';
+import 'nodes/math_atom.dart';
 import 'options.dart';
 import 'size.dart';
 import 'spacing.dart';
@@ -17,12 +17,9 @@ import 'spacing.dart';
 /// [Description of Roslyn's Red-Green Tree](https://docs.microsoft.com/en-us/archive/blogs/ericlippert/persistence-facades-and-roslyns-red-green-trees)
 class SyntaxTree {
   final GreenNode greenRoot;
-  final Options options;
   SyntaxTree({
     @required this.greenRoot,
-    this.options,
-  })  : assert(greenRoot != null),
-        assert(options != null);
+  })  : assert(greenRoot != null);
 
   SyntaxNode _root;
   SyntaxNode get root => _root ??= SyntaxNode(
@@ -375,7 +372,7 @@ abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
     final result = <int>[];
     for (final child in children) {
       result.add(curPos);
-      curPos += child.capturedCursor;
+      curPos += child?.capturedCursor ?? -1;
     }
     return result;
   }
@@ -523,7 +520,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
     }
     assert(flattenedChildList.length == actualChildWidgets.length);
     final spacings =
-        List<double>.filled(flattenedChildList.length - 1, 0, growable: false);
+        List<double>.filled(math.max(flattenedChildList.length - 1, 0), 0, growable: false);
     for (var i = 0; i < flattenedChildList.length - 1; i++) {
       spacings[i] = getSpacingSize(
         left: flattenedChildList[i].rightType,
