@@ -37,7 +37,7 @@ const _fontEntries = {
   ]: FunctionSpec(numArgs: 1, greediness: 2, handler: _fontHandler),
   ['\\boldsymbol', '\\bm']:
       FunctionSpec(numArgs: 1, greediness: 2, handler: _boldSymbolHandler),
-  ["\\rm", "\\sf", "\\tt", "\\bf", "\\it", "\\cal"]:
+  ['\\rm', '\\sf', '\\tt', '\\bf', '\\it', '\\cal']:
       FunctionSpec(numArgs: 0, allowedInText: true, handler: _textFontHandler),
 };
 const fontAliases = {

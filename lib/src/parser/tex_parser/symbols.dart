@@ -83,10 +83,12 @@ class CharInfo {
   final Font font;
   final Group group;
   final String replace;
+  final String name;
   CharInfo({
     @required this.font,
     @required this.group,
     this.replace,
+    this.name,
   });
 }
 
@@ -104,11 +106,18 @@ void defineSymbol(
     Mode mode, Font font, Group group, String replace, String name,
     //ignore: avoid_positional_boolean_parameters
     [bool acceptUnicodeChar = false]) {
-  _symbols[mode][name] = CharInfo(font: font, group: group, replace: replace);
+  _symbols[mode][name] = CharInfo(font: font, group: group, replace: replace, name: name);
   if (acceptUnicodeChar && replace != null) {
     _symbols[mode][replace] = symbols[mode][name];
   }
 }
+
+const ligatures = {
+  "\u2013",
+  "\u2014",
+  "\u201c",
+  "\u201d",
+};
 
 void _initSymbols() {
 // groups:
@@ -747,13 +756,6 @@ void _initSymbols() {
   defineSymbol(Mode.text, Font.main, accent, "\u02dd", "\\H"); // double acute
   defineSymbol(Mode.text, Font.main, accent, "\u25ef",
       "\\textcircled"); // \bigcirc glyph
-
-  const ligatures = {
-    "--": true,
-    "---": true,
-    "``": true,
-    "''": true,
-  };
 
   defineSymbol(Mode.text, Font.main, textord, "\u2013", "--", true);
   defineSymbol(Mode.text, Font.main, textord, "\u2013", "\\textendash");

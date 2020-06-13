@@ -51,66 +51,67 @@ const _fontOptionsEntries = {
   ),
 
   // Text font families.
-  ['textrm']: FontOptions(fontFamily: 'KaTeX_Main'),
+  ['textrm']: FontOptions(fontFamily: 'Main'),
 
-  ['textsf']: FontOptions(fontFamily: 'KaTeX_SansSerif'),
+  ['textsf']: FontOptions(fontFamily: 'SansSerif'),
 
-  ['texttt']: FontOptions(fontFamily: 'KaTeX_Typewriter'),
+  ['texttt']: FontOptions(fontFamily: 'Typewriter'),
 
   // Math fonts.
   ['mathdefault']: FontOptions(
-    fontFamily: 'KaTeX_Math',
+    fontFamily: 'Math',
     fontShape: FontStyle.italic,
   ),
 
   ['mathit']: FontOptions(
-    fontFamily: 'KaTeX_Main',
+    fontFamily: 'Main',
     fontShape: FontStyle.italic,
   ),
 
   ['mathrm']: FontOptions(
+    fontFamily: 'Main',
     fontShape: FontStyle.normal,
   ),
 
   ['mathbf']: FontOptions(
-    fontFamily: 'KaTeX_Main',
+    fontFamily: 'Main',
     fontWeight: FontWeight.bold,
   ),
 
   ['boldsymbol']: FontOptions(
-    fontFamily: 'KaTeX_Math',
+    fontFamily: 'Math',
     fontWeight: FontWeight.bold,
     fontShape: FontStyle.italic,
   ),
 
-  ['amsrm']: FontOptions(fontFamily: 'KaTeX_AMS'),
+  ['amsrm']: FontOptions(fontFamily: 'AMS'),
 
-  ['mathbb', 'textbb']: FontOptions(fontFamily: 'KaTeX_AMS'),
+  ['mathbb', 'textbb']: FontOptions(fontFamily: 'AMS'),
 
-  ['mathcal']: FontOptions(fontFamily: 'KaTeX_Caligraphic'),
+  ['mathcal']: FontOptions(fontFamily: 'Caligraphic'),
 
-  ['mathfrak', 'textfrak']: FontOptions(fontFamily: 'KaTeX_Fraktur'),
+  ['mathfrak', 'textfrak']: FontOptions(fontFamily: 'Fraktur'),
 
-  ['mathtt']: FontOptions(fontFamily: 'KaTeX_Typewriter'),
+  ['mathtt']: FontOptions(fontFamily: 'Typewriter'),
 
-  ['mathscr', 'textscr']: FontOptions(fontFamily: 'KaTeX_Script'),
+  ['mathscr', 'textscr']: FontOptions(fontFamily: 'Script'),
 
-  ['mathsf', 'textsf']: FontOptions(fontFamily: 'KaTeX_SansSerif'),
+  ['mathsf', 'textsf']: FontOptions(fontFamily: 'SansSerif'),
 
   ['mathboldsf', 'textboldsf']: FontOptions(
-    fontFamily: 'KaTeX_SansSerif',
+    fontFamily: 'SansSerif',
     fontWeight: FontWeight.bold,
   ),
 
   ['mathitsf', 'textitsf']: FontOptions(
-    fontFamily: 'KaTeX_SansSerif',
+    fontFamily: 'SansSerif',
     fontShape: FontStyle.italic,
   ),
 
   ['mainrm']: FontOptions(
-    fontFamily: 'KaTeX_Main',
+    fontFamily: 'Main',
     fontShape: FontStyle.normal,
   ),
 };
 
-const fontFamilyFallback = ['KaTeX_Main', 'Times New Roman', 'serif'];
+const fontFamilyFallback = ['Main', 'Times New Roman', 'serif'];

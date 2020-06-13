@@ -32,6 +32,7 @@ KaTeX functionalities that need further investigation
 - raisebox
 - rule
 - underline
+- Custom fonts added by plugins
 
 
 KaTeX functionalities that we won't support

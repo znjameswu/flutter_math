@@ -811,7 +811,7 @@ void _init() {
 // We compute the corresponding \raisebox when A is rendered in \normalsize
 // \scriptstyle, which has a scale factor of 0.7 (see Options.js).
   final latexRaiseA =
-      '${fontMetricsData['Main-Regular']["T".codeUnitAt(0)][1] - 0.7 * fontMetricsData['Main-Regular']["A".codeUnitAt(0)][1]}em';
+      '${fontMetricsData['Main-Regular']["T".codeUnitAt(0)].height - 0.7 * fontMetricsData['Main-Regular']["A".codeUnitAt(0)].height}em';
   defineMacro(
       "\\LaTeX",
       MacroDefinition.fromString("\\textrm{\\html@mathml{"

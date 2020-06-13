@@ -40,15 +40,15 @@ class Options {
   });
 
   static const displayOptions = Options(
-    style: MathStyle.display,
-    color: Colors.black,
-    sizeUnderTextStyle: SizeMode.normalsize,
-    phantom: false,
-    textFontOptions: FontOptions(),
-    mathFontOptions: FontOptions(),
-    maxSize: double.infinity
-    // minRuleThickness: 
-  );
+      style: MathStyle.display,
+      color: Colors.black,
+      sizeUnderTextStyle: SizeMode.normalsize,
+      phantom: false,
+      textFontOptions: null,
+      mathFontOptions: null,
+      maxSize: double.infinity
+      // minRuleThickness:
+      );
 
   // Options discardNonInheritable() {
   //   if (tableColCount == 0) return this;
@@ -110,12 +110,11 @@ class Options {
     return this.copyWith(phantom: true);
   }
 
-  Options withTextFont(PartialFontOptions font) {
-    return this.copyWith(
-      mathFontOptions: const FontOptions(),
-      textFontOptions: this.textFontOptions.mergeWith(font),
-    );
-  }
+  Options withTextFont(PartialFontOptions font) => this.copyWith(
+        mathFontOptions: null,
+        textFontOptions:
+            (this.textFontOptions ?? FontOptions()).mergeWith(font),
+      );
 
   Options withMathFont(FontOptions font) {
     if (font == this.mathFontOptions) return this;
@@ -135,19 +134,18 @@ class Options {
     double maxSize,
     // num minRuleThickness,
     int tableColCount,
-  }) {
-    return Options(
-      style: style ?? this.style,
-      color: color ?? this.color,
-      sizeUnderTextStyle: sizeUnderTextStyle ?? this.sizeUnderTextStyle,
-      phantom: phantom ?? this.phantom,
-      textFontOptions: textFontOptions ?? this.textFontOptions,
-      mathFontOptions: mathFontOptions ?? this.mathFontOptions,
-      maxSize: maxSize ?? this.maxSize,
-      // minRuleThickness: minRuleThickness ?? this.minRuleThickness,
-      // tableColCount: tableColCount ?? this.tableColCount,
-    );
-  }
+  }) =>
+      Options(
+        style: style ?? this.style,
+        color: color ?? this.color,
+        sizeUnderTextStyle: sizeUnderTextStyle ?? this.sizeUnderTextStyle,
+        phantom: phantom ?? this.phantom,
+        textFontOptions: textFontOptions ?? this.textFontOptions,
+        mathFontOptions: mathFontOptions ?? this.mathFontOptions,
+        maxSize: maxSize ?? this.maxSize,
+        // minRuleThickness: minRuleThickness ?? this.minRuleThickness,
+        // tableColCount: tableColCount ?? this.tableColCount,
+      );
 }
 
 class PartialOptions {
@@ -190,10 +188,16 @@ class FontOptions {
   final FontStyle fontShape;
   const FontOptions({
     // @required this.font,
-    this.fontFamily,
+    this.fontFamily = 'Main',
     this.fontWeight = FontWeight.normal,
     this.fontShape = FontStyle.normal,
   });
+
+  String get fontName {
+    final postfix = '${fontWeight == FontWeight.bold ? 'Bold' : ''}'
+        '${fontShape == FontStyle.italic ? "Italic" : ""}';
+    return '$fontFamily-${postfix.isEmpty ? "Regular" : postfix}';
+  }
 
   FontOptions copyWith({
     // String font,

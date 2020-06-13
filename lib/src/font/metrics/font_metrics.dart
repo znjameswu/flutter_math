@@ -1,4 +1,5 @@
-
+import 'package:flutter_math/src/font/metrics/font_metrics_data.dart';
+import 'package:flutter_math/src/parser/tex_parser/types.dart';
 import 'package:meta/meta.dart';
 
 import '../../ast/font_metrics.dart';
@@ -7,7 +8,7 @@ import 'unicode_scripts.dart';
 
 /// This file contains metrics regarding fonts and individual symbols. The sigma
 /// and xi variables, as well as the metricMap map contain data extracted from
-/// TeX, TeX font metrics, and the TTF files. These data are then exposed via 
+/// TeX, TeX font metrics, and the TTF files. These data are then exposed via
 /// the `metrics` variable and the getCharacterMetrics function.
 
 // In TeX, there are actually three sets of dimensions, one for each of
@@ -185,19 +186,19 @@ class CharacterMetrics {
   final double italic;
   final double skew;
   final double width;
-  const CharacterMetrics({
-    @required this.depth,
-    @required this.height,
-    @required this.italic,
-    @required this.skew,
-    @required this.width,
-  });
+  const CharacterMetrics(
+    this.depth,
+    this.height,
+    this.italic,
+    this.skew,
+    this.width,
+  );
 }
 
-final Map<String, Map<int, CharacterMetrics>> metricsMap = {}; //TODO
+final Map<String, Map<int, CharacterMetrics>> metricsMap = fontMetricsData;
 
 CharacterMetrics getCharacterMetrics(
-    {String character, String font, bool renderAsText = true}) {
+    {String character, String font, Mode mode}) {
   if (!metricsMap.containsKey(font)) {
     throw 1; // TODO
   }
@@ -209,8 +210,16 @@ CharacterMetrics getCharacterMetrics(
     final ch = extraCharacterMap[character[0]].codeUnitAt(0);
     return metricsMap[font][ch];
   }
-  if (renderAsText && supportedCodepoint(ch)) {
-    return metricsMap[font][77];
+  if (mode == Mode.text && supportedCodepoint(ch)) {
+    // We don't typically have font metrics for Asian scripts.
+    // But since we support them in text mode, we need to return
+    // some sort of metrics.
+    // So if the character is in a script we support but we
+    // don't have metrics for it, just use the metrics for
+    // the Latin capital letter M. This is close enough because
+    // we (currently) only care about the height of the glpyh
+    // not its width.
+    return metricsMap[font][77]; // 77 is the charcode for 'M'
   }
   return null;
 }
