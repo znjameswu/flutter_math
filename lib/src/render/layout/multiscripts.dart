@@ -185,7 +185,7 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
 
       final postscriptWidth = math.max(
         extendedSupSize,
-        - (alignPostscripts ? 0.0 : italic) + extendedSubSize,
+        -(alignPostscripts ? 0.0 : italic) + extendedSubSize,
       );
       final prescriptWidth = math.max(extendedPresubSize, extendedPresupSize);
 
@@ -334,7 +334,8 @@ Tuple2<double, double> calculateUV({
       final hy = isComputingIntrinsics ? subSize : sub.layoutHeight;
       if ((u - dx) - (hy - v) < 4 * theta) {
         v = 4 * theta - u + dx + hy;
-        final psi = 0.8 * metrics.xHeight.cssEm.toLpUnder(baseOptions);
+        final psi =
+            0.8 * metrics.xHeight.cssEm.toLpUnder(baseOptions) - (u - dx);
         if (psi > 0) {
           u += psi;
           v -= psi;

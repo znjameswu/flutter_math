@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math/flutter_math.dart';
 import 'package:provider/provider.dart';
 
+import 'zoom.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -77,13 +79,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title, style: TextStyle(fontFamily: 'KaTeX_Math'),),
+        title: Text(
+          widget.title,
+          style: TextStyle(fontFamily: 'KaTeX_Math'),
+        ),
       ),
       body: ChangeNotifierProvider(
         create: (context) => TextEditingController(),
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Consumer<TextEditingController>(
               builder: (context, controller, _) => TextField(
@@ -93,18 +98,35 @@ class _MyHomePageState extends State<MyHomePage> {
             Divider(
               thickness: 2,
             ),
-            Consumer<TextEditingController>(builder: (context, controller, _) {
-              try {
-                final tree = SyntaxTree(
-                  greenRoot: TexParser(controller.text, Settings()).parse(),
-                );
-                return tree.buildWidget(Options.displayOptions);
-              } on ParseError catch (e) {
-                return Text(e.message);
-              } catch (e) {
-                return Text(e.toString());
-              }
-            })
+            Expanded(
+              child: ZoomableWidget(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: 200,
+                      height: 200,
+                      color: Colors.red,
+                    ),
+                    Center(
+                      child: Consumer<TextEditingController>(
+                          builder: (context, controller, _) {
+                        try {
+                          final tree = SyntaxTree(
+                            greenRoot:
+                                TexParser(controller.text, Settings()).parse(),
+                          );
+                          return tree.buildWidget(Options.displayOptions);
+                        } on ParseError catch (e) {
+                          return Text(e.message);
+                        } catch (e) {
+                          return Text(e.toString());
+                        }
+                      }),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/font/metrics/font_metrics_data.dart';
-import 'package:flutter_math/src/parser/tex_parser/font.dart';
 
 import '../../font/metrics/font_metrics.dart';
+import '../../font/metrics/font_metrics_data.dart';
 import '../../parser/tex_parser/symbols.dart';
 import '../../parser/tex_parser/types.dart';
+import '../../render/layout/reset_dimension.dart';
 import '../options.dart';
 import '../size.dart';
 import '../symbols.dart';
@@ -71,20 +71,25 @@ class MathAtomNode extends LeafNode {
     }
 
     final defaultFont = symbolRenderConfigs[text].math.defaultFont;
+    final characterMetrics =
+        fontMetricsData[defaultFont.fontName][text.codeUnitAt(0)];
     return [
       BuildResult(
         options: options,
-        widget: Text(
-          text,
-          style: TextStyle(
-            fontFamily: 'KaTeX_' + defaultFont.fontFamily,
-            fontWeight: defaultFont.fontWeight,
-            fontStyle: defaultFont.fontShape,
-            fontSize: 1.21.cssEm.toLpUnder(options),
+        widget: ResetDimension(
+          height: characterMetrics?.height?.cssEm?.toLpUnder(options),
+          depth: characterMetrics?.depth?.cssEm?.toLpUnder(options),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontFamily: 'KaTeX_${defaultFont.fontFamily}',
+              fontWeight: defaultFont.fontWeight,
+              fontStyle: defaultFont.fontShape,
+              fontSize: 1.21.cssEm.toLpUnder(options),
+            ),
           ),
         ),
-        italic: fontMetricsData[defaultFont.fontName][text.codeUnitAt(0)].italic?.cssEm ??
-            Measurement.zero,
+        italic: characterMetrics?.italic?.cssEm ?? Measurement.zero,
       )
     ];
     // if (mode == Mode.math) {

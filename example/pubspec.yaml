@@ -27,6 +27,7 @@ dependencies:
     path: ../
   flutter_hooks:
   provider:
+  matrix_gesture_detector:
 
 
   # The following adds the Cupertino Icons font to your application.
