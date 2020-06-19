@@ -109,7 +109,7 @@ class RenderEquationRow extends RenderBox
   List<double> get spacings => _spacings;
   List<double> _spacings;
   set spacings(List<double> value) {
-    if (listEquals(value, _spacings)) {
+    if (!listEquals(value, _spacings)) {
       _spacings = value;
       markNeedsLayout();
     }

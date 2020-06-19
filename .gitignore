@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+.katex_symbol_mapping/
 
 # IntelliJ related
 *.iml

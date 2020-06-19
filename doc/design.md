@@ -33,6 +33,7 @@ KaTeX functionalities that need further investigation
 - rule
 - underline
 - Custom fonts added by plugins
+- spacing (maybe need to delete spacings in symbols.dart)
 
 
 KaTeX functionalities that we won't support
@@ -41,6 +42,8 @@ KaTeX functionalities that we won't support
 - lap
 - mathchoice
 - smash
+
+variantForm is basically in line with MathJax, for the exception of \u210F(\hbar)
 
 
 The AST uses Roslyn's immutable Red-Green Tree (without deduplication features) to construct the AST. And the GreenNodes are completely stateless and context-free.
@@ -55,3 +58,9 @@ The AST uses Roslyn's immutable Red-Green Tree (without deduplication features) 
 - Other Tex's font specs are calculated inside AST nodes and passed explicitly into dedicated layout widgets. Incorporating them (e.g. italic) into RenderObject will cause heavy compatibility burdens (as the breakable RenderObject has already caused) with no real benefits, since the AST is already efficient at calculating and reusing these parameters.
 - (WIP) Breakable RenderObjects are made subclasses of RenderBox, which caused huge amount of boilerplate code and exception spots. But we have no choice since we need the interop between RenderBox and breakable ones.
 - A large amount of layouts are expressed by custom IntrinsicLayoutDelegate. This is due to the observation that most math nodes will disregard constraints during layout, and its horizontal resizing does not influence vertical layout, and vice versa. IntrinsicLayoutDelegate is hugely concise and efficient in this scenario.
+
+
+## Symbols and Font
+KaTeX use mode (math/text) to directly map commands depending on context into different replacement atoms + atom types + font family. The atom will first try to use explicit contextual font. If not available, it will fall back to default font provided by atom type and font family. (With the exception of wide chars)
+
+Due to the need of editing and copy/pasting, we need to maintain an independent, Unicode-based AST character set. We chose a method similar to MathJax. Unicode char + variantForm uniquely define a symbol. Each symbol has its default replacement, types and font settings, but they can only be overrided when they are constructed by the compiler. Likewise, the symbol will first try to use explicit contextual font. If not available, it will fall back. Any chars using a replacement will never be able to override their font family. (with some exceptions on some punctuations which KaTeX choose to use replacement).

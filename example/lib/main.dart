@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(widget.title, style: TextStyle(fontFamily: 'KaTeX_Math'),),
       ),
       body: ChangeNotifierProvider(
         create: (context) => TextEditingController(),
@@ -95,9 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Consumer<TextEditingController>(builder: (context, controller, _) {
               try {
-                return SyntaxTree(
+                final node = SyntaxTree(
                   greenRoot: TexParser(controller.text, Settings()).parse(),
-                ).root.buildWidget(Options.displayOptions);
+                ).root;
+                return node.buildWidget(Options.displayOptions);
               } on ParseError catch (e) {
                 return Text(e.message);
               } catch (e) {

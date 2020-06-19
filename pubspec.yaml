@@ -58,13 +58,20 @@ flutter:
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages
   fonts:
-    - family: Katex_Main
+    - family: KaTeX_Main
       fonts:
-        - asset: katex_fonts/fonts/KaTeX_Main-Regular.ttf
-        - asset: katex_fonts/fonts/KaTeX_Math-Italic.ttf
+        - asset: lib/katex_fonts/fonts/KaTeX_Main-Regular.ttf
+        - asset: lib/katex_fonts/fonts/KaTeX_Main-Italic.ttf
           style: italic
-        - asset: katex_fonts/fonts/KaTeX_Main-Bold.ttf
+        - asset: lib/katex_fonts/fonts/KaTeX_Main-Bold.ttf
           weight: 700
-        - asset: katex_fonts/fonts/KaTeX_Math-BoldItalic.ttf
+        - asset: lib/katex_fonts/fonts/KaTeX_Main-BoldItalic.ttf
+          weight: 700
+          style: italic
+    - family: KaTeX_Math
+      fonts:
+        - asset: lib/katex_fonts/fonts/KaTeX_Math-Italic.ttf
+          style: italic
+        - asset: lib/katex_fonts/fonts/KaTeX_Math-BoldItalic.ttf
           weight: 700
           style: italic

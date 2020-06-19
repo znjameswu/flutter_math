@@ -24,7 +24,6 @@ abstract class CustomLayoutDelegate<T> {
   double computeDistanceToActualBaseline(
       TextBaseline baseline, Map<T, RenderBox> childrenTable);
 
-      
   void additionalPaint(PaintingContext context, Offset offset) {}
 }
 
@@ -254,7 +253,8 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
   @override
   Size performLayout(
       BoxConstraints constraints, Map<T, RenderBox> childrenTable) {
-    childrenTable.forEach((_, child) => child.layout(infiniteConstraint));
+    childrenTable.forEach(
+        (_, child) => child.layout(infiniteConstraint, parentUsesSize: true));
     final hconf = performIntrinsicLayout(
       layoutDirection: Axis.horizontal,
       childSize: (child) => child.size.width,
@@ -265,6 +265,7 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
       layoutDirection: Axis.vertical,
       childSize: (child) => child.size.height,
       childrenTable: childrenTable,
+      isComputingIntrinsics: false,
     );
     childrenTable.forEach((id, child) =>
         child.offset = Offset(hconf.offsetTable[id], vconf.offsetTable[id]));

@@ -126,7 +126,7 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
   final Options presubOptions;
   final Options presupOptions;
 
-  const MultiscriptsLayoutDelegate({
+  MultiscriptsLayoutDelegate({
     @required this.alignPostscripts,
     @required this.italic,
     @required this.isBaseCharacterBox,
@@ -137,14 +137,18 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
     @required this.presupOptions,
   });
 
+  var baselineDistance = 0.0;
+
   @override
   double computeDistanceToActualBaseline(
           TextBaseline baseline, Map<_ScriptPos, RenderBox> childrenTable) =>
-      nPlus(
-        childrenTable[_ScriptPos.base].offset.dy,
-        childrenTable[_ScriptPos.base]
-            .getDistanceToBaseline(baseline, onlyReal: true),
-      );
+      baselineDistance;
+  // // This will trigger Flutter assertion error
+  // nPlus(
+  //   childrenTable[_ScriptPos.base].offset.dy,
+  //   childrenTable[_ScriptPos.base]
+  //       .getDistanceToBaseline(baseline, onlyReal: true),
+  // );
 
   @override
   AxisConfiguration<_ScriptPos> performIntrinsicLayout({
@@ -248,6 +252,10 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
       // Rule 18f
       final height = math.max(supHeight + supShift, presupHeight + presupShift);
       final depth = math.max(subDepth + subShift, presubDepth + presubShift);
+
+      if (!isComputingIntrinsics) {
+        baselineDistance = height;
+      }
 
       return AxisConfiguration(
         size: height + depth,

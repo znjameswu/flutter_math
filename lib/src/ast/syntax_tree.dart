@@ -73,11 +73,11 @@ class SyntaxNode {
     final res =
         List<SyntaxNode>.filled(value.children.length, null, growable: false);
     for (var i = 0; i < value.children.length; i++) {
-      res[i] = SyntaxNode(
+      res[i] = value.children[i] != null ? SyntaxNode(
         parent: this,
         value: value.children[i],
         pos: this.pos + value.childPositions[i],
-      );
+      ) : null;
     }
     return _children = res;
   }
@@ -363,7 +363,7 @@ abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
   @override
   int computeWidth() =>
       children.fold<int>(
-          0, (value, child) => value + child?.capturedCursor ?? -1) +
+          0, (value, child) => value + (child?.capturedCursor ?? -1)) +
       1;
 
   @override
@@ -646,6 +646,8 @@ enum AtomType {
   close,
   punct,
   inner,
+
+  spacing, // symbols
 
   // These types will be determined by their repective GreenNode type
   // over,

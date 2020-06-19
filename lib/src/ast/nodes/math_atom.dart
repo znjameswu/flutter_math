@@ -6,6 +6,7 @@ import '../../parser/tex_parser/symbols.dart';
 import '../../parser/tex_parser/types.dart';
 import '../options.dart';
 import '../size.dart';
+import '../symbols.dart';
 import '../syntax_tree.dart';
 
 enum DelimiterSize {
@@ -21,9 +22,9 @@ class MathAtomNode extends LeafNode {
   final DelimiterSize delimSize;
   AtomType _atomType;
   AtomType get atomType =>
-      _atomType ??= symbols[Mode.math][text].group.atomType ?? AtomType.ord;
+      _atomType ??= symbolRenderConfigs[text].math.defaultType ?? AtomType.ord;
 
-  Measurement get italic => throw UnimplementedError();
+  Measurement get italic => 0.0.pt; // TODO
 
   MathAtomNode({
     this.text,
@@ -63,22 +64,33 @@ class MathAtomNode extends LeafNode {
       }
     }
 
-    if (mode == Mode.math) {
-      final fontLookup = mathdefault(text);
-      return makeSymbol(text, fontLookup.fontName, mode, options);
-    } else if (mode == Mode.text) {
-      final font = symbols[mode][text]?.font;
-      if (font == Font.ams) {
-        final fontName = fontOptionsTable['amsrm'].fontName;
-        return makeSymbol(text, fontName, mode, options);
-      } else if (font == Font.ams || font == null) {
-        final fontName = fontOptionsTable['textrm'].fontName;
-        return makeSymbol(text, fontName, mode, options);
-      } else {
-        // fonts added by plugins
-        // Currently we do not implement this
-      }
-    }
+    final defaultFont = symbolRenderConfigs[text].math.defaultFont;
+    return Text(
+      text,
+      style: TextStyle(
+        fontFamily: 'KaTeX_' + defaultFont.fontFamily,
+        fontWeight: defaultFont.fontWeight,
+        fontStyle: defaultFont.fontShape,
+        fontSize: 1.0.cssEm.toLpUnder(options),
+      ),
+    );
+    // if (mode == Mode.math) {
+    //   final fontLookup = mathdefault(text);
+    //   return makeSymbol(text, fontLookup.fontName, mode, options);
+    // } else if (mode == Mode.text) {
+    //   final font = symbols[mode][text]?.font;
+    //   if (font == Font.ams) {
+    //     final fontName = fontOptionsTable['amsrm'].fontName;
+    //     return makeSymbol(text, fontName, mode, options);
+    //   } else if (font == Font.ams || font == null) {
+    //     final fontName = fontOptionsTable['textrm'].fontName;
+    //     return makeSymbol(text, fontName, mode, options);
+    //   } else {
+    //     // fonts added by plugins
+    //     // Currently we do not implement this
+    //     throw UnsupportedError('We do not support plugin fonts at this time');
+    //   }
+    // }
   }
 
   @override
@@ -97,7 +109,8 @@ class MathAtomNode extends LeafNode {
   AtomType get rightType => AtomType.ord;
 }
 
-Widget makeSymbol(String text, String fontName, Mode mode, Options options) {}
+Widget makeSymbol(String text, String fontName, Mode mode, Options options) {
+}
 
 CharacterMetrics lookupSymbol(String value, String fontName, Mode mode) {
   // We will figure out a way to bypass KaTeX's symbol

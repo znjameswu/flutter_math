@@ -917,7 +917,7 @@ class ScriptsParsingResults {
     this.limits,
   });
 
-  bool get empty => subscript == null || superscript == null;
+  bool get empty => subscript == null && superscript == null;
 }
 
 GreenNode makeOrdNode(
