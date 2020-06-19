@@ -184,8 +184,8 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
           presup != null ? presupSize + scriptSpace : 0.0;
 
       final postscriptWidth = math.max(
-        italic + extendedSupSize,
-        (alignPostscripts ? italic : 0.0) + extendedSubSize,
+        extendedSupSize,
+        - (alignPostscripts ? 0.0 : italic) + extendedSubSize,
       );
       final prescriptWidth = math.max(extendedPresubSize, extendedPresupSize);
 
@@ -196,8 +196,8 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
         offsetTable: {
           _ScriptPos.base: prescriptWidth,
           _ScriptPos.sub:
-              prescriptWidth + baseSize + (alignPostscripts ? italic : 0),
-          _ScriptPos.sup: prescriptWidth + baseSize + italic,
+              prescriptWidth + baseSize - (alignPostscripts ? 0.0 : italic),
+          _ScriptPos.sup: prescriptWidth + baseSize,
           _ScriptPos.presub: prescriptWidth - presubSize,
           _ScriptPos.presup: prescriptWidth - presupSize,
         },
@@ -296,7 +296,7 @@ Tuple2<double, double> calculateUV({
     v = isBaseCharacterBox ? 0 : d + r;
   }
   if (sup != null) {
-    final q = supOptions.fontMetrics.supDrop.cssEm.toLpUnder(subOptions);
+    final q = supOptions.fontMetrics.supDrop.cssEm.toLpUnder(supOptions);
     v = isBaseCharacterBox ? 0 : h - q;
   }
 

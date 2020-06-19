@@ -34,35 +34,39 @@ class FracNode extends SlotableNode {
     EquationRowNode numerator,
     EquationRowNode denumerator,
     Measurement barSize,
-  }) => FracNode(
-      options: options ?? this.options,
-      numerator: numerator ?? this.numerator,
-      denumerator: denumerator ?? this.denumerator,
-      barSize: barSize ?? this.barSize,
-    );
+  }) =>
+      FracNode(
+        options: options ?? this.options,
+        numerator: numerator ?? this.numerator,
+        denumerator: denumerator ?? this.denumerator,
+        barSize: barSize ?? this.barSize,
+      );
 
   @override
-  Widget buildWidget(
-    Options options,
-    List<Widget> childWidgets,
-    List<Options> childOptions,
-  ) =>
-      CustomLayout(
-        delegate: FracLayoutDelegate(
-          barSize: barSize,
+  List<BuildResult> buildWidget(
+          Options options, List<List<BuildResult>> childBuildResults) =>
+      [
+        BuildResult(
           options: options,
-        ),
-        children: <Widget>[
-          CustomLayoutId(
-            id: _FracPos.numer,
-            child: childWidgets[0],
+          widget: CustomLayout(
+            delegate: FracLayoutDelegate(
+              barSize: barSize,
+              options: options,
+            ),
+            children: <Widget>[
+              CustomLayoutId(
+                id: _FracPos.numer,
+                child: childBuildResults[0][0].widget,
+              ),
+              CustomLayoutId(
+                id: _FracPos.denom,
+                child: childBuildResults[1][0].widget,
+              ),
+            ],
           ),
-          CustomLayoutId(
-            id: _FracPos.denom,
-            child: childWidgets[1],
-          ),
-        ],
-      );
+          italic: Measurement.zero,
+        )
+      ];
 
   @override
   List<Options> computeChildOptions(Options options) => [
@@ -168,7 +172,7 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
         // Rule 15d
         final phi =
             options.style.index < MathStyle.text.index ? 3 * theta : theta;
-        final a = metrics.axisHeight.cssEm.toLpUnder(options);
+        a = metrics.axisHeight.cssEm.toLpUnder(options);
         if (u - dx - a - 0.5 * theta < phi) {
           u += phi + dx + a + 0.5 * theta;
         }

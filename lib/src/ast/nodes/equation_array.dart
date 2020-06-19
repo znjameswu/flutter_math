@@ -11,7 +11,8 @@ class EquationArrayRowNode extends EquationRowNode {
 
 class EquationArrayNode extends SlotableNode<EquationArrayRowNode> {
   @override
-  Widget buildWidget(Options options, List<Widget> childWidgets, List<Options> childOptions) {
+  List<BuildResult> buildWidget(
+      Options options, List<List<BuildResult>> childBuildResults){
     // TODO: implement buildWidget
     throw UnimplementedError();
   }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/iterable_extensions.dart';
 import '../render/layout/eq_row.dart';
 import '../widgets/scope.dart';
 import 'nodes/math_atom.dart';
@@ -19,7 +20,7 @@ class SyntaxTree {
   final GreenNode greenRoot;
   SyntaxTree({
     @required this.greenRoot,
-  })  : assert(greenRoot != null);
+  }) : assert(greenRoot != null);
 
   SyntaxNode _root;
   SyntaxNode get root => _root ??= SyntaxNode(
@@ -44,6 +45,10 @@ class SyntaxTree {
         pos.parent.value.updateChildren(pos.parent.value.children
             .map((child) => identical(child, pos.value) ? newNode : child)
             .toList(growable: false)));
+  }
+
+  Widget buildWidget([Options options = Options.displayOptions]) {
+    return root.buildWidget(options)[0].widget;
   }
 }
 
@@ -73,11 +78,13 @@ class SyntaxNode {
     final res =
         List<SyntaxNode>.filled(value.children.length, null, growable: false);
     for (var i = 0; i < value.children.length; i++) {
-      res[i] = value.children[i] != null ? SyntaxNode(
-        parent: this,
-        value: value.children[i],
-        pos: this.pos + value.childPositions[i],
-      ) : null;
+      res[i] = value.children[i] != null
+          ? SyntaxNode(
+              parent: this,
+              value: value.children[i],
+              pos: this.pos + value.childPositions[i],
+            )
+          : null;
     }
     return _children = res;
   }
@@ -99,34 +106,35 @@ class SyntaxNode {
   /// - If [shouldRebuildWidget], force rebuild
   /// - Call [buildWidget] on [children]. If the results are identical to the
   /// results returned by [buildWidget] called last time, then bypass.
-  Widget buildWidget(Options options) {
+  List<BuildResult> buildWidget(Options options) {
     if (value is PositionDependentMixin) {
       (value as PositionDependentMixin).updatePos(pos);
     }
 
     if (value._oldOptions != null && options == value._oldOptions) {
-      return value._oldWidget;
+      return value._oldBuildResult;
     }
     final childOptions = value.computeChildOptions(options);
 
-    final newChildWidgets = _buildChildWidgets(childOptions);
+    final newChildBuildResults = _buildChildWidgets(childOptions);
 
     final bypassRebuild = value._oldOptions != null &&
         !value.shouldRebuildWidget(value._oldOptions, options) &&
-        listEquals(newChildWidgets, value._oldChildWidgets);
+        listEquals(newChildBuildResults, value._oldChildBuildResults);
 
     value._oldOptions = options;
-    value._oldChildWidgets = newChildWidgets;
+    value._oldChildBuildResults = newChildBuildResults;
     return bypassRebuild
-        ? value._oldWidget
-        : (value._oldWidget =
-            value.buildWidget(options, newChildWidgets, childOptions));
+        ? value._oldBuildResult
+        : (value._oldBuildResult =
+            value.buildWidget(options, newChildBuildResults));
   }
 
-  List<Widget> _buildChildWidgets(List<Options> childOptions) {
+  List<List<BuildResult>> _buildChildWidgets(List<Options> childOptions) {
     assert(children.length == childOptions.length);
     if (children.isEmpty) return const [];
-    final result = List<Widget>.filled(children.length, null, growable: false);
+    final result =
+        List<List<BuildResult>>.filled(children.length, null, growable: false);
     for (var i = 0; i < children.length; i++) {
       result[i] = children[i]?.buildWidget(childOptions[i]);
     }
@@ -227,8 +235,8 @@ abstract class GreenNode {
   ///
   /// Please ensure [children] works in the same order as [updateChildren],
   /// [computeChildOptions], and [buildWidget].
-  Widget buildWidget(
-      Options options, List<Widget> childWidgets, List<Options> childOptions);
+  List<BuildResult> buildWidget(
+      Options options, List<List<BuildResult>> childBuildResults);
 
   /// Whether the specific [Options] parameters that this node directly depends
   /// upon have changed.
@@ -277,8 +285,8 @@ abstract class GreenNode {
   AtomType get rightType;
 
   Options _oldOptions;
-  Widget _oldWidget;
-  List<Widget> _oldChildWidgets;
+  List<BuildResult> _oldBuildResult;
+  List<List<BuildResult>> _oldChildBuildResults;
 
   Map<String, Object> toJson() => {
         'type': runtimeType.toString(),
@@ -424,27 +432,9 @@ abstract class TransparentNode extends ParentableNode<GreenNode> {
   }
 
   @override
-  BuildResultWrapper buildWidget(
-      Options options, List<Widget> childWidgets, List<Options> childOptions) {
-    // I would be very happy if I can use Iterable.expand(). But expand() does
-    // not come with an indexed version.
-    final widgets = <Widget>[];
-    final options = <Options>[];
-    for (var i = 0; i < childWidgets.length; i++) {
-      final childWidget = childWidgets[i];
-      if (childWidget is BuildResultWrapper) {
-        widgets.addAll(childWidget.widgets);
-        options.addAll(childWidget.options);
-      } else {
-        widgets.add(childWidget);
-        options.add(childOptions[i]);
-      }
-    }
-    return BuildResultWrapper(
-      widgets: widgets,
-      options: options,
-    );
-  }
+  List<BuildResult> buildWidget(
+          Options options, List<List<BuildResult>> childBuildResults) =>
+      childBuildResults.expand((element) => element).toList();
 
   List<GreenNode> _flattenedChildList;
   List<GreenNode> get flattenedChildList => _flattenedChildList ??= children
@@ -465,12 +455,6 @@ class EquationRowNode extends ParentableNode<GreenNode>
     with PositionDependentMixin {
   @override
   final List<GreenNode> children;
-
-  Measurement get italic => flattenedChildList.isEmpty
-      ? Measurement.zero
-      : (flattenedChildList.last is MathAtomNode
-          ? (flattenedChildList.last as MathAtomNode).italic
-          : Measurement.zero);
 
   @override
   int computeWidth() =>
@@ -502,32 +486,35 @@ class EquationRowNode extends ParentableNode<GreenNode>
       .toList(growable: false);
 
   @override
-  Widget buildWidget(
-      Options options, List<Widget> childWidgets, List<Options> childOptions) {
-    // I would be very happy if I can use Iterable.expand(). But expand() does
-    // not come with an indexed version.
-    final actualChildWidgets = <Widget>[];
-    final actualChildOptions = <Options>[];
-    for (var i = 0; i < childWidgets.length; i++) {
-      final childWidget = childWidgets[i];
-      if (childWidget is BuildResultWrapper) {
-        actualChildWidgets.addAll(childWidget.widgets);
-        actualChildOptions.addAll(childWidget.options);
-      } else {
-        actualChildWidgets.add(childWidget);
-        actualChildOptions.add(childOptions[i]);
-      }
-    }
-    assert(flattenedChildList.length == actualChildWidgets.length);
-    final spacings =
-        List<double>.filled(math.max(flattenedChildList.length - 1, 0), 0, growable: false);
+  List<BuildResult> buildWidget(
+      Options options, List<List<BuildResult>> childBuildResults) {
+    // // I would be very happy if I can use Iterable.expand(). But expand() does
+    // // not come with an indexed version.
+    // final actualChildWidgets = <Widget>[];
+    // final actualChildOptions = <Options>[];
+    // for (var i = 0; i < childWidgets.length; i++) {
+    //   final childWidget = childWidgets[i];
+    //   if (childWidget is BuildResultWrapper) {
+    //     actualChildWidgets.addAll(childWidget.widgets);
+    //     actualChildOptions.addAll(childWidget.options);
+    //   } else {
+    //     actualChildWidgets.add(childWidget);
+    //     actualChildOptions.add(childOptions[i]);
+    //   }
+    // }
+    final buildResults = childBuildResults.expand((element) => element);
+    final flattenedChildOptions = buildResults.map((e) => e.options).toList();
+    // assert(flattenedChildList.length == actualChildWidgets.length);
+    final spacings = List<double>.filled(
+        math.max(flattenedChildList.length - 1, 0), 0,
+        growable: false);
     for (var i = 0; i < flattenedChildList.length - 1; i++) {
       spacings[i] = getSpacingSize(
         left: flattenedChildList[i].rightType,
         right: flattenedChildList[i + 1].leftType,
-        style: actualChildOptions[i + 1].style,
+        style: flattenedChildOptions[i + 1].style,
       ).toLpUnder(
-          actualChildOptions[i + 1]); // Behavior in accordance with KaTeX
+          flattenedChildOptions[i + 1]); // Behavior in accordance with KaTeX
     }
 
     // final actualChildWidgets = childWidgets
@@ -535,8 +522,17 @@ class EquationRowNode extends ParentableNode<GreenNode>
     //         ? childWidget.widgets
     //         : [childWidget])
     //     .toList(growable: false);
-
-    return EquationRow(children: actualChildWidgets, spacings: spacings);
+    return [
+      BuildResult(
+        options: options,
+        widget: EquationRow(
+          children: buildResults.map((e) => e.widget).toList(),
+          spacings: spacings,
+        ),
+        italic: buildResults.lastOrNull?.italic ?? Measurement.zero,
+      )
+    ];
+    // return EquationRow(children: actualChildWidgets, spacings: spacings);
   }
 
   @override
@@ -626,16 +622,16 @@ abstract class LeafNode extends GreenNode {
 //   bool get isShifty;
 // }
 
-class BuildResultWrapper extends Widget {
-  final List<Widget> widgets;
+// class BuildResultWrapper extends Widget {
+//   final List<Widget> widgets;
 
-  final List<Options> options;
+//   final List<Options> options;
 
-  const BuildResultWrapper({this.widgets, this.options});
+//   const BuildResultWrapper({this.widgets, this.options});
 
-  @override
-  Element createElement() => throw UnsupportedError('');
-}
+//   @override
+//   Element createElement() => throw UnsupportedError('');
+// }
 
 enum AtomType {
   ord,
@@ -659,8 +655,8 @@ enum AtomType {
 
 class TemporaryNode extends LeafNode {
   @override
-  Widget buildWidget(Options options, List<Widget> childWidgets,
-          List<Options> childOptions) =>
+  List<BuildResult> buildWidget(
+          Options options, List<List<BuildResult>> childBuildResults) =>
       throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
@@ -678,4 +674,15 @@ class TemporaryNode extends LeafNode {
   @override
   int get width =>
       throw UnsupportedError('Temporary node $runtimeType encountered.');
+}
+
+class BuildResult {
+  final Widget widget;
+  final Options options;
+  final Measurement italic;
+  const BuildResult({
+    @required this.widget,
+    @required this.options,
+    @required this.italic,
+  });
 }

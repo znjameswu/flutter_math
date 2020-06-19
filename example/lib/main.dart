@@ -95,10 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Consumer<TextEditingController>(builder: (context, controller, _) {
               try {
-                final node = SyntaxTree(
+                final tree = SyntaxTree(
                   greenRoot: TexParser(controller.text, Settings()).parse(),
-                ).root;
-                return node.buildWidget(Options.displayOptions);
+                );
+                return tree.buildWidget(Options.displayOptions);
               } on ParseError catch (e) {
                 return Text(e.message);
               } catch (e) {

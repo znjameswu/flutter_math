@@ -4,6 +4,7 @@ import '../../render/layout/remove_baseline.dart';
 import '../../render/svg/svg_painter.dart';
 import '../options.dart';
 import '../syntax_tree.dart';
+import '../size.dart';
 
 /// Word:   \sqrt   \sqrt(index & base)
 /// Latex:  \sqrt   \sqrt[index]{base}
@@ -28,28 +29,32 @@ class SqrtNode extends SlotableNode {
   }
 
   @override
-  Widget buildWidget(
-      Options options, List<Widget> childWidgets, List<Options> childOptions) {
-    return Stack(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(
-            left: 0,
-            top: 0,
-          ),
-          child: childWidgets[1],
-        ),
-        if (childWidgets[0] != null)
-          Positioned(
-            child: RemoveBaseline(
-              child: childWidgets[0],
+  List<BuildResult> buildWidget(
+      Options options, List<List<BuildResult>> childBuildResults){
+    return [BuildResult(
+      options: options,
+          widget: Stack(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              left: 0,
+              top: 0,
             ),
+            child: childBuildResults[1][0].widget,
           ),
-        Positioned(
-          child: SvgPaint(),
-        )
-      ],
-    );
+          if (childBuildResults[0] != null)
+            Positioned(
+              child: RemoveBaseline(
+                child: childBuildResults[0][0].widget,
+              ),
+            ),
+          Positioned(
+            child: SvgPaint(),
+          )
+        ],
+      ),
+      italic: Measurement.zero,
+    )];
   }
 
   @override

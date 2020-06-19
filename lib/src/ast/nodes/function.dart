@@ -13,8 +13,8 @@ class FunctionNode extends SlotableNode {
   });
 
   @override
-  Widget buildWidget(
-      Options options, List<Widget> childWidgets, List<Options> childOptions) {
+  List<BuildResult> buildWidget(
+      Options options, List<List<BuildResult>> childBuildResults){
     // TODO: implement buildWidget
     throw UnimplementedError();
   }

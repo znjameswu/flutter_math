@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/font/metrics/font_metrics_data.dart';
 import 'package:flutter_math/src/parser/tex_parser/font.dart';
 
 import '../../font/metrics/font_metrics.dart';
@@ -24,8 +25,6 @@ class MathAtomNode extends LeafNode {
   AtomType get atomType =>
       _atomType ??= symbolRenderConfigs[text].math.defaultType ?? AtomType.ord;
 
-  Measurement get italic => 0.0.pt; // TODO
-
   MathAtomNode({
     this.text,
     this.fontOptions,
@@ -34,8 +33,8 @@ class MathAtomNode extends LeafNode {
   }) : _atomType = atomType;
 
   @override
-  Widget buildWidget(
-      Options options, List<Widget> childWidgets, List<Options> childOptions) {
+  List<BuildResult> buildWidget(
+      Options options, List<List<BuildResult>> childBuildResults) {
     // TODO incorporate symbolsOp.js
 
     final mode = Mode.math; //TODO
@@ -50,30 +49,44 @@ class MathAtomNode extends LeafNode {
       //TODO
     } else if (font != null) {
       if (lookupSymbol(text, font.fontName, mode) != null) {
-        return makeSymbol(text, font.fontName, mode, options);
+        return [makeSymbol(text, font.fontName, mode, options)];
       } else if (ligatures.contains(text) && font.fontFamily == 'Typewriter') {
         final text = symbols[mode][this.text].name;
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
-          children: text
-              .split('')
-              .map((e) => makeSymbol(e, font.fontName, mode, options))
-              .toList(growable: false),
-        );
+        return [
+          BuildResult(
+            options: options,
+            widget: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: text
+                  .split('')
+                  .map(
+                      (e) => makeSymbol(e, font.fontName, mode, options).widget)
+                  .toList(growable: false),
+            ),
+            italic: Measurement.zero,
+          )
+        ];
       }
     }
 
     final defaultFont = symbolRenderConfigs[text].math.defaultFont;
-    return Text(
-      text,
-      style: TextStyle(
-        fontFamily: 'KaTeX_' + defaultFont.fontFamily,
-        fontWeight: defaultFont.fontWeight,
-        fontStyle: defaultFont.fontShape,
-        fontSize: 1.0.cssEm.toLpUnder(options),
-      ),
-    );
+    return [
+      BuildResult(
+        options: options,
+        widget: Text(
+          text,
+          style: TextStyle(
+            fontFamily: 'KaTeX_' + defaultFont.fontFamily,
+            fontWeight: defaultFont.fontWeight,
+            fontStyle: defaultFont.fontShape,
+            fontSize: 1.21.cssEm.toLpUnder(options),
+          ),
+        ),
+        italic: fontMetricsData[defaultFont.fontName][text.codeUnitAt(0)].italic?.cssEm ??
+            Measurement.zero,
+      )
+    ];
     // if (mode == Mode.math) {
     //   final fontLookup = mathdefault(text);
     //   return makeSymbol(text, fontLookup.fontName, mode, options);
@@ -109,8 +122,8 @@ class MathAtomNode extends LeafNode {
   AtomType get rightType => AtomType.ord;
 }
 
-Widget makeSymbol(String text, String fontName, Mode mode, Options options) {
-}
+BuildResult makeSymbol(
+    String text, String fontName, Mode mode, Options options) {}
 
 CharacterMetrics lookupSymbol(String value, String fontName, Mode mode) {
   // We will figure out a way to bypass KaTeX's symbol
