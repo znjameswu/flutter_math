@@ -1,6 +1,8 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/render/layout/custom_layout.dart';
+
+import '../utils/render_box_offset.dart';
+import 'custom_layout.dart';
 
 /// I would like to use [CustomSingleChildLayout] provided by flutter
 /// But that thing does not allow parent to depend on children. BS.
@@ -16,17 +18,15 @@ class ResetDimension extends StatelessWidget {
   }) : super();
 
   @override
-  Widget build(BuildContext context) {
-    return CustomLayout<int>(
-      delegate: ResetDimensionLayoutDelegate(
-        height: height,
-        depth: depth,
-      ),
-      children: <Widget>[
-        CustomLayoutId(id: 0, child: child),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => CustomLayout<int>(
+        delegate: ResetDimensionLayoutDelegate(
+          height: height,
+          depth: depth,
+        ),
+        children: <Widget>[
+          CustomLayoutId(id: 0, child: child),
+        ],
+      );
 }
 
 class ResetDimensionLayoutDelegate extends IntrinsicLayoutDelegate<int> {
@@ -58,19 +58,17 @@ class ResetDimensionLayoutDelegate extends IntrinsicLayoutDelegate<int> {
     } else {
       final childHeight = (isComputingIntrinsics
           ? childSize(childrenTable[0])
-          : childrenTable[0].getDistanceToBaseline(TextBaseline.alphabetic));
+          : childrenTable[0].layoutHeight);
       final childDepth = childSize(childrenTable[0]) - childHeight;
 
       final finalHeight = height != null ? height : childHeight;
       final finalDepth = depth != null ? depth : childDepth;
-      if (height != null && depth != null) {
-        return AxisConfiguration(
-          size: finalHeight + finalDepth,
-          offsetTable: {
-            0: finalHeight - childHeight,
-          },
-        );
-      }
+      return AxisConfiguration(
+        size: finalHeight + finalDepth,
+        offsetTable: {
+          0: finalHeight - childHeight,
+        },
+      );
     }
   }
 }

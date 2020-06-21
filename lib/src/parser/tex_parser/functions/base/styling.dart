@@ -39,7 +39,8 @@ const _stylingEntries = {
 GreenNode _stylingHandler(TexParser parser, FunctionContext context) {
   final body = parser.parseExpression(
       breakOnInfix: true, breakOnTokenText: context.breakOnTokenText);
-  final style = parseMathStyle(context.funcName.substring(1));
+  final style = parseMathStyle(
+      context.funcName.substring(1, context.funcName.length - 5));
   return StyleNode(
     children: body,
     optionsDiff: OptionsDiff(style: style),

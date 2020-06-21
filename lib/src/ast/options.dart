@@ -167,6 +167,7 @@ class Options {
     if (partialOptions.mathFontOptions != null) {
       res = res.withMathFont(partialOptions.mathFontOptions);
     }
+    return res;
   }
 }
 
