@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/render/svg/svg_draw_root.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tuple/tuple.dart';
 
@@ -170,11 +171,10 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
     final indexRightPadding = -10.0.mu.toLpUnder(options);
     // KaTeX chose a way to large value (5mu). We will use a smaller one.
     final indexLeftPadding = 0.5.pt.toLpUnder(options);
-    final indexShift = 0.6 * (baseHeight - baseDepth);
 
     // Horizontal layout
     final sqrtHorizontalPos =
-        math.max(0.0, indexLeftPadding + indexWidth - indexRightPadding);
+        math.max(0.0, indexLeftPadding + indexWidth + indexRightPadding);
     final width = sqrtHorizontalPos + buildRes.advanceWidth + baseWidth;
     svgHorizontalPos = sqrtHorizontalPos;
 
@@ -183,11 +183,13 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
     if (delimDepth > base.size.height + psi) {
       psi += 0.5 * (delimDepth - base.size.height - psi);
     }
+    final bodyHeight = baseHeight + psi + buildRes.ruleWidth;
+    final bodyDepth = buildRes.texHeight - bodyHeight;
+    final indexShift = 0.6 * (bodyHeight - bodyDepth);
     final sqrtVerticalPos = math.max(
         0.0, indexHeight + indexShift - baseHeight - psi - buildRes.ruleWidth);
     svgVerticalPos = sqrtVerticalPos + buildRes.texHeight - buildRes.fullHeight;
-    heightAboveBaseline =
-        baseHeight + psi + buildRes.ruleWidth + sqrtVerticalPos;
+    heightAboveBaseline = bodyHeight + sqrtVerticalPos;
     final fullHeight = sqrtVerticalPos + buildRes.texHeight;
 
     base.offset = Offset(sqrtHorizontalPos + buildRes.advanceWidth,
@@ -201,23 +203,8 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
   @override
   void additionalPaint(PaintingContext context, Offset offset) {
     if (svgRoot != null) {
-      final canvas = context.canvas;
-      canvas.translate(
-          offset.dx + svgHorizontalPos, offset.dy + svgVerticalPos);
-      canvas.scale(
-        svgRoot.viewport.width / svgRoot.viewport.viewBox.width,
-        svgRoot.viewport.height / svgRoot.viewport.viewBox.height,
-      );
-      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, svgRoot.viewport.viewBox.width,
-          svgRoot.viewport.viewBox.height));
-      // canvas.drawRect(
-      //     Rect.fromLTWH(0.0, 0.0, svgRoot.viewport.viewBox.width,
-      //         svgRoot.viewport.viewBox.height),
-      //     Paint()
-      //       ..style = PaintingStyle.fill
-      //       ..color = Colors.blue
-      //       ..strokeWidth = 1);
-      svgRoot.draw(canvas, null);
+      svgDrawRoot(
+          svgRoot, context, offset + Offset(svgHorizontalPos, svgVerticalPos));
     }
   }
 }
