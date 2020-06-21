@@ -59,6 +59,12 @@ extension MathStyleExt on MathStyle {
   // MathStyle atLeastText() =>
   //     this.index > MathStyle.textCramped.index ? this : MathStyle.text;
 
+  bool operator > (MathStyle other) {
+    return this.index < other.index;
+  }
+  bool operator < (MathStyle other) {
+    return this.index > other.index;
+  }
   bool isTight() => this.size >= 2;
 }
 

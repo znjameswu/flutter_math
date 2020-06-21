@@ -133,7 +133,7 @@ BuildResult makeSymbol(
 CharacterMetrics lookupSymbol(String value, String fontName, Mode mode) {
   // We will figure out a way to bypass KaTeX's symbol
   // TODO
-  return getCharacterMetrics(character: value, font: fontName, mode: mode);
+  return getCharacterMetrics(character: value, fontName: fontName, mode: mode);
 }
 
 final _numberDigitRegex = RegExp('[0-9]');

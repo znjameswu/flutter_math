@@ -58,7 +58,7 @@ The AST uses Roslyn's immutable Red-Green Tree (without deduplication features) 
 - Other Tex's font specs are calculated inside AST nodes and passed explicitly into dedicated layout widgets. Incorporating them (e.g. italic) into RenderObject will cause heavy compatibility burdens (as the breakable RenderObject has already caused) with no real benefits, since the AST is already efficient at calculating and reusing these parameters.
 - (WIP) Breakable RenderObjects are made subclasses of RenderBox, which caused huge amount of boilerplate code and exception spots. But we have no choice since we need the interop between RenderBox and breakable ones.
 - A large amount of layouts are expressed by custom IntrinsicLayoutDelegate. This is due to the observation that most math nodes will disregard constraints during layout, and its horizontal resizing does not influence vertical layout, and vice versa. IntrinsicLayoutDelegate is hugely concise and efficient in this scenario.
-
+- Rendering of \sqrt might be slightly different. Due to a different style choosing scheme.
 
 ## Symbols and Font
 KaTeX use mode (math/text) to directly map commands depending on context into different replacement atoms + atom types + font family. The atom will first try to use explicit contextual font. If not available, it will fall back to default font provided by atom type and font family. (With the exception of wide chars)

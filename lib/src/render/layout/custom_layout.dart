@@ -8,8 +8,9 @@ import '../utils/render_box_offset.dart';
 abstract class CustomLayoutDelegate<T> {
   const CustomLayoutDelegate();
 
-  Size performLayout(
-      BoxConstraints constraints, Map<T, RenderBox> childrenTable);
+  // last parameter is for a hack to render asynchronously for flutter_svg
+  Size performLayout(BoxConstraints constraints,
+      Map<T, RenderBox> childrenTable, RenderBox renderBox);
 
   double getIntrinsicSize({
     Axis sizingDirection,
@@ -199,7 +200,7 @@ class RenderCustomLayout<T> extends RenderBox
 
   @override
   void performLayout() {
-    size = delegate.performLayout(constraints, childrenTable);
+    size = delegate.performLayout(constraints, childrenTable, this);
   }
 
   @override
@@ -251,8 +252,8 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
       ).size;
 
   @override
-  Size performLayout(
-      BoxConstraints constraints, Map<T, RenderBox> childrenTable) {
+  Size performLayout(BoxConstraints constraints,
+      Map<T, RenderBox> childrenTable, RenderBox renderBox) {
     childrenTable.forEach(
         (_, child) => child.layout(infiniteConstraint, parentUsesSize: true));
     final hconf = performIntrinsicLayout(

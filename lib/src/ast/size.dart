@@ -128,6 +128,9 @@ class Measurement {
   }
 
   double toLpUnder(Options options) => toPtUnder(options) / Unit.lp.toPt;
+  double toCssEmUnder(Options options) =>
+      toPtUnder(options) /
+      (const Measurement(value: 1.0, unit: Unit.cssEm)).toPtUnder(options);
 
   // // Following code is from unit.js/calculateSize. It is only applicable to KaTeX's rendering mechanism.
   // double toEmUnder(Options options) {
