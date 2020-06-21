@@ -140,7 +140,7 @@ GreenNode _internalFracHandler({
   if (size != null) {
     res = StyleNode(
       children: [res],
-      options: PartialOptions(style: size),
+      optionsDiff: OptionsDiff(style: size),
     );
   }
   return res;
@@ -218,7 +218,7 @@ GreenNode _genfracHandler(TexParser parser, FunctionContext context) {
   if (style != null) {
     res = StyleNode(
       children: [res],
-      options: PartialOptions(style: style?.toMathStyle()),
+      optionsDiff: OptionsDiff(style: style?.toMathStyle()),
     );
   }
   return res;

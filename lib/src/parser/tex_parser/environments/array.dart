@@ -135,7 +135,7 @@ MatrixNode parseArray(
         ? cellBody.wrapWithEquationRow()
         : StyleNode(
             children: cellBody,
-            options: PartialOptions(style: style),
+            optionsDiff: OptionsDiff(style: style),
           ).wrapWithEquationRow();
     row.add(cell);
 

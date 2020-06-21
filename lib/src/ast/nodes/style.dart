@@ -4,25 +4,24 @@ import '../syntax_tree.dart';
 
 class StyleNode extends TransparentNode {
   final List<GreenNode> children;
-  final PartialOptions options;
+  final OptionsDiff optionsDiff;
 
   StyleNode({
     @required this.children,
-    @required this.options,
+    @required this.optionsDiff,
   });
 
   @override
-  List<Options> computeChildOptions(Options options) {
-    // TODO: implement computeChildOptions
-    return null;
-  }
+  List<Options> computeChildOptions(Options options) =>
+      List.filled(children.length, options.merge(optionsDiff), growable: false);
 
   @override
   bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
 
   @override
-  ParentableNode<GreenNode> updateChildren(List<GreenNode> newChildren) {
-    // TODO: implement updateChildren
-    return null;
-  }
+  ParentableNode<GreenNode> updateChildren(List<GreenNode> newChildren) =>
+      StyleNode(
+        children: newChildren,
+        optionsDiff: optionsDiff,
+      );
 }

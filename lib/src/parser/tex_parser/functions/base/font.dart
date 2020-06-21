@@ -54,7 +54,7 @@ GreenNode _fontHandler(TexParser parser, FunctionContext context) {
       : context.funcName;
   return StyleNode(
     children: body.expandEquationRow(),
-    options: PartialOptions(
+    optionsDiff: OptionsDiff(
       mathFontOptions: fontOptionsTable[func],
     ),
   );
@@ -67,7 +67,7 @@ GreenNode _boldSymbolHandler(TexParser parser, FunctionContext context) {
   // argument's bin|rel|ord status
   return StyleNode(
     children: body.expandEquationRow(),
-    options: PartialOptions(
+    optionsDiff: OptionsDiff(
       mathFontOptions: fontOptionsTable['boldsymbol'],
     ),
   );
@@ -80,7 +80,7 @@ GreenNode _textFontHandler(TexParser parser, FunctionContext context) {
 
   return StyleNode(
     children: body,
-    options: PartialOptions(
+    optionsDiff: OptionsDiff(
       mathFontOptions: fontOptionsTable[style],
     ),
   );

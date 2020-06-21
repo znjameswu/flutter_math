@@ -42,6 +42,6 @@ GreenNode _stylingHandler(TexParser parser, FunctionContext context) {
   final style = parseMathStyle(context.funcName.substring(1));
   return StyleNode(
     children: body,
-    options: PartialOptions(style: style),
+    optionsDiff: OptionsDiff(style: style),
   );
 }

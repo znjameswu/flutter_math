@@ -41,7 +41,7 @@ GreenNode _textcolorHandler(TexParser parser, FunctionContext context) {
   final color = parser.parseArgColor(optional: false);
   final body = parser.parseArgNode(mode: null, optional: false);
   return StyleNode(
-    options: PartialOptions(color: color),
+    optionsDiff: OptionsDiff(color: color),
     children: body.expandEquationRow(),
   );
 }
@@ -54,7 +54,7 @@ GreenNode _colorHandler(TexParser parser, FunctionContext context) {
   final body = parser.parseExpression(
       breakOnInfix: true, breakOnTokenText: context.breakOnTokenText);
   return StyleNode(
-    options: PartialOptions(color: color),
+    optionsDiff: OptionsDiff(color: color),
     children: body,
   );
 }

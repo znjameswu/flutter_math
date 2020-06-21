@@ -50,7 +50,7 @@ GreenNode _sizingHandler(TexParser parser, FunctionContext context) {
       breakOnInfix: false, breakOnTokenText: context.breakOnTokenText);
   return StyleNode(
     children: body,
-    options: PartialOptions(
+    optionsDiff: OptionsDiff(
       size: SizeMode.values[_sizeFuncs.indexOf(context.funcName)],
     ),
   );

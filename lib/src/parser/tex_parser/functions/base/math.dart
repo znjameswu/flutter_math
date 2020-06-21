@@ -47,7 +47,7 @@ GreenNode _mathLeftHandler(TexParser parser, FunctionContext context) {
   parser.mode = outerMode;
 
   return StyleNode(
-    options: PartialOptions(style: MathStyle.text),
+    optionsDiff: OptionsDiff(style: MathStyle.text),
     children: body,
   );
 }

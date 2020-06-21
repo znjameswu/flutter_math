@@ -146,40 +146,61 @@ class Options {
         // minRuleThickness: minRuleThickness ?? this.minRuleThickness,
         // tableColCount: tableColCount ?? this.tableColCount,
       );
+
+  Options merge(OptionsDiff partialOptions) {
+    var res = this;
+    if (partialOptions.size != null) {
+      res = res.havingSize(partialOptions.size);
+    }
+    if (partialOptions.style != null) {
+      res = res.havingStyle(partialOptions.style);
+    }
+    if (partialOptions.color != null) {
+      res = res.withColor(partialOptions.color);
+    }
+    if (partialOptions.phantom == true) {
+      res = res.withPhantom();
+    }
+    if (partialOptions.textFontOptions != null) {
+      res = res.withTextFont(partialOptions.textFontOptions);
+    }
+    if (partialOptions.mathFontOptions != null) {
+      res = res.withMathFont(partialOptions.mathFontOptions);
+    }
+  }
 }
 
-class PartialOptions {
+class OptionsDiff {
   final MathStyle style;
-  final Color color;
   final SizeMode size;
+
+  final Color color;
+  final bool phantom;
   // SizeMode get size => sizeUnderTextStyle.underStyle(style);
   // final SizeMode sizeUnderTextStyle;
-  final bool phantom;
-  final FontOptions textFontOptions;
+  final PartialFontOptions textFontOptions;
   final FontOptions mathFontOptions;
-  double get sizeMultiplier => this.size.sizeMultiplier;
-  final num maxSize;
-  final num minRuleThickness; //???
-  // final bool isBlank;
-  // final bool mathord;
-  // final bool textord;
-  // final Measurement raise; //raisebox // Hard to implement
   FontMetrics get fontMetrics => getGlobalMetrics(size);
-  const PartialOptions({
+  const OptionsDiff({
     this.style,
     this.color,
     this.size,
-    // this.sizeUnderTextStyle,
     this.phantom,
     this.textFontOptions,
     this.mathFontOptions,
-    // @required this.sizeMultiplier,
-    this.maxSize,
-    this.minRuleThickness,
   });
-} //TODO
+}
 
-class PartialFontOptions extends FontOptions {} //TODO
+class PartialFontOptions extends FontOptions {
+  final String fontFamily;
+  final FontWeight fontWeight;
+  final FontStyle fontShape;
+  const PartialFontOptions({
+    this.fontFamily,
+    this.fontWeight,
+    this.fontShape,
+  });
+}
 
 class FontOptions {
   // final String font;
