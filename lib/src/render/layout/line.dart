@@ -245,6 +245,17 @@ class RenderLine extends RenderBreakableBox
   bool get _hasOverflow => _overflow > precisionErrorTolerance;
 
   @override
+  void attach(PipelineOwner owner) {
+    super.attach(owner);
+    background.addListener(markNeedsPaint);
+  }
+  @override
+  void detach() {
+    background.removeListener(markNeedsPaint);
+    super.detach();
+  }
+
+  @override
   void setupParentData(RenderBox child) {
     if (child.parentData is! LineParentData) {
       child.parentData = LineParentData();
