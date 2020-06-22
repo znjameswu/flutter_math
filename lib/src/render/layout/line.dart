@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../utils/iterable_extensions.dart';
 import 'breakable/breakable_box.dart';
 import 'breakable/breakable_constraints.dart';
 import 'breakable/breakable_offset.dart';
@@ -249,6 +248,7 @@ class RenderLine extends RenderBreakableBox
     super.attach(owner);
     background.addListener(markNeedsPaint);
   }
+
   @override
   void detach() {
     background.removeListener(markNeedsPaint);
@@ -351,9 +351,6 @@ class RenderLine extends RenderBreakableBox
     //         : child.size.height);
     // return childParentData.offset.dy + childBaselineDistance + baselineOffset;
   }
-
-  double _getMainSize(RenderBox child) => child.size.width;
-  double _getCrossSize(RenderBox child) => child.size.height;
 
   @override
   void performLayout() {

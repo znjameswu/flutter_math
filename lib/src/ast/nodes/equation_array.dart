@@ -1,18 +1,12 @@
-import 'dart:math' as math;
-
-import 'package:flutter/cupertino.dart';
 import '../options.dart';
 import '../syntax_tree.dart';
 
-
-class EquationArrayRowNode extends EquationRowNode {
-  
-}
+class EquationArrayRowNode extends EquationRowNode {}
 
 class EquationArrayNode extends SlotableNode<EquationArrayRowNode> {
   @override
   List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults){
+      Options options, List<List<BuildResult>> childBuildResults) {
     // TODO: implement buildWidget
     throw UnimplementedError();
   }
@@ -44,10 +38,9 @@ class EquationArrayNode extends SlotableNode<EquationArrayRowNode> {
   }
 
   @override
-  ParentableNode<EquationArrayRowNode> updateChildren(List<EquationArrayRowNode> newChildren) {
+  ParentableNode<EquationArrayRowNode> updateChildren(
+      List<EquationArrayRowNode> newChildren) {
     // TODO: implement updateChildren
     throw UnimplementedError();
   }
-  
-  
 }

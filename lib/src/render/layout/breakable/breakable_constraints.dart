@@ -212,5 +212,6 @@ class BreakableBoxConstraints extends BoxConstraints {
 
   @override
   String toString() =>
-      'Breakable${super.toString()}(maxWidthFirstLine: $maxWidthFirstLine, maxWidthRestLines: $maxWidthRestLines)';
+      'Breakable${super.toString()}(maxWidthFirstLine: $maxWidthFirstLine, '
+      'maxWidthRestLines: $maxWidthRestLines)';
 }

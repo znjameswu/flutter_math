@@ -1,7 +1,6 @@
 library latex_base;
 
 
-import 'package:flutter_math/src/ast/nodes/sqrt.dart';
 import 'package:meta/meta.dart';
 
 import '../../../ast/nodes/accent.dart';
@@ -13,6 +12,7 @@ import '../../../ast/nodes/math_atom.dart';
 import '../../../ast/nodes/multiscripts.dart';
 import '../../../ast/nodes/nary_op.dart';
 import '../../../ast/nodes/space.dart';
+import '../../../ast/nodes/sqrt.dart';
 import '../../../ast/nodes/style.dart';
 import '../../../ast/nodes/text.dart';
 import '../../../ast/nodes/under_over.dart';

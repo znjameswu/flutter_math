@@ -13,11 +13,11 @@ class LeftRightNode extends SlotableNode {
     @required this.rightDelim,
     @required this.body,
     this.middle = const [],
-  }): assert(middle.length ==  body.length - 1);
+  }) : assert(middle.length == body.length - 1);
 
   @override
   List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults){
+      Options options, List<List<BuildResult>> childBuildResults) {
     // TODO: implement buildWidget
     throw UnimplementedError();
   }
@@ -49,10 +49,9 @@ class LeftRightNode extends SlotableNode {
   }
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(List<EquationRowNode> newChildren) {
+  ParentableNode<EquationRowNode> updateChildren(
+      List<EquationRowNode> newChildren) {
     // TODO: implement updateChildren
     throw UnimplementedError();
   }
-
-  
 }

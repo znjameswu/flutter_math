@@ -935,17 +935,15 @@ GreenNode makeOperatorNode({
   @required Mode mode,
   @required String text,
   @required Group family,
-}) {
-  return makeOrdNode(mode: mode, text: text);
-}
+}) =>
+    makeOrdNode(mode: mode, text: text);
 
 GreenNode makeNodeBasedOnGroup({
   @required Mode mode,
   @required String text,
   @required Group family,
-}) {
-  return makeOrdNode(mode: mode, text: text);
-}
+}) =>
+    makeOrdNode(mode: mode, text: text);
 
 T assertNodeType<T extends GreenNode>(GreenNode node) {
   if (node is T) {

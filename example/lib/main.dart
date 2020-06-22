@@ -11,28 +11,26 @@ void main() {
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.blue,
+          // This makes the visual density adapt to the platform that you run
+          // the app on. For desktop platforms, the controls will be smaller and
+          // closer together (more dense) than on mobile platforms.
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
+      );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -54,87 +52,94 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(
-          widget.title,
-          style: TextStyle(fontFamily: 'KaTeX_Math'),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.title,
+            style: TextStyle(fontFamily: 'KaTeX_Math'),
+          ),
         ),
-      ),
-      body: ChangeNotifierProvider(
-        create: (context) => TextEditingController(),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Consumer<TextEditingController>(
-              builder: (context, controller, _) => TextField(
-                controller: controller,
-              ),
-            ),
-            Divider(
-              thickness: 2,
-            ),
-            Expanded(
-              child: ZoomableWidget(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      width: 200,
-                      height: 200,
-                      color: Colors.red,
-                    ),
-                    Center(
-                      child: Consumer<TextEditingController>(
-                          builder: (context, controller, _) {
-                        try {
-                          final tree = SyntaxTree(
-                            greenRoot:
-                                TexParser(controller.text, Settings()).parse(),
-                          );
-                          return tree.buildWidget(Options.displayOptions);
-                        } on ParseError catch (e) {
-                          return Text(e.message);
-                        } catch (e) {
-                          return Text(e.toString());
-                        }
-                      }),
-                    ),
-                  ],
+        body: ChangeNotifierProvider(
+          create: (context) => TextEditingController(),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Consumer<TextEditingController>(
+                builder: (context, controller, _) => TextField(
+                  controller: controller,
                 ),
               ),
-            )
-          ],
+              Divider(
+                thickness: 2,
+              ),
+              Expanded(
+                child: ZoomableWidget(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: 200,
+                        height: 200,
+                        color: Colors.red,
+                      ),
+                      Center(
+                        child: Consumer<TextEditingController>(
+                            builder: (context, controller, _) {
+                          try {
+                            final tree = SyntaxTree(
+                              greenRoot: TexParser(controller.text, Settings())
+                                  .parse(),
+                            );
+                            return tree.buildWidget(Options.displayOptions);
+                          } on ParseError catch (e) {
+                            return Text(e.message);
+                          } on Object catch (e) {
+                            return Text(e.toString());
+                          }
+                        }),
+                      ),
+                      Text.rich(TextSpan(children: [
+                        TextSpan(
+                            text: 'a',
+                            style: TextStyle(
+                                fontFamily: 'KaTeX_Math', fontSize: 33.48)),
+                        TextSpan(
+                            text: 'a',
+                            style: TextStyle(
+                                fontFamily: 'KaTeX_Math', fontSize: 23.44)),
+                      ])),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
+                        children: <Widget>[
+                          Text.rich(
+                            TextSpan(
+                                text: 'a',
+                                style: TextStyle(
+                                    fontFamily: 'KaTeX_Math', fontSize: 33.48)),
+                          ),
+                          Text.rich(
+                            TextSpan(
+                                text: 'a',
+                                style: TextStyle(
+                                    fontFamily: 'KaTeX_Math', fontSize: 23.44)),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){},
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
+      );
 }

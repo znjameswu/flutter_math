@@ -35,8 +35,8 @@ const _genfracEntries = {
     handler: _fracHandler,
   ),
 
-  // Infix generalized fractions -- these are not rendered directly, but replaced
-  // immediately by one of the variants above.
+  // Infix generalized fractions -- these are not rendered directly, but 
+  // replaced immediately by one of the variants above.
   ['\\over', '\\choose', '\\atop', '\\brace', '\\brack']:
       FunctionSpec<GreenNode>(
     numArgs: 0,

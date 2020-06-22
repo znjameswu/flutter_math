@@ -1,9 +1,8 @@
-import 'package:flutter_math/src/font/metrics/font_metrics_data.dart';
-import 'package:flutter_math/src/parser/tex_parser/types.dart';
-import 'package:meta/meta.dart';
 
 import '../../ast/font_metrics.dart';
 import '../../ast/size.dart';
+import '../../parser/tex_parser/types.dart';
+import 'font_metrics_data.dart';
 import 'unicode_scripts.dart';
 
 /// This file contains metrics regarding fonts and individual symbols. The sigma

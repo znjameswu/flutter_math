@@ -49,16 +49,16 @@ class FontMetrics {
 
   // The \sqrt rule width is taken from the height of the surd character.
   // Since we use the same font at all sizes, this thickness doesn't scale.
-  final double
-      sqrtRuleThickness; // This value determines how large a pt is, for metrics which are defined
+  final double sqrtRuleThickness;
+  // This value determines how large a pt is, for metrics which are defined
   // in terms of pts.
   // This value is also used in katex.less; if you change it make sure the
   // values match.
-  final double
-      ptPerEm; // The space between adjacent `|` columns in an array definition. From
+  final double ptPerEm;
+  // The space between adjacent `|` columns in an array definition. From
   // `\showthe\doublerulesep` in LaTeX. Equals 2.0 / ptPerEm.
-  final double
-      doubleRuleSep; // The width of separator lines in {array} environments. From
+  final double doubleRuleSep;
+  // The width of separator lines in {array} environments. From
   // `\showthe\arrayrulewidth` in LaTeX. Equals 0.4 / ptPerEm.
   final double arrayRuleWidth; // Two values from LaTeX source2e:
   final double fboxsep; // 3 pt / ptPerEm
@@ -142,5 +142,3 @@ class FontMetrics {
     );
   }
 }
-
-

@@ -86,9 +86,8 @@ class CustomLayout<T> extends MultiChildRenderObjectWidget {
   final CustomLayoutDelegate<T> delegate;
 
   @override
-  RenderCustomLayout<T> createRenderObject(BuildContext context) {
-    return RenderCustomLayout<T>(delegate: delegate);
-  }
+  RenderCustomLayout<T> createRenderObject(BuildContext context) =>
+      RenderCustomLayout<T>(delegate: delegate);
 
   @override
   void updateRenderObject(
@@ -135,8 +134,8 @@ class RenderCustomLayout<T> extends RenderBox
       assert(() {
         if (childParentData.id == null) {
           throw FlutterError.fromParts(<DiagnosticsNode>[
-            ErrorSummary(
-                'Every child of a RenderCustomLayout must have an ID in its parent data.'),
+            ErrorSummary('Every child of a RenderCustomLayout must have an ID '
+                'in its parent data.'),
             child.describeForError('The following child has no ID'),
           ]);
         }
@@ -210,9 +209,8 @@ class RenderCustomLayout<T> extends RenderBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) {
-    return defaultHitTestChildren(result, position: position);
-  }
+  bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
+      defaultHitTestChildren(result, position: position);
 }
 
 class AxisConfiguration<T> {
@@ -227,7 +225,7 @@ class AxisConfiguration<T> {
 abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
   const IntrinsicLayoutDelegate();
 
-  /// This design rationale is to reduce the complexity for intrinsic calculation
+  /// This design is to reduce the complexity for intrinsic calculation
   AxisConfiguration<T> performIntrinsicLayout({
     Axis layoutDirection,
     double Function(RenderBox child) childSize,

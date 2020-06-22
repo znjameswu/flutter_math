@@ -4,8 +4,6 @@ import '../options.dart';
 import '../size.dart';
 import '../syntax_tree.dart';
 
-
-
 enum MatrixSeparatorStyle {
   none,
   solid,
@@ -53,7 +51,7 @@ class MatrixNode extends SlotableNode {
 
   @override
   List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults){
+      Options options, List<List<BuildResult>> childBuildResults) {
     throw UnimplementedError();
   }
 
@@ -84,10 +82,9 @@ class MatrixNode extends SlotableNode {
   }
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(List<EquationRowNode> newChildren) {
+  ParentableNode<EquationRowNode> updateChildren(
+      List<EquationRowNode> newChildren) {
     // TODO: implement updateChildren
     throw UnimplementedError();
   }
-
- 
 }

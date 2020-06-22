@@ -16,7 +16,7 @@ class NaryOperatorNode extends SlotableNode {
   final EquationRowNode upperLimit;
   final EquationRowNode naryand;
   final bool limits;
-  
+
   NaryOperatorNode({
     @required this.operator,
     @required this.lowerLimit,
@@ -27,7 +27,7 @@ class NaryOperatorNode extends SlotableNode {
 
   @override
   List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults){
+      Options options, List<List<BuildResult>> childBuildResults) {
     // TODO: implement buildWidget
     throw UnimplementedError();
   }
@@ -59,12 +59,9 @@ class NaryOperatorNode extends SlotableNode {
   }
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(List<EquationRowNode> newChildren) {
+  ParentableNode<EquationRowNode> updateChildren(
+      List<EquationRowNode> newChildren) {
     // TODO: implement updateChildren
     throw UnimplementedError();
   }
-
-
 }
-
-

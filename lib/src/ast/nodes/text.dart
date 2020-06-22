@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+
 import '../options.dart';
 import '../syntax_tree.dart';
 

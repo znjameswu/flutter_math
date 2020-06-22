@@ -7,7 +7,6 @@ import 'package:tuple/tuple.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/style.dart';
-import '../utils/nullable_plus.dart';
 import '../utils/render_box_offset.dart';
 import 'custom_layout.dart';
 
@@ -71,46 +70,44 @@ class Multiscripts extends StatelessWidget {
   final Widget presup;
 
   @override
-  Widget build(BuildContext context) {
-    return CustomLayout(
-      delegate: MultiscriptsLayoutDelegate(
-        alignPostscripts: alignPostscripts,
-        italic: italic,
-        isBaseCharacterBox: isBaseCharacterBox,
-        baseOptions: baseOptions,
-        subOptions: subOptions,
-        supOptions: supOptions,
-        presubOptions: presubOptions,
-        presupOptions: presupOptions,
-      ),
-      children: <Widget>[
-        CustomLayoutId(
-          id: _ScriptPos.base,
-          child: base,
+  Widget build(BuildContext context) => CustomLayout(
+        delegate: MultiscriptsLayoutDelegate(
+          alignPostscripts: alignPostscripts,
+          italic: italic,
+          isBaseCharacterBox: isBaseCharacterBox,
+          baseOptions: baseOptions,
+          subOptions: subOptions,
+          supOptions: supOptions,
+          presubOptions: presubOptions,
+          presupOptions: presupOptions,
         ),
-        if (sub != null)
+        children: <Widget>[
           CustomLayoutId(
-            id: _ScriptPos.sub,
-            child: sub,
+            id: _ScriptPos.base,
+            child: base,
           ),
-        if (sup != null)
-          CustomLayoutId(
-            id: _ScriptPos.sup,
-            child: sup,
-          ),
-        if (presub != null)
-          CustomLayoutId(
-            id: _ScriptPos.presub,
-            child: presub,
-          ),
-        if (presup != null)
-          CustomLayoutId(
-            id: _ScriptPos.presup,
-            child: presup,
-          ),
-      ],
-    );
-  }
+          if (sub != null)
+            CustomLayoutId(
+              id: _ScriptPos.sub,
+              child: sub,
+            ),
+          if (sup != null)
+            CustomLayoutId(
+              id: _ScriptPos.sup,
+              child: sup,
+            ),
+          if (presub != null)
+            CustomLayoutId(
+              id: _ScriptPos.presub,
+              child: presub,
+            ),
+          if (presup != null)
+            CustomLayoutId(
+              id: _ScriptPos.presup,
+              child: presup,
+            ),
+        ],
+      );
 }
 
 // Superscript and subscripts are handled in the TeXbook on page

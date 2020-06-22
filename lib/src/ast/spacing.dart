@@ -174,9 +174,8 @@ const Map<AtomType, Map<AtomType, Measurement>> tightSpacings = {
   },
 };
 
-Measurement getSpacingSize({AtomType left, AtomType right, MathStyle style}) {
-  return (style.index >= MathStyle.script.index
-          ? tightSpacings[left][right]
-          : spacings[left][right]) ??
-      Measurement.zero;
-}
+Measurement getSpacingSize({AtomType left, AtomType right, MathStyle style}) =>
+    (style.index >= MathStyle.script.index
+        ? tightSpacings[left][right]
+        : spacings[left][right]) ??
+    Measurement.zero;

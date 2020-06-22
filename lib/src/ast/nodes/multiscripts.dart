@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/ast/size.dart';
 
 import '../../render/layout/multiscripts.dart';
 import '../options.dart';
+import '../size.dart';
 import '../style.dart';
 import '../syntax_tree.dart';
 import 'math_atom.dart';

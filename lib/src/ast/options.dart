@@ -222,18 +222,14 @@ class FontOptions {
   }
 
   FontOptions copyWith({
-    // String font,
     String fontFamily,
     FontWeight fontWeight,
     FontStyle fontShape,
-  }) {
-    return FontOptions(
-      // font: font ?? this.font,
+  }) => FontOptions(
       fontFamily: fontFamily ?? this.fontFamily,
       fontWeight: fontWeight ?? this.fontWeight,
       fontShape: fontShape ?? this.fontShape,
     );
-  }
 
   FontOptions mergeWith(PartialFontOptions value) {
     if (value == null) return this;

@@ -92,23 +92,6 @@ class MathAtomNode extends LeafNode {
         italic: characterMetrics?.italic?.cssEm ?? Measurement.zero,
       )
     ];
-    // if (mode == Mode.math) {
-    //   final fontLookup = mathdefault(text);
-    //   return makeSymbol(text, fontLookup.fontName, mode, options);
-    // } else if (mode == Mode.text) {
-    //   final font = symbols[mode][text]?.font;
-    //   if (font == Font.ams) {
-    //     final fontName = fontOptionsTable['amsrm'].fontName;
-    //     return makeSymbol(text, fontName, mode, options);
-    //   } else if (font == Font.ams || font == null) {
-    //     final fontName = fontOptionsTable['textrm'].fontName;
-    //     return makeSymbol(text, fontName, mode, options);
-    //   } else {
-    //     // fonts added by plugins
-    //     // Currently we do not implement this
-    //     throw UnsupportedError('We do not support plugin fonts at this time');
-    //   }
-    // }
   }
 
   @override

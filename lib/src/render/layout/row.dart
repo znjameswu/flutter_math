@@ -280,22 +280,7 @@ class RenderRelativeHeightRow extends RenderBox
   double computeDistanceToActualBaseline(TextBaseline baseline) {
     assert(!debugNeedsLayout);
     return maxHeightAboveBaseline + baselineOffset;
-    // var child = firstChild;
-    // //ignore: avoid_returning_null
-    // if (child == null) return null;
-    // for (var i = 0; i < baselineReferenceWidgetNum; i++) {
-    //   child = (child.parentData as CrossSizeParentData).nextSibling;
-    // }
-    // final childParentData = child.parentData as CrossSizeParentData;
-    // final childBaselineDistance = child.getDistanceToActualBaseline(baseline) ??
-    //     (baseline == TextBaseline.alphabetic
-    //         ? child.size.height / 2
-    //         : child.size.height);
-    // return childParentData.offset.dy + childBaselineDistance + baselineOffset;
   }
-
-  double _getMainSize(RenderBox child) => child.size.width;
-  double _getCrossSize(RenderBox child) => child.size.height;
 
   @override
   void performLayout() {
@@ -319,7 +304,7 @@ class RenderRelativeHeightRow extends RenderBox
         maxDepthBelowBaseline =
             math.max(maxDepthBelowBaseline, child.size.height - distance);
       }
-      allocatedSize += _getMainSize(child);
+      allocatedSize += child.size.width;
       assert(child.parentData == childParentData);
       child = childParentData.nextSibling;
     }
@@ -370,7 +355,7 @@ class RenderRelativeHeightRow extends RenderBox
       // }
       childParentData.offset = Offset(childMainPosition, childCrossPosition);
 
-      childMainPosition += _getMainSize(child);
+      childMainPosition += child.size.width;
       child = childParentData.nextSibling;
     }
   }

@@ -53,10 +53,8 @@ class _FlutterMathState extends State<FlutterMath> {
   TextSelection get selection => widget.controller.selection;
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+  Widget build(BuildContext context) => ChangeNotifierProvider(
       create: (_) => FlutterMathScope(),
     );
-  }
 }
 

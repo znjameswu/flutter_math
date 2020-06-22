@@ -1,7 +1,5 @@
 //ignore_for_file: constant_identifier_names
 
-import 'dart:math' as math;
-
 import 'options.dart';
 import 'style.dart';
 

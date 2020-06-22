@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import '../options.dart';
 import '../syntax_tree.dart';
 
-
 class AccentNode extends SlotableNode {
   final EquationRowNode base;
   final String label;
@@ -18,7 +17,7 @@ class AccentNode extends SlotableNode {
 
   @override
   List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults){
+      Options options, List<List<BuildResult>> childBuildResults) {
     // TODO: implement buildWidget
     throw UnimplementedError();
   }
@@ -48,10 +47,9 @@ class AccentNode extends SlotableNode {
   }
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(List<EquationRowNode> newChildren) {
+  ParentableNode<EquationRowNode> updateChildren(
+      List<EquationRowNode> newChildren) {
     // TODO: implement updateChildren
     throw UnimplementedError();
   }
-
-  
 }

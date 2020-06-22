@@ -80,7 +80,7 @@ class Settings {
       case Strict.function:
         try {
           strict = strictFun(errorCode, errorMsg, token);
-        } catch (e) {
+        } on Object {
           strict = Strict.error;
         }
         continue fallThrough;
@@ -94,5 +94,6 @@ class Settings {
             '$errorMsg [$errorCode]');
         return false;
     }
+    return false;
   }
 }

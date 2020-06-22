@@ -30,7 +30,6 @@ class Token {
   bool treatAsRelax = false;
   Token(this.text, [this.loc]);
 
-  static Token range(Token startToken, Token endToken, String text) {
-    return Token(text, SourceLocation.range(startToken, endToken));
-  }
+  static Token range(Token startToken, Token endToken, String text) =>
+      Token(text, SourceLocation.range(startToken, endToken));
 }

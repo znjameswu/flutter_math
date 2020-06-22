@@ -8,9 +8,8 @@ class RemoveBaseline extends SingleChildRenderObjectWidget {
   }) : super(key: key, child: child);
 
   @override
-  RenderRemoveBaseline createRenderObject(BuildContext context) {
-    return RenderRemoveBaseline();
-  }
+  RenderRemoveBaseline createRenderObject(BuildContext context) =>
+      RenderRemoveBaseline();
 
   // @override
   // void updateRenderObject(

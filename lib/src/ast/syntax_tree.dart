@@ -3,12 +3,11 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
-import '../utils/iterable_extensions.dart';
 import '../render/layout/eq_row.dart';
-import '../widgets/scope.dart';
+import '../utils/iterable_extensions.dart';
 import 'nodes/math_atom.dart';
+import 'nodes/sqrt.dart';
 import 'options.dart';
 import 'size.dart';
 import 'spacing.dart';
@@ -47,9 +46,8 @@ class SyntaxTree {
             .toList(growable: false)));
   }
 
-  Widget buildWidget([Options options = Options.displayOptions]) {
-    return root.buildWidget(options)[0].widget;
-  }
+  Widget buildWidget([Options options = Options.displayOptions]) =>
+      root.buildWidget(options)[0].widget;
 }
 
 /// Node of Roslyn's Red Tree. Immutable facade for any math nodes.
@@ -103,7 +101,7 @@ class SyntaxNode {
   /// This method tries to reduce widget rebuilds. Rebuild bypass is determined
   /// by the following process:
   /// - If oldOptions == newOptions, bypass
-  /// - If [shouldRebuildWidget], force rebuild
+  /// - If [GreenNode.shouldRebuildWidget], force rebuild
   /// - Call [buildWidget] on [children]. If the results are identical to the
   /// results returned by [buildWidget] called last time, then bypass.
   List<BuildResult> buildWidget(Options options) {
@@ -149,7 +147,7 @@ class SyntaxNode {
 /// The [NodeRange] is a closed interval where the cursor whose position falls
 /// inside this interval will be captured by the corresponding node. If the node
 /// only captures 1 cursor position, then [start] == [end]. If the node does not
-/// capture cursor at all (e.g. [OrdNode]), then [start] > [end]
+/// capture cursor at all (e.g. [MathAtomNode]), then [start] > [end]
 ///
 /// The position of a cursor is defined as number of "Right" keystrokes needed
 /// to move the cursor from the starting position to the current position.
@@ -199,7 +197,7 @@ abstract class GreenNode {
   /// [children] stores structural information of the Red-Green Tree.
   /// Used for green tree updates. The order of children should strictly
   /// adheres to the cursor-visiting order in editing mode, in order to get a
-  /// correct cursor range in the editing mode. E.g., for [RootNode], when
+  /// correct cursor range in the editing mode. E.g., for [SqrtNode], when
   /// moving cursor from left to right, the cursor first enters index, then
   /// base, so it should return [index, base].
   ///
@@ -292,43 +290,6 @@ abstract class GreenNode {
         'type': runtimeType.toString(),
         'children': children.map<Object>((child) => child?.toJson()).toList(),
       };
-
-  /// This is where the actual widget building process happens.
-  ///
-  /// This method tries to reduce widget rebuilds. Rebuild bypass is determined
-  /// by the following process:
-  /// - If oldOptions == newOptions, bypass
-  /// - If [shouldRebuildWidget], force rebuild
-  /// - Call [buildWidget] on [children]. If the results are identical to the
-  /// results returned by [buildWidget] called last time, then bypass.
-  // @mustCallSuper
-  // Widget _buildWidget(Options options, int pos) {
-  //   if (_oldOptions != null && options == _oldOptions) return _oldWidget;
-  //   final childOptions = computeChildOptions(options);
-
-  //   final newChildWidgets = _buildChildWidgets(childOptions, pos);
-  //   if (_oldOptions != null &&
-  //       !shouldRebuildWidget(_oldOptions, options) &&
-  //       listEquals(newChildWidgets, _oldChildWidgets)) {
-  //     return _oldWidget;
-  //   }
-  //   _oldOptions = options;
-  //   _oldChildWidgets = newChildWidgets;
-  //   return _oldWidget = buildWidget(options, newChildWidgets, childOptions);
-  // }
-
-  // List<Widget> _buildChildWidgets(List<Options> childOptions, int pos) {
-  //   final childAbsPos = childPositions
-  //       .map((childPos) => childPos + pos)
-  //       .toList(growable: false);
-  //   final children = this.children;
-  //   assert(children.length == childOptions.length);
-  //   final result = List<Widget>(children.length);
-  //   for (var i = 0; i < children.length; i++) {
-  //     result[i] = children[i]?._buildWidget(childOptions[i], childAbsPos[i]);
-  //   }
-  //   return result;
-  // }
 }
 
 abstract class ParentableNode<T extends GreenNode> extends GreenNode {
@@ -336,16 +297,16 @@ abstract class ParentableNode<T extends GreenNode> extends GreenNode {
   List<T> get children;
 
   int _width;
-  int get width => _width = computeWidth();
+  int get width => _width ??= computeWidth();
 
   int computeWidth();
 
-  /// We do not cache children here, because [EqRowNode] directly has a
+  /// We do not cache children here, because [EquationRowNode] directly has a
   /// [children] property.
 
   ///
   List<int> _childPositions;
-  List<int> get childPositions => _childPositions = computeChildPositions();
+  List<int> get childPositions => _childPositions ??= computeChildPositions();
 
   List<int> computeChildPositions();
 
@@ -384,29 +345,6 @@ abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
     }
     return result;
   }
-
-  // @override
-  // Widget _buildWidget(Options options, int pos) {
-  //   range.value = getRange(pos);
-  //   return super._buildWidget(options, pos);
-  // }
-  // @override
-  // Widget buildWidget(
-  //     Options options, List<Widget> childWidgets, List<Options> childOptions) {
-  //   final actualWidget = buildActualWidget(childWidgets);
-  //   return Consumer<FlutterMathScope>(
-  //       child: actualWidget,
-  //       builder: (context, scope, child) => Container(
-  //             color: scope.showCursor.value &&
-  //                     scope.controller.selection.isCollapsed &&
-  //                     this.range.contains(scope.controller.selection.baseOffset)
-  //                 ? Colors.grey
-  //                 : null,
-  //             child: child,
-  //           ));
-  // }
-
-  // Widget buildActualWidget(List<Widget> childWidgets);
 }
 
 /// [TransparentNode] refers to those node who have zero rendering content
@@ -488,20 +426,6 @@ class EquationRowNode extends ParentableNode<GreenNode>
   @override
   List<BuildResult> buildWidget(
       Options options, List<List<BuildResult>> childBuildResults) {
-    // // I would be very happy if I can use Iterable.expand(). But expand() does
-    // // not come with an indexed version.
-    // final actualChildWidgets = <Widget>[];
-    // final actualChildOptions = <Options>[];
-    // for (var i = 0; i < childWidgets.length; i++) {
-    //   final childWidget = childWidgets[i];
-    //   if (childWidget is BuildResultWrapper) {
-    //     actualChildWidgets.addAll(childWidget.widgets);
-    //     actualChildOptions.addAll(childWidget.options);
-    //   } else {
-    //     actualChildWidgets.add(childWidget);
-    //     actualChildOptions.add(childOptions[i]);
-    //   }
-    // }
     final buildResults = childBuildResults.expand((element) => element);
     final flattenedChildOptions = buildResults.map((e) => e.options).toList();
     // assert(flattenedChildList.length == actualChildWidgets.length);
@@ -517,11 +441,6 @@ class EquationRowNode extends ParentableNode<GreenNode>
           flattenedChildOptions[i + 1]); // Behavior in accordance with KaTeX
     }
 
-    // final actualChildWidgets = childWidgets
-    //     .expand((childWidget) => childWidget is BuildResultWrapper
-    //         ? childWidget.widgets
-    //         : [childWidget])
-    //     .toList(growable: false);
     return [
       BuildResult(
         options: options,
@@ -532,7 +451,6 @@ class EquationRowNode extends ParentableNode<GreenNode>
         italic: buildResults.lastOrNull?.italic ?? Measurement.zero,
       )
     ];
-    // return EquationRow(children: actualChildWidgets, spacings: spacings);
   }
 
   @override
@@ -611,27 +529,6 @@ abstract class LeafNode extends GreenNode {
   @override
   List<int> get childPositions => const [];
 }
-
-// abstract class AccentNode extends SlotableNode {
-//   bool get isStretchy;
-//   bool get isShifty;
-// }
-
-// abstract class AccentUnderNode extends SlotableNode {
-//   bool get isStretchy;
-//   bool get isShifty;
-// }
-
-// class BuildResultWrapper extends Widget {
-//   final List<Widget> widgets;
-
-//   final List<Options> options;
-
-//   const BuildResultWrapper({this.widgets, this.options});
-
-//   @override
-//   Element createElement() => throw UnsupportedError('');
-// }
 
 enum AtomType {
   ord,

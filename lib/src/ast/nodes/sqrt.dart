@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/render/svg/svg_draw_root.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tuple/tuple.dart';
 
@@ -11,6 +10,7 @@ import '../../font/metrics/font_metrics.dart';
 import '../../parser/tex_parser/types.dart';
 import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
+import '../../render/svg/svg_draw_root.dart';
 import '../../render/svg/svg_geomertry.dart';
 import '../../render/svg/svg_string_from_path.dart';
 import '../../render/utils/render_box_offset.dart';
@@ -124,8 +124,8 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
     double Function(RenderBox child, double extent) childSize,
     Map<_SqrtPos, RenderBox> childrenTable,
   }) {
-    final base = childrenTable[_SqrtPos.base];
-    final index = childrenTable[_SqrtPos.ind];
+    // final base = childrenTable[_SqrtPos.base];
+    // final index = childrenTable[_SqrtPos.ind];
 
     throw UnimplementedError();
   }
@@ -141,7 +141,7 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
     });
 
     final baseHeight = base.layoutHeight;
-    final baseDepth = base.layoutDepth;
+    // final baseDepth = base.layoutDepth;
     final baseWidth = base.size.width;
     final indexHeight = index?.layoutHeight ?? 0.0;
     final indexWidth = index?.size?.width ?? 0.0;
@@ -273,8 +273,8 @@ _SqrtSvgRes sqrtImage(
   );
 
   final extraViniculum = 0.0; //math.max(0.0, options)
-  final ruleWidth =
-      options.fontMetrics.sqrtRuleThickness.cssEm.toLpUnder(options);
+  // final ruleWidth =
+  //     options.fontMetrics.sqrtRuleThickness.cssEm.toLpUnder(options);
   // TODO: support Settings.minRuleThickness.
 
   // These are the known height + depth for \u221A

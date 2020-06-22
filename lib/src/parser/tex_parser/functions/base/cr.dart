@@ -24,7 +24,7 @@
 part of latex_base;
 
 const _crEntries = {
-  ["\\cr", "\\newline"]: FunctionSpec(
+  ['\\cr', '\\newline']: FunctionSpec(
     numArgs: 0,
     numOptionalArgs: 1,
     allowedInText: true,
@@ -46,7 +46,7 @@ class CrNode extends TemporaryNode {
 GreenNode _crHandler(TexParser parser, FunctionContext context) {
   final size = parser.parseArgSize(optional: true);
   final newRow = context.funcName == '\\cr';
-  bool newLine = false;
+  var newLine = false;
   if (!newRow) {
     if (parser.settings.displayMode &&
         parser.settings.useStrictBehavior(

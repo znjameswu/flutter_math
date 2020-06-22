@@ -3,10 +3,10 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_math/src/render/layout/breakable/breakable_constraints.dart';
 
-import 'breakable_offset.dart';
 import '../../../utils/iterable_extensions.dart';
+import 'breakable_constraints.dart';
+import 'breakable_offset.dart';
 
 class BreakableSize extends Size {
   final List<Size> lineSizes;
