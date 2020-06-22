@@ -107,6 +107,7 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
   var height = 0.0;
   var a = 0.0;
   var width = 0.0;
+  var barLength = 0.0;
 
   @override
   double computeDistanceToActualBaseline(
@@ -129,7 +130,10 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
     final denomSize = childSize(denom);
 
     if (layoutDirection == Axis.horizontal) {
-      width = math.max(numerSize, denomSize);
+      barLength = math.max(numerSize, denomSize);
+      // KaTeX/src/katex.less
+      final nullDelimiterWidth = 0.12.cssEm.toLpUnder(options);
+      width = barLength + 2 * nullDelimiterWidth;
       return AxisConfiguration(
         size: width,
         offsetTable: {
@@ -174,10 +178,10 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
             options.style.index < MathStyle.text.index ? 3 * theta : theta;
         a = metrics.axisHeight.cssEm.toLpUnder(options);
         if (u - dx - a - 0.5 * theta < phi) {
-          u += phi + dx + a + 0.5 * theta;
+          u = phi + dx + a + 0.5 * theta;
         }
         if (a - 0.5 * theta - hz + v < phi) {
-          v += phi + hz - a + 0.5 * theta;
+          v = phi + hz - a + 0.5 * theta;
         }
       }
       height = hx + u;
@@ -198,8 +202,8 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
       ..color = Colors.black
       ..strokeWidth = theta;
     context.canvas.drawLine(
-      Offset(0, height - a) + offset,
-      Offset(width, height - a) + offset,
+      Offset(0.5 * (width - barLength), height - a) + offset,
+      Offset(0.5 * (width + barLength), height - a) + offset,
       paint,
     );
   }
