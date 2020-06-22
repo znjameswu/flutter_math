@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../font/metrics/font_metrics.dart';
 import '../../parser/tex_parser/types.dart';
 import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
+import '../../render/svg/delimiter.dart';
 import '../../render/svg/svg_draw_root.dart';
 import '../../render/svg/svg_geomertry.dart';
 import '../../render/svg/svg_string_from_path.dart';
@@ -224,32 +224,17 @@ class _SqrtSvgRes {
   });
 }
 
-const stackLargeDelimieterSequence = [
+const sqrtDelimieterSequence = [
   // Tuple2('Main-Regular', MathStyle.scriptscript),
   // Tuple2('Main-Regular', MathStyle.script),
-  Tuple2('Main-Regular', MathStyle.text),
-  Tuple2('Size1-Regular', MathStyle.text),
-  Tuple2('Size2-Regular', MathStyle.text),
-  Tuple2('Size3-Regular', MathStyle.text),
-  Tuple2('Size4-Regular', MathStyle.text),
+  DelimiterConf('Main-Regular', MathStyle.text),
+  DelimiterConf('Size1-Regular', MathStyle.text),
+  DelimiterConf('Size2-Regular', MathStyle.text),
+  DelimiterConf('Size3-Regular', MathStyle.text),
+  DelimiterConf('Size4-Regular', MathStyle.text),
 ];
 
-double getHeightForDelim({
-  String delim,
-  String fontName,
-  MathStyle style,
-  Options options,
-}) {
-  final metrics = getCharacterMetrics(
-      character: delim, fontName: fontName, mode: Mode.math);
-  if (metrics == null) {
-    throw StateError('Illegal delimiter char $delim'
-        '(${unicodeLiteral(delim)}) appeared in AST');
-  }
-  final fullHeight = metrics.height + metrics.depth;
-  final newOptions = options.havingStyle(style);
-  return fullHeight.cssEm.toLpUnder(newOptions);
-}
+
 
 const vbPad = 80;
 const emPad = vbPad / 1000;
@@ -261,12 +246,12 @@ const emPad = vbPad / 1000;
 _SqrtSvgRes sqrtImage(
     double minDelimiterHeight, double baseWidth, Options options) {
   // final newOptions = options.havingBaseSize();
-  final delimConf = stackLargeDelimieterSequence.firstWhere(
+  final delimConf = sqrtDelimieterSequence.firstWhere(
     (element) =>
         getHeightForDelim(
           delim: '\u221A', // √
-          fontName: element.item1,
-          style: element.item2,
+          fontName: element.fontName,
+          style: element.style,
           options: options,
         ) >
         minDelimiterHeight,
@@ -285,13 +270,13 @@ _SqrtSvgRes sqrtImage(
       'Size2-Regular': 1.8,
       'Size3-Regular': 2.4,
       'Size4-Regular': 3.0,
-    }[delimConf.item1];
-    final delimOptions = options.havingStyle(delimConf.item2);
+    }[delimConf.fontName];
+    final delimOptions = options.havingStyle(delimConf.style);
     final viewPortHeight =
         (fontHeight + extraViniculum + emPad).cssEm.toLpUnder(delimOptions);
     final texHeight =
         (fontHeight + extraViniculum).cssEm.toLpUnder(delimOptions);
-    if (delimConf?.item1 == 'Main-Regular') {
+    if (delimConf?.fontName == 'Main-Regular') {
       // We will be vertically stretching the sqrtMain path (by viewPort vs
       // viewBox) to mimic the height of \u221A under Main-Regular font and
       // corresponding Mathstyle.
@@ -329,7 +314,7 @@ _SqrtSvgRes sqrtImage(
       );
       final viewBoxHeight = (1000 + vbPad) * fontHeight;
       final viewBoxWidth = viewPortWidth.lp.toCssEmUnder(delimOptions) * 1000;
-      final svgPath = sqrtPath('sqrt${delimConf.item1.substring(0, 5)}',
+      final svgPath = sqrtPath('sqrt${delimConf.fontName.substring(0, 5)}',
           extraViniculum, viewBoxHeight);
       final svgString = svgStringFromPath(
         svgPath,
@@ -358,7 +343,7 @@ _SqrtSvgRes sqrtImage(
     final advanceWidth = 1.056.cssEm.toLpUnder(options);
     final viewPortWidth = advanceWidth + baseWidth;
     final viewBoxWidth = viewPortWidth.lp.toCssEmUnder(options) * 1000;
-    final svgPath = sqrtPath('sqrt${delimConf.item1.substring(0, 5)}',
+    final svgPath = sqrtPath('sqrt${delimConf.fontName.substring(0, 5)}',
         extraViniculum, viewBoxHeight);
     final svgString = svgStringFromPath(
       svgPath,

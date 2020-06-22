@@ -440,5 +440,3 @@ M500 241 v40 H399408 v-40z M500 435 v40 H400000 v-40z''',
 };
 
 
-
-final svgStrings = svgPaths.map((key, path) => MapEntry(key, '<svg viewBox="0 0 400000"><path d="$path"/></svg>'));

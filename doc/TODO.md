@@ -15,3 +15,5 @@
 * Kern by a inline span, and space by a ordinary atom
 
 * LeftRight should remove 0.12 em nulldelimiter introduced by FracNode.
+
+* | and \u2223 needs extra moderation for the symbol (also in stacked delimiter) (\u2225Parallel & \u2016Vert)

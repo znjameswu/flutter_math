@@ -10,16 +10,12 @@ class RemoveBaseline extends SingleChildRenderObjectWidget {
   @override
   RenderRemoveBaseline createRenderObject(BuildContext context) =>
       RenderRemoveBaseline();
-
-  // @override
-  // void updateRenderObject(
-  //     BuildContext context, RenderRemoveBaseline renderObject) {}
 }
 
 class RenderRemoveBaseline extends RenderProxyBox {
   RenderRemoveBaseline({RenderBox child}) : super(child);
 
   @override
-  //ignore: avoid_returning_null
+  // ignore: avoid_returning_null
   double computeDistanceToActualBaseline(TextBaseline baseline) => null;
 }

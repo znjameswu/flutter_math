@@ -70,25 +70,15 @@ class MathAtomNode extends LeafNode {
       }
     }
 
-    final defaultFont = symbolRenderConfigs[text].math.defaultFont;
+    final renderConfig = symbolRenderConfigs[text].math;
+    final replaceChar = renderConfig.replaceChar ?? text;
+    final defaultFont = renderConfig.defaultFont;
     final characterMetrics =
-        fontMetricsData[defaultFont.fontName][text.codeUnitAt(0)];
+        fontMetricsData[defaultFont.fontName][replaceChar.codeUnitAt(0)];
     return [
       BuildResult(
         options: options,
-        widget: ResetDimension(
-          height: characterMetrics?.height?.cssEm?.toLpUnder(options),
-          depth: characterMetrics?.depth?.cssEm?.toLpUnder(options),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontFamily: 'KaTeX_${defaultFont.fontFamily}',
-              fontWeight: defaultFont.fontWeight,
-              fontStyle: defaultFont.fontShape,
-              fontSize: 1.21.cssEm.toLpUnder(options),
-            ),
-          ),
-        ),
+        widget: makeChar(replaceChar, defaultFont, options),
         italic: characterMetrics?.italic?.cssEm ?? Measurement.zero,
       )
     ];
@@ -112,6 +102,24 @@ class MathAtomNode extends LeafNode {
 
 BuildResult makeSymbol(
     String text, String fontName, Mode mode, Options options) {}
+
+Widget makeChar(String character, FontOptions font, Options options) {
+  final characterMetrics =
+      fontMetricsData[font.fontName][character.codeUnitAt(0)];
+  ResetDimension(
+    height: characterMetrics?.height?.cssEm?.toLpUnder(options),
+    depth: characterMetrics?.depth?.cssEm?.toLpUnder(options),
+    child: Text(
+      character,
+      style: TextStyle(
+        fontFamily: 'KaTeX_${font.fontFamily}',
+        fontWeight: font.fontWeight,
+        fontStyle: font.fontShape,
+        fontSize: 1.21.cssEm.toLpUnder(options),
+      ),
+    ),
+  );
+}
 
 CharacterMetrics lookupSymbol(String value, String fontName, Mode mode) {
   // We will figure out a way to bypass KaTeX's symbol
