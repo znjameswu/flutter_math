@@ -8,6 +8,8 @@ extension NumIterableExtension<T extends num> on Iterable<T> {
 extension NullableListGetterExt<T> on Iterable<T> {
   T get firstOrNull => this.isEmpty ? null : this.first;
   T get lastOrNull => this.isEmpty ? null : this.last;
+  T firstWhereOrNull(bool Function(T element) f) =>
+      this.firstWhere(f, orElse: () => null);
 }
 
 extension IterableExtension<T> on Iterable<T> {
@@ -22,7 +24,7 @@ extension IterableExtension<T> on Iterable<T> {
 
 extension ListExtension<T> on List<T> {
   void sortBy<T2 extends Comparable<T2>>(T2 Function(T element) f) {
-    this.sort((a , b) => f(a).compareTo(f(b)));
+    this.sort((a, b) => f(a).compareTo(f(b)));
   }
 }
 // extension MapExtension<K, V> on Map<K, V> {

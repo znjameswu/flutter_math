@@ -106,7 +106,7 @@ BuildResult makeSymbol(
 Widget makeChar(String character, FontOptions font, Options options) {
   final characterMetrics =
       fontMetricsData[font.fontName][character.codeUnitAt(0)];
-  ResetDimension(
+  return ResetDimension(
     height: characterMetrics?.height?.cssEm?.toLpUnder(options),
     depth: characterMetrics?.depth?.cssEm?.toLpUnder(options),
     child: Text(

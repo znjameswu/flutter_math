@@ -200,12 +200,18 @@ class LeftRightLayoutDelegate extends CustomLayoutDelegate<_LeftRightId> {
             left: AtomType.ord, right: AtomType.close, style: options.style)
         .toLpUnder(options);
 
-    final bodyHeights = bodyChildren.map((e) => e.layoutHeight);
+    final childHeights = childrenTable.entries
+        .map((entry) => entry.key.isDelimiter
+            ? entry.value.size.height / 2 + a
+            : entry.value.layoutHeight)
+        .toList(growable: false);
 
-    final delimiterHeights =
-        delimiterChildren.map((e) => e.size.height / 2 + a);
+    // final bodyHeights = bodyChildren.map((e) => e.layoutHeight);
 
-    height = [...bodyHeights, ...delimiterHeights].max();
+    // final delimiterHeights =
+    //     delimiterChildren.map((e) => e.size.height / 2 + a);
+
+    height = childHeights.max();
 
     final bodyDepth = bodyChildren.map((e) => e.layoutDepth);
 
@@ -222,7 +228,7 @@ class LeftRightLayoutDelegate extends CustomLayoutDelegate<_LeftRightId> {
       } else if (index != 0 && entry.key.isDelimiter) {
         currPos += spacingMidLeft;
       }
-      child.offset = Offset(currPos, height - child.layoutHeight);
+      child.offset = Offset(currPos, height - childHeights[index]);
       currPos += child.size.width;
       if (index == 0) {
         currPos += spacingLeft;
@@ -271,13 +277,6 @@ const stackNeverDelimiters = {
   '/',
 };
 
-class _DelimSvgRes {
-  final Future<DrawableRoot> img;
-  const _DelimSvgRes({
-    @required this.img,
-  });
-}
-
 Widget buildCustomSizedDelimWidget(
     String delim, double minDelimiterHeight, Options options) {
   List<DelimiterConf> sequence;
@@ -289,10 +288,10 @@ Widget buildCustomSizedDelimWidget(
     sequence = stackAlwaysDelimiterSequence;
   }
 
-  var delimConf = sequence.firstWhere((element) =>
+  var delimConf = sequence.firstWhereOrNull((element) =>
       getHeightForDelim(
         delim: delim,
-        fontName: element.fontName,
+        fontName: element.font.fontName,
         style: element.style,
         options: options,
       ) >
@@ -302,7 +301,7 @@ Widget buildCustomSizedDelimWidget(
   }
 
   if (delimConf != null) {
-    return makeSymbol(delim, delimConf.fontName, Mode.math, options).widget;
+    return makeChar(delim, delimConf.font, options);
   } else {
     return makeStakedDelim(delim, minDelimiterHeight, Mode.math, options);
   }
@@ -354,7 +353,8 @@ Widget makeStakedDelim(
         makeChar(conf.top, conf.font, options),
         for (var i = 0; i < repeatCount; i++)
           makeChar(conf.repeat, conf.font, options),
-        makeChar(conf.middle, conf.font, options),
+        if (conf.middle != null)
+          makeChar(conf.middle, conf.font, options),
         for (var i = 0; i < repeatCount; i++)
           makeChar(conf.repeat, conf.font, options),
         makeChar(conf.bottom, conf.font, options),

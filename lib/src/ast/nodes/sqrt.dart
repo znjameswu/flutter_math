@@ -225,13 +225,13 @@ class _SqrtSvgRes {
 }
 
 const sqrtDelimieterSequence = [
-  // Tuple2('Main-Regular', MathStyle.scriptscript),
-  // Tuple2('Main-Regular', MathStyle.script),
-  DelimiterConf('Main-Regular', MathStyle.text),
-  DelimiterConf('Size1-Regular', MathStyle.text),
-  DelimiterConf('Size2-Regular', MathStyle.text),
-  DelimiterConf('Size3-Regular', MathStyle.text),
-  DelimiterConf('Size4-Regular', MathStyle.text),
+  // DelimiterConf(mainRegular, MathStyle.scriptscript),
+  // DelimiterConf(mainRegular, MathStyle.script),
+  DelimiterConf(mainRegular, MathStyle.text),
+  DelimiterConf(size1Regular, MathStyle.text),
+  DelimiterConf(size2Regular, MathStyle.text),
+  DelimiterConf(size3Regular, MathStyle.text),
+  DelimiterConf(size4Regular, MathStyle.text),
 ];
 
 
@@ -246,11 +246,11 @@ const emPad = vbPad / 1000;
 _SqrtSvgRes sqrtImage(
     double minDelimiterHeight, double baseWidth, Options options) {
   // final newOptions = options.havingBaseSize();
-  final delimConf = sqrtDelimieterSequence.firstWhere(
+  final delimConf = sqrtDelimieterSequence.firstWhereOrNull(
     (element) =>
         getHeightForDelim(
           delim: '\u221A', // √
-          fontName: element.fontName,
+          fontName: element.font.fontName,
           style: element.style,
           options: options,
         ) >
@@ -270,13 +270,13 @@ _SqrtSvgRes sqrtImage(
       'Size2-Regular': 1.8,
       'Size3-Regular': 2.4,
       'Size4-Regular': 3.0,
-    }[delimConf.fontName];
+    }[delimConf.font.fontName];
     final delimOptions = options.havingStyle(delimConf.style);
     final viewPortHeight =
         (fontHeight + extraViniculum + emPad).cssEm.toLpUnder(delimOptions);
     final texHeight =
         (fontHeight + extraViniculum).cssEm.toLpUnder(delimOptions);
-    if (delimConf?.fontName == 'Main-Regular') {
+    if (delimConf?.font?.fontName == 'Main-Regular') {
       // We will be vertically stretching the sqrtMain path (by viewPort vs
       // viewBox) to mimic the height of \u221A under Main-Regular font and
       // corresponding Mathstyle.
@@ -314,7 +314,7 @@ _SqrtSvgRes sqrtImage(
       );
       final viewBoxHeight = (1000 + vbPad) * fontHeight;
       final viewBoxWidth = viewPortWidth.lp.toCssEmUnder(delimOptions) * 1000;
-      final svgPath = sqrtPath('sqrt${delimConf.fontName.substring(0, 5)}',
+      final svgPath = sqrtPath('sqrt${delimConf.font.fontName.substring(0, 5)}',
           extraViniculum, viewBoxHeight);
       final svgString = svgStringFromPath(
         svgPath,
@@ -343,7 +343,7 @@ _SqrtSvgRes sqrtImage(
     final advanceWidth = 1.056.cssEm.toLpUnder(options);
     final viewPortWidth = advanceWidth + baseWidth;
     final viewBoxWidth = viewPortWidth.lp.toCssEmUnder(options) * 1000;
-    final svgPath = sqrtPath('sqrt${delimConf.fontName.substring(0, 5)}',
+    final svgPath = sqrtPath('sqrt${delimConf.font.fontName.substring(0, 5)}',
         extraViniculum, viewBoxHeight);
     final svgString = svgStringFromPath(
       svgPath,

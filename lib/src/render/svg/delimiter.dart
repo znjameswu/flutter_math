@@ -1,8 +1,8 @@
-import 'package:flutter_math/src/ast/symbols.dart';
 
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/style.dart';
+import '../../ast/symbols.dart';
 import '../../font/metrics/font_metrics.dart';
 import '../../parser/tex_parser/types.dart';
 import '../../utils/unicode_literal.dart';
@@ -10,36 +10,42 @@ import '../../utils/unicode_literal.dart';
 
 
 class DelimiterConf{
-  final String fontName;
+  final FontOptions font;
   final MathStyle style;
 
-  const DelimiterConf(this.fontName, this.style);
+  const DelimiterConf(this.font, this.style);
 }
 
+const mainRegular = FontOptions(fontFamily: 'Main');
+const size1Regular = FontOptions(fontFamily: 'Size1');
+const size2Regular = FontOptions(fontFamily: 'Size2');
+const size3Regular = FontOptions(fontFamily: 'Size3');
+const size4Regular = FontOptions(fontFamily: 'Size4');
+
 const stackNeverDelimiterSequence = [
-  DelimiterConf('Main-Regular', MathStyle.scriptscript),
-  DelimiterConf('Main-Regular', MathStyle.script),
-  DelimiterConf('Main-Regular', MathStyle.text),
-  DelimiterConf('Size1-Regular', MathStyle.text),
-  DelimiterConf('Size2-Regular', MathStyle.text),
-  DelimiterConf('Size3-Regular', MathStyle.text),
-  DelimiterConf('Size4-Regular', MathStyle.text),
+  DelimiterConf(mainRegular, MathStyle.scriptscript),
+  DelimiterConf(mainRegular, MathStyle.script),
+  DelimiterConf(mainRegular, MathStyle.text),
+  DelimiterConf(size1Regular, MathStyle.text),
+  DelimiterConf(size2Regular, MathStyle.text),
+  DelimiterConf(size3Regular, MathStyle.text),
+  DelimiterConf(size4Regular, MathStyle.text),
 ];
 
 const stackAlwaysDelimiterSequence = [
-  DelimiterConf('Main-Regular', MathStyle.scriptscript),
-  DelimiterConf('Main-Regular', MathStyle.script),
-  DelimiterConf('Main-Regular', MathStyle.text),
+  DelimiterConf(mainRegular, MathStyle.scriptscript),
+  DelimiterConf(mainRegular, MathStyle.script),
+  DelimiterConf(mainRegular, MathStyle.text),
 ];
 
 const stackLargeDelimiterSequence = [
-  DelimiterConf('Main-Regular', MathStyle.scriptscript),
-  DelimiterConf('Main-Regular', MathStyle.script),
-  DelimiterConf('Main-Regular', MathStyle.text),
-  DelimiterConf('Size1-Regular', MathStyle.text),
-  DelimiterConf('Size2-Regular', MathStyle.text),
-  DelimiterConf('Size3-Regular', MathStyle.text),
-  DelimiterConf('Size4-Regular', MathStyle.text),
+  DelimiterConf(mainRegular, MathStyle.scriptscript),
+  DelimiterConf(mainRegular, MathStyle.script),
+  DelimiterConf(mainRegular, MathStyle.text),
+  DelimiterConf(size1Regular, MathStyle.text),
+  DelimiterConf(size2Regular, MathStyle.text),
+  DelimiterConf(size3Regular, MathStyle.text),
+  DelimiterConf(size4Regular, MathStyle.text),
 ];
 
 double getHeightForDelim({
