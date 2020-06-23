@@ -331,9 +331,7 @@ abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
 
   @override
   int computeWidth() =>
-      children.fold<int>(
-          0, (value, child) => value + (child?.capturedCursor ?? -1)) +
-      1;
+      children.map((child) => child?.capturedCursor ?? -1).sum() + 1;
 
   @override
   List<int> computeChildPositions() {
@@ -355,8 +353,7 @@ abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
 /// explicitly unwrap transparent nodes during building stage.
 abstract class TransparentNode extends ParentableNode<GreenNode> {
   @override
-  int computeWidth() =>
-      children.fold<int>(0, (value, child) => value + child.width);
+  int computeWidth() => children.map((child) => child.width).sum();
 
   @override
   List<int> computeChildPositions() {
@@ -395,8 +392,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
   final List<GreenNode> children;
 
   @override
-  int computeWidth() =>
-      children.fold<int>(0, (value, child) => value + child.width) + 2;
+  int computeWidth() => children.map((child) => child.width).sum() + 2;
 
   @override
   List<int> computeChildPositions() {

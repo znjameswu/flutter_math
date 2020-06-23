@@ -11,15 +11,17 @@ import 'breakable_offset.dart';
 class BreakableSize extends Size {
   final List<Size> lineSizes;
   BreakableSize(this.lineSizes)
-      : super(lineSizes.map((e) => e.width).max(),
-            lineSizes.map((e) => e.height).sum());
+      : super(
+          lineSizes.map((e) => e.width).max(),
+          lineSizes.map((e) => e.height).sum(),
+        );
 
   BreakableSize.copy(BreakableSize source)
       : lineSizes = source.lineSizes,
         super(
-            source.lineSizes.fold(0, (a, b) => a + b.width),
-            source.lineSizes.fold(
-                0, (curr, next) => curr > next.height ? curr : next.height));
+          source.lineSizes.map((e) => e.width).sum(),
+          source.lineSizes.map((e) => e.height).max(),
+        );
 
   factory BreakableSize.fromSize(Size size) => BreakableSize([size]);
 
