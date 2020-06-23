@@ -168,7 +168,7 @@ class LeftRightLayoutDelegate extends CustomLayoutDelegate<_LeftRightId> {
         .toList(growable: false);
 
     for (final bodyChild in bodyChildren) {
-      bodyChild.layout(infiniteConstraint);
+      bodyChild.layout(infiniteConstraint, parentUsesSize: true);
     }
 
     final a = options.fontMetrics.axisHeight.cssEm.toLpUnder(options);
@@ -180,7 +180,8 @@ class LeftRightLayoutDelegate extends CustomLayoutDelegate<_LeftRightId> {
         2 * delta - delimiterShorfall.toLpUnder(options));
 
     for (final delimiter in delimiterChildren) {
-      delimiter.layout(BoxConstraints(minHeight: delimiterFullHeight));
+      delimiter.layout(BoxConstraints(minHeight: delimiterFullHeight),
+          parentUsesSize: true);
     }
 
     final spacingLeft = getSpacingSize(
