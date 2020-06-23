@@ -31,26 +31,26 @@ class MultiscriptsNode extends SlotableNode {
   });
 
   @override
-  List<BuildResult> buildWidget(
-          Options options, List<List<BuildResult>> childBuildResults) =>
+  List<BuildResult> buildSlotableWidget(
+      Options options, List<BuildResult> childBuildResults)  =>
       [
         BuildResult(
           options: options,
           widget: Multiscripts(
             alignPostscripts: alignPostscripts,
-            italic: childBuildResults[0][0].italic,
+            italic: childBuildResults[0].italic,
             isBaseCharacterBox: base.flattenedChildList.length == 1 &&
                 base.flattenedChildList[0] is MathAtomNode,
-            baseOptions: childBuildResults[0][0].options,
-            subOptions: childBuildResults[1]?.first?.options,
-            supOptions: childBuildResults[2]?.first?.options,
-            presubOptions: childBuildResults[3]?.first?.options,
-            presupOptions: childBuildResults[4]?.first?.options,
-            base: childBuildResults[0][0].widget,
-            sub: childBuildResults[1]?.first?.widget,
-            sup: childBuildResults[2]?.first?.widget,
-            presub: childBuildResults[3]?.first?.widget,
-            presup: childBuildResults[4]?.first?.widget,
+            baseOptions: childBuildResults[0].options,
+            subOptions: childBuildResults[1]?.options,
+            supOptions: childBuildResults[2]?.options,
+            presubOptions: childBuildResults[3]?.options,
+            presupOptions: childBuildResults[4]?.options,
+            base: childBuildResults[0].widget,
+            sub: childBuildResults[1]?.widget,
+            sup: childBuildResults[2]?.widget,
+            presub: childBuildResults[3]?.widget,
+            presup: childBuildResults[4]?.widget,
           ),
           italic: Measurement.zero,
         )

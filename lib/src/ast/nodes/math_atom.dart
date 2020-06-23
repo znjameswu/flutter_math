@@ -50,15 +50,16 @@ class MathAtomNode extends LeafNode {
     } else if (font != null) {
       if (lookupSymbol(text, font.fontName, mode) != null) {
         return [makeSymbol(text, font.fontName, mode, options)];
-      } else if (ligatures.contains(text) && font.fontFamily == 'Typewriter') {
-        final text = symbols[mode][this.text].name;
+      } else if (ligatures.containsKey(text) &&
+          font.fontFamily == 'Typewriter') {
+        final expandedText = ligatures[text];
         return [
           BuildResult(
             options: options,
             widget: Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
               textBaseline: TextBaseline.alphabetic,
-              children: text
+              children: expandedText
                   .split('')
                   .map(
                       (e) => makeSymbol(e, font.fontName, mode, options).widget)

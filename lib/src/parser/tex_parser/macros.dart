@@ -25,8 +25,10 @@
 //ignore_for_file: lines_longer_than_80_chars
 import 'dart:developer';
 
+
+import '../../ast/syntax_tree.dart';
 import '../../font/metrics/font_metrics_data.dart';
-import 'functions.dart';
+// import 'functions.dart';
 
 import 'macro_expander.dart';
 import 'parse_error.dart';
@@ -322,14 +324,15 @@ void _init() {
     log(arg.reversed.map((token) => token.text).join(""));
     return '';
   }));
-  defineMacro("\\show", MacroDefinition.fromCtxString((context) {
-    final tok = context.popToken();
-    final name = tok.text;
-    // eslint-disable-next-line no-console
-    log('$tok, ${context.macros.get(name)}, ${functions[name]},'
-        '${symbols[Mode.math][name]}, ${symbols[Mode.text][name]}');
-    return '';
-  }));
+  // TODO
+  // defineMacro("\\show", MacroDefinition.fromCtxString((context) {
+  //   final tok = context.popToken();
+  //   final name = tok.text;
+  //   // eslint-disable-next-line no-console
+  //   log('$tok, ${context.macros.get(name)}, ${functions[name]},'
+  //       '${symbols[Mode.math][name]}, ${symbols[Mode.text][name]}');
+  //   return '';
+  // }));
 
 //////////////////////////////////////////////////////////////////////
 // Grouping
@@ -608,8 +611,9 @@ void _init() {
       thedots = dotsByToken[next];
     } else if (next.substring(0, 4) == '\\not') {
       thedots = '\\dotsb';
-    } else if (symbols[Mode.math].containsKey(next)) {
-      if (['bin', 'rel'].contains(symbols[Mode.math][next].group)) {
+    } else if (texSymbolConfigs[Mode.math].containsKey(next)) {
+      if (texSymbolConfigs[Mode.math][next].type == AtomType.bin ||
+          texSymbolConfigs[Mode.math][next].type == AtomType.rel) {
         thedots = '\\dotsb';
       }
     }

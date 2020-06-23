@@ -43,8 +43,8 @@ class FracNode extends SlotableNode {
       );
 
   @override
-  List<BuildResult> buildWidget(
-          Options options, List<List<BuildResult>> childBuildResults) =>
+  List<BuildResult> buildSlotableWidget(
+      Options options, List<BuildResult> childBuildResults)  =>
       [
         BuildResult(
           options: options,
@@ -56,11 +56,11 @@ class FracNode extends SlotableNode {
             children: <Widget>[
               CustomLayoutId(
                 id: _FracPos.numer,
-                child: childBuildResults[0][0].widget,
+                child: childBuildResults[0].widget,
               ),
               CustomLayoutId(
                 id: _FracPos.denom,
-                child: childBuildResults[1][0].widget,
+                child: childBuildResults[1].widget,
               ),
             ],
           ),

@@ -16,8 +16,8 @@ class AccentNode extends SlotableNode {
   });
 
   @override
-  List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults) {
+  List<BuildResult> buildSlotableWidget(
+      Options options, List<BuildResult> childBuildResults) {
     // TODO: implement buildWidget
     throw UnimplementedError();
   }

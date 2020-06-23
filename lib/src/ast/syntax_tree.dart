@@ -330,6 +330,15 @@ abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
   List<T> computeChildren();
 
   @override
+  List<BuildResult> buildWidget(
+          Options options, List<List<BuildResult>> childBuildResults) =>
+      buildSlotableWidget(
+          options, childBuildResults.map((e) => e?.firstOrNull).toList());
+
+  List<BuildResult> buildSlotableWidget(
+      Options options, List<BuildResult> childBuildResults);
+
+  @override
   int computeWidth() =>
       children.map((child) => child?.capturedCursor ?? -1).sum() + 1;
 

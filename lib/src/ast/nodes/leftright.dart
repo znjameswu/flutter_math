@@ -33,8 +33,8 @@ class LeftRightNode extends SlotableNode {
         assert(middle.length == body.length - 1);
 
   @override
-  List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults) {
+  List<BuildResult> buildSlotableWidget(
+      Options options, List<BuildResult> childBuildResults) {
     final childWidgets =
         List.generate(2 + body.length + middle.length, (index) {
       if (index % 2 == 0) {
@@ -55,7 +55,7 @@ class LeftRightNode extends SlotableNode {
       } else {
         return CustomLayoutId(
           id: _LeftRightId(isDelimiter: false, number: index ~/ 2),
-          child: childBuildResults[index ~/ 2][0].widget,
+          child: childBuildResults[index ~/ 2].widget,
         );
       }
     }, growable: false);

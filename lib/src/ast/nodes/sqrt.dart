@@ -43,23 +43,23 @@ class SqrtNode extends SlotableNode {
       );
 
   @override
-  List<BuildResult> buildWidget(
-          Options options, List<List<BuildResult>> childBuildResults) =>
+  List<BuildResult> buildSlotableWidget(
+      Options options, List<BuildResult> childBuildResults)  =>
       [
         BuildResult(
           options: options,
           widget: CustomLayout<_SqrtPos>(
             delegate: SqrtLayoutDelegate(
               options: options,
-              baseOptions: childBuildResults[1][0].options,
-              indexOptions: childBuildResults[0]?.firstOrNull?.options,
+              baseOptions: childBuildResults[1].options,
+              indexOptions: childBuildResults[0]?.options,
             ),
             children: <Widget>[
               CustomLayoutId(
-                  id: _SqrtPos.base, child: childBuildResults[1][0].widget),
+                  id: _SqrtPos.base, child: childBuildResults[1].widget),
               if (index != null)
                 CustomLayoutId(
-                    id: _SqrtPos.ind, child: childBuildResults[0][0].widget),
+                    id: _SqrtPos.ind, child: childBuildResults[0].widget),
             ],
           ),
           italic: Measurement.zero,

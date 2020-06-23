@@ -791,7 +791,7 @@ class TexParser {
     // At this point, we should have a symbol, possibly with accents.
     // First expand any accented base symbol according to unicodeSymbols.
     if (unicodeSymbols.containsKey(text[0]) &&
-        !symbols[this.mode].containsKey(text[0])) {
+        !texSymbolConfigs[this.mode].containsKey(text[0])) {
       if (this.mode == Mode.math) {
         this.settings.reportNonstrict(
             'unicodeTextInMathMode',
@@ -812,23 +812,29 @@ class TexParser {
     }
     // Recognize base symbol
     GreenNode symbol;
-    if (symbols[this.mode].containsKey(text)) {
+    if (texSymbolConfigs[this.mode].containsKey(text)) {
       if (this.mode == Mode.math && extraLatin.contains(text)) {
         this.settings.reportNonstrict(
             'unicodeTextInMathMode',
             'Latin-1/Unicode text character "${text[0]}" used in math mode',
             nucleus);
       }
-      final group = symbols[this.mode][text].group;
+      final group = texSymbolConfigs[this.mode][text].type;
       // final loc = SourceLocation.range(nucleus);
-      if (atoms.contains(group)) {
-        symbol = makeOperatorNode(mode: this.mode, text: text, family: group);
+      if (group == AtomType.spacing) {
+        throw UnimplementedError('spacing node is still not finalized');
+      } else if (group == null) {
+        throw ParseError(
+            'Bad parser state: temporary token $text occured'
+            ' in symbol parsing',
+            nucleus);
+      } else if (mode == Mode.math) {
+        symbol = MathAtomNode(
+            text: text,
+            atomType: group,
+            fontOptions: texSymbolConfigs[this.mode][text].font);
       } else {
-        symbol =
-            makeNodeBasedOnGroup(mode: this.mode, text: text, family: group);
-        // throw ArgumentError(
-        //     'Illegal definition of group on symbol $text'); //TODO
-        // symbol = 0;
+        throw UnimplementedError('text node is still not finalized');
       }
     } else if (text.codeUnitAt(0) >= 0x80) {
       if (!supportedCodepoint(text.codeUnitAt(0))) {
@@ -926,24 +932,10 @@ GreenNode makeOrdNode(
     case Mode.math:
       return MathAtomNode(text: text, fontOptions: fontOptions);
     case Mode.text:
-      return MathAtomNode(text: text, fontOptions: fontOptions);
+      throw UnimplementedError('text node is not finalized');
   }
   throw ArgumentError(mode);
 }
-
-GreenNode makeOperatorNode({
-  @required Mode mode,
-  @required String text,
-  @required Group family,
-}) =>
-    makeOrdNode(mode: mode, text: text);
-
-GreenNode makeNodeBasedOnGroup({
-  @required Mode mode,
-  @required String text,
-  @required Group family,
-}) =>
-    makeOrdNode(mode: mode, text: text);
 
 T assertNodeType<T extends GreenNode>(GreenNode node) {
   if (node is T) {
