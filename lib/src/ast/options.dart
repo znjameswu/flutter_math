@@ -4,11 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../font/metrics/font_metrics.dart';
+import '../parser/tex_parser/types.dart';
 import 'font_metrics.dart';
 import 'size.dart';
 import 'style.dart';
 
 class Options {
+  final Mode mode;
   final MathStyle style;
   final Color color;
   // final Size size;
@@ -28,6 +30,7 @@ class Options {
   // final int tableColCount;
   FontMetrics get fontMetrics => getGlobalMetrics(size);
   const Options({
+    this.mode = Mode.math,
     @required this.style,
     @required this.color,
     @required this.sizeUnderTextStyle,

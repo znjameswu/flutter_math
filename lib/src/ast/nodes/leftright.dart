@@ -38,6 +38,7 @@ class LeftRightNode extends SlotableNode {
     final childWidgets =
         List.generate(2 + body.length + middle.length, (index) {
       if (index % 2 == 0) {
+        // Delimiter
         return CustomLayoutId(
           id: _LeftRightId(isDelimiter: true, number: index ~/ 2 - 1),
           child: LayoutBuilder(
@@ -53,6 +54,7 @@ class LeftRightNode extends SlotableNode {
           ),
         );
       } else {
+        // Content
         return CustomLayoutId(
           id: _LeftRightId(isDelimiter: false, number: index ~/ 2),
           child: childBuildResults[index ~/ 2].widget,
@@ -279,6 +281,17 @@ const stackNeverDelimiters = {
 
 Widget buildCustomSizedDelimWidget(
     String delim, double minDelimiterHeight, Options options) {
+  if (delim == null) {
+    final axisHeight = options.fontMetrics.xHeight.cssEm.toLpUnder(options);
+    return ResetBaseline(
+      height: minDelimiterHeight / 2 + axisHeight,
+      child: Container(
+        height: minDelimiterHeight,
+        width: nullDelimiterSpace.toLpUnder(options),
+      ),
+    );
+  }
+
   List<DelimiterConf> sequence;
   if (stackNeverDelimiters.contains(delim)) {
     sequence = stackNeverDelimiterSequence;
@@ -353,8 +366,7 @@ Widget makeStakedDelim(
         makeChar(conf.top, conf.font, options),
         for (var i = 0; i < repeatCount; i++)
           makeChar(conf.repeat, conf.font, options),
-        if (conf.middle != null)
-          makeChar(conf.middle, conf.font, options),
+        if (conf.middle != null) makeChar(conf.middle, conf.font, options),
         if (conf.middle != null)
           for (var i = 0; i < repeatCount; i++)
             makeChar(conf.repeat, conf.font, options),

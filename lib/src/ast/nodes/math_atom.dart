@@ -21,7 +21,6 @@ class MathAtomNode extends LeafNode {
   final String text;
   final bool variantForm;
   final FontOptions fontOptions;
-  final DelimiterSize delimSize;
   AtomType _atomType;
   AtomType get atomType =>
       _atomType ??= symbolRenderConfigs[text].math.defaultType ?? AtomType.ord;
@@ -31,53 +30,70 @@ class MathAtomNode extends LeafNode {
     this.variantForm = false,
     this.fontOptions,
     AtomType atomType,
-    this.delimSize,
   }) : _atomType = atomType;
 
   @override
   List<BuildResult> buildWidget(
       Options options, List<List<BuildResult>> childBuildResults) {
+    if (fontOptions != null) {
+      return [
+        BuildResult(
+          options: options,
+          widget: makeChar(text, fontOptions, options),
+          italic: Measurement.zero,
+        )
+      ];
+    }
+
     // TODO incorporate symbolsOp.js
 
-    final mode = Mode.math; //TODO
+    final mode = options.mode; //TODO
 
     final useMathFont = mode == Mode.math ||
         (mode == Mode.text && options.mathFontOptions != null);
     final font =
         useMathFont ? options.mathFontOptions : options.textFontOptions;
 
-    if (text.codeUnitAt(0) == 0xD835) {
-      // surrogate pairs get special treatment
-      //TODO
-    } else if (font != null) {
-      if (lookupSymbol(text, font.fontName, mode) != null) {
-        return [makeSymbol(text, font.fontName, mode, options)];
-      } else if (ligatures.containsKey(text) &&
-          font.fontFamily == 'Typewriter') {
-        final expandedText = ligatures[text];
-        return [
-          BuildResult(
-            options: options,
-            widget: Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              children: expandedText
-                  .split('')
-                  .map(
-                      (e) => makeSymbol(e, font.fontName, mode, options).widget)
-                  .toList(growable: false),
-            ),
-            italic: Measurement.zero,
-          )
-        ];
+    // surrogate pairs will ignore any user-specified font changes
+    if (text.codeUnitAt(0) != 0xD835) {
+      if (font != null) {
+        if (lookupSymbol(text, font, mode) != null) {
+          return [
+            BuildResult(
+              options: options,
+              italic: lookupSymbol(text, font, mode).italic.cssEm,
+              widget: makeChar(text, font, options),
+            )
+          ];
+        } else if (ligatures.containsKey(text) &&
+            font.fontFamily == 'Typewriter') {
+          final expandedText = ligatures[text];
+          return [
+            BuildResult(
+              options: options,
+              widget: Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: expandedText
+                    .split('')
+                    .map((e) => makeChar(e, font, options))
+                    .toList(growable: false),
+              ),
+              italic: Measurement.zero,
+            )
+          ];
+        }
       }
     }
 
+    // If the code reaches here, it means we failed to find any appliable
+    // user-specified font. We will use default render configs.
     final renderConfig = symbolRenderConfigs[text].math;
     final replaceChar = renderConfig.replaceChar ?? text;
     final defaultFont = renderConfig.defaultFont;
-    final characterMetrics =
-        fontMetricsData[defaultFont.fontName][replaceChar.codeUnitAt(0)];
+    final characterMetrics = getCharacterMetrics(
+        character: replaceChar, fontName: defaultFont.fontName, mode: mode);
+    // fontMetricsData[defaultFont.fontName][replaceChar.codeUnitAt(0)];
     return [
       BuildResult(
         options: options,
@@ -88,10 +104,11 @@ class MathAtomNode extends LeafNode {
   }
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) {
-    // TODO: implement shouldRebuildWidget
-    return null;
-  }
+  bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
+      oldOptions.mode != newOptions.mode ||
+      oldOptions.mathFontOptions != newOptions.mathFontOptions ||
+      oldOptions.textFontOptions != newOptions.textFontOptions ||
+      oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
 
   @override
   int get width => 1;
@@ -103,8 +120,8 @@ class MathAtomNode extends LeafNode {
   AtomType get rightType => AtomType.ord;
 }
 
-BuildResult makeSymbol(
-    String text, String fontName, Mode mode, Options options) {}
+// BuildResult makeSymbol(
+//     String text, String fontName, Mode mode, Options options) {}
 
 Widget makeChar(String character, FontOptions font, Options options) {
   final characterMetrics =
@@ -124,10 +141,16 @@ Widget makeChar(String character, FontOptions font, Options options) {
   );
 }
 
-CharacterMetrics lookupSymbol(String value, String fontName, Mode mode) {
-  // We will figure out a way to bypass KaTeX's symbol
-  // TODO
-  return getCharacterMetrics(character: value, fontName: fontName, mode: mode);
+CharacterMetrics lookupSymbol(String value, FontOptions font, Mode mode) {
+  final renderConfig = mode == Mode.math
+      ? symbolRenderConfigs[value].math
+      : symbolRenderConfigs[value].text;
+  return getCharacterMetrics(
+    character: renderConfig?.replaceChar ?? value,
+    fontName: (font?.fontName ?? renderConfig?.defaultFont?.fontName) ??
+        'Main-Regular',
+    mode: mode,
+  );
 }
 
 final _numberDigitRegex = RegExp('[0-9]');

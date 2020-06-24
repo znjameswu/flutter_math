@@ -67,22 +67,22 @@ const _delimiterTypes = {
 };
 
 const _delimiterSizes = {
-  '\\bigl': DelimiterSize.size1,
-  '\\Bigl': DelimiterSize.size2,
-  '\\biggl': DelimiterSize.size3,
-  '\\Biggl': DelimiterSize.size4,
-  '\\bigr': DelimiterSize.size1,
-  '\\Bigr': DelimiterSize.size2,
-  '\\biggr': DelimiterSize.size3,
-  '\\Biggr': DelimiterSize.size4,
-  '\\bigm': DelimiterSize.size1,
-  '\\Bigm': DelimiterSize.size2,
-  '\\biggm': DelimiterSize.size3,
-  '\\Biggm': DelimiterSize.size4,
-  '\\big': DelimiterSize.size1,
-  '\\Big': DelimiterSize.size2,
-  '\\bigg': DelimiterSize.size3,
-  '\\Bigg': DelimiterSize.size4,
+  '\\bigl': 1,
+  '\\Bigl': 2,
+  '\\biggl': 3,
+  '\\Biggl': 4,
+  '\\bigr': 1,
+  '\\Bigr': 2,
+  '\\biggr': 3,
+  '\\Biggr': 4,
+  '\\bigm': 1,
+  '\\Bigm': 2,
+  '\\biggm': 3,
+  '\\Biggm': 4,
+  '\\big': 1,
+  '\\Big': 2,
+  '\\bigg': 3,
+  '\\Bigg': 4,
 };
 
 const _delimiterCommands = [
@@ -167,7 +167,8 @@ GreenNode _delimSizeHandler(TexParser parser, FunctionContext context) {
   return MathAtomNode(
     text: delim.text,
     atomType: _delimiterTypes[context.funcName],
-    delimSize: _delimiterSizes[context.funcName],
+    fontOptions:
+        FontOptions(fontFamily: 'Size${_delimiterSizes[context.funcName]}'),
   );
 }
 
@@ -207,14 +208,14 @@ GreenNode _leftHandler(TexParser parser, FunctionContext context) {
   for (final element in body) {
     if (element is _MiddleNode) {
       splittedBody.add([]);
-      middles.add(element.delim);
+      middles.add(element.delim == '.' ? null : element.delim);
     } else {
       splittedBody.last.add(element);
     }
   }
   return LeftRightNode(
-    leftDelim: delim.text,
-    rightDelim: right.delim,
+    leftDelim: delim.text == '.' ? null : delim.text,
+    rightDelim: right.delim == '.' ? null : right.delim,
     body: splittedBody
         .map((part) => part.wrapWithEquationRow())
         .toList(growable: false),
