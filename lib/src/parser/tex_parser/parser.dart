@@ -819,18 +819,13 @@ class TexParser {
             'Latin-1/Unicode text character "${text[0]}" used in math mode',
             nucleus);
       }
+      final char = texSymbolConfigs[this.mode][text].symbol;
       final group = texSymbolConfigs[this.mode][text].type;
       // final loc = SourceLocation.range(nucleus);
-      if (group == AtomType.spacing) {
-        throw UnimplementedError('spacing node is still not finalized');
-      } else if (group == null) {
-        throw ParseError(
-            'Bad parser state: temporary token $text occured'
-            ' in symbol parsing',
-            nucleus);
-      } else if (mode == Mode.math) {
+      if (mode == Mode.math) {
+        // TODO make a special case for spacing
         symbol = MathAtomNode(
-            text: text,
+            text: char,
             atomType: group,
             fontOptions: texSymbolConfigs[this.mode][text].font);
       } else {
