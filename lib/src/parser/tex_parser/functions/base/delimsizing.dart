@@ -85,7 +85,7 @@ const _delimiterSizes = {
   '\\Bigg': DelimiterSize.size4,
 };
 
-const delimiters = {
+const _delimiterCommands = [
   '(',
   '\\lparen',
   ')',
@@ -139,11 +139,17 @@ const delimiters = {
   '\\updownarrow',
   '\\Updownarrow',
   '.',
-};
+];
+
+final _delimiterSymbols = _delimiterCommands
+    .map((command) => texSymbolConfigs[Mode.math][command])
+    .toList();
 
 MathAtomNode _checkDelimiter(GreenNode delim, FunctionContext context) {
   if (delim is MathAtomNode) {
-    if (delimiters.contains(delim.text)) {
+    if (_delimiterSymbols.any((symbol) =>
+        symbol.symbol == delim.text &&
+        symbol.variantForm == delim.variantForm)) {
       return delim;
     } else {
       // TODO: this throw omitted the token location

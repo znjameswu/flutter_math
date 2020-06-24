@@ -19,6 +19,7 @@ enum DelimiterSize {
 
 class MathAtomNode extends LeafNode {
   final String text;
+  final bool variantForm;
   final FontOptions fontOptions;
   final DelimiterSize delimSize;
   AtomType _atomType;
@@ -27,6 +28,7 @@ class MathAtomNode extends LeafNode {
 
   MathAtomNode({
     this.text,
+    this.variantForm = false,
     this.fontOptions,
     AtomType atomType,
     this.delimSize,

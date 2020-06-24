@@ -25,6 +25,7 @@ import '../font.dart';
 import '../functions.dart';
 import '../parse_error.dart';
 import '../parser.dart';
+import '../symbols.dart';
 import '../types.dart';
 
 part 'base/accent.dart';

@@ -355,8 +355,9 @@ Widget makeStakedDelim(
           makeChar(conf.repeat, conf.font, options),
         if (conf.middle != null)
           makeChar(conf.middle, conf.font, options),
-        for (var i = 0; i < repeatCount; i++)
-          makeChar(conf.repeat, conf.font, options),
+        if (conf.middle != null)
+          for (var i = 0; i < repeatCount; i++)
+            makeChar(conf.repeat, conf.font, options),
         makeChar(conf.bottom, conf.font, options),
       ],
     ),
