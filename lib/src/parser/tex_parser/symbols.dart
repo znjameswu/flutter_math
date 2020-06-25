@@ -32,7 +32,7 @@ import 'dart:ui';
 
 import '../../ast/options.dart';
 import '../../ast/syntax_tree.dart';
-import 'types.dart';
+import '../../ast/types.dart';
 
 class TexSymbolConfig {
   final String symbol;
@@ -56,7 +56,7 @@ const mathdefault = FontOptions(
 );
 
 
-const texSymbolConfigs = {
+const texSymbolCommandConfigs = {
   Mode.math: {
     '0': TexSymbolConfig('0'), 
     '1': TexSymbolConfig('1'), 
@@ -2188,8 +2188,8 @@ const texSymbolConfigs = {
 const extraLatin = {'Ç', 'Ð', 'Þ', 'ç', 'þ'};
 
 const ligatures = {
-  "–": '--',
-  "—": '---',
-  "“": '``',
-  "”": "''",
+  '–': '--',
+  '—': '---',
+  '“': '``',
+  '”': "''",
 };

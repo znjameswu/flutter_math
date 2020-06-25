@@ -27,6 +27,7 @@ import 'dart:developer';
 
 
 import '../../ast/syntax_tree.dart';
+import '../../ast/types.dart';
 import '../../font/metrics/font_metrics_data.dart';
 // import 'functions.dart';
 
@@ -34,7 +35,6 @@ import 'macro_expander.dart';
 import 'parse_error.dart';
 import 'symbols.dart';
 import 'token.dart';
-import 'types.dart';
 
 Map<String, MacroDefinition> _builtinMacros;
 Map<String, MacroDefinition> get builtinMacros {
@@ -611,9 +611,9 @@ void _init() {
       thedots = dotsByToken[next];
     } else if (next.substring(0, 4) == '\\not') {
       thedots = '\\dotsb';
-    } else if (texSymbolConfigs[Mode.math].containsKey(next)) {
-      if (texSymbolConfigs[Mode.math][next].type == AtomType.bin ||
-          texSymbolConfigs[Mode.math][next].type == AtomType.rel) {
+    } else if (texSymbolCommandConfigs[Mode.math].containsKey(next)) {
+      if (texSymbolCommandConfigs[Mode.math][next].type == AtomType.bin ||
+          texSymbolCommandConfigs[Mode.math][next].type == AtomType.rel) {
         thedots = '\\dotsb';
       }
     }

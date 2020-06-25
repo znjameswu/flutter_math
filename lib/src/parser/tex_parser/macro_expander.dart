@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import '../../ast/types.dart';
 import 'functions.dart';
 import 'lexer.dart';
 import 'macros.dart';
@@ -28,7 +29,6 @@ import 'namespace.dart';
 import 'parse_error.dart';
 import 'settings.dart';
 import 'token.dart';
-import 'types.dart';
 
 // List of commands that act like macros but aren't defined as a macro,
 // function, or symbol.  Used in `isDefined`.

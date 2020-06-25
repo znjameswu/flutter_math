@@ -2,21 +2,20 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../font/metrics/font_metrics.dart';
-import '../../parser/tex_parser/types.dart';
 import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
 import '../../render/layout/reset_baseline.dart';
 import '../../render/svg/delimiter.dart';
+import '../../render/symbols/make_atom.dart';
 import '../../render/utils/render_box_offset.dart';
 import '../../utils/iterable_extensions.dart';
 import '../options.dart';
 import '../size.dart';
 import '../spacing.dart';
 import '../syntax_tree.dart';
-import 'math_atom.dart';
+import '../types.dart';
 
 class LeftRightNode extends SlotableNode {
   final String leftDelim;
@@ -63,7 +62,7 @@ class LeftRightNode extends SlotableNode {
     }, growable: false);
     return [
       BuildResult(
-        italic: Measurement.zero,
+        italic: 0.0,
         options: options,
         widget: CustomLayout<_LeftRightId>(
           delegate: LeftRightLayoutDelegate(options: options),
@@ -314,7 +313,8 @@ Widget buildCustomSizedDelimWidget(
   }
 
   if (delimConf != null) {
-    return makeChar(delim, delimConf.font, options);
+    return makeChar(delim, delimConf.font,
+        lookupChar(delim, delimConf.font, Mode.math), options);
   } else {
     return makeStakedDelim(delim, minDelimiterHeight, Mode.math, options);
   }
@@ -323,12 +323,9 @@ Widget buildCustomSizedDelimWidget(
 Widget makeStakedDelim(
     String delim, double minDelimiterHeight, Mode mode, Options options) {
   final conf = stackDelimiterConfs[delim];
-  final topMetrics = getCharacterMetrics(
-      character: conf.top, fontName: conf.font.fontName, mode: Mode.math);
-  final repeatMetrics = getCharacterMetrics(
-      character: conf.repeat, fontName: conf.font.fontName, mode: Mode.math);
-  final bottomMetrics = getCharacterMetrics(
-      character: conf.bottom, fontName: conf.font.fontName, mode: Mode.math);
+  final topMetrics = lookupChar(conf.top, conf.font, Mode.math);
+  final repeatMetrics = lookupChar(conf.repeat, conf.font, Mode.math);
+  final bottomMetrics = lookupChar(conf.bottom, conf.font, Mode.math);
 
   final topHeight =
       (topMetrics.height + topMetrics.depth).cssEm.toLpUnder(options);
@@ -339,9 +336,9 @@ Widget makeStakedDelim(
 
   var middleHeight = 0.0;
   var middleFactor = 1;
+  CharacterMetrics middleMetrics;
   if (conf.middle != null) {
-    final middleMetrics = getCharacterMetrics(
-        character: conf.middle, fontName: conf.font.fontName, mode: Mode.math);
+    middleMetrics = lookupChar(conf.middle, conf.font, Mode.math);
     middleHeight =
         (middleMetrics.height + middleMetrics.depth).cssEm.toLpUnder(options);
     middleFactor = 2;
@@ -363,14 +360,15 @@ Widget makeStakedDelim(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        makeChar(conf.top, conf.font, options),
+        makeChar(conf.top, conf.font, topMetrics, options),
         for (var i = 0; i < repeatCount; i++)
-          makeChar(conf.repeat, conf.font, options),
-        if (conf.middle != null) makeChar(conf.middle, conf.font, options),
+          makeChar(conf.repeat, conf.font, repeatMetrics, options),
+        if (conf.middle != null)
+          makeChar(conf.middle, conf.font, middleMetrics, options),
         if (conf.middle != null)
           for (var i = 0; i < repeatCount; i++)
-            makeChar(conf.repeat, conf.font, options),
-        makeChar(conf.bottom, conf.font, options),
+            makeChar(conf.repeat, conf.font, repeatMetrics, options),
+        makeChar(conf.bottom, conf.font, bottomMetrics, options),
       ],
     ),
   );

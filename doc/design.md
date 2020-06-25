@@ -20,6 +20,21 @@ The AST of this project has a very similar structure compared with MathML, the A
 - \dfrac, \tfrac ... will be rendered slightly different from KaTeX and will be in line with MathJax's rendering behavior. KaTeX has an `adjustStyle` function whose behvior we have no intention to follow. 
 
 
+Text and Math mode AST design Rationale:
+
+We separate text-mode symbols and math-mode symbols by their types at the parsing time. This distinction of symbols will be preserved throughout any editing. We did not choose the following alternatives:
+- Make a TextNode extend from EquationRowNode and only allow this type to hold TextAtomNode as children
+    - Good for editing experience
+    - Horrible nesting of math inside text inside math while editing (which KaTeX supports). Type safety concerns for TextAtomNode's occurance.
+    - We could straightfoward avoid math inside text during parsing. But it requires a complete re-write of the parser.
+- Make a TextNode same as before, but adding a property in Options to change the behavior of child MathAtomNode
+    - Similar as before without type safety concern. However a symbol will behave vastly different in two modes. Some lazy initialization become impossible and inefficient.
+- Add a property in Options, and using a StyleNode to express mode changes
+    - Similar to above option. This StyleNode will require extra caution during AST optimization due to its property and all the text style commands beneath it.
+- Use a tree of TextNode inspired by TextSpan
+    - How can I nest math inside text?
+
+
 KaTeX functionalities that need further investigation
 - xArrow (arrow.js)
 - char

@@ -142,19 +142,19 @@ const _delimiterCommands = [
 ];
 
 final _delimiterSymbols = _delimiterCommands
-    .map((command) => texSymbolConfigs[Mode.math][command])
+    .map((command) => texSymbolCommandConfigs[Mode.math][command])
     .toList();
 
 MathAtomNode _checkDelimiter(GreenNode delim, FunctionContext context) {
   if (delim is MathAtomNode) {
     if (_delimiterSymbols.any((symbol) =>
-        symbol.symbol == delim.text &&
+        symbol.symbol == delim.symbol &&
         symbol.variantForm == delim.variantForm)) {
       return delim;
     } else {
       // TODO: this throw omitted the token location
       throw ParseError(
-          "Invalid delimiter '${delim.text}' after '${context.funcName}'");
+          "Invalid delimiter '${delim.symbol}' after '${context.funcName}'");
     }
   } else {
     throw ParseError("Invalid delimiter type '${delim.runtimeType}'");
@@ -164,11 +164,17 @@ MathAtomNode _checkDelimiter(GreenNode delim, FunctionContext context) {
 GreenNode _delimSizeHandler(TexParser parser, FunctionContext context) {
   final delimArg = parser.parseArgNode(mode: Mode.math, optional: false);
   final delim = _checkDelimiter(delimArg, context);
-  return MathAtomNode(
-    text: delim.text,
-    atomType: _delimiterTypes[context.funcName],
-    fontOptions:
-        FontOptions(fontFamily: 'Size${_delimiterSizes[context.funcName]}'),
+  return StyleNode(
+    children: [
+      MathAtomNode(
+        symbol: delim.symbol,
+        atomType: _delimiterTypes[context.funcName],
+      )
+    ],
+    optionsDiff: OptionsDiff(
+      mathFontOptions:
+          FontOptions(fontFamily: 'Size${_delimiterSizes[context.funcName]}'),
+    ),
   );
 }
 
@@ -185,7 +191,7 @@ class _LeftRightRightNode extends TemporaryNode {
 GreenNode _rightHandler(TexParser parser, FunctionContext context) {
   final delimArg = parser.parseArgNode(mode: Mode.math, optional: false);
   return _LeftRightRightNode(
-    delim: _checkDelimiter(delimArg, context).text,
+    delim: _checkDelimiter(delimArg, context).symbol,
   );
 }
 
@@ -214,7 +220,7 @@ GreenNode _leftHandler(TexParser parser, FunctionContext context) {
     }
   }
   return LeftRightNode(
-    leftDelim: delim.text == '.' ? null : delim.text,
+    leftDelim: delim.symbol == '.' ? null : delim.symbol,
     rightDelim: right.delim == '.' ? null : right.delim,
     body: splittedBody
         .map((part) => part.wrapWithEquationRow())
@@ -244,5 +250,5 @@ GreenNode _middleHandler(TexParser parser, FunctionContext context) {
     throw ParseError('\\middle must be within \\left and \\right');
   }
 
-  return _MiddleNode(delim: delim.text);
+  return _MiddleNode(delim: delim.symbol);
 }

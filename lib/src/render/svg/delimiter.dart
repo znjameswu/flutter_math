@@ -1,10 +1,11 @@
 
+
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/style.dart';
 import '../../ast/symbols.dart';
+import '../../ast/types.dart';
 import '../../font/metrics/font_metrics.dart';
-import '../../parser/tex_parser/types.dart';
 import '../../utils/unicode_literal.dart';
 
 

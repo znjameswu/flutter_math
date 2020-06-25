@@ -25,14 +25,16 @@ import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_math/src/ast/nodes/style.dart';
 
 import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/math_atom.dart';
 import '../../ast/nodes/multiscripts.dart';
-import '../../ast/nodes/text.dart';
+import '../../ast/nodes/text_atom.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/syntax_tree.dart';
+import '../../ast/types.dart';
 import '../../font/metrics/unicode_scripts.dart';
 import 'colors.dart';
 import 'functions.dart';
@@ -43,7 +45,6 @@ import 'parse_error.dart';
 import 'settings.dart';
 import 'symbols.dart';
 import 'token.dart';
-import 'types.dart';
 import 'unicode_accents.dart';
 import 'unicode_symbols.dart';
 
@@ -124,7 +125,7 @@ class TexParser {
             ),
           );
           body.clear();
-          body.add(atom);
+          body.addAll(atom.expandEquationRow());
         } finally {
           _leaveArgumentParsingMode(lex.text);
         }
@@ -207,6 +208,7 @@ class TexParser {
   }
 
   /// The following functions are separated from parseAtoms in KaTeX
+  /// This function will only be invoked in math mode
   ScriptsParsingResults parseScripts({bool allowLimits = false}) {
     EquationRowNode subscript;
     EquationRowNode superscript;
@@ -239,12 +241,24 @@ class TexParser {
           if (superscript != null) {
             throw ParseError('Double superscript', lex);
           }
-          //TODO
+          final primeCommand = texSymbolCommandConfigs[Mode.math]['\\prime'];
           final superscriptList = <GreenNode>[
-            makeOrdNode(mode: this.mode, text: '\\prime')
+            makeOrdNode(
+              mode,
+              primeCommand.symbol,
+              primeCommand.variantForm,
+              primeCommand.type,
+              primeCommand.font,
+            ),
           ];
           while (this.fetch().text == "'") {
-            superscriptList.add(makeOrdNode(mode: this.mode, text: '\\prime'));
+            superscriptList.add(makeOrdNode(
+              mode,
+              primeCommand.symbol,
+              primeCommand.variantForm,
+              primeCommand.type,
+              primeCommand.font,
+            ));
             this.consume();
           }
           if (this.fetch().text == '^') {
@@ -340,9 +354,7 @@ class TexParser {
       // final lastToken = this.fetch();
       // Check that we got a matching closing brace
       this.expect(groupEnd);
-      result = this.mode == Mode.math
-          ? expression.wrapWithEquationRow()
-          : TextNode(children: expression);
+      result = expression.wrapWithEquationRow();
     } else if (optional) {
       // Return nothing for an optional group
       result = null;
@@ -791,7 +803,7 @@ class TexParser {
     // At this point, we should have a symbol, possibly with accents.
     // First expand any accented base symbol according to unicodeSymbols.
     if (unicodeSymbols.containsKey(text[0]) &&
-        !texSymbolConfigs[this.mode].containsKey(text[0])) {
+        !texSymbolCommandConfigs[this.mode].containsKey(text[0])) {
       if (this.mode == Mode.math) {
         this.settings.reportNonstrict(
             'unicodeTextInMathMode',
@@ -812,25 +824,22 @@ class TexParser {
     }
     // Recognize base symbol
     GreenNode symbol;
-    if (texSymbolConfigs[this.mode].containsKey(text)) {
+    final symbolCommandConfig = texSymbolCommandConfigs[this.mode][text];
+    if (symbolCommandConfig != null) {
       if (this.mode == Mode.math && extraLatin.contains(text)) {
         this.settings.reportNonstrict(
             'unicodeTextInMathMode',
             'Latin-1/Unicode text character "${text[0]}" used in math mode',
             nucleus);
       }
-      final char = texSymbolConfigs[this.mode][text].symbol;
-      final group = texSymbolConfigs[this.mode][text].type;
       // final loc = SourceLocation.range(nucleus);
-      if (mode == Mode.math) {
-        // TODO make a special case for spacing
-        symbol = MathAtomNode(
-            text: char,
-            atomType: group,
-            fontOptions: texSymbolConfigs[this.mode][text].font);
-      } else {
-        throw UnimplementedError('text node is still not finalized');
-      }
+      symbol = makeOrdNode(
+        mode,
+        symbolCommandConfig.symbol,
+        symbolCommandConfig.variantForm,
+        symbolCommandConfig.type,
+        symbolCommandConfig.font,
+      );
     } else if (text.codeUnitAt(0) >= 0x80) {
       if (!supportedCodepoint(text.codeUnitAt(0))) {
         this.settings.reportNonstrict(
@@ -842,7 +851,7 @@ class TexParser {
         this.settings.reportNonstrict('unicodeTextInMathMode',
             'Unicode text character "${text[0]} used in math mode"', nucleus);
       }
-      symbol = MathAtomNode(text: text);
+      symbol = MathAtomNode(symbol: text);
     } else {
       return null;
     }
@@ -921,15 +930,24 @@ class ScriptsParsingResults {
   bool get empty => subscript == null && superscript == null;
 }
 
-GreenNode makeOrdNode(
-    {@required Mode mode, @required String text, FontOptions fontOptions}) {
-  switch (mode) {
-    case Mode.math:
-      return MathAtomNode(text: text, fontOptions: fontOptions);
-    case Mode.text:
-      throw UnimplementedError('text node is not finalized');
+GreenNode makeOrdNode(Mode mode, String symbol, bool variantForm, AtomType type,
+    FontOptions font) {
+  if (mode == Mode.math) {
+    // TODO make a special case for spacing
+    return MathAtomNode(
+      symbol: symbol,
+      variantForm: variantForm,
+      atomType: type,
+      overrideFont: font,
+    );
+  } else {
+    return TextAtomNode(
+      symbol: symbol,
+      variantForm: variantForm,
+      atomType: type,
+      overrideFont: font,
+    );
   }
-  throw ArgumentError(mode);
 }
 
 T assertNodeType<T extends GreenNode>(GreenNode node) {

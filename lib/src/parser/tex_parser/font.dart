@@ -82,6 +82,12 @@ const _fontOptionsEntries = {
     fontFamily: 'Math',
     fontWeight: FontWeight.bold,
     fontShape: FontStyle.italic,
+    fallback: [
+      FontOptions(
+        fontFamily: 'Math',
+        fontWeight: FontWeight.bold,
+      )
+    ],
   ),
 
   ['amsrm']: FontOptions(fontFamily: 'AMS'),

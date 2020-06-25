@@ -220,7 +220,7 @@ GreenNode _arrayHandler(TexParser parser, EnvContext context) {
   bool lastIsSeparator;
   for (final nde in colalign) {
     final node = assertNodeType<MathAtomNode>(nde);
-    final ca = node.text;
+    final ca = node.symbol;
     switch (ca) {
       case 'l':
       case 'c':
@@ -307,7 +307,7 @@ GreenNode _subArrayHandler(TexParser parser, EnvContext context) {
   final aligns = <MatrixColumnAlign>[];
   for (final nde in colalign) {
     final node = assertNodeType<MathAtomNode>(nde);
-    final ca = node.text;
+    final ca = node.symbol;
     if (ca == 'l' || ca == 'c') {
       aligns.add(ca == 'l' ? MatrixColumnAlign.left : MatrixColumnAlign.center);
     }

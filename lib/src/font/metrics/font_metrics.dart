@@ -1,7 +1,7 @@
 
 import '../../ast/font_metrics.dart';
 import '../../ast/size.dart';
-import '../../parser/tex_parser/types.dart';
+import '../../ast/types.dart';
 import 'font_metrics_data.dart';
 import 'unicode_scripts.dart';
 

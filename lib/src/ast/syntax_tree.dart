@@ -453,7 +453,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
           children: buildResults.map((e) => e.widget).toList(),
           spacings: spacings,
         ),
-        italic: buildResults.lastOrNull?.italic ?? Measurement.zero,
+        italic: buildResults.lastOrNull?.italic ?? 0.0,
       )
     ];
   }
@@ -581,7 +581,7 @@ class TemporaryNode extends LeafNode {
 class BuildResult {
   final Widget widget;
   final Options options;
-  final Measurement italic;
+  final double italic;
   const BuildResult({
     @required this.widget,
     @required this.options,

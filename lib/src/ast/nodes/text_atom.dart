@@ -1,28 +1,12 @@
-import 'package:flutter/widgets.dart';
-
 import '../../render/symbols/make_atom.dart';
 import '../options.dart';
-import '../size.dart';
 import '../symbols.dart';
 import '../syntax_tree.dart';
 import '../types.dart';
+import 'math_atom.dart';
 
-enum DelimiterSize {
-  size1,
-  size2,
-  size3,
-  size4,
-}
-
-abstract class AtomNode extends LeafNode {
-  String get symbol;
-  bool get variantForm;
-  AtomType get atomType;
-
-  
-}
-
-class MathAtomNode extends LeafNode implements AtomNode {
+class TextAtomNode extends LeafNode implements AtomNode {
+  // final List<GreenNode> children;
   final String symbol;
   final bool variantForm;
   AtomType _atomType;
@@ -30,9 +14,9 @@ class MathAtomNode extends LeafNode implements AtomNode {
       symbolRenderConfigs[symbol].math.defaultType ?? AtomType.ord;
   final FontOptions overrideFont;
 
-  MathAtomNode({
-    @required this.symbol,
-    this.variantForm = false,
+  TextAtomNode({
+    this.symbol,
+    this.variantForm,
     AtomType atomType,
     this.overrideFont,
   }) : _atomType = atomType;
@@ -45,21 +29,25 @@ class MathAtomNode extends LeafNode implements AtomNode {
         variantForm: variantForm,
         atomType: atomType,
         overrideFont: overrideFont,
-        mode: Mode.math,
+        mode: Mode.text,
         options: options,
       );
-
-  @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
-      oldOptions.mathFontOptions != newOptions.mathFontOptions ||
-      oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
-
-  @override
-  int get width => 1;
 
   @override
   AtomType get leftType => atomType;
 
   @override
   AtomType get rightType => atomType;
+
+  @override
+  bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
+      oldOptions.mathFontOptions != newOptions.mathFontOptions ||
+      oldOptions.textFontOptions != newOptions.textFontOptions ||
+      oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
+
+  @override
+  int get width => 1;
 }
+
+//ignore: non_constant_identifier_names
+TextAtomNode VerbNode({String text}) {}

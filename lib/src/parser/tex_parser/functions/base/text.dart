@@ -40,5 +40,5 @@ const _textEntries = {
 };
 GreenNode _textHandler(TexParser parser, FunctionContext context) {
   final body = parser.parseArgNode(mode: Mode.text, optional: false);
-  return TextNode(children: body.expandEquationRow()); //TODO
+  return body; //TODO
 }

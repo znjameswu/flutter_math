@@ -52,7 +52,7 @@ class MultiscriptsNode extends SlotableNode {
             presub: childBuildResults[3]?.widget,
             presup: childBuildResults[4]?.widget,
           ),
-          italic: Measurement.zero,
+          italic: 0.0,
         )
       ];
 

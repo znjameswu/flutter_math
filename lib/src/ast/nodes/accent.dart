@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/ast/nodes/math_atom.dart';
 
 import '../options.dart';
 import '../syntax_tree.dart';
@@ -18,21 +19,20 @@ class AccentNode extends SlotableNode {
   @override
   List<BuildResult> buildSlotableWidget(
       Options options, List<BuildResult> childBuildResults) {
-    // TODO: implement buildWidget
-    throw UnimplementedError();
+    // Does the accent need to shift for the skew of a character?
+    final mustShift = isShifty &&
+        base.flattenedChildList.length == 1 &&
+        (base.flattenedChildList[0] is AtomNode &&
+            (base.flattenedChildList[0] as AtomNode).atomType !=
+                AtomType.spacing);
   }
 
   @override
-  List<Options> computeChildOptions(Options options) {
-    // TODO: implement computeChildOptions
-    throw UnimplementedError();
-  }
+  List<Options> computeChildOptions(Options options) =>
+      [options.havingCrampedStyle()];
 
   @override
-  List<EquationRowNode> computeChildren() {
-    // TODO: implement computeChildren
-    throw UnimplementedError();
-  }
+  List<EquationRowNode> computeChildren() => [base];
 
   @override
   AtomType get leftType => AtomType.ord;
@@ -41,10 +41,7 @@ class AccentNode extends SlotableNode {
   AtomType get rightType => AtomType.ord;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) {
-    // TODO: implement shouldRebuildWidget
-    throw UnimplementedError();
-  }
+  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(

@@ -25,9 +25,9 @@ import 'package:meta/meta.dart';
 
 
 import '../../ast/syntax_tree.dart';
+import '../../ast/types.dart';
 import 'environments/array.dart';
 import 'parser.dart';
-import 'types.dart';
 
 class EnvContext {
   final Mode mode;

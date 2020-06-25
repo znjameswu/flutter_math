@@ -64,7 +64,7 @@ class FracNode extends SlotableNode {
               ),
             ],
           ),
-          italic: Measurement.zero,
+          italic: 0.0,
         )
       ];
 

@@ -5,8 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../font/metrics/font_metrics.dart';
-import '../../parser/tex_parser/types.dart';
 import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
 import '../../render/svg/delimiter.dart';
@@ -15,7 +13,6 @@ import '../../render/svg/svg_geomertry.dart';
 import '../../render/svg/svg_string_from_path.dart';
 import '../../render/utils/render_box_offset.dart';
 import '../../utils/iterable_extensions.dart';
-import '../../utils/unicode_literal.dart';
 import '../options.dart';
 import '../size.dart';
 import '../style.dart';
@@ -62,7 +59,7 @@ class SqrtNode extends SlotableNode {
                     id: _SqrtPos.ind, child: childBuildResults[0].widget),
             ],
           ),
-          italic: Measurement.zero,
+          italic: 0.0,
         )
       ];
 

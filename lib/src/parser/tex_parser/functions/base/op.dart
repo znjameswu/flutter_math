@@ -220,11 +220,11 @@ GreenNode _mathopHandler(TexParser parser, FunctionContext context) {
 }
 
 GreenNode _mathFunctionHandler(TexParser parser, FunctionContext context) =>
-    _parseMathFunction(MathAtomNode(text: context.funcName), parser,
+    _parseMathFunction(MathAtomNode(symbol: context.funcName), parser,
         defaultLimits: false);
 
 GreenNode _mathLimitsHandler(TexParser parser, FunctionContext context) =>
-    _parseMathFunction(MathAtomNode(text: context.funcName), parser,
+    _parseMathFunction(MathAtomNode(symbol: context.funcName), parser,
         defaultLimits: true);
 
 const singleCharIntegrals = {
