@@ -59,7 +59,7 @@ class AccentNode extends SlotableNode {
                         symbol: label,
                         variantForm: false,
                         atomType: AtomType.ord,
-                        mode: Mode.math,
+                        mode: Mode.text,
                         options: options,
                       )[0]
                           .widget,

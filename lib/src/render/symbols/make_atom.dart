@@ -47,19 +47,22 @@ List<BuildResult> makeAtom({
       }
 
       if (charMetrics != null) {
+        final italic = charMetrics.italic.cssEm.toLpUnder(options);
         return [
           BuildResult(
             options: options,
-            italic: charMetrics.italic.cssEm.toLpUnder(options),
+            italic: italic,
             skew: charMetrics.skew.cssEm.toLpUnder(options),
-            widget: makeChar(symbol, font, charMetrics, options),
+            widget: Padding(
+              padding: EdgeInsets.only(right: mode == Mode.math ? italic : 0.0),
+              child: makeChar(symbol, font, charMetrics, options),
+            ),
           )
         ];
       } else if (ligatures.containsKey(symbol) &&
           font.fontFamily == 'Typewriter') {
         // Make a special case for ligatures under Typewriter font
         final expandedText = ligatures[symbol].split('');
-
         return [
           BuildResult(
             options: options,
@@ -71,10 +74,7 @@ List<BuildResult> makeAtom({
                       makeChar(e, font, lookupChar(e, font, mode), options))
                   .toList(growable: false),
             ),
-            italic: lookupChar(expandedText.last, font, mode)
-                .italic
-                .cssEm
-                .toLpUnder(options),
+            italic: 0.0,
             skew: 0.0,
           )
         ];
@@ -90,14 +90,17 @@ List<BuildResult> makeAtom({
     fontName: defaultFont.fontName,
     mode: Mode.math,
   );
+  final italic = characterMetrics?.italic?.cssEm?.toLpUnder(options) ?? 0.0;
   // fontMetricsData[defaultFont.fontName][replaceChar.codeUnitAt(0)];
   return [
     BuildResult(
-      options: options,
-      widget: makeChar(char, defaultFont, characterMetrics, options),
-      italic: characterMetrics?.italic?.cssEm?.toLpUnder(options) ?? 0.0,
-      skew: characterMetrics?.skew?.cssEm?.toLpUnder(options) ?? 0.0
-    )
+        options: options,
+        widget: Padding(
+          padding: EdgeInsets.only(right: mode == Mode.math ? italic : 0.0),
+          child: makeChar(char, defaultFont, characterMetrics, options),
+        ),
+        italic: italic,
+        skew: characterMetrics?.skew?.cssEm?.toLpUnder(options) ?? 0.0)
   ];
 }
 
