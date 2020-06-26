@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-void svgDrawRoot(DrawableRoot svgRoot, PaintingContext context, Offset offset) {
+void drawSvgRoot(DrawableRoot svgRoot, PaintingContext context, Offset offset) {
   final canvas = context.canvas;
   canvas.save();
   canvas.translate(offset.dx, offset.dy);

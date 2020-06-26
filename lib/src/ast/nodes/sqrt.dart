@@ -8,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
 import '../../render/svg/delimiter.dart';
-import '../../render/svg/svg_draw_root.dart';
+import '../../render/svg/draw_svg_root.dart';
 import '../../render/svg/svg_geomertry.dart';
 import '../../render/svg/svg_string_from_path.dart';
 import '../../render/utils/render_box_offset.dart';
@@ -200,7 +200,7 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
   @override
   void additionalPaint(PaintingContext context, Offset offset) {
     if (svgRoot != null) {
-      svgDrawRoot(
+      drawSvgRoot(
           svgRoot, context, offset + Offset(svgHorizontalPos, svgVerticalPos));
     }
   }

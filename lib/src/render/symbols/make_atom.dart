@@ -51,6 +51,7 @@ List<BuildResult> makeAtom({
           BuildResult(
             options: options,
             italic: charMetrics.italic.cssEm.toLpUnder(options),
+            skew: charMetrics.skew.cssEm.toLpUnder(options),
             widget: makeChar(symbol, font, charMetrics, options),
           )
         ];
@@ -74,6 +75,7 @@ List<BuildResult> makeAtom({
                 .italic
                 .cssEm
                 .toLpUnder(options),
+            skew: 0.0,
           )
         ];
       }
@@ -94,6 +96,7 @@ List<BuildResult> makeAtom({
       options: options,
       widget: makeChar(char, defaultFont, characterMetrics, options),
       italic: characterMetrics?.italic?.cssEm?.toLpUnder(options) ?? 0.0,
+      skew: characterMetrics?.skew?.cssEm?.toLpUnder(options) ?? 0.0
     )
   ];
 }

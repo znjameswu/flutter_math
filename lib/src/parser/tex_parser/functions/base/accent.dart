@@ -43,33 +43,33 @@ const _accentEntries = {
     '\\overleftarrow',
     '\\Overrightarrow',
     '\\overleftrightarrow',
-    '\\overgroup',
-    '\\overlinesegment',
+    // '\\overgroup',
+    // '\\overlinesegment',
     '\\overleftharpoon',
     '\\overrightharpoon',
   ]: FunctionSpec(
     numArgs: 1,
     handler: _accentHandler,
   ),
-  [
-    "\\'",
-    '\\`',
-    '\\^',
-    '\\~',
-    '\\=',
-    '\\u',
-    '\\.',
-    '\\"',
-    '\\r',
-    '\\H',
-    '\\v',
-    '\\textcircled',
-  ]: FunctionSpec(
-    numArgs: 1,
-    allowedInMath: false,
-    allowedInText: true,
-    handler: _textAccentHandler,
-  ),
+  // [
+  //   "\\'",
+  //   '\\`',
+  //   '\\^',
+  //   '\\~',
+  //   '\\=',
+  //   '\\u',
+  //   '\\.',
+  //   '\\"',
+  //   '\\r',
+  //   '\\H',
+  //   '\\v',
+  //   '\\textcircled',
+  // ]: FunctionSpec(
+  //   numArgs: 1,
+  //   allowedInMath: false,
+  //   allowedInText: true,
+  //   handler: _textAccentHandler,
+  // ),
 };
 
 const _nonStrctchyAccents = {
@@ -91,6 +91,44 @@ const _shiftyAccents = {
   '\\widetilde',
   '\\widecheck',
 };
+
+const _accentCommandMapping = {
+  '\\acute': '\u00B4',
+  '\\grave': '\u0060',
+  '\\ddot': '\u00A8',
+  '\\tilde': '\u007E',
+  '\\bar': '\u00AF',
+  '\\breve': '\u02D8',
+  '\\check': '\u02C7',
+  '\\hat': '\u005E',
+  '\\vec': '\u2192',
+  '\\dot': '\u02D9',
+  '\\mathring': '\u02da',
+  '\\widecheck': '\u02c7',
+  '\\widehat': '\u005e',
+  '\\widetilde': '\u007e',
+  '\\overrightarrow': '\u2192',
+  '\\overleftarrow': '\u2190',
+  '\\Overrightarrow': '\u21d2',
+  '\\overleftrightarrow': '\u2194',
+  // '\\overgroup': '\u',
+  // '\\overlinesegment': '\u',
+  '\\overleftharpoon': '\u21bc',
+  '\\overrightharpoon': '\u21c0',
+  // "\\'": '\u00b4',
+  // '\\`': '\u0060',
+  // '\\^': '\u005e',
+  // '\\~': '\u007e',
+  // '\\=': '\u00af',
+  // '\\u': '\u02d8',
+  // '\\.': '\u02d9',
+  // '\\"': '\u',
+  // '\\r': '\u02da',
+  // '\\H': '\u',
+  // '\\v': '\u02c7',
+  // '\\textcircled': '\u',
+};
+
 GreenNode _accentHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: Mode.math, optional: false);
 
@@ -99,18 +137,18 @@ GreenNode _accentHandler(TexParser parser, FunctionContext context) {
 
   return AccentNode(
     base: base.wrapWithEquationRow(),
-    label: context.funcName,
+    label: _accentCommandMapping[context.funcName],
     isStretchy: isStretchy,
     isShifty: isShifty,
   );
 }
 
-GreenNode _textAccentHandler(TexParser parser, FunctionContext context) {
-  final base = parser.parseArgNode(mode: null, optional: false);
-  return AccentNode(
-    base: base.wrapWithEquationRow(),
-    label: context.funcName,
-    isStretchy: false,
-    isShifty: true,
-  );
-}
+// GreenNode _textAccentHandler(TexParser parser, FunctionContext context) {
+//   final base = parser.parseArgNode(mode: null, optional: false);
+//   return AccentNode(
+//     base: base.wrapWithEquationRow(),
+//     label: context.funcName,
+//     isStretchy: false,
+//     isShifty: true,
+//   );
+// }

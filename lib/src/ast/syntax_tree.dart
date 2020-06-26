@@ -430,8 +430,10 @@ class EquationRowNode extends ParentableNode<GreenNode>
   @override
   List<BuildResult> buildWidget(
       Options options, List<List<BuildResult>> childBuildResults) {
-    final buildResults = childBuildResults.expand((element) => element);
-    final flattenedChildOptions = buildResults.map((e) => e.options).toList();
+    final flattenedBuildResults =
+        childBuildResults.expand((element) => element);
+    final flattenedChildOptions =
+        flattenedBuildResults.map((e) => e.options).toList();
     // assert(flattenedChildList.length == actualChildWidgets.length);
     final spacings = List<double>.filled(
         math.max(flattenedChildList.length - 1, 0), 0,
@@ -449,10 +451,13 @@ class EquationRowNode extends ParentableNode<GreenNode>
       BuildResult(
         options: options,
         widget: EquationRow(
-          children: buildResults.map((e) => e.widget).toList(),
+          children: flattenedBuildResults.map((e) => e.widget).toList(),
           spacings: spacings,
         ),
-        italic: buildResults.lastOrNull?.italic ?? 0.0,
+        italic: flattenedBuildResults.lastOrNull?.italic ?? 0.0,
+        skew: flattenedBuildResults.length == 1
+            ? flattenedBuildResults.first.italic
+            : 0.0,
       )
     ];
   }
@@ -581,9 +586,11 @@ class BuildResult {
   final Widget widget;
   final Options options;
   final double italic;
+  final double skew;
   const BuildResult({
     @required this.widget,
     @required this.options,
     @required this.italic,
+    this.skew = 0.0,
   });
 }

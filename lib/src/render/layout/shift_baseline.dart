@@ -34,9 +34,8 @@ class RenderShiftBaseline extends RenderProxyBox {
     double offset = 0,
   })  : assert(offset != null),
         _relativePos = relativePos,
-        _offset = offset {
-    this.child = child;
-  }
+        _offset = offset,
+        super(child);
 
   double get relativePos => _relativePos;
   double _relativePos;
@@ -63,12 +62,12 @@ class RenderShiftBaseline extends RenderProxyBox {
       return relativePos * childHeight + offset;
     }
     if (child != null) {
-      assert(!debugNeedsLayout);
-      final childBaselineDistance = child.getDistanceToActualBaseline(baseline);
+      // assert(!debugNeedsLayout);
+      final childBaselineDistance =
+          child.computeDistanceToActualBaseline(baseline);
       //ignore: avoid_returning_null
       if (childBaselineDistance == null) return null;
-      return childBaselineDistance +
-          (child.parentData as BoxParentData).offset.dy;
+      return childBaselineDistance + offset;
     } else {
       return super.computeDistanceToActualBaseline(baseline);
     }

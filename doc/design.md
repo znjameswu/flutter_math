@@ -49,6 +49,7 @@ KaTeX functionalities that need further investigation
 - underline
 - Custom fonts added by plugins
 - spacing (maybe need to delete spacings in symbols.dart)
+- text-mode accent
 
 
 KaTeX functionalities that we won't support
@@ -57,6 +58,7 @@ KaTeX functionalities that we won't support
 - lap
 - mathchoice
 - smash
+- \overgroup and \overlinesegment
 
 variantForm is basically in line with MathJax, for the exception of \u210F(\hbar)
 
