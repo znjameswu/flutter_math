@@ -1,4 +1,3 @@
-
 import '../../ast/font_metrics.dart';
 import '../../ast/size.dart';
 import '../../ast/types.dart';
@@ -199,7 +198,7 @@ final Map<String, Map<int, CharacterMetrics>> metricsMap = fontMetricsData;
 CharacterMetrics getCharacterMetrics(
     {String character, String fontName, Mode mode}) {
   if (!metricsMap.containsKey(fontName)) {
-    throw 1; // TODO
+    throw Exception('Font metrics not found for font: $fontName.');
   }
   final ch = character.codeUnitAt(0);
   if (metricsMap[fontName].containsKey(ch)) {

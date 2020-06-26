@@ -9,7 +9,6 @@ import '../utils/iterable_extensions.dart';
 import 'nodes/math_atom.dart';
 import 'nodes/sqrt.dart';
 import 'options.dart';
-import 'size.dart';
 import 'spacing.dart';
 
 /// Root of Roslyn's Red-Green Tree

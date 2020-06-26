@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 
 import '../../render/symbols/make_atom.dart';
 import '../options.dart';
-import '../size.dart';
 import '../symbols.dart';
 import '../syntax_tree.dart';
 import '../types.dart';

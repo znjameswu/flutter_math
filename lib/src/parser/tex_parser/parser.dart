@@ -25,7 +25,6 @@ import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_math/src/ast/nodes/style.dart';
 
 import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/math_atom.dart';
@@ -88,10 +87,6 @@ class TexParser {
     bool infixArgumentMode = false,
   }) {
     final body = <GreenNode>[];
-    // TODO : is this typecheck necessary?
-    // if (!breakTokens.contains(breakOnTokenText)) {
-    //   breakOnTokenText = null;
-    // }
     while (true) {
       if (this.mode == Mode.math) {
         this.consumeSpaces();
@@ -421,125 +416,6 @@ class TexParser {
     }
     // return this.callFunction(func, token, breakOnTokenText);
   }
-
-  // GreenNode callFunction(String name, Token token, String breakOnTokenText) {
-  //   final context = FunctionContext(
-  //       funcName: name,
-  //       parser: this,
-  //       token: token,
-  //       breakOnTokenText: breakOnTokenText);
-  //   final func = functions[name];
-  //   if (func != null && func.handler != null) {
-  //     return func.handler(context);
-  //   } else {
-  //     throw ParseError('''No function handler for $name''');
-  //   }
-  // }
-
-  // Tuple2<List<GreenNode>, List<GreenNode>> parseArgument(
-  //     String func, FunctionSpec<GreenNode> funcData) {
-  //   if (funcData.totalArgs == 0) {
-  //     return Tuple2([], []);
-  //   }
-  //   final args = <GreenNode>[];
-  //   final optArgs = <GreenNode>[];
-
-  //   for (var i = 0; i < funcData.totalArgs; i++) {
-  //     final argType = funcData.argTypes[i];
-  //     final isOptional = i < funcData.numOptionalArgs;
-  //     // Ignore spaces between arguments.  As the TeXbook says:
-  //     // "After you have said ‘\def\row#1#2{...}’, you are allowed to
-  //     //  put spaces between the arguments (e.g., ‘\row x n’), because
-  //     //  TeX doesn’t use single spaces as undelimited arguments."
-  //     final consumeSpaces = (i > 0 && !isOptional) ||
-  //         // Also consume leading spaces in math mode, as parseSymbol
-  //         // won't know what to do with them.  This can only happen with
-  //         // macros, e.g. \frac\foo\foo where \foo expands to a space symbol.
-  //         // In LaTeX, the \foo's get treated as (blank) arguments.
-  //         // In KaTeX, for now, both spaces will get consumed.
-  //         // TODO(edemaine)
-  //         (i == 0 && !isOptional && this.mode == Mode.math);
-  //     final arg = this.parseGroupOfType('''argument to '$func' ''',
-  //         type: argType,
-  //         optional: isOptional,
-  //         greediness: funcData.greediness,
-  //         consumeSpaces: consumeSpaces);
-  //     if (arg == null) {
-  //       if (isOptional) {
-  //         optArgs.add(null);
-  //         continue;
-  //       }
-  //       throw ParseError('''Expected group after '$func' ''', this.fetch());
-  //     }
-  //     (isOptional ? optArgs : args).add(arg);
-  //   }
-  // }
-
-  // GreenNode parseGroupOfType(String name,
-  //     {ArgType type,
-  //     @required bool optional,
-  //     int greediness,
-  //     @required bool consumeSpaces}) {
-  //   switch (type) {
-  //     case ArgType.color:
-  //       if (consumeSpaces) {
-  //         this.consumeSpaces();
-  //       }
-  //       return this.parseColorGroup(optional);
-  //     case ArgType.size:
-  //       if (consumeSpaces) {
-  //         this.consumeSpaces();
-  //       }
-  //       return this.parseSizeGroup(optional);
-  //     case ArgType.url:
-  //       return this.parseUrlGroup(optional);
-  //     case ArgType.math:
-  //     case ArgType.text:
-  //       return this.parseGroup(name,
-  //           optional: optional,
-  //           greediness: greediness,
-  //           breakOnTokenText: null,
-  //           mode: type == ArgType.text ? Mode.text : Mode.math,
-  //           consumeSpaces: consumeSpaces);
-  //     case ArgType.hBox:
-  //       final group = this.parseGroup(name,
-  //           optional: optional,
-  //           greediness: greediness,
-  //           breakOnTokenText: null,
-  //           mode: Mode.text,
-  //           consumeSpaces: consumeSpaces);
-  //       if (group == null) {
-  //         //???????
-  //         return group;
-  //       }
-  //       return StyledGroup();
-  //     case ArgType.raw:
-  //       if (consumeSpaces) {
-  //         this.consumeSpaces();
-  //       }
-  //       if (optional && this.fetch().text == '{') {
-  //         return null;
-  //       }
-  //       final token =
-  //          this.parseStringGroup(ArgType.raw, optional: optional, raw: true);
-  //       if (token != null) {
-  //         return RawNode();
-  //       }
-  //       throw ParseError('Expected raw group', this.fetch());
-  //     case ArgType.original:
-  //     default:
-  //       if (type == null || type == ArgType.original) {
-  //         return this.parseGroup(name,
-  //             optional: optional,
-  //             greediness: greediness,
-  //             breakOnTokenText: null,
-  //             mode: null,
-  //             consumeSpaces: consumeSpaces);
-  //       } else {
-  //         throw ParseError('Unknown group type as $name', this.fetch());
-  //       }
-  //   }
-  // }
 
   final argParsingContexts = Queue<ArgumentParsingContext>();
   ArgumentParsingContext get currArgParsingContext => argParsingContexts.last;

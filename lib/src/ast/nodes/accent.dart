@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/ast/nodes/math_atom.dart';
 
 import '../options.dart';
 import '../syntax_tree.dart';
+import 'math_atom.dart';
 
 class AccentNode extends SlotableNode {
   final EquationRowNode base;

@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 
 import '../../render/layout/multiscripts.dart';
 import '../options.dart';
-import '../size.dart';
 import '../style.dart';
 import '../syntax_tree.dart';
 import 'math_atom.dart';

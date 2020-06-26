@@ -19,9 +19,6 @@ class EquationRow extends MultiChildRenderObjectWidget {
     // this.selection,
     List<Widget> children = const [],
   })  : assert(textBaseline != null),
-        // assert(baselineReferenceWidgetNum != null),
-        // assert(baselineReferenceWidgetNum >= 0),
-        // assert(baselineReferenceWidgetNum < children.length),
         assert(baselineOffset != null),
         assert(crossAxisAlignment != null),
         super(key: key, children: children);
