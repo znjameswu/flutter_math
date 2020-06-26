@@ -55,7 +55,7 @@ GreenNode _fontHandler(TexParser parser, FunctionContext context) {
   return StyleNode(
     children: body.expandEquationRow(),
     optionsDiff: OptionsDiff(
-      mathFontOptions: fontOptionsTable[func],
+      mathFontOptions: fontOptionsTable[func.substring(1)],
     ),
   );
 }
