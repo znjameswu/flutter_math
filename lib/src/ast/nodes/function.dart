@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../../render/layout/line.dart';
 import '../options.dart';
 import '../syntax_tree.dart';
 
@@ -10,45 +11,40 @@ class FunctionNode extends SlotableNode {
   FunctionNode({
     @required this.functionName,
     @required this.argument,
-  });
+  })  : assert(functionName != null),
+        assert(argument != null);
 
   @override
   List<BuildResult> buildSlotableWidget(
-      Options options, List<BuildResult> childBuildResults) {
-    // TODO: implement buildWidget
-    throw UnimplementedError();
-  }
+          Options options, List<BuildResult> childBuildResults) =>
+      [
+        BuildResult(
+            widget: Line(
+                children: childBuildResults
+                    .map((e) => e.widget)
+                    .toList(growable: false)),
+            options: options,
+            italic: 0.0)
+      ];
 
   @override
-  List<Options> computeChildOptions(Options options) {
-    // TODO: implement computeChildOptions
-    throw UnimplementedError();
-  }
+  List<Options> computeChildOptions(Options options) =>
+      List.filled(2, options, growable: false);
 
   @override
-  List<EquationRowNode> computeChildren() {
-    // TODO: implement computeChildren
-    throw UnimplementedError();
-  }
+  List<EquationRowNode> computeChildren() => [functionName, argument];
 
   @override
-  // TODO: implement leftType
-  AtomType get leftType => throw UnimplementedError();
+  AtomType get leftType => AtomType.op;
 
   @override
-  // TODO: implement rightType
-  AtomType get rightType => throw UnimplementedError();
+  AtomType get rightType => argument.rightType;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) {
-    // TODO: implement shouldRebuildWidget
-    throw UnimplementedError();
-  }
+  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(
-      List<EquationRowNode> newChildren) {
-    // TODO: implement updateChildren
-    throw UnimplementedError();
-  }
+          List<EquationRowNode> newChildren) =>
+      FunctionNode(functionName: newChildren[0], argument: newChildren[2]);
 }
