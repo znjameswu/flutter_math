@@ -55,11 +55,12 @@ class RenderShiftBaseline extends RenderProxyBox {
     }
   }
 
+  var _height = 0.0;
+
   @override
   double computeDistanceToActualBaseline(TextBaseline baseline) {
     if (relativePos != null) {
-      final childHeight = child.size.height;
-      return relativePos * childHeight + offset;
+      return relativePos * _height + offset;
     }
     if (child != null) {
       // assert(!debugNeedsLayout);
@@ -73,27 +74,10 @@ class RenderShiftBaseline extends RenderProxyBox {
     }
   }
 
-  // @override
-  // void paint(PaintingContext context, Offset offset) {
-  //   if (child != null) {
-  //     final childParentData = child.parentData as BoxParentData;
-  //     context.paintChild(child, childParentData.offset + offset);
-  //   }
-  // }
-
-  // @override
-  // bool hitTestChildren(BoxHitTestResult result, {Offset position}) {
-  //   if (child != null) {
-  //     final childParentData = child.parentData as BoxParentData;
-  //     return result.addWithPaintOffset(
-  //       offset: childParentData.offset,
-  //       position: position,
-  //       hitTest: (BoxHitTestResult result, Offset transformed) {
-  //         assert(transformed == position - childParentData.offset);
-  //         return child.hitTest(result, position: transformed);
-  //       },
-  //     );
-  //   }
-  //   return false;
-  // }
+  @override
+  void performLayout() {
+    super.performLayout();
+    // We have to hack like this to know the height of this object!!!
+    _height = size.height;
+  }
 }

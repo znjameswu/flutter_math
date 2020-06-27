@@ -2,6 +2,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/render/layout/layout_builder_baseline.dart';
+import 'package:flutter_math/src/render/layout/line.dart';
+import 'package:flutter_math/src/render/layout/shift_baseline.dart';
 
 import '../../font/metrics/font_metrics.dart';
 import '../../render/constants.dart';
@@ -34,17 +37,29 @@ class LeftRightNode extends SlotableNode {
   @override
   List<BuildResult> buildSlotableWidget(
       Options options, List<BuildResult> childBuildResults) {
-    final childWidgets =
-        List.generate(2 + body.length + middle.length, (index) {
+    final numElements = 2 + body.length + middle.length;
+    final a = options.fontMetrics.axisHeight.cssEm.toLpUnder(options);
+
+    final childWidgets = List.generate(numElements, (index) {
       if (index % 2 == 0) {
         // Delimiter
-        return CustomLayoutId(
-          id: _LeftRightId(isDelimiter: true, number: index ~/ 2 - 1),
-          child: LayoutBuilder(
+        return LineElement(
+          customCrossSize: (height, depth) {
+            final delta = math.max(height - a, depth + a);
+            final delimeterFullHeight = math.max(delta / 500 * delimiterFactor,
+                2 * delta - delimiterShorfall.toLpUnder(options));
+            return BoxConstraints(minHeight: delimeterFullHeight);
+          },
+          trailingSpacing: index == numElements - 1
+              ? 0.0
+              : getSpacingSize(index == 0 ? AtomType.open : AtomType.rel,
+                      body[(index + 1) ~/ 2].leftType, options.style)
+                  .toLpUnder(options),
+          child: LayoutBuilderPreserveBaseline(
             builder: (context, constraints) => buildCustomSizedDelimWidget(
               index == 0
                   ? leftDelim
-                  : index == 1 + body.length + middle.length
+                  : index == numElements - 1
                       ? rightDelim
                       : middle[index ~/ 2 - 1],
               constraints.minHeight,
@@ -54,8 +69,12 @@ class LeftRightNode extends SlotableNode {
         );
       } else {
         // Content
-        return CustomLayoutId(
-          id: _LeftRightId(isDelimiter: false, number: index ~/ 2),
+        return LineElement(
+          trailingSpacing: getSpacingSize(
+                  body[index ~/ 2].rightType,
+                  index == numElements - 2 ? AtomType.close : AtomType.rel,
+                  options.style)
+              .toLpUnder(options),
           child: childBuildResults[index ~/ 2].widget,
         );
       }
@@ -64,8 +83,7 @@ class LeftRightNode extends SlotableNode {
       BuildResult(
         italic: 0.0,
         options: options,
-        widget: CustomLayout<_LeftRightId>(
-          delegate: LeftRightLayoutDelegate(options: options),
+        widget: Line(
           children: childWidgets,
         ),
       )
@@ -185,21 +203,21 @@ class LeftRightLayoutDelegate extends CustomLayoutDelegate<_LeftRightId> {
           parentUsesSize: true);
     }
 
-    final spacingLeft = getSpacingSize(
-            left: AtomType.open, right: AtomType.ord, style: options.style)
-        .toLpUnder(options);
+    final spacingLeft =
+        getSpacingSize(AtomType.open, AtomType.ord, options.style)
+            .toLpUnder(options);
 
-    final spacingMidLeft = getSpacingSize(
-            left: AtomType.ord, right: AtomType.rel, style: options.style)
-        .toLpUnder(options);
+    final spacingMidLeft =
+        getSpacingSize(AtomType.ord, AtomType.rel, options.style)
+            .toLpUnder(options);
 
-    final spacingMidRight = getSpacingSize(
-            left: AtomType.rel, right: AtomType.ord, style: options.style)
-        .toLpUnder(options);
+    final spacingMidRight =
+        getSpacingSize(AtomType.rel, AtomType.ord, options.style)
+            .toLpUnder(options);
 
-    final spacingRight = getSpacingSize(
-            left: AtomType.ord, right: AtomType.close, style: options.style)
-        .toLpUnder(options);
+    final spacingRight =
+        getSpacingSize(AtomType.ord, AtomType.close, options.style)
+            .toLpUnder(options);
 
     final childHeights = childrenTable.entries
         .map((entry) => entry.key.isDelimiter
@@ -282,8 +300,9 @@ Widget buildCustomSizedDelimWidget(
     String delim, double minDelimiterHeight, Options options) {
   if (delim == null) {
     final axisHeight = options.fontMetrics.xHeight.cssEm.toLpUnder(options);
-    return ResetBaseline(
-      height: minDelimiterHeight / 2 + axisHeight,
+    return ShiftBaseline(
+      relativePos: 0.5,
+      offset: axisHeight,
       child: Container(
         height: minDelimiterHeight,
         width: nullDelimiterSpace.toLpUnder(options),
@@ -313,8 +332,13 @@ Widget buildCustomSizedDelimWidget(
   }
 
   if (delimConf != null) {
-    return makeChar(delim, delimConf.font,
-        lookupChar(delim, delimConf.font, Mode.math), options);
+    final axisHeight = options.fontMetrics.xHeight.cssEm.toLpUnder(options);
+    return ShiftBaseline(
+      relativePos: 0.0,
+      offset: axisHeight,
+      child: makeChar(delim, delimConf.font,
+          lookupChar(delim, delimConf.font, Mode.math), options),
+    );
   } else {
     return makeStakedDelim(delim, minDelimiterHeight, Mode.math, options);
   }
@@ -353,8 +377,9 @@ Widget makeStakedDelim(
 
   final axisHeight = options.fontMetrics.axisHeight.cssEm.toLpUnder(options);
 
-  return ResetBaseline(
-    height: realHeight / 2 + axisHeight,
+  return ShiftBaseline(
+    relativePos: 0.5,
+    offset: axisHeight,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,

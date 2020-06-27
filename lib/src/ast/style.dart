@@ -61,6 +61,8 @@ extension MathStyleExt on MathStyle {
 
   bool operator >(MathStyle other) => this.index < other.index;
   bool operator <(MathStyle other) => this.index > other.index;
+  bool operator >=(MathStyle other) => this.index <= other.index;
+  bool operator <=(MathStyle other) => this.index >= other.index;
   bool isTight() => this.size >= 2;
 }
 

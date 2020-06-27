@@ -5,6 +5,7 @@ import '../../render/layout/multiscripts.dart';
 import '../../render/symbols/make_atom.dart';
 import '../options.dart';
 import '../size.dart';
+import '../spacing.dart';
 import '../style.dart';
 import '../syntax_tree.dart';
 import '../types.dart';
@@ -53,8 +54,16 @@ class NaryOperatorNode extends SlotableNode {
       supOptions: childBuildResults[1]?.options,
     );
     final widget = Line(children: [
-      LineElement(child: operatorWidget),
-      LineElement(child: childBuildResults[2].widget),
+      LineElement(
+        child: operatorWidget,
+        trailingSpacing:
+            getSpacingSize(AtomType.op, naryand.leftType, options.style)
+                .toLpUnder(options),
+      ),
+      LineElement(
+        child: childBuildResults[2].widget,
+        trailingSpacing: 0.0,
+      ),
     ]);
     return [
       BuildResult(

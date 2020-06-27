@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../render/layout/line.dart';
 import '../options.dart';
+import '../spacing.dart';
 import '../syntax_tree.dart';
 
 class FunctionNode extends SlotableNode {
@@ -19,10 +20,18 @@ class FunctionNode extends SlotableNode {
           Options options, List<BuildResult> childBuildResults) =>
       [
         BuildResult(
-            widget: Line(
-                children: childBuildResults
-                    .map((e) => e.widget)
-                    .toList(growable: false)),
+            widget: Line(children: [
+              LineElement(
+                trailingSpacing: getSpacingSize(
+                        AtomType.op, argument.leftType, options.style)
+                    .toLpUnder(options),
+                child: childBuildResults[0].widget,
+              ),
+              LineElement(
+                trailingSpacing: 0.0,
+                child: childBuildResults[1].widget,
+              ),
+            ]),
             options: options,
             italic: 0.0)
       ];

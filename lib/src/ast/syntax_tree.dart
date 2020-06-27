@@ -440,9 +440,9 @@ class EquationRowNode extends ParentableNode<GreenNode>
         growable: false);
     for (var i = 0; i < flattenedChildList.length - 1; i++) {
       spacings[i] = getSpacingSize(
-        left: flattenedChildList[i].rightType,
-        right: flattenedChildList[i + 1].leftType,
-        style: flattenedChildOptions[i + 1].style,
+        flattenedChildList[i].rightType,
+        flattenedChildList[i + 1].leftType,
+        flattenedChildOptions[i + 1].style,
       ).toLpUnder(
           flattenedChildOptions[i + 1]); // Behavior in accordance with KaTeX
     }
@@ -475,11 +475,13 @@ class EquationRowNode extends ParentableNode<GreenNode>
 
   AtomType _leftType;
   @override
-  AtomType get leftType => _leftType ??= children[0].leftType;
+  AtomType get leftType =>
+      _leftType ??= children.firstOrNull?.leftType ?? AtomType.ord;
 
   AtomType _rightType;
   @override
-  AtomType get rightType => _rightType ??= children.last.rightType;
+  AtomType get rightType =>
+      _rightType ??= children.lastOrNull?.rightType ?? AtomType.ord;
 }
 
 extension GreenNodeWrappingExt on GreenNode {

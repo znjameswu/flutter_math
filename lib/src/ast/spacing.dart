@@ -102,7 +102,7 @@ const thinspace = Measurement(value: 3, unit: Unit.mu);
 const mediumspace = Measurement(value: 4, unit: Unit.mu);
 const thickspace = Measurement(value: 5, unit: Unit.mu);
 
-const Map<AtomType, Map<AtomType, Measurement>> spacings = {
+const Map<AtomType, Map<AtomType, Measurement>> _spacings = {
   AtomType.ord: {
     AtomType.op: thinspace,
     AtomType.bin: mediumspace,
@@ -154,7 +154,7 @@ const Map<AtomType, Map<AtomType, Measurement>> spacings = {
   },
 };
 
-const Map<AtomType, Map<AtomType, Measurement>> tightSpacings = {
+const Map<AtomType, Map<AtomType, Measurement>> _tightSpacings = {
   AtomType.ord: {
     AtomType.op: thinspace,
   },
@@ -174,8 +174,8 @@ const Map<AtomType, Map<AtomType, Measurement>> tightSpacings = {
   },
 };
 
-Measurement getSpacingSize({AtomType left, AtomType right, MathStyle style}) =>
-    (style.index >= MathStyle.script.index
-        ? tightSpacings[left][right]
-        : spacings[left][right]) ??
+Measurement getSpacingSize(AtomType left, AtomType right, MathStyle style) =>
+    (style <= MathStyle.script
+        ? _tightSpacings[left][right]
+        : _spacings[left][right]) ??
     Measurement.zero;

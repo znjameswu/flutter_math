@@ -5,15 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../utils/iterable_extensions.dart';
 import 'breakable/breakable_box.dart';
 import 'breakable/breakable_constraints.dart';
 import 'breakable/breakable_offset.dart';
 import 'breakable/breakable_size.dart';
 
 class LineParentData extends ContainerBreakableBoxParentData<RenderBox> {
-  bool canBreakBefore = false;
 
-  double relativeCrossSize;
+  // The first canBreakBefore will be ignored
+  bool canBreakBefore;
+
+  BoxConstraints Function(double height, double depth) customCrossSize;
+
+  // The last trailing spacing will be ignored
+  double trailingSpacing;
 
   /// Margin with the end of last sibling on the main axis
   ///
@@ -21,29 +27,23 @@ class LineParentData extends ContainerBreakableBoxParentData<RenderBox> {
   /// This property is for the sole purpose of negative [mainMargin]
   // double mainMargin;
 
-  CrossAxisAlignment alignment;
-  FlexFit fit;
-
   @override
   String toString() =>
-      '${super.toString()}; relativeCrossSize=$relativeCrossSize; fit=$fit';
+      '${super.toString()}; canBreakBefore = $canBreakBefore; customSize = ${customCrossSize != null}; trailingSpacing = $trailingSpacing';
 }
 
 class LineElement extends ParentDataWidget<LineParentData> {
   final bool canBreakBefore;
-  final double relativeHeight;
-  final FlexFit fit;
+  final BoxConstraints Function(double height, double depth) customCrossSize;
+  final double trailingSpacing;
+
   const LineElement({
     Key key,
-    this.canBreakBefore = true,
-    this.relativeHeight = 1.0,
-    this.fit = FlexFit.loose,
+    this.canBreakBefore = false,
+    this.customCrossSize,
+    @required this.trailingSpacing,
     @required Widget child,
-  })  : assert(relativeHeight != null),
-        assert(relativeHeight <= 1.0),
-        assert(relativeHeight >= 0),
-        assert(fit != null),
-        super(
+  }) : super(
           key: key,
           child: child,
         );
@@ -53,13 +53,18 @@ class LineElement extends ParentDataWidget<LineParentData> {
     final parentData = renderObject.parentData as LineParentData;
     var needsLayout = false;
 
-    if (parentData.relativeCrossSize != relativeHeight) {
-      parentData.relativeCrossSize = relativeHeight;
+    if (parentData.canBreakBefore != canBreakBefore) {
+      parentData.canBreakBefore = canBreakBefore;
       needsLayout = true;
     }
 
-    if (parentData.fit != fit) {
-      parentData.fit = fit;
+    if (parentData.customCrossSize != customCrossSize) {
+      parentData.customCrossSize = customCrossSize;
+      needsLayout = true;
+    }
+
+    if (parentData.trailingSpacing != trailingSpacing) {
+      parentData.trailingSpacing = trailingSpacing;
       needsLayout = true;
     }
 
@@ -72,33 +77,32 @@ class LineElement extends ParentDataWidget<LineParentData> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DoubleProperty('relativeHeight', relativeHeight));
+    properties.add(FlagProperty('canBreakBefore',
+        value: canBreakBefore, ifTrue: 'allow breaking before'));
+    properties.add(FlagProperty('customSize',
+        value: customCrossSize != null, ifTrue: 'using relative size'));
+    properties.add(DoubleProperty('trailingSpacing', trailingSpacing));
   }
 
   @override
   Type get debugTypicalAncestorWidgetClass => Line;
 }
 
-/// Line provides ability of both relative height widgets and line breaks.
+/// Line provides abilities for line breaks, delim-sizing and background color indicator.
 class Line extends MultiChildRenderObjectWidget {
   Line({
     Key key,
     this.textBaseline = TextBaseline.alphabetic,
-    // this.baselineReferenceWidgetNum = 0,
     this.baselineOffset = 0,
     this.crossAxisAlignment = CrossAxisAlignment.baseline,
     this.textDirection,
     this.background,
     List<Widget> children = const [],
   })  : assert(textBaseline != null),
-        // assert(baselineReferenceWidgetNum != null),
-        // assert(baselineReferenceWidgetNum >= 0),
-        // assert(baselineReferenceWidgetNum < children.length),
         assert(baselineOffset != null),
         assert(crossAxisAlignment != null),
         super(key: key, children: children);
   final TextBaseline textBaseline;
-  // final int baselineReferenceWidgetNum;
   final double baselineOffset;
   final CrossAxisAlignment crossAxisAlignment;
   final TextDirection textDirection;
@@ -111,7 +115,6 @@ class Line extends MultiChildRenderObjectWidget {
   @override
   RenderLine createRenderObject(BuildContext context) => RenderLine(
         textBaseline: textBaseline,
-        // baselineReferenceWidgetNum: baselineReferenceWidgetNum,
         baselineOffset: baselineOffset,
         crossAxisAlignment: crossAxisAlignment,
         textDirection: getEffectiveTextDirection(context),
@@ -123,7 +126,6 @@ class Line extends MultiChildRenderObjectWidget {
       BuildContext context, covariant RenderLine renderObject) {
     renderObject
       ..textBaseline = textBaseline
-      // ..baselineReferenceWidgetNum = baselineReferenceWidgetNum
       ..baselineOffset = baselineOffset
       ..crossAxisAlignment = crossAxisAlignment
       ..textDirection = getEffectiveTextDirection(context)
@@ -135,9 +137,6 @@ class Line extends MultiChildRenderObjectWidget {
     super.debugFillProperties(properties);
     properties.add(EnumProperty<TextBaseline>('textBaseline', textBaseline,
         defaultValue: null));
-    // properties.add(IntProperty(
-    //     'baselineReferenceWidgetNum', baselineReferenceWidgetNum,
-    //     defaultValue: 0));
     properties
         .add(DoubleProperty('baselineOffset', baselineOffset, defaultValue: 0));
     properties.add(EnumProperty<CrossAxisAlignment>(
@@ -155,18 +154,14 @@ class RenderLine extends RenderBreakableBox
   RenderLine({
     List<RenderBox> children,
     TextBaseline textBaseline = TextBaseline.alphabetic,
-    // int baselineReferenceWidgetNum = 0,
     double baselineOffset = 0,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.baseline,
     TextDirection textDirection = TextDirection.ltr,
     ValueNotifier<Color> background,
   })  : assert(textBaseline != null),
-        // assert(baselineReferenceWidgetNum != null),
-        // assert(baselineReferenceWidgetNum >= 0),
         assert(baselineOffset != null),
         assert(crossAxisAlignment != null),
         _textBaseline = textBaseline,
-        // _baselineReferenceWidgetNum = baselineReferenceWidgetNum,
         _baselineOffset = baselineOffset,
         _crossAxisAlignment = crossAxisAlignment,
         _textDirection = textDirection,
@@ -182,15 +177,6 @@ class RenderLine extends RenderBreakableBox
       markNeedsLayout();
     }
   }
-
-  // int get baselineReferenceWidgetNum => _baselineReferenceWidgetNum;
-  // int _baselineReferenceWidgetNum;
-  // set baselineReferenceWidgetNum(int value) {
-  //   if (_baselineReferenceWidgetNum != value) {
-  //     _baselineReferenceWidgetNum = value;
-  //     markNeedsLayout();
-  //   }
-  // }
 
   double get baselineOffset => _baselineOffset;
   double _baselineOffset;
@@ -246,12 +232,12 @@ class RenderLine extends RenderBreakableBox
   @override
   void attach(PipelineOwner owner) {
     super.attach(owner);
-    background.addListener(markNeedsPaint);
+    background?.addListener(markNeedsPaint);
   }
 
   @override
   void detach() {
-    background.removeListener(markNeedsPaint);
+    background?.removeListener(markNeedsPaint);
     super.detach();
   }
 
@@ -338,18 +324,6 @@ class RenderLine extends RenderBreakableBox
   double computeDistanceToActualBaseline(TextBaseline baseline) {
     assert(!debugNeedsLayout);
     return maxHeightAboveBaseline + baselineOffset;
-    // var child = firstChild;
-    // //ignore: avoid_returning_null
-    // if (child == null) return null;
-    // for (var i = 0; i < baselineReferenceWidgetNum; i++) {
-    //   child = (child.parentData as CrossSizeParentData).nextSibling;
-    // }
-    // final childParentData = child.parentData as CrossSizeParentData;
-    // final childBaselineDistance = child.getDistanceToActualBaseline(baseline) ??
-    //     (baseline == TextBaseline.alphabetic
-    //         ? child.size.height / 2
-    //         : child.size.height);
-    // return childParentData.offset.dy + childBaselineDistance + baselineOffset;
   }
 
   @override
@@ -361,13 +335,13 @@ class RenderLine extends RenderBreakableBox
     maxHeightAboveBaseline = 0.0;
     var maxDepthBelowBaseline = 0.0;
     var child = firstChild;
-    final relativeChildren = <RenderBox>[];
+    final delimiters = <RenderBox>[];
     while (child != null) {
       final childParentData = child.parentData as LineParentData;
       final innerConstraints = BoxConstraints(maxHeight: constraints.maxHeight);
       child.layout(innerConstraints, parentUsesSize: true);
-      if (childParentData.relativeCrossSize != null) {
-        relativeChildren.add(child);
+      if (childParentData.customCrossSize != null) {
+        delimiters.add(child);
       } else {
         final distance = child.getDistanceToBaseline(textBaseline);
         maxHeightAboveBaseline = math.max(maxHeightAboveBaseline, distance);
@@ -379,35 +353,16 @@ class RenderLine extends RenderBreakableBox
       child = childParentData.nextSibling;
     }
 
-    var crossSize = maxHeightAboveBaseline + maxDepthBelowBaseline;
+    // var crossSize = maxHeightAboveBaseline + maxDepthBelowBaseline;
 
-    for (final relativeChild in relativeChildren) {
-      final childParentData = relativeChild.parentData as LineParentData;
-      assert(childParentData.relativeCrossSize != null);
-      final maxChildExtent = crossSize * childParentData.relativeCrossSize;
-      BoxConstraints innerConstraints;
-      switch (childParentData.fit) {
-        case FlexFit.tight:
-          innerConstraints = BoxConstraints(
-              minWidth: maxChildExtent, maxHeight: maxChildExtent);
-          break;
-        case FlexFit.loose:
-          innerConstraints = BoxConstraints(maxHeight: maxChildExtent);
-          break;
-      }
-      relativeChild.layout(innerConstraints, parentUsesSize: true);
+    for (final delimeter in delimiters) {
+      final childParentData = delimeter.parentData as LineParentData;
+      delimeter.layout(
+        childParentData.customCrossSize(
+            maxHeightAboveBaseline, maxDepthBelowBaseline),
+        parentUsesSize: true,
+      );
     }
-
-    // // Align items along the main axis.
-    // size = constraints.constrain(Size(allocatedSize, crossSize));
-    // final actualSize = size.width;
-    // crossSize = size.height;
-    // final actualSizeDelta = actualSize - allocatedSize;
-    // _overflow = math.max(0.0, -actualSizeDelta);
-    // // flipMainAxis is used to decide whether to lay out left-to-right/top-to-bottom (false), or
-    // // right-to-left/bottom-to-top (true). The _startIsTopLeft will return null if there's only
-    // // one child and the relevant direction is null, in which case we arbitrarily decide not to
-    // // flip, but that doesn't have any detectable effect.
 
     final layoutProxy = _BreakableLayoutProxy(
       constraints: constraints,
@@ -583,9 +538,9 @@ class _BreakableLayoutProxy {
 
       // Judge if we need to start a new line
       var needStartAtNewLine = true;
-      // If this line is currently emptpy, then we must fill the line with something, even it overflows
-      // If we can't break, we obviously can't start a new line
-      if (childMainPosition == 0 || childParentData.canBreakBefore) {
+      // If this line is currently emptpy, then we must fill the line with
+      // SOMETHING, even it overflows
+      if (childMainPosition == 0) {
         needStartAtNewLine = false;
       } else {
         // If current line can accomodate, then fill it.
@@ -653,6 +608,7 @@ class _BreakableLayoutProxy {
               child.getDistanceToEndBaseline(textBaseline));
         }
       } else {
+        final a = child.getDistanceToBaseline(textBaseline);
         addWaitingSize(
             child, child.size, child.getDistanceToBaseline(textBaseline));
       }
@@ -692,9 +648,8 @@ class _BreakableLayoutProxy {
       // Only support baseline alignment to avoid unecessary code complexity.
       assert(crossAxisAlignment == CrossAxisAlignment.baseline);
       // For relative child, they will always be centered.
-      final childCrossPos = childParentData.relativeCrossSize != null
-          ? (currLineFinalHeight - child.size.height) / 2
-          : currLineFinalHeightAboveBaseline - currLineWaitingBaseline[i];
+      final childCrossPos =
+          currLineFinalHeightAboveBaseline - currLineWaitingBaseline[i];
       final currentOffset = Offset(
         currLineMainPos + childMainPos,
         currLineCrossPos + childCrossPos,
