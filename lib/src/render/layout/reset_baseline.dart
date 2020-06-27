@@ -11,7 +11,7 @@ class ResetBaseline extends SingleChildRenderObjectWidget {
 
   @override
   RenderResetBaseline createRenderObject(BuildContext context) =>
-      RenderResetBaseline();
+      RenderResetBaseline(height: height);
 }
 
 class RenderResetBaseline extends RenderProxyBox {
@@ -29,6 +29,5 @@ class RenderResetBaseline extends RenderProxyBox {
   }
 
   @override
-  // ignore: avoid_returning_null
   double computeDistanceToActualBaseline(TextBaseline baseline) => height;
 }

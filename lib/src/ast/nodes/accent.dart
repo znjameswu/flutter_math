@@ -1,16 +1,15 @@
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/ast/accents.dart';
-import 'package:flutter_math/src/render/constants.dart';
-import 'package:flutter_math/src/render/layout/shift_baseline.dart';
-import 'package:flutter_math/src/render/svg/stretchy.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_math/src/render/svg/static.dart';
 
+import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
-import '../../render/svg/svg_string_from_path.dart';
+import '../../render/layout/shift_baseline.dart';
+import '../../render/svg/stretchy.dart';
 import '../../render/symbols/make_atom.dart';
 import '../../render/utils/render_box_offset.dart';
+import '../accents.dart';
 import '../options.dart';
 import '../size.dart';
 import '../syntax_tree.dart';
@@ -34,6 +33,47 @@ class AccentNode extends SlotableNode {
     // Checking of character box is done automatically by the passing of
     // BuildResult, so we don't need to check it here.
     final skew = isShifty ? childBuildResults[0].skew : 0.0;
+    Widget accentWidget;
+    if (!isStretchy) {
+      Widget accentSymbolWidget;
+      // Following comment are selected from KaTeX:
+      //
+      // Before version 0.9, \vec used the combining font glyph U+20D7.
+      // But browsers, especially Safari, are not consistent in how they
+      // render combining characters when not preceded by a character.
+      // So now we use an SVG.
+      // If Safari reforms, we should consider reverting to the glyph.
+      if (label == '\u2192') {
+        // We need non-null baseline. Because ShiftBaseline cannot deal with a 
+        // baseline distance of null due to Flutter rendering pipeline design.
+        accentSymbolWidget = staticSvg('vec', options, needBaseline: true);
+      } else {
+        accentSymbolWidget = makeAtom(
+          symbol: accentRenderConfigs[label].overChar,
+          variantForm: false,
+          atomType: AtomType.ord,
+          mode: Mode.text,
+          options: options,
+        )[0]
+            .widget;
+      }
+      // We have to use a Center, otherwise Flutter will force children to
+      // comply with constraint by effectively Alignment.topRight
+      accentWidget = Center(
+        child: ShiftBaseline(
+          offset: -options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+          child: accentSymbolWidget,
+        ),
+      );
+    } else {
+      accentWidget = LayoutBuilder(
+        builder: (context, constraints) => strechySvgSpan(
+          accentRenderConfigs[label].overImageName,
+          constraints.minWidth,
+          options,
+        ),
+      );
+    }
     return [
       BuildResult(
         options: options,
@@ -51,26 +91,7 @@ class AccentNode extends SlotableNode {
             ),
             CustomLayoutId(
               id: _AccentPos.accent,
-              child: !isStretchy
-                  ? ShiftBaseline(
-                      offset:
-                          -options.fontMetrics.xHeight.cssEm.toLpUnder(options),
-                      child: makeAtom(
-                        symbol: label,
-                        variantForm: false,
-                        atomType: AtomType.ord,
-                        mode: Mode.text,
-                        options: options,
-                      )[0]
-                          .widget,
-                    )
-                  : LayoutBuilder(
-                      builder: (context, constraints) => strechySvgSpan(
-                        accentRenderConfigs[label].overImageName,
-                        constraints.minWidth,
-                        options,
-                      ),
-                    ),
+              child: accentWidget,
             ),
           ],
         ),
