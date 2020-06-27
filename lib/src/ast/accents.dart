@@ -91,10 +91,10 @@ const katexCompatibleAccents = {
   '\u21d2': AccentRenderConfig( // '\u21d2'
     overImageName: 'Overrightarrow',
   ),
-  // '\u': AccentRenderConfig( // '\u0311'
-  //   overImageName: 'overgroup',
-  //   underImageName: 'undergroup,'
-  // ),
+  '\u23e0': AccentRenderConfig( // '\u0311'
+    overImageName: 'overgroup',
+    underImageName: 'undergroup,'
+  ),
   // '\u': AccentRenderConfig(
   //   overImageName: 'overlinesegment',
   //   underImageName: 'underlinesegment',
