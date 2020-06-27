@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/render/svg/static.dart';
 
 import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
 import '../../render/layout/shift_baseline.dart';
+import '../../render/svg/static.dart';
 import '../../render/svg/stretchy.dart';
 import '../../render/symbols/make_atom.dart';
 import '../../render/utils/render_box_offset.dart';

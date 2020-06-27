@@ -1,10 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/render/layout/reset_baseline.dart';
-import 'package:flutter_math/src/render/svg/svg_geomertry.dart';
-import 'package:flutter_math/src/render/svg/svg_string_from_path.dart';
 import 'package:flutter_svg/svg.dart';
+
 import '../../ast/options.dart';
 import '../../ast/size.dart';
+import '../layout/reset_baseline.dart';
+import 'svg_geomertry.dart';
+import 'svg_string_from_path.dart';
 
 const svgData = {
   //   path, width, height
