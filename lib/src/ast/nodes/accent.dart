@@ -146,10 +146,10 @@ class AccentLayoutDelegate extends CustomLayoutDelegate<_AccentPos> {
 
     final baseHeight = base.layoutHeight;
 
-    var delta = math.min(
-      baseHeight,
-      options.fontMetrics.xHeight.cssEm.toLpUnder(options),
-    );
+    // var delta = math.min(
+    //   baseHeight,
+    //   options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+    // );
 
     final accentHorizontalShift =
         skew + (base.size.width - accent.size.width) * 0.5;
