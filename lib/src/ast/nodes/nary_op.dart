@@ -1,7 +1,13 @@
 import 'package:flutter/widgets.dart';
 
+import '../../render/layout/line.dart';
+import '../../render/layout/multiscripts.dart';
+import '../../render/symbols/make_atom.dart';
 import '../options.dart';
+import '../size.dart';
+import '../style.dart';
 import '../syntax_tree.dart';
+import '../types.dart';
 
 // enum LimitsBehavior {
 //   //ignore: constant_identifier_names
@@ -16,6 +22,7 @@ class NaryOperatorNode extends SlotableNode {
   final EquationRowNode upperLimit;
   final EquationRowNode naryand;
   final bool limits;
+  final bool allowLargeOp; // for \smallint
 
   NaryOperatorNode({
     @required this.operator,
@@ -23,45 +30,68 @@ class NaryOperatorNode extends SlotableNode {
     @required this.upperLimit,
     @required this.naryand,
     this.limits,
-  });
+    this.allowLargeOp = true,
+  }) : assert(naryand != null);
 
   @override
   List<BuildResult> buildSlotableWidget(
       Options options, List<BuildResult> childBuildResults) {
-    // TODO: implement buildWidget
-    throw UnimplementedError();
+    final large = allowLargeOp && (options.style == MathStyle.display);
+    final font = large
+        ? FontOptions(fontFamily: 'Size2')
+        : FontOptions(fontFamily: 'Size1');
+    final symbolMetrics = lookupChar(operator, font, Mode.math);
+    final symbolWidget = makeChar(operator, font, symbolMetrics, options);
+    final operatorWidget = Multiscripts(
+      italic: symbolMetrics.italic.cssEm.toLpUnder(options),
+      isBaseCharacterBox: true, // TODO
+      baseOptions: options,
+      base: symbolWidget,
+      sub: childBuildResults[0]?.widget,
+      subOptions: childBuildResults[0]?.options,
+      sup: childBuildResults[1]?.widget,
+      supOptions: childBuildResults[1]?.options,
+    );
+    final widget = Line(children: [
+      LineElement(child: operatorWidget),
+      LineElement(child: childBuildResults[2].widget),
+    ]);
+    return [
+      BuildResult(
+        widget: widget,
+        options: options,
+        italic: childBuildResults[2].italic,
+      ),
+    ];
   }
 
   @override
-  List<Options> computeChildOptions(Options options) {
-    // TODO: implement computeChildOptions
-    throw UnimplementedError();
-  }
+  List<Options> computeChildOptions(Options options) => [
+        options.havingStyle(options.style.sub()),
+        options.havingStyle(options.style.sup()),
+        options,
+      ];
 
   @override
-  List<EquationRowNode> computeChildren() {
-    // TODO: implement computeChildren
-    throw UnimplementedError();
-  }
+  List<EquationRowNode> computeChildren() => [lowerLimit, upperLimit, naryand];
 
   @override
-  // TODO: implement leftType
-  AtomType get leftType => throw UnimplementedError();
+  AtomType get leftType => AtomType.op;
 
   @override
-  // TODO: implement rightType
-  AtomType get rightType => throw UnimplementedError();
+  AtomType get rightType => naryand.rightType;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) {
-    // TODO: implement shouldRebuildWidget
-    throw UnimplementedError();
-  }
+  bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
+      oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(
-      List<EquationRowNode> newChildren) {
-    // TODO: implement updateChildren
-    throw UnimplementedError();
-  }
+          List<EquationRowNode> newChildren) =>
+      NaryOperatorNode(
+        operator: operator,
+        lowerLimit: newChildren[0],
+        upperLimit: newChildren[1],
+        naryand: newChildren[2],
+      );
 }
