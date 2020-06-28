@@ -1,10 +1,8 @@
-import 'dart:math' as math;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../render/layout/eq_row.dart';
+import '../render/layout/line.dart';
 import '../utils/iterable_extensions.dart';
 import 'nodes/math_atom.dart';
 import 'nodes/sqrt.dart';
@@ -431,13 +429,12 @@ class EquationRowNode extends ParentableNode<GreenNode>
   List<BuildResult> buildWidget(
       Options options, List<List<BuildResult>> childBuildResults) {
     final flattenedBuildResults =
-        childBuildResults.expand((element) => element);
+        childBuildResults.expand((element) => element).toList();
     final flattenedChildOptions =
         flattenedBuildResults.map((e) => e.options).toList();
     // assert(flattenedChildList.length == actualChildWidgets.length);
-    final spacings = List<double>.filled(
-        math.max(flattenedChildList.length - 1, 0), 0,
-        growable: false);
+    final spacings =
+        List<double>.filled(flattenedChildList.length, 0, growable: false);
     for (var i = 0; i < flattenedChildList.length - 1; i++) {
       spacings[i] = getSpacingSize(
         flattenedChildList[i].rightType,
@@ -450,9 +447,15 @@ class EquationRowNode extends ParentableNode<GreenNode>
     return [
       BuildResult(
         options: options,
-        widget: EquationRow(
-          children: flattenedBuildResults.map((e) => e.widget).toList(),
-          spacings: spacings,
+        widget: Line(
+          children: <Widget>[
+            for (var i = 0; i < flattenedBuildResults.length; i++)
+              LineElement(
+                child: flattenedBuildResults[i].widget,
+                canBreakBefore: false, // TODO
+                trailingMargin: spacings[i],
+              )
+          ],
         ),
         italic: flattenedBuildResults.lastOrNull?.italic ?? 0.0,
         skew: flattenedBuildResults.length == 1
