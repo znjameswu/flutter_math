@@ -22,7 +22,9 @@ class NaryOperatorNode extends SlotableNode {
   final EquationRowNode lowerLimit;
   final EquationRowNode upperLimit;
   final EquationRowNode naryand;
-  final bool limits;
+  bool _limits;
+  bool get limits => _limits ??= _naryDefaultLimit.contains(operator);
+
   final bool allowLargeOp; // for \smallint
 
   NaryOperatorNode({
@@ -30,9 +32,10 @@ class NaryOperatorNode extends SlotableNode {
     @required this.lowerLimit,
     @required this.upperLimit,
     @required this.naryand,
-    this.limits,
+    bool limits,
     this.allowLargeOp = true,
-  }) : assert(naryand != null);
+  })  : assert(naryand != null),
+        _limits = limits;
 
   @override
   List<BuildResult> buildSlotableWidget(
@@ -42,17 +45,20 @@ class NaryOperatorNode extends SlotableNode {
         ? FontOptions(fontFamily: 'Size2')
         : FontOptions(fontFamily: 'Size1');
     final symbolMetrics = lookupChar(operator, font, Mode.math);
-    final symbolWidget = makeChar(operator, font, symbolMetrics, options);
-    final operatorWidget = Multiscripts(
-      italic: symbolMetrics.italic.cssEm.toLpUnder(options),
-      isBaseCharacterBox: true, // TODO
-      baseOptions: options,
-      base: symbolWidget,
-      sub: childBuildResults[0]?.widget,
-      subOptions: childBuildResults[0]?.options,
-      sup: childBuildResults[1]?.widget,
-      supOptions: childBuildResults[1]?.options,
-    );
+    final symbolWidget =
+        makeChar(operator, font, symbolMetrics, options, needItalic: true);
+    final operatorWidget = lowerLimit == null && upperLimit == null
+        ? symbolWidget
+        : Multiscripts(
+            italic: symbolMetrics.italic.cssEm.toLpUnder(options),
+            isBaseCharacterBox: false,
+            baseOptions: options,
+            base: symbolWidget,
+            sub: childBuildResults[0]?.widget,
+            subOptions: childBuildResults[0]?.options,
+            sup: childBuildResults[1]?.widget,
+            supOptions: childBuildResults[1]?.options,
+          );
     final widget = Line(children: [
       LineElement(
         child: operatorWidget,
@@ -104,3 +110,18 @@ class NaryOperatorNode extends SlotableNode {
         naryand: newChildren[2],
       );
 }
+
+const _naryDefaultLimit = {
+  '\u220F',
+  '\u2210',
+  '\u2211',
+  '\u22c0',
+  '\u22c1',
+  '\u22c2',
+  '\u22c3',
+  '\u2a00',
+  '\u2a01',
+  '\u2a02',
+  '\u2a04',
+  '\u2a06',
+};

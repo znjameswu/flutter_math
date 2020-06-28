@@ -128,8 +128,8 @@ const _opEntries = {
   ),
 };
 
-NaryOperatorNode _parseNaryOperator(String glyph, TexParser parser,
-    {bool defaultLimits = false}) {
+NaryOperatorNode _parseNaryOperator(String command, TexParser parser,
+    {bool limits = false}) {
   final scriptsResult = parser.parseScripts();
   // final alwaysHandleSubsup = scriptsResult.limits != null;
   EquationRowNode arg;
@@ -149,11 +149,12 @@ NaryOperatorNode _parseNaryOperator(String glyph, TexParser parser,
   //         : LimitsBehavior.subsup;
 
   return NaryOperatorNode(
-    operator: glyph,
+    operator: texSymbolCommandConfigs[Mode.math][command].symbol,
     lowerLimit: scriptsResult.subscript,
     upperLimit: scriptsResult.superscript,
     naryand: arg ?? EquationRowNode.empty(),
-    limits: scriptsResult.limits ?? defaultLimits,
+    limits: scriptsResult.limits ?? limits,
+    allowLargeOp: command == '\\smallint' ? false : true,
   );
 }
 
@@ -211,7 +212,7 @@ GreenNode _bigOpHandler(TexParser parser, FunctionContext context) {
   final fName = context.funcName.length == 1
       ? _singleCharBigOps[context.funcName]
       : context.funcName;
-  return _parseNaryOperator(fName, parser, defaultLimits: true);
+  return _parseNaryOperator(fName, parser, limits: true);
 }
 
 GreenNode _mathopHandler(TexParser parser, FunctionContext context) {
@@ -239,5 +240,5 @@ GreenNode _integralHandler(TexParser parser, FunctionContext context) {
   final fName = context.funcName.length == 1
       ? _singleCharBigOps[context.funcName]
       : context.funcName;
-  return _parseNaryOperator(fName, parser, defaultLimits: false);
+  return _parseNaryOperator(fName, parser, limits: false);
 }

@@ -293,7 +293,7 @@ Tuple2<double, double> calculateUV({
   }
   if (sup != null) {
     final q = supOptions.fontMetrics.supDrop.cssEm.toLpUnder(supOptions);
-    v = isBaseCharacterBox ? 0 : h - q;
+    u = isBaseCharacterBox ? 0 : h - q;
   }
 
   if (sup == null && sub != null) {

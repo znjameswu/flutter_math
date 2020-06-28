@@ -95,18 +95,17 @@ List<BuildResult> makeAtom({
   return [
     BuildResult(
         options: options,
-        widget: Padding(
-          padding: EdgeInsets.only(right: mode == Mode.math ? italic : 0.0),
-          child: makeChar(char, defaultFont, characterMetrics, options),
-        ),
+        widget: makeChar(char, defaultFont, characterMetrics, options,
+            needItalic: mode == Mode.math),
         italic: italic,
         skew: characterMetrics?.skew?.cssEm?.toLpUnder(options) ?? 0.0)
   ];
 }
 
 Widget makeChar(String character, FontOptions font,
-    CharacterMetrics characterMetrics, Options options) {
-  return ResetDimension(
+    CharacterMetrics characterMetrics, Options options,
+    {bool needItalic = false}) {
+  final charWidget = ResetDimension(
     height: characterMetrics?.height?.cssEm?.toLpUnder(options),
     depth: characterMetrics?.depth?.cssEm?.toLpUnder(options),
     child: Text(
@@ -119,6 +118,15 @@ Widget makeChar(String character, FontOptions font,
       ),
     ),
   );
+  if (needItalic) {
+    final italic = characterMetrics?.italic?.cssEm?.toLpUnder(options);
+    return Padding(
+      padding: EdgeInsets.only(right: italic),
+      child: charWidget,
+    );
+  } else {
+    return charWidget;
+  }
 }
 
 // CharacterMetrics lookupSymbol(String symbol, bool variantForm, FontOptions font, Mode mode) {
