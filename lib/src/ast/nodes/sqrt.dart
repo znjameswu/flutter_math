@@ -10,7 +10,7 @@ import '../../render/layout/custom_layout.dart';
 import '../../render/svg/delimiter.dart';
 import '../../render/svg/draw_svg_root.dart';
 import '../../render/svg/svg_geomertry.dart';
-import '../../render/svg/svg_string_from_path.dart';
+import '../../render/svg/svg_string.dart';
 import '../../render/utils/render_box_offset.dart';
 import '../../utils/iterable_extensions.dart';
 import '../options.dart';
@@ -289,8 +289,8 @@ _SqrtSvgRes sqrtImage(
       final svgPath = sqrtPath('sqrtMain', extraViniculum, viewBoxHeight);
       final svgString = svgStringFromPath(
         svgPath,
-        [viewPortWidth, viewPortHeight],
-        [0, 0, viewBoxWidth, viewBoxHeight],
+        Size(viewPortWidth, viewPortHeight),
+        Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
       );
       return _SqrtSvgRes(
         img: svg.fromSvgString(svgString, svgString),
@@ -315,8 +315,8 @@ _SqrtSvgRes sqrtImage(
           extraViniculum, viewBoxHeight);
       final svgString = svgStringFromPath(
         svgPath,
-        [viewPortWidth, viewPortHeight],
-        [0, 0, viewBoxWidth, viewBoxHeight],
+        Size(viewPortWidth, viewPortHeight),
+        Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
       );
       return _SqrtSvgRes(
         img: svg.fromSvgString(svgString, svgString),
@@ -344,8 +344,8 @@ _SqrtSvgRes sqrtImage(
         extraViniculum, viewBoxHeight);
     final svgString = svgStringFromPath(
       svgPath,
-      [viewPortWidth, viewPortHeight],
-      [0, 0, viewBoxWidth, viewBoxHeight],
+      Size(viewPortWidth, viewPortHeight),
+      Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
     );
     return _SqrtSvgRes(
       img: svg.fromSvgString(svgString, svgString),

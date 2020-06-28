@@ -5,48 +5,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../utils/iterable_extensions.dart';
 import 'breakable/breakable_box.dart';
 import 'breakable/breakable_constraints.dart';
 import 'breakable/breakable_offset.dart';
 import 'breakable/breakable_size.dart';
 
 class LineParentData extends ContainerBreakableBoxParentData<RenderBox> {
-
-  // The first canBreakBefore will be ignored
-  bool canBreakBefore;
+  // The first canBreakBefore has no effect
+  bool canBreakBefore = false;
 
   BoxConstraints Function(double height, double depth) customCrossSize;
 
-  // The last trailing spacing will be ignored
-  double trailingSpacing;
-
-  /// Margin with the end of last sibling on the main axis
-  ///
-  /// If [mainMargin] > 0, this behavior can be easilty simulated by [Padding].
-  /// This property is for the sole purpose of negative [mainMargin]
-  // double mainMargin;
+  double trailingMargin = 0.0;
 
   @override
   String toString() =>
-      '${super.toString()}; canBreakBefore = $canBreakBefore; customSize = ${customCrossSize != null}; trailingSpacing = $trailingSpacing';
+      '${super.toString()}; canBreakBefore = $canBreakBefore; customSize = ${customCrossSize != null}; trailingMargin = $trailingMargin';
 }
 
 class LineElement extends ParentDataWidget<LineParentData> {
   final bool canBreakBefore;
   final BoxConstraints Function(double height, double depth) customCrossSize;
-  final double trailingSpacing;
+  final double trailingMargin;
 
   const LineElement({
     Key key,
     this.canBreakBefore = false,
     this.customCrossSize,
-    @required this.trailingSpacing,
+    this.trailingMargin = 0.0,
     @required Widget child,
-  }) : super(
-          key: key,
-          child: child,
-        );
+  })  : assert(trailingMargin != null),
+        super(key: key, child: child);
+
   @override
   void applyParentData(RenderObject renderObject) {
     assert(renderObject.parentData is LineParentData);
@@ -63,8 +53,8 @@ class LineElement extends ParentDataWidget<LineParentData> {
       needsLayout = true;
     }
 
-    if (parentData.trailingSpacing != trailingSpacing) {
-      parentData.trailingSpacing = trailingSpacing;
+    if (parentData.trailingMargin != trailingMargin) {
+      parentData.trailingMargin = trailingMargin;
       needsLayout = true;
     }
 
@@ -81,7 +71,7 @@ class LineElement extends ParentDataWidget<LineParentData> {
         value: canBreakBefore, ifTrue: 'allow breaking before'));
     properties.add(FlagProperty('customSize',
         value: customCrossSize != null, ifTrue: 'using relative size'));
-    properties.add(DoubleProperty('trailingSpacing', trailingSpacing));
+    properties.add(DoubleProperty('trailingMargin', trailingMargin));
   }
 
   @override
@@ -93,17 +83,17 @@ class Line extends MultiChildRenderObjectWidget {
   Line({
     Key key,
     this.textBaseline = TextBaseline.alphabetic,
-    this.baselineOffset = 0,
+    // this.baselineOffset = 0,
     this.crossAxisAlignment = CrossAxisAlignment.baseline,
     this.textDirection,
     this.background,
     List<Widget> children = const [],
   })  : assert(textBaseline != null),
-        assert(baselineOffset != null),
+        // assert(baselineOffset != null),
         assert(crossAxisAlignment != null),
         super(key: key, children: children);
   final TextBaseline textBaseline;
-  final double baselineOffset;
+  // final double baselineOffset;
   final CrossAxisAlignment crossAxisAlignment;
   final TextDirection textDirection;
   bool get _needTextDirection => true;
@@ -115,7 +105,7 @@ class Line extends MultiChildRenderObjectWidget {
   @override
   RenderLine createRenderObject(BuildContext context) => RenderLine(
         textBaseline: textBaseline,
-        baselineOffset: baselineOffset,
+        // baselineOffset: baselineOffset,
         crossAxisAlignment: crossAxisAlignment,
         textDirection: getEffectiveTextDirection(context),
         background: background,
@@ -126,7 +116,7 @@ class Line extends MultiChildRenderObjectWidget {
       BuildContext context, covariant RenderLine renderObject) {
     renderObject
       ..textBaseline = textBaseline
-      ..baselineOffset = baselineOffset
+      // ..baselineOffset = baselineOffset
       ..crossAxisAlignment = crossAxisAlignment
       ..textDirection = getEffectiveTextDirection(context)
       ..background = background;
@@ -137,8 +127,8 @@ class Line extends MultiChildRenderObjectWidget {
     super.debugFillProperties(properties);
     properties.add(EnumProperty<TextBaseline>('textBaseline', textBaseline,
         defaultValue: null));
-    properties
-        .add(DoubleProperty('baselineOffset', baselineOffset, defaultValue: 0));
+    // properties
+    //     .add(DoubleProperty('baselineOffset', baselineOffset, defaultValue: 0));
     properties.add(EnumProperty<CrossAxisAlignment>(
         'crossAxisAlignment', crossAxisAlignment));
     properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
@@ -154,15 +144,15 @@ class RenderLine extends RenderBreakableBox
   RenderLine({
     List<RenderBox> children,
     TextBaseline textBaseline = TextBaseline.alphabetic,
-    double baselineOffset = 0,
+    // double baselineOffset = 0,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.baseline,
     TextDirection textDirection = TextDirection.ltr,
     ValueNotifier<Color> background,
   })  : assert(textBaseline != null),
-        assert(baselineOffset != null),
+        // assert(baselineOffset != null),
         assert(crossAxisAlignment != null),
         _textBaseline = textBaseline,
-        _baselineOffset = baselineOffset,
+        // _baselineOffset = baselineOffset,
         _crossAxisAlignment = crossAxisAlignment,
         _textDirection = textDirection,
         _background = background {
@@ -178,14 +168,14 @@ class RenderLine extends RenderBreakableBox
     }
   }
 
-  double get baselineOffset => _baselineOffset;
-  double _baselineOffset;
-  set baselineOffset(double value) {
-    if (_baselineOffset != value) {
-      _baselineOffset = value;
-      markNeedsLayout();
-    }
-  }
+  // double get baselineOffset => _baselineOffset;
+  // double _baselineOffset;
+  // set baselineOffset(double value) {
+  //   if (_baselineOffset != value) {
+  //     _baselineOffset = value;
+  //     markNeedsLayout();
+  //   }
+  // }
 
   CrossAxisAlignment get crossAxisAlignment => _crossAxisAlignment;
   CrossAxisAlignment _crossAxisAlignment;
@@ -316,6 +306,7 @@ class RenderLine extends RenderBreakableBox
         childSize: (RenderBox child, double extent) =>
             child.getMaxIntrinsicHeight(extent),
       );
+
   double maxHeightAboveBaseline = 0.0;
 
   double maxHeightAboveEndBaseline = 0.0;
@@ -323,7 +314,7 @@ class RenderLine extends RenderBreakableBox
   @override
   double computeDistanceToActualBaseline(TextBaseline baseline) {
     assert(!debugNeedsLayout);
-    return maxHeightAboveBaseline + baselineOffset;
+    return maxHeightAboveBaseline;
   }
 
   @override
@@ -335,29 +326,30 @@ class RenderLine extends RenderBreakableBox
     maxHeightAboveBaseline = 0.0;
     var maxDepthBelowBaseline = 0.0;
     var child = firstChild;
-    final delimiters = <RenderBox>[];
+    final relativeChildren = <RenderBox>[];
     while (child != null) {
       final childParentData = child.parentData as LineParentData;
-      final innerConstraints = BoxConstraints(maxHeight: constraints.maxHeight);
-      child.layout(innerConstraints, parentUsesSize: true);
       if (childParentData.customCrossSize != null) {
-        delimiters.add(child);
+        relativeChildren.add(child);
       } else {
+        final innerConstraints =
+            BoxConstraints(maxHeight: constraints.maxHeight);
+        child.layout(innerConstraints, parentUsesSize: true);
         final distance = child.getDistanceToBaseline(textBaseline);
         maxHeightAboveBaseline = math.max(maxHeightAboveBaseline, distance);
         maxDepthBelowBaseline =
             math.max(maxDepthBelowBaseline, child.size.height - distance);
       }
-      // allocatedSize += _getMainSize(child);
       assert(child.parentData == childParentData);
       child = childParentData.nextSibling;
     }
 
     // var crossSize = maxHeightAboveBaseline + maxDepthBelowBaseline;
 
-    for (final delimeter in delimiters) {
-      final childParentData = delimeter.parentData as LineParentData;
-      delimeter.layout(
+    for (final child in relativeChildren) {
+      final childParentData = child.parentData as LineParentData;
+      assert(childParentData.customCrossSize != null);
+      child.layout(
         childParentData.customCrossSize(
             maxHeightAboveBaseline, maxDepthBelowBaseline),
         parentUsesSize: true,
@@ -483,7 +475,7 @@ class RenderLine extends RenderBreakableBox
         defaultValue: null));
     properties.add(EnumProperty<TextBaseline>('textBaseline', textBaseline,
         defaultValue: null));
-    properties.add(DoubleProperty('baselineOffset', baselineOffset));
+    // properties.add(DoubleProperty('baselineOffset', baselineOffset));
   }
 }
 
@@ -608,7 +600,7 @@ class _BreakableLayoutProxy {
               child.getDistanceToEndBaseline(textBaseline));
         }
       } else {
-        final a = child.getDistanceToBaseline(textBaseline);
+        // final a = child.getDistanceToBaseline(textBaseline);
         addWaitingSize(
             child, child.size, child.getDistanceToBaseline(textBaseline));
       }

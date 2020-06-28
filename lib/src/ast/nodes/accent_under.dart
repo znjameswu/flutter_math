@@ -1,6 +1,10 @@
 import 'package:flutter/widgets.dart';
 
+import '../../render/layout/vlist.dart';
+import '../../render/svg/stretchy.dart';
+import '../accents.dart';
 import '../options.dart';
+import '../size.dart';
 import '../syntax_tree.dart';
 
 class AccentUnderNode extends SlotableNode {
@@ -17,22 +21,42 @@ class AccentUnderNode extends SlotableNode {
 
   @override
   List<BuildResult> buildSlotableWidget(
-      Options options, List<BuildResult> childBuildResults) {
-    // TODO: implement buildWidget
-    throw UnimplementedError();
-  }
+          Options options, List<BuildResult> childBuildResults) =>
+      [
+        BuildResult(
+          options: options,
+          italic: childBuildResults[0].italic,
+          skew: childBuildResults[0].skew,
+          widget: VList(
+            baselineReferenceWidgetIndex: 0,
+            children: <Widget>[
+              VListElement(
+                trailingMargin:
+                    label == '\u007e' ? 0.12.cssEm.toLpUnder(options) : 0.0,
+                    // Special case for \utilde
+                child: childBuildResults[0].widget,
+              ),
+              VListElement(
+                customCrossSize: (width) => BoxConstraints(minWidth: width),
+                child: LayoutBuilder(
+                  builder: (context, constraints) => strechySvgSpan(
+                    accentRenderConfigs[label].underImageName,
+                    constraints.minWidth,
+                    options,
+                  ),
+                ),
+              )
+            ],
+          ),
+        )
+      ];
 
   @override
-  List<Options> computeChildOptions(Options options) {
-    // TODO: implement computeChildOptions
-    throw UnimplementedError();
-  }
+  List<Options> computeChildOptions(Options options) =>
+      [options.havingCrampedStyle()];
 
   @override
-  List<EquationRowNode> computeChildren() {
-    // TODO: implement computeChildren
-    throw UnimplementedError();
-  }
+  List<EquationRowNode> computeChildren() => [base];
 
   @override
   AtomType get leftType => AtomType.ord;
@@ -41,15 +65,13 @@ class AccentUnderNode extends SlotableNode {
   AtomType get rightType => AtomType.ord;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) {
-    // TODO: implement shouldRebuildWidget
-    throw UnimplementedError();
-  }
+  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(
-      List<EquationRowNode> newChildren) {
-    // TODO: implement updateChildren
-    throw UnimplementedError();
-  }
+          List<EquationRowNode> newChildren) =>
+      AccentUnderNode(
+        base: newChildren[0],
+        label: label,
+      );
 }

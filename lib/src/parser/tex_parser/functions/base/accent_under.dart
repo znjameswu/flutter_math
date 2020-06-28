@@ -29,14 +29,23 @@ const _accentUnderEntries = {
     '\\underrightarrow',
     '\\underleftrightarrow',
     '\\undergroup',
-    '\\underlinesegment',
+    // '\\underlinesegment': ,
     '\\utilde',
   ]: FunctionSpec(numArgs: 1, handler: _accentUnderHandler),
+};
+
+const _accentUnderMapping = {
+  '\\underleftarrow': '\u2190',
+  '\\underrightarrow': '\u2192',
+  '\\underleftrightarrow': '\u2194',
+  '\\undergroup': '\u23e0',
+  // '\\underlinesegment',
+  '\\utilde': '\u007e',
 };
 GreenNode _accentUnderHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: null, optional: false);
   return AccentUnderNode(
     base: base.wrapWithEquationRow(),
-    label: context.funcName,
+    label: _accentUnderMapping[context.funcName],
   );
 }

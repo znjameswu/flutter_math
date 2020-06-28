@@ -2,14 +2,13 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/render/layout/layout_builder_baseline.dart';
-import 'package:flutter_math/src/render/layout/line.dart';
-import 'package:flutter_math/src/render/layout/shift_baseline.dart';
 
 import '../../font/metrics/font_metrics.dart';
 import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
-import '../../render/layout/reset_baseline.dart';
+import '../../render/layout/layout_builder_baseline.dart';
+import '../../render/layout/line.dart';
+import '../../render/layout/shift_baseline.dart';
 import '../../render/svg/delimiter.dart';
 import '../../render/symbols/make_atom.dart';
 import '../../render/utils/render_box_offset.dart';
@@ -50,7 +49,7 @@ class LeftRightNode extends SlotableNode {
                 2 * delta - delimiterShorfall.toLpUnder(options));
             return BoxConstraints(minHeight: delimeterFullHeight);
           },
-          trailingSpacing: index == numElements - 1
+          trailingMargin: index == numElements - 1
               ? 0.0
               : getSpacingSize(index == 0 ? AtomType.open : AtomType.rel,
                       body[(index + 1) ~/ 2].leftType, options.style)
@@ -70,7 +69,7 @@ class LeftRightNode extends SlotableNode {
       } else {
         // Content
         return LineElement(
-          trailingSpacing: getSpacingSize(
+          trailingMargin: getSpacingSize(
                   body[index ~/ 2].rightType,
                   index == numElements - 2 ? AtomType.close : AtomType.rel,
                   options.style)

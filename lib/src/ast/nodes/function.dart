@@ -22,13 +22,13 @@ class FunctionNode extends SlotableNode {
         BuildResult(
             widget: Line(children: [
               LineElement(
-                trailingSpacing: getSpacingSize(
+                trailingMargin: getSpacingSize(
                         AtomType.op, argument.leftType, options.style)
                     .toLpUnder(options),
                 child: childBuildResults[0].widget,
               ),
               LineElement(
-                trailingSpacing: 0.0,
+                trailingMargin: 0.0,
                 child: childBuildResults[1].widget,
               ),
             ]),

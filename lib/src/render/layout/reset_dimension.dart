@@ -9,11 +9,15 @@ import 'custom_layout.dart';
 class ResetDimension extends StatelessWidget {
   final double height;
   final double depth;
+  final double width;
+  final CrossAxisAlignment alignment;
   final Widget child;
   ResetDimension({
     Key key,
-    @required this.height,
-    @required this.depth,
+    this.height,
+    this.depth,
+    this.width,
+    this.alignment = CrossAxisAlignment.center,
     @required this.child,
   }) : super();
 
@@ -22,6 +26,8 @@ class ResetDimension extends StatelessWidget {
         delegate: ResetDimensionLayoutDelegate(
           height: height,
           depth: depth,
+          width: width,
+          alignment: alignment,
         ),
         children: <Widget>[
           CustomLayoutId(id: 0, child: child),
@@ -32,10 +38,14 @@ class ResetDimension extends StatelessWidget {
 class ResetDimensionLayoutDelegate extends IntrinsicLayoutDelegate<int> {
   final double height;
   final double depth;
+  final double width;
+  final CrossAxisAlignment alignment;
   ResetDimensionLayoutDelegate({
     Key key,
     @required this.height,
     @required this.depth,
+    this.width,
+    this.alignment,
   });
 
   @override
@@ -51,9 +61,25 @@ class ResetDimensionLayoutDelegate extends IntrinsicLayoutDelegate<int> {
     bool isComputingIntrinsics,
   }) {
     if (layoutDirection == Axis.horizontal) {
+      final childWidth = childSize(childrenTable[0]);
+      final finalWidth = width ?? childWidth;
+      var offset = 0.0;
+      switch (alignment) {
+        case CrossAxisAlignment.start:
+          break;
+        case CrossAxisAlignment.end:
+          offset = finalWidth - childWidth;
+          break;
+        case CrossAxisAlignment.center:
+        case CrossAxisAlignment.stretch:
+        case CrossAxisAlignment.baseline:
+        default:
+          offset = (finalWidth - childWidth) / 2;
+          break;
+      }
       return AxisConfiguration(
-        size: childSize(childrenTable[0]),
-        offsetTable: {0: 0.0},
+        size: finalWidth,
+        offsetTable: {0: offset},
       );
     } else {
       final childHeight = (isComputingIntrinsics
@@ -61,8 +87,8 @@ class ResetDimensionLayoutDelegate extends IntrinsicLayoutDelegate<int> {
           : childrenTable[0].layoutHeight);
       final childDepth = childSize(childrenTable[0]) - childHeight;
 
-      final finalHeight = height != null ? height : childHeight;
-      final finalDepth = depth != null ? depth : childDepth;
+      final finalHeight = height ?? childHeight;
+      final finalDepth = depth ?? childDepth;
       return AxisConfiguration(
         size: finalHeight + finalDepth,
         offsetTable: {

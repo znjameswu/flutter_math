@@ -1,11 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../layout/reset_baseline.dart';
 import 'svg_geomertry.dart';
-import 'svg_string_from_path.dart';
+import 'svg_string.dart';
 
 const svgData = {
   //   path, width, height
@@ -23,19 +22,12 @@ Widget staticSvg(String name, Options options, {bool needBaseline = false}) {
   final viewPortWidth = width.cssEm.toLpUnder(options);
   final viewPortHeight = height.cssEm.toLpUnder(options);
 
-  final svgWidget = Container(
-    height: viewPortHeight,
-    width: viewPortWidth,
-    child: SvgPicture.string(
-      svgStringFromPath(
+  final svgWidget = 
+      svgWidgetFromPath(
         svgPaths[name],
-        [viewPortWidth, viewPortHeight],
-        [0, 0, 1000 * width, 1000 * height],
-      ),
-      height: viewPortHeight,
-      width: viewPortWidth,
-    ),
-  );
+        Size(viewPortWidth, viewPortHeight),
+        Rect.fromLTWH(0, 0, 1000 * width, 1000 * height),
+      );
   if (needBaseline) {
     return ResetBaseline(
       height: viewPortHeight,

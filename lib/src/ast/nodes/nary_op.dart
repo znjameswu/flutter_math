@@ -56,13 +56,13 @@ class NaryOperatorNode extends SlotableNode {
     final widget = Line(children: [
       LineElement(
         child: operatorWidget,
-        trailingSpacing:
+        trailingMargin:
             getSpacingSize(AtomType.op, naryand.leftType, options.style)
                 .toLpUnder(options),
       ),
       LineElement(
         child: childBuildResults[2].widget,
-        trailingSpacing: 0.0,
+        trailingMargin: 0.0,
       ),
     ]);
     return [

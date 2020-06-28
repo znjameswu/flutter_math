@@ -1,10 +1,10 @@
-import 'dart:math' as math;
-
 import 'package:flutter/widgets.dart';
 
 import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
+import '../../render/layout/reset_dimension.dart';
 import '../../render/layout/shift_baseline.dart';
+import '../../render/layout/vlist.dart';
 import '../../render/svg/static.dart';
 import '../../render/svg/stretchy.dart';
 import '../../render/symbols/make_atom.dart';
@@ -44,7 +44,7 @@ class AccentNode extends SlotableNode {
       // So now we use an SVG.
       // If Safari reforms, we should consider reverting to the glyph.
       if (label == '\u2192') {
-        // We need non-null baseline. Because ShiftBaseline cannot deal with a 
+        // We need non-null baseline. Because ShiftBaseline cannot deal with a
         // baseline distance of null due to Flutter rendering pipeline design.
         accentSymbolWidget = staticSvg('vec', options, needBaseline: true);
       } else {
@@ -57,12 +57,18 @@ class AccentNode extends SlotableNode {
         )[0]
             .widget;
       }
-      // We have to use a Center, otherwise Flutter will force children to
-      // comply with constraint by effectively Alignment.topRight
-      accentWidget = Center(
-        child: ShiftBaseline(
-          offset: -options.fontMetrics.xHeight.cssEm.toLpUnder(options),
-          child: accentSymbolWidget,
+
+      // Non stretchy accent can not contribute to overall width, thus they must
+      // fit exactly with the width even if it means overflow.
+      accentWidget = LayoutBuilder(
+        builder: (context, constraints) => ResetDimension(
+          depth: 0.0, // Cut off xHeight
+          width: constraints.minWidth, // Ensure width
+          child: ShiftBaseline(
+            // Shift baseline up by xHeight
+            offset: -options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+            child: accentSymbolWidget,
+          ),
         ),
       );
     } else {
@@ -79,24 +85,45 @@ class AccentNode extends SlotableNode {
         options: options,
         italic: childBuildResults[0].italic,
         skew: childBuildResults[0].skew,
-        widget: CustomLayout<_AccentPos>(
-          delegate: AccentLayoutDelegate(
-            skew: skew,
-            options: options,
-          ),
+        widget: VList(
+          baselineReferenceWidgetIndex: 1,
           children: <Widget>[
-            CustomLayoutId(
-              id: _AccentPos.base,
-              child: childBuildResults[0].widget,
+            VListElement(
+              customCrossSize: (width) => BoxConstraints(minWidth: width),
+              child: Padding(
+                // To shift the center by 1 * skew
+                padding: EdgeInsets.only(left: 2 * skew),
+                child: accentWidget,
+              ),
             ),
-            CustomLayoutId(
-              id: _AccentPos.accent,
-              child: accentWidget,
-            ),
+            childBuildResults[0].widget,
           ],
         ),
       )
     ];
+    // return [
+    //   BuildResult(
+    //     options: options,
+    //     italic: childBuildResults[0].italic,
+    //     skew: childBuildResults[0].skew,
+    //     widget: CustomLayout<_AccentPos>(
+    //       delegate: AccentLayoutDelegate(
+    //         skew: skew,
+    //         options: options,
+    //       ),
+    //       children: <Widget>[
+    //         CustomLayoutId(
+    //           id: _AccentPos.base,
+    //           child: childBuildResults[0].widget,
+    //         ),
+    //         CustomLayoutId(
+    //           id: _AccentPos.accent,
+    //           child: accentWidget,
+    //         ),
+    //       ],
+    //     ),
+    //   )
+    // ];
   }
 
   @override
@@ -117,10 +144,13 @@ class AccentNode extends SlotableNode {
 
   @override
   ParentableNode<EquationRowNode> updateChildren(
-      List<EquationRowNode> newChildren) {
-    // TODO: implement updateChildren
-    throw UnimplementedError();
-  }
+          List<EquationRowNode> newChildren) =>
+      AccentNode(
+        base: newChildren[0],
+        label: label,
+        isStretchy: isStretchy,
+        isShifty: isShifty,
+      );
 }
 
 enum _AccentPos {
@@ -167,11 +197,6 @@ class AccentLayoutDelegate extends CustomLayoutDelegate<_AccentPos> {
 
     final baseHeight = base.layoutHeight;
 
-    // var delta = math.min(
-    //   baseHeight,
-    //   options.fontMetrics.xHeight.cssEm.toLpUnder(options),
-    // );
-
     final accentHorizontalShift =
         skew + (base.size.width - accent.size.width) * 0.5;
 
@@ -186,10 +211,10 @@ class AccentLayoutDelegate extends CustomLayoutDelegate<_AccentPos> {
     layoutHeight = baseVerticalPos + baseHeight;
 
     return Size(
-      math.max(
-        baseHorizontalPos + base.size.width,
-        baseHorizontalPos + accentHorizontalShift + accent.size.width,
-      ),
+      // math.max(
+      baseHorizontalPos + base.size.width,
+      //   baseHorizontalPos + accentHorizontalShift + accent.size.width,
+      // ),
       baseVerticalPos + base.size.height,
     );
   }

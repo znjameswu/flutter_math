@@ -1,12 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import 'svg_geomertry.dart';
-import 'svg_string_from_path.dart';
+import 'svg_string.dart';
 
 class _KatexImagesData {
   final List<String> paths;
@@ -129,21 +128,10 @@ Widget strechySvgSpan(String name, double width, Options options) {
       }
     }
     height = height.cssEm.toLpUnder(options);
-    final svgString = svgStringFromPath(
+    return svgWidgetFromPath(
       svgPaths[pathName],
-      [width, height],
-      [0, 0, viewBoxWidth, viewBoxHeight],
-    );
-    return Container(
-      height: height,
-      width: width,
-      child: SvgPicture.string(
-        svgString,
-        width: width, // There is some funcky bug with futter_svg
-        height: height,
-        fit: BoxFit.fill,
-        alignment: Alignment.topLeft,
-      ),
+      Size(width, height),
+      Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
     );
   } else {
     final data = katexImagesData[name];
@@ -177,20 +165,12 @@ Widget strechySvgSpan(String name, double width, Options options) {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         for (var i = 0; i < numSvgChildren; i++)
-          Container(
-            width: widths[i],
-            height: height,
-            child: SvgPicture.string(
-              svgStringFromPath(
-                svgPaths[data.paths[i]],
-                [widths[i], height],
-                [0, 0, viewBoxWidth, data.viewBoxHeight],
-              ),
-              width: widths[i],
-              height: height,
-              fit: BoxFit.fitHeight,
-              alignment: aligns[i],
-            ),
+          svgWidgetFromPath(
+            svgPaths[data.paths[i]],
+            Size(widths[i], height),
+            Rect.fromLTWH(0, 0, viewBoxWidth, data.viewBoxHeight),
+            aligns[i],
+            BoxFit.fitHeight
           )
       ],
     );
