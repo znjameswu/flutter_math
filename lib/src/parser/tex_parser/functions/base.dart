@@ -7,7 +7,7 @@ import '../../../ast/nodes/accent.dart';
 import '../../../ast/nodes/accent_under.dart';
 import '../../../ast/nodes/frac.dart';
 import '../../../ast/nodes/function.dart';
-import '../../../ast/nodes/leftright.dart';
+import '../../../ast/nodes/left_right.dart';
 import '../../../ast/nodes/math_atom.dart';
 import '../../../ast/nodes/multiscripts.dart';
 import '../../../ast/nodes/nary_op.dart';

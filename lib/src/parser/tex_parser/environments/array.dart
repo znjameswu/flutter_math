@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import '../../../ast/nodes/leftright.dart';
+import '../../../ast/nodes/left_right.dart';
 import '../../../ast/nodes/math_atom.dart';
 import '../../../ast/nodes/matrix.dart';
 import '../../../ast/nodes/style.dart';
