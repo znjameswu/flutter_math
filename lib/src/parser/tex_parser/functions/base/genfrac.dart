@@ -197,8 +197,7 @@ GreenNode _genfracHandler(TexParser parser, FunctionContext context) {
       ? rightDelimArg.symbol
       : null;
 
-  final textOrd = assertNodeType<MathAtomNode>(
-      assertNodeType<TextAtomNode>(styleArg).children[0]);
+  final textOrd = assertNodeType<MathAtomNode>(styleArg.expandEquationRow()[0]);
   final style = int.tryParse(textOrd.symbol);
 
   GreenNode res = FracNode(

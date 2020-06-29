@@ -28,11 +28,11 @@ const _environmentEntries = {
 };
 GreenNode _enviromentHandler(TexParser parser, FunctionContext context) {
   final nameGroup = parser.parseArgNode(mode: Mode.text, optional: false);
-  if (nameGroup.children.any((element) => element is! TextAtomNode)) {
+  if (nameGroup.children.any((element) => element is! MathAtomNode)) {
     throw ParseError('Invalid environment name');
   }
   final envName =
-      nameGroup.children.map((node) => (node as TextAtomNode).symbol).join();
+      nameGroup.children.map((node) => (node as MathAtomNode).symbol).join();
 
   if (context.funcName == '\\begin') {
     // begin...end is similar to left...right

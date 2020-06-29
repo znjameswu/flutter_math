@@ -17,23 +17,26 @@ abstract class AtomNode extends LeafNode {
   String get symbol;
   bool get variantForm;
   AtomType get atomType;
-
-  
 }
 
 class MathAtomNode extends LeafNode implements AtomNode {
   final String symbol;
   final bool variantForm;
   AtomType _atomType;
-  AtomType get atomType => _atomType ??=
-      symbolRenderConfigs[symbol].math.defaultType ?? AtomType.ord;
+  AtomType get atomType => _atomType ??= (mode == Mode.math
+          ? symbolRenderConfigs[symbol].math.defaultType
+          : symbolRenderConfigs[symbol].text.defaultType) ??
+      AtomType.ord;
   final FontOptions overrideFont;
+
+  final Mode mode;
 
   MathAtomNode({
     @required this.symbol,
     this.variantForm = false,
     AtomType atomType,
     this.overrideFont,
+    this.mode = Mode.math,
   }) : _atomType = atomType;
 
   @override
@@ -44,13 +47,14 @@ class MathAtomNode extends LeafNode implements AtomNode {
         variantForm: variantForm,
         atomType: atomType,
         overrideFont: overrideFont,
-        mode: Mode.math,
+        mode: mode,
         options: options,
       );
 
   @override
   bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
       oldOptions.mathFontOptions != newOptions.mathFontOptions ||
+      oldOptions.textFontOptions != newOptions.textFontOptions ||
       oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
 
   @override

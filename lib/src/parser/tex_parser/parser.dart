@@ -675,7 +675,15 @@ class TexParser {
                     please report what input caused this bug''');
       }
       arg = arg.substring(1, arg.length - 1);
-      return VerbNode(text: arg);
+      return EquationRowNode(
+        children: arg
+            .split('')
+            .map((char) => MathAtomNode(
+                  symbol: char,
+                  overrideFont: const FontOptions(fontFamily: 'Typewritter'),
+                ))
+            .toList(growable: false),
+      );
     }
     // At this point, we should have a symbol, possibly with accents.
     // First expand any accented base symbol according to unicodeSymbols.
@@ -809,22 +817,13 @@ class ScriptsParsingResults {
 
 GreenNode makeOrdNode(Mode mode, String symbol, bool variantForm, AtomType type,
     FontOptions font) {
-  if (mode == Mode.math) {
-    // TODO make a special case for spacing
-    return MathAtomNode(
+  // TODO make a special case for spacing
+  return MathAtomNode(
       symbol: symbol,
       variantForm: variantForm,
       atomType: type,
       overrideFont: font,
-    );
-  } else {
-    return TextAtomNode(
-      symbol: symbol,
-      variantForm: variantForm,
-      atomType: type,
-      overrideFont: font,
-    );
-  }
+      mode: mode);
 }
 
 T assertNodeType<T extends GreenNode>(GreenNode node) {
