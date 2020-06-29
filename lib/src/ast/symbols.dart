@@ -141,6 +141,9 @@ const symbolRenderConfigs = {
   ),
   '\u223C': SymbolRenderConfig( // ∼ 
     math: RenderConfig(AtomType.rel, mainrm), // \u223C, \\sim, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm), // \\thicksim, 
+    ),
   ),
   '\u2AAF': SymbolRenderConfig( // ⪯ 
     math: RenderConfig(AtomType.rel, mainrm), // \u2AAF, \\preceq, 
@@ -153,6 +156,9 @@ const symbolRenderConfigs = {
   ),
   '\u2223': SymbolRenderConfig( // ∣ 
     math: RenderConfig(AtomType.rel, mainrm), // \u2223, \\mid, \\lvert, \\rvert, \\vert, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm), // \\shortmid, 
+    ),
   ),
   '\u226A': SymbolRenderConfig( // ≪ 
     math: RenderConfig(AtomType.rel, mainrm), // \u226A, \\ll, 
@@ -168,6 +174,9 @@ const symbolRenderConfigs = {
   ),
   '\u2323': SymbolRenderConfig( // ⌣ 
     math: RenderConfig(AtomType.rel, mainrm), // \u2323, \\smile, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm), // \\smallsmile, 
+    ),
   ),
   '\u2291': SymbolRenderConfig( // ⊑ 
     math: RenderConfig(AtomType.rel, mainrm), // \u2291, \\sqsubseteq, 
@@ -180,12 +189,18 @@ const symbolRenderConfigs = {
   ),
   '\u2322': SymbolRenderConfig( // ⌢ 
     math: RenderConfig(AtomType.rel, mainrm), // \u2322, \\frown, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm), // \\smallfrown, 
+    ),
   ),
   '\u220B': SymbolRenderConfig( // ∋ 
     math: RenderConfig(AtomType.rel, mainrm), // \u220B, \\ni, \\owns, 
   ),
   '\u221D': SymbolRenderConfig( // ∝ 
     math: RenderConfig(AtomType.rel, mainrm), // \u221D, \\propto, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm), // \\varpropto, 
+    ),
   ),
   '\u22A2': SymbolRenderConfig( // ⊢ 
     math: RenderConfig(AtomType.rel, mainrm), // \u22A2, \\vdash, 
@@ -201,6 +216,9 @@ const symbolRenderConfigs = {
   ),
   '\u210F': SymbolRenderConfig( // ℏ 
     math: RenderConfig(AtomType.ord, mainrm), // \u210F, \\hbar, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.ord, amsrm), // \\hslash, 
+    ),
   ),
   '\u2203': SymbolRenderConfig( // ∃ 
     math: RenderConfig(AtomType.ord, mainrm), // \u2203, \\exists, 
@@ -348,6 +366,9 @@ const symbolRenderConfigs = {
   ),
   '\u2268': SymbolRenderConfig( // ≨ 
     math: RenderConfig(AtomType.rel, amsrm), // \u2268, \\lneqq, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE00C'), // \\lvertneqq, 
+    ),
   ),
   '\u22E6': SymbolRenderConfig( // ⋦ 
     math: RenderConfig(AtomType.rel, amsrm), // \u22E6, \\lnsim, 
@@ -372,6 +393,9 @@ const symbolRenderConfigs = {
   ),
   '\u2224': SymbolRenderConfig( // ∤ 
     math: RenderConfig(AtomType.rel, amsrm), // \u2224, \\nmid, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE006'), // \\nshortmid, 
+    ),
   ),
   '\u22AC': SymbolRenderConfig( // ⊬ 
     math: RenderConfig(AtomType.rel, amsrm), // \u22AC, \\nvdash, 
@@ -384,9 +408,15 @@ const symbolRenderConfigs = {
   ),
   '\u228A': SymbolRenderConfig( // ⊊ 
     math: RenderConfig(AtomType.rel, amsrm), // \u228A, \\subsetneq, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE01A'), // \\varsubsetneq, 
+    ),
   ),
   '\u2ACB': SymbolRenderConfig( // ⫋ 
     math: RenderConfig(AtomType.rel, amsrm), // \u2ACB, \\subsetneqq, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE017'), // \\varsubsetneqq, 
+    ),
   ),
   '\u226F': SymbolRenderConfig( // ≯ 
     math: RenderConfig(AtomType.rel, amsrm), // \u226F, \\ngtr, 
@@ -396,6 +426,9 @@ const symbolRenderConfigs = {
   ),
   '\u2269': SymbolRenderConfig( // ≩ 
     math: RenderConfig(AtomType.rel, amsrm), // \u2269, \\gneqq, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE00D'), // \\gvertneqq, 
+    ),
   ),
   '\u22E7': SymbolRenderConfig( // ⋧ 
     math: RenderConfig(AtomType.rel, amsrm), // \u22E7, \\gnsim, 
@@ -420,6 +453,9 @@ const symbolRenderConfigs = {
   ),
   '\u2226': SymbolRenderConfig( // ∦ 
     math: RenderConfig(AtomType.rel, amsrm), // \u2226, \\nparallel, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE007'), // \\nshortparallel, 
+    ),
   ),
   '\u22AF': SymbolRenderConfig( // ⊯ 
     math: RenderConfig(AtomType.rel, amsrm), // \u22AF, \\nVDash, 
@@ -429,9 +465,15 @@ const symbolRenderConfigs = {
   ),
   '\u228B': SymbolRenderConfig( // ⊋ 
     math: RenderConfig(AtomType.rel, amsrm), // \u228B, \\supsetneq, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE01B'), // \\varsupsetneq, 
+    ),
   ),
   '\u2ACC': SymbolRenderConfig( // ⫌ 
     math: RenderConfig(AtomType.rel, amsrm), // \u2ACC, \\supsetneqq, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE019'), // \\varsupsetneqq, 
+    ),
   ),
   '\u22AE': SymbolRenderConfig( // ⊮ 
     math: RenderConfig(AtomType.rel, amsrm), // \u22AE, \\nVdash, 
@@ -576,6 +618,9 @@ const symbolRenderConfigs = {
   ),
   '\u22A8': SymbolRenderConfig( // ⊨ 
     math: RenderConfig(AtomType.rel, amsrm), // \u22A8, \\vDash, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, mainrm), // \\models, 
+    ),
   ),
   '\u22AA': SymbolRenderConfig( // ⊪ 
     math: RenderConfig(AtomType.rel, amsrm), // \u22AA, \\Vvdash, 
@@ -994,6 +1039,9 @@ const symbolRenderConfigs = {
   ),
   '\u22C5': SymbolRenderConfig( // ⋅ 
     math: RenderConfig(AtomType.bin, mainrm), // \u22C5, \\cdotp, \\cdot, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.bin, amsrm), // \\centerdot, 
+    ),
   ),
   '\u00F7': SymbolRenderConfig( // ÷ 
     math: RenderConfig(AtomType.bin, mainrm), // \u00F7, \\div, 
@@ -1064,6 +1112,9 @@ const symbolRenderConfigs = {
   ),
   '\u2248': SymbolRenderConfig( // ≈ 
     math: RenderConfig(AtomType.rel, mainrm), // \u2248, \\approx, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm), // \\thickapprox, 
+    ),
   ),
   '\u2245': SymbolRenderConfig( // ≅ 
     math: RenderConfig(AtomType.rel, mainrm), // \u2245, \\cong, 
@@ -1088,9 +1139,15 @@ const symbolRenderConfigs = {
   ),
   '\u2288': SymbolRenderConfig( // ⊈ 
     math: RenderConfig(AtomType.rel, amsrm), // \u2288, \\nsubseteq, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE016'), // \\nsubseteqq, 
+    ),
   ),
   '\u2289': SymbolRenderConfig( // ⊉ 
     math: RenderConfig(AtomType.rel, amsrm), // \u2289, \\nsupseteq, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE018'), // \\nsupseteqq, 
+    ),
   ),
   '\u2190': SymbolRenderConfig( // ← 
     math: RenderConfig(AtomType.rel, mainrm), // \u2190, \\gets, \\leftarrow, 
@@ -1103,9 +1160,15 @@ const symbolRenderConfigs = {
   ),
   '\u2271': SymbolRenderConfig( // ≱ 
     math: RenderConfig(AtomType.rel, amsrm), // \u2271, \\ngeq, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE00E'), // \\ngeqq, 
+    ),
   ),
   '\u2270': SymbolRenderConfig( // ≰ 
     math: RenderConfig(AtomType.rel, amsrm), // \u2270, \\nleq, 
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE011'), // \\nleqq, 
+    ),
   ),
   ',': SymbolRenderConfig( // , 
     math: RenderConfig(AtomType.punct, mainrm), // ,, 
@@ -3570,6 +3633,18 @@ const symbolRenderConfigs = {
   '\u201D': SymbolRenderConfig( // ” 
     text: RenderConfig(AtomType.ord, mainrm), // \u201D, \'\', \\textquotedblright, 
   ),
+  '\u231C': SymbolRenderConfig( // ⌜ 
+    math: RenderConfig(AtomType.open, amsrm, '\u250C'), // \u250C, \\@ulcorner, 
+  ),
+  '\u231D': SymbolRenderConfig( // ⌝ 
+    math: RenderConfig(AtomType.close, amsrm, '\u2510'), // \u2510, \\@urcorner, 
+  ),
+  '\u231E': SymbolRenderConfig( // ⌞ 
+    math: RenderConfig(AtomType.open, amsrm, '\u2514'), // \u2514, \\@llcorner, 
+  ),
+  '\u231F': SymbolRenderConfig( // ⌟ 
+    math: RenderConfig(AtomType.close, amsrm, '\u2518'), // \u2518, \\@lrcorner, 
+  ),
   '\u22A5': SymbolRenderConfig( // ⊥ 
     math: RenderConfig(AtomType.rel, mainrm), // \\perp, \\bot, 
   ),
@@ -3606,53 +3681,11 @@ const symbolRenderConfigs = {
   '\u2A3F': SymbolRenderConfig( // ⨿ 
     math: RenderConfig(AtomType.bin, mainrm), // \\amalg, 
   ),
-  '\uE010': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@nleqslant, 
-  ),
-  '\uE011': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@nleqq, 
-  ),
-  '\uE00C': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@lvertneqq, 
-  ),
-  '\uE006': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@nshortmid, 
-  ),
   '\u22EA': SymbolRenderConfig( // ⋪ 
     math: RenderConfig(AtomType.rel, amsrm), // \\ntriangleleft, 
   ),
-  '\uE01A': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@varsubsetneq, 
-  ),
-  '\uE017': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@varsubsetneqq, 
-  ),
-  '\uE00F': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@ngeqslant, 
-  ),
-  '\uE00E': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@ngeqq, 
-  ),
-  '\uE00D': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@gvertneqq, 
-  ),
-  '\uE007': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@nshortparallel, 
-  ),
   '\u22EB': SymbolRenderConfig( // ⋫ 
     math: RenderConfig(AtomType.rel, amsrm), // \\ntriangleright, 
-  ),
-  '\uE018': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@nsupseteqq, 
-  ),
-  '\uE01B': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@varsupsetneq, 
-  ),
-  '\uE019': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@varsupsetneqq, 
-  ),
-  '\uE016': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, amsrm), // \\@nsubseteqq, 
   ),
   '\u22B4': SymbolRenderConfig( // ⊴ 
     math: RenderConfig(AtomType.rel, amsrm), // \\unlhd, \\trianglelefteq, 
@@ -3778,8 +3811,8 @@ const symbolRenderConfigs = {
   '\u221A': SymbolRenderConfig( // √ 
     math: RenderConfig(AtomType.ord, mainrm), // \\surd, 
   ),
-  '\uE020': SymbolRenderConfig( //  
-    math: RenderConfig(AtomType.rel, mainrm), // \\@not, 
+  '\u0338': SymbolRenderConfig( // ̸ 
+    math: RenderConfig(AtomType.rel, mainrm, '\uE020'), // \\not, 
   ),
   '\u22C4': SymbolRenderConfig( // ⋄ 
     math: RenderConfig(AtomType.bin, mainrm), // \\diamond, 

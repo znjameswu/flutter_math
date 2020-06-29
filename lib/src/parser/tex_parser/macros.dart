@@ -25,7 +25,6 @@
 //ignore_for_file: lines_longer_than_80_chars
 import 'dart:developer';
 
-
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../font/metrics/font_metrics_data.dart';
@@ -350,23 +349,7 @@ void _init() {
   defineMacro("\\aa", MacroDefinition.fromString("\\r a"));
   defineMacro("\\AA", MacroDefinition.fromString("\\r A"));
 
-// Copyright (C) and registered (R) symbols. Use raw symbol in MathML.
-// \DeclareTextCommandDefault{\textcopyright}{\textcircled{c}}
-// \DeclareTextCommandDefault{\textregistered}{\textcircled{%
-//      \check@mathfonts\fontsize\sf@size\z@\math@fontsfalse\selectfont R}}
-// \DeclareRobustCommand{\copyright}{%
-//    \ifmmode{\nfss@text{\textcopyright}}\else\textcopyright\fi}
-  defineMacro("\\textcopyright",
-      MacroDefinition.fromString("\\html@mathml{\\textcircled{c}}{\\char`©}"));
-  defineMacro(
-      "\\copyright",
-      MacroDefinition.fromString(
-          "\\TextOrMath{\\textcopyright}{\\text{\\textcopyright}}"));
-  defineMacro(
-      "\\textregistered",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\textcircled{\\scriptsize R}}{\\char`®}"));
-
+// TODO these should be migrated into renderconfigs
 // Characters omitted from Unicode range 1D400–1D7FF
   defineMacro("\u212C", MacroDefinition.fromString("\\mathscr{B}")); // script
   defineMacro("\u2130", MacroDefinition.fromString("\\mathscr{E}"));
@@ -389,71 +372,63 @@ void _init() {
   defineMacro("\u00b7", MacroDefinition.fromString("\\cdotp"));
 
 // \llap and \rlap render their contents in text mode
-  defineMacro("\\llap", MacroDefinition.fromString("\\mathllap{\\textrm{#1}}"));
-  defineMacro("\\rlap", MacroDefinition.fromString("\\mathrlap{\\textrm{#1}}"));
-  defineMacro("\\clap", MacroDefinition.fromString("\\mathclap{\\textrm{#1}}"));
+  // defineMacro("\\llap", MacroDefinition.fromString("\\mathllap{\\textrm{#1}}"));
+  // defineMacro("\\rlap", MacroDefinition.fromString("\\mathrlap{\\textrm{#1}}"));
+  // defineMacro("\\clap", MacroDefinition.fromString("\\mathclap{\\textrm{#1}}"));
 
 // \not is defined by base/fontmath.ltx via
 // \DeclareMathSymbol{\not}{\mathrel}{symbols}{"36}
 // It's thus treated like a \mathrel, but defined by a symbol that has zero
 // width but extends to the right.  We use \rlap to get that spacing.
 // For MathML we write U+0338 here. buildMathML.js will then do the overlay.
-  defineMacro(
-      "\\not",
-      MacroDefinition.fromString(
-          '\\html@mathml{\\mathrel{\\mathrlap\\@not}}{\\char")338}'));
+// TODO fold 'not' with applicable operators
+  // defineMacro(
+  //     "\\not",
+  //     MacroDefinition.fromString(
+  //         '\\html@mathml{\\mathrel{\\mathrlap\\@not}}{\\char")338}'));
 
 // Negated symbols from base/fontmath.ltx:
 // \def\neq{\not=} \let\ne=\neq
 // \DeclareRobustCommand
 //   \notin{\mathrel{\m@th\mathpalette\c@ncel\in}}
 // \def\c@ncel#1#2{\m@th\ooalign{$\hfil#1\mkern1mu/\hfil$\crcr$#1#2$}}
-  defineMacro(
-      "\\neq",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\mathrel{\\not=}}{\\mathrel{\\char`≠}}"));
   defineMacro("\\ne", MacroDefinition.fromString("\\neq"));
   defineMacro("\u2260", MacroDefinition.fromString("\\neq"));
-  defineMacro(
-      "\\notin",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\mathrel{{\\in}\\mathllap{/\\mskip1mu}}}"
-          "{\\mathrel{\\char`∉}}"));
   defineMacro("\u2209", MacroDefinition.fromString("\\notin"));
 
 // Unicode stacked relations
-  defineMacro(
-      "\u2258",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{=\\kern{-1em}\\raisebox{0.4em}{\$\\scriptsize\\frown\$}}"
-          "}{\\mathrel{\\char`\u2258}}"));
-  defineMacro(
-      "\u2259",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\stackrel{\\tiny\\wedge}{=}}{\\mathrel{\\char`\u2258}}"));
-  defineMacro(
-      "\u225A",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\stackrel{\\tiny\\vee}{=}}{\\mathrel{\\char`\u225A}}"));
-  defineMacro(
-      "\u225B",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\stackrel{\\scriptsize\\star}{=}}"
-          "{\\mathrel{\\char`\u225B}}"));
-  defineMacro(
-      "\u225D",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\stackrel{\\tiny\\mathrm{def}}{=}}"
-          "{\\mathrel{\\char`\u225D}}"));
-  defineMacro(
-      "\u225E",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\stackrel{\\tiny\\mathrm{m}}{=}}"
-          "{\\mathrel{\\char`\u225E}}"));
-  defineMacro(
-      "\u225F",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\stackrel{\\tiny?}{=}}{\\mathrel{\\char`\u225F}}"));
+  // defineMacro(
+  //     "\u2258",
+  //     MacroDefinition.fromString("\\html@mathml{"
+  //         "\\mathrel{=\\kern{-1em}\\raisebox{0.4em}{\$\\scriptsize\\frown\$}}"
+  //         "}{\\mathrel{\\char`\u2258}}"));
+  // defineMacro(
+  //     "\u2259",
+  //     MacroDefinition.fromString(
+  //         "\\html@mathml{\\stackrel{\\tiny\\wedge}{=}}{\\mathrel{\\char`\u2258}}"));
+  // defineMacro(
+  //     "\u225A",
+  //     MacroDefinition.fromString(
+  //         "\\html@mathml{\\stackrel{\\tiny\\vee}{=}}{\\mathrel{\\char`\u225A}}"));
+  // defineMacro(
+  //     "\u225B",
+  //     MacroDefinition.fromString(
+  //         "\\html@mathml{\\stackrel{\\scriptsize\\star}{=}}"
+  //         "{\\mathrel{\\char`\u225B}}"));
+  // defineMacro(
+  //     "\u225D",
+  //     MacroDefinition.fromString(
+  //         "\\html@mathml{\\stackrel{\\tiny\\mathrm{def}}{=}}"
+  //         "{\\mathrel{\\char`\u225D}}"));
+  // defineMacro(
+  //     "\u225E",
+  //     MacroDefinition.fromString(
+  //         "\\html@mathml{\\stackrel{\\tiny\\mathrm{m}}{=}}"
+  //         "{\\mathrel{\\char`\u225E}}"));
+  // defineMacro(
+  //     "\u225F",
+  //     MacroDefinition.fromString(
+  //         "\\html@mathml{\\stackrel{\\tiny?}{=}}{\\mathrel{\\char`\u225F}}"));
 
 // Misc Unicode
   defineMacro("\u27C2", MacroDefinition.fromString("\\perp"));
@@ -470,22 +445,11 @@ void _init() {
 
 // The KaTeX fonts have corners at codepoints that don't match Unicode.
 // For MathML purposes, use the Unicode code point.
-  defineMacro(
-      "\\ulcorner",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\@ulcorner}{\\mathop{\\char\")231c}}"));
-  defineMacro(
-      "\\urcorner",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\@urcorner}{\\mathop{\\char\")231d}}"));
-  defineMacro(
-      "\\llcorner",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\@llcorner}{\\mathop{\\char\")231e}}"));
-  defineMacro(
-      "\\lrcorner",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\@lrcorner}{\\mathop{\\char\")231f}}"));
+// TODO strip useless @
+  defineMacro("\\ulcorner", MacroDefinition.fromString("\\@ulcorner"));
+  defineMacro("\\urcorner", MacroDefinition.fromString("\\@urcorner"));
+  defineMacro("\\llcorner", MacroDefinition.fromString("\\@llcorner"));
+  defineMacro("\\lrcorner", MacroDefinition.fromString("\\@lrcorner"));
 
 //////////////////////////////////////////////////////////////////////
 // LaTeX_2ε
@@ -494,6 +458,7 @@ void _init() {
 // \kern6\p@\hbox{.}\hbox{.}\hbox{.}}}
 // We'll call \varvdots, which gets a glyph from symbols.js.
 // The zero-width rule gets us an equivalent to the vertical 6pt kern.
+// TODO should we accept \vdots's kern ?
   defineMacro("\\vdots",
       MacroDefinition.fromString("\\mathord{\\varvdots\\rule{0pt}{15pt}}"));
   defineMacro("\u22ee", MacroDefinition.fromString("\\vdots"));
@@ -504,6 +469,7 @@ void _init() {
 
 // Italic Greek capital letters.  AMS defines these with \DeclareMathSymbol,
 // but they are equivalent to \mathit{\Letter}.
+// TODO make them as overrided fonts
   defineMacro("\\varGamma", MacroDefinition.fromString("\\mathit{\\Gamma}"));
   defineMacro("\\varDelta", MacroDefinition.fromString("\\mathit{\\Delta}"));
   defineMacro("\\varTheta", MacroDefinition.fromString("\\mathit{\\Theta}"));
@@ -523,12 +489,9 @@ void _init() {
 
 // \renewcommand{\colon}{\nobreak\mskip2mu\mathpunct{}\nonscript
 // \mkern-\thinmuskip{:}\mskip6muplus1mu\relax}
-  defineMacro(
-      "\\colon",
-      MacroDefinition.fromString("\\nobreak\\mskip2mu\\mathpunct{}"
-          "\\mathchoice{\\mkern-3mu}{\\mkern-3mu}{}{}{:}\\mskip6mu"));
 
 // \newcommand{\boxed}[1]{\fbox{\m@th$\displaystyle#1$}}
+// TODO fbox
   defineMacro(
       "\\boxed", MacroDefinition.fromString("\\fbox{\$\\displaystyle{#1}\$}"));
 
@@ -620,59 +583,11 @@ void _init() {
     return thedots;
   }));
 
-  const spaceAfterDots = {
-    // \rightdelim@ checks for the following:
-    ')': true,
-    ']': true,
-    '\\rbrack': true,
-    '\\}': true,
-    '\\rbrace': true,
-    '\\rangle': true,
-    '\\rceil': true,
-    '\\rfloor': true,
-    '\\rgroup': true,
-    '\\rmoustache': true,
-    '\\right': true,
-    '\\bigr': true,
-    '\\biggr': true,
-    '\\Bigr': true,
-    '\\Biggr': true,
-    // \extra@ also tests for the following:
-    '\$': true,
-    // \extrap@ checks for the following:
-    ';': true,
-    '.': true,
-    ',': true,
-  };
+  defineMacro("\\dotso", MacroDefinition.fromString("\\ldots"));
 
-  defineMacro("\\dotso", MacroDefinition.fromCtxString((context) {
-    final next = context.future().text;
-    if (spaceAfterDots.containsKey(next)) {
-      return "\\ldots\\,";
-    } else {
-      return "\\ldots";
-    }
-  }));
+  defineMacro("\\dotsc", MacroDefinition.fromString("\\ldots"));
 
-  defineMacro("\\dotsc", MacroDefinition.fromCtxString((context) {
-    final next = context.future().text;
-    // \dotsc uses \extra@ but not \extrap@, instead specially checking for
-    // ';' and '.', but doesn't check for ','.
-    if (spaceAfterDots.containsKey(next) && next != ',') {
-      return "\\ldots\\,";
-    } else {
-      return "\\ldots";
-    }
-  }));
-
-  defineMacro("\\cdots", MacroDefinition.fromCtxString((context) {
-    final next = context.future().text;
-    if (spaceAfterDots.containsKey(next)) {
-      return "\\@cdots\\,";
-    } else {
-      return "\\@cdots";
-    }
-  }));
+  defineMacro("\\cdots", MacroDefinition.fromString("\\@cdots"));
 
   defineMacro("\\dotsb", MacroDefinition.fromString("\\cdots"));
   defineMacro("\\dotsm", MacroDefinition.fromString("\\cdots"));
@@ -736,6 +651,7 @@ void _init() {
   defineMacro("\\qquad", MacroDefinition.fromString("\\hskip2em\\relax"));
 
 // \tag@in@display form of \tag
+// TODO tag
   defineMacro(
       "\\tag", MacroDefinition.fromString("\\@ifstar\\tag@literal\\tag@paren"));
   defineMacro(
@@ -758,10 +674,10 @@ void _init() {
 // TODO: math mode should use \medmuskip = 4mu plus 2mu minus 4mu
   defineMacro(
       "\\bmod",
-      MacroDefinition.fromString(
-          "\\mathchoice{\\mskip1mu}{\\mskip1mu}{\\mskip5mu}{\\mskip5mu}"
+      MacroDefinition.fromString("\\mskip5mu"
           "\\mathbin{\\rm mod}"
-          "\\mathchoice{\\mskip1mu}{\\mskip1mu}{\\mskip5mu}{\\mskip5mu}"));
+          "\\mskip5mu"));
+// TODO what should we do about \pod ?
   defineMacro(
       "\\pod",
       MacroDefinition.fromString("\\allowbreak"
@@ -774,16 +690,6 @@ void _init() {
           "\\mathchoice{\\mkern18mu}{\\mkern12mu}{\\mkern12mu}{\\mkern12mu}"
           "{\\rm mod}\\,\\,#1"));
 
-// \pmb    --   A simulation of bold.
-// The version in ambsy.sty works by typesetting three copies of the argument
-// with small offsets. We use two copies. We omit the vertical offset because
-// of rendering problems that makeVList encounters in Safari.
-  defineMacro(
-      "\\pmb",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\@binrel{#1}{\\mathrlap{#1}\\kern0.5px#1}}"
-          "{\\mathbf{#1}}"));
-
 //////////////////////////////////////////////////////////////////////
 // LaTeX source2e
 
@@ -794,11 +700,12 @@ void _init() {
 // TODO: Doesn't normally work in math mode because \@ fails.  KaTeX doesn't
 // support \@ yet, so that's omitted, and we add \text so that the result
 // doesn't look funny in math mode.
+
   defineMacro(
       "\\TeX",
-      MacroDefinition.fromString("\\textrm{\\html@mathml{"
+      MacroDefinition.fromString("\\textrm{"
           "T\\kern-.1667em\\raisebox{-.5ex}{E}\\kern-.125emX"
-          "}{TeX}}"));
+          "}"));
 
 // \DeclareRobustCommand{\LaTeX}{L\kern-.36em%
 //         {\sbox\z@ T%
@@ -818,29 +725,27 @@ void _init() {
       '${fontMetricsData['Main-Regular']["T".codeUnitAt(0)].height - 0.7 * fontMetricsData['Main-Regular']["A".codeUnitAt(0)].height}em';
   defineMacro(
       "\\LaTeX",
-      MacroDefinition.fromString("\\textrm{\\html@mathml{"
+      MacroDefinition.fromString("\\textrm{"
           'L\\kern-.36em\\raisebox{$latexRaiseA}{\\scriptstyle A}'
-          "\\kern-.15em\\TeX}{LaTeX}}"));
+          "\\kern-.15em\\TeX}"));
 
 // KaTeX logo based on tweaking LaTeX logo
   defineMacro(
       "\\KaTeX",
-      MacroDefinition.fromString("\\textrm{\\html@mathml{"
+      MacroDefinition.fromString("\\textrm{"
           'K\\kern-.17em\\raisebox{$latexRaiseA}{\\scriptstyle A}'
-          "\\kern-.15em\\TeX}{KaTeX}}"));
+          "\\kern-.15em\\TeX}"));
 
 // \DeclareRobustCommand\hspace{\@ifstar\@hspacer\@hspace}
 // \def\@hspace#1{\hskip  #1\relax}
 // \def\@hspacer#1{\vrule \@width\z@\nobreak
 //                 \hskip #1\hskip \z@skip}
   defineMacro(
-      "\\hspace", MacroDefinition.fromString("\\@ifstar\\@hspacer\\@hspace"));
-  defineMacro("\\@hspace", MacroDefinition.fromString("\\hskip #1\\relax"));
-  defineMacro("\\@hspacer",
-      MacroDefinition.fromString("\\rule{0pt}{0pt}\\hskip #1\\relax"));
+      "\\hspace", MacroDefinition.fromString("\\hskip #1\\relax"));
 
 //////////////////////////////////////////////////////////////////////
 // mathtools.sty
+// TODO: make as overrided type & font
 
 //\providecommand\ordinarycolon{:}
   defineMacro("\\ordinarycolon", MacroDefinition.fromString(":"));
@@ -849,90 +754,40 @@ void _init() {
   defineMacro("\\vcentcolon",
       MacroDefinition.fromString("\\mathrel{\\mathop\\ordinarycolon}"));
 // \providecommand*\dblcolon{\vcentcolon\mathrel{\mkern-.9mu}\vcentcolon}
-  defineMacro(
-      "\\dblcolon",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\vcentcolon\\mathrel{\\mkern-.9mu}\\vcentcolon}}"
-          "{\\mathop{\\char\"2237}}"));
-// \providecommand*\coloneqq{\vcentcolon\mathrel{\mkern-1.2mu}=}
-  defineMacro(
-      "\\coloneqq",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}=}}"
-          "{\\mathop{\\char\"2254}}")); // ≔
-// \providecommand*\Coloneqq{\dblcolon\mathrel{\mkern-1.2mu}=}
-  defineMacro(
-      "\\Coloneqq",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}=}}"
-          "{\\mathop{\\char\"2237\\char\"3d}}"));
-// \providecommand*\coloneq{\vcentcolon\mathrel{\mkern-1.2mu}\mathrel{-}}
-  defineMacro(
-      "\\coloneq",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}\\mathrel{-}}}"
-          "{\\mathop{\\char\"3a\\char\"2212}}"));
-// \providecommand*\Coloneq{\dblcolon\mathrel{\mkern-1.2mu}\mathrel{-}}
-  defineMacro(
-      "\\Coloneq",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}\\mathrel{-}}}"
-          "{\\mathop{\\char\"2237\\char\"2212}}"));
+//   defineMacro(
+//       "\\dblcolon",
+//       MacroDefinition.fromString("\\html@mathml{"
+//           "\\mathrel{\\vcentcolon\\mathrel{\\mkern-.9mu}\\vcentcolon}}"
+//           "{\\mathop{\\char\"2237}}"));
+// // \providecommand*\coloneqq{\vcentcolon\mathrel{\mkern-1.2mu}=}
+//   defineMacro(
+//       "\\coloneqq",
+//       MacroDefinition.fromString("\\html@mathml{"
+//           "\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}=}}"
+//           "{\\mathop{\\char\"2254}}")); // ≔
+
 // \providecommand*\eqqcolon{=\mathrel{\mkern-1.2mu}\vcentcolon}
-  defineMacro(
-      "\\eqqcolon",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{=\\mathrel{\\mkern-1.2mu}\\vcentcolon}}"
-          "{\\mathop{\\char\"2255}}")); // ≕
-// \providecommand*\Eqqcolon{=\mathrel{\mkern-1.2mu}\dblcolon}
-  defineMacro(
-      "\\Eqqcolon",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{=\\mathrel{\\mkern-1.2mu}\\dblcolon}}"
-          "{\\mathop{\\char\"3d\\char\"2237}}"));
+  // defineMacro(
+  //     "\\eqqcolon",
+  //     MacroDefinition.fromString("\\html@mathml{"
+  //         "\\mathrel{=\\mathrel{\\mkern-1.2mu}\\vcentcolon}}"
+  //         "{\\mathop{\\char\"2255}}")); // ≕
+
 // \providecommand*\eqcolon{\mathrel{-}\mathrel{\mkern-1.2mu}\vcentcolon}
-  defineMacro(
-      "\\eqcolon",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\mathrel{-}\\mathrel{\\mkern-1.2mu}\\vcentcolon}}"
-          "{\\mathop{\\char\"2239}}"));
-// \providecommand*\Eqcolon{\mathrel{-}\mathrel{\mkern-1.2mu}\dblcolon}
-  defineMacro(
-      "\\Eqcolon",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\mathrel{-}\\mathrel{\\mkern-1.2mu}\\dblcolon}}"
-          "{\\mathop{\\char\"2212\\char\"2237}}"));
-// \providecommand*\colonapprox{\vcentcolon\mathrel{\mkern-1.2mu}\approx}
-  defineMacro(
-      "\\colonapprox",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}\\approx}}"
-          "{\\mathop{\\char\"3a\\char\"2248}}"));
-// \providecommand*\Colonapprox{\dblcolon\mathrel{\mkern-1.2mu}\approx}
-  defineMacro(
-      "\\Colonapprox",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}\\approx}}"
-          "{\\mathop{\\char\"2237\\char\"2248}}"));
-// \providecommand*\colonsim{\vcentcolon\mathrel{\mkern-1.2mu}\sim}
-  defineMacro(
-      "\\colonsim",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}\\sim}}"
-          "{\\mathop{\\char\"3a\\char\"223c}}"));
-// \providecommand*\Colonsim{\dblcolon\mathrel{\mkern-1.2mu}\sim}
-  defineMacro(
-      "\\Colonsim",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}\\sim}}"
-          "{\\mathop{\\char\"2237\\char\"223c}}"));
+  // defineMacro(
+  //     "\\eqcolon",
+  //     MacroDefinition.fromString("\\html@mathml{"
+  //         "\\mathrel{\\mathrel{-}\\mathrel{\\mkern-1.2mu}\\vcentcolon}}"
+  //         "{\\mathop{\\char\"2239}}"));
+
+
 
 // Some Unicode characters are implemented with macros to mathtools functions.
   defineMacro("\u2237", MacroDefinition.fromString("\\dblcolon")); // ::
   defineMacro("\u2239", MacroDefinition.fromString("\\eqcolon")); // -:
   defineMacro("\u2254", MacroDefinition.fromString("\\coloneqq")); // :=
   defineMacro("\u2255", MacroDefinition.fromString("\\eqqcolon")); // =:
-  defineMacro("\u2A74", MacroDefinition.fromString("\\Coloneqq")); // ::=
+  // defineMacro("\u2A74", MacroDefinition.fromString("\\Coloneqq")); // ::=
 
 //////////////////////////////////////////////////////////////////////
 // colonequals.sty
@@ -941,42 +796,11 @@ void _init() {
   defineMacro("\\ratio", MacroDefinition.fromString("\\vcentcolon"));
   defineMacro("\\coloncolon", MacroDefinition.fromString("\\dblcolon"));
   defineMacro("\\colonequals", MacroDefinition.fromString("\\coloneqq"));
-  defineMacro("\\coloncolonequals", MacroDefinition.fromString("\\Coloneqq"));
   defineMacro("\\equalscolon", MacroDefinition.fromString("\\eqqcolon"));
-  defineMacro("\\equalscoloncolon", MacroDefinition.fromString("\\Eqqcolon"));
-  defineMacro("\\colonminus", MacroDefinition.fromString("\\coloneq"));
-  defineMacro("\\coloncolonminus", MacroDefinition.fromString("\\Coloneq"));
   defineMacro("\\minuscolon", MacroDefinition.fromString("\\eqcolon"));
-  defineMacro("\\minuscoloncolon", MacroDefinition.fromString("\\Eqcolon"));
-// \colonapprox name is same in mathtools and colonequals.
-  defineMacro(
-      "\\coloncolonapprox", MacroDefinition.fromString("\\Colonapprox"));
-// \colonsim name is same in mathtools and colonequals.
-  defineMacro("\\coloncolonsim", MacroDefinition.fromString("\\Colonsim"));
 
-// Additional macros, implemented by analogy with mathtools definitions:
-  defineMacro(
-      "\\simcolon",
-      MacroDefinition.fromString(
-          "\\mathrel{\\sim\\mathrel{\\mkern-1.2mu}\\vcentcolon}"));
-  defineMacro(
-      "\\simcoloncolon",
-      MacroDefinition.fromString(
-          "\\mathrel{\\sim\\mathrel{\\mkern-1.2mu}\\dblcolon}"));
-  defineMacro(
-      "\\approxcolon",
-      MacroDefinition.fromString(
-          "\\mathrel{\\approx\\mathrel{\\mkern-1.2mu}\\vcentcolon}"));
-  defineMacro(
-      "\\approxcoloncolon",
-      MacroDefinition.fromString(
-          "\\mathrel{\\approx\\mathrel{\\mkern-1.2mu}\\dblcolon}"));
 
 // Present in newtxmath, pxfonts and txfonts
-  defineMacro(
-      "\\notni",
-      MacroDefinition.fromString(
-          "\\html@mathml{\\not\\ni}{\\mathrel{\\char`\u220C}}"));
   defineMacro("\\limsup",
       MacroDefinition.fromString("\\DOTSB\\operatorname*{lim\\,sup}"));
   defineMacro("\\liminf",
@@ -984,34 +808,6 @@ void _init() {
 
 //////////////////////////////////////////////////////////////////////
 // MathML alternates for KaTeX glyphs in the Unicode private area
-  defineMacro("\\gvertneqq",
-      MacroDefinition.fromString("\\html@mathml{\\@gvertneqq}{\u2269}"));
-  defineMacro("\\lvertneqq",
-      MacroDefinition.fromString("\\html@mathml{\\@lvertneqq}{\u2268}"));
-  defineMacro(
-      "\\ngeqq", MacroDefinition.fromString("\\html@mathml{\\@ngeqq}{\u2271}"));
-  defineMacro("\\ngeqslant",
-      MacroDefinition.fromString("\\html@mathml{\\@ngeqslant}{\u2271}"));
-  defineMacro(
-      "\\nleqq", MacroDefinition.fromString("\\html@mathml{\\@nleqq}{\u2270}"));
-  defineMacro("\\nleqslant",
-      MacroDefinition.fromString("\\html@mathml{\\@nleqslant}{\u2270}"));
-  defineMacro("\\nshortmid",
-      MacroDefinition.fromString("\\html@mathml{\\@nshortmid}{∤}"));
-  defineMacro("\\nshortparallel",
-      MacroDefinition.fromString("\\html@mathml{\\@nshortparallel}{∦}"));
-  defineMacro("\\nsubseteqq",
-      MacroDefinition.fromString("\\html@mathml{\\@nsubseteqq}{\u2288}"));
-  defineMacro("\\nsupseteqq",
-      MacroDefinition.fromString("\\html@mathml{\\@nsupseteqq}{\u2289}"));
-  defineMacro("\\varsubsetneq",
-      MacroDefinition.fromString("\\html@mathml{\\@varsubsetneq}{⊊}"));
-  defineMacro("\\varsubsetneqq",
-      MacroDefinition.fromString("\\html@mathml{\\@varsubsetneqq}{⫋}"));
-  defineMacro("\\varsupsetneq",
-      MacroDefinition.fromString("\\html@mathml{\\@varsupsetneq}{⊋}"));
-  defineMacro("\\varsupsetneqq",
-      MacroDefinition.fromString("\\html@mathml{\\@varsupsetneqq}{⫌}"));
 
 //////////////////////////////////////////////////////////////////////
 // stmaryrd and semantic
@@ -1019,37 +815,37 @@ void _init() {
 // The stmaryrd and semantic packages render the next four items by calling a
 // glyph. Those glyphs do not exist in the KaTeX fonts. Hence the macros.
 
-  defineMacro(
-      "\\llbracket",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathopen{[\\mkern-3.2mu[}}"
-          "{\\mathopen{\\char`\u27e6}}"));
-  defineMacro(
-      "\\rrbracket",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathclose{]\\mkern-3.2mu]}}"
-          "{\\mathclose{\\char`\u27e7}}"));
+  // defineMacro(
+  //     "\\llbracket",
+  //     MacroDefinition.fromString("\\html@mathml{"
+  //         "\\mathopen{[\\mkern-3.2mu[}}"
+  //         "{\\mathopen{\\char`\u27e6}}"));
+  // defineMacro(
+  //     "\\rrbracket",
+  //     MacroDefinition.fromString("\\html@mathml{"
+  //         "\\mathclose{]\\mkern-3.2mu]}}"
+  //         "{\\mathclose{\\char`\u27e7}}"));
 
-  defineMacro(
-      "\u27e6", MacroDefinition.fromString("\\llbracket")); // blackboard bold [
-  defineMacro(
-      "\u27e7", MacroDefinition.fromString("\\rrbracket")); // blackboard bold ]
+  // defineMacro(
+  //     "\u27e6", MacroDefinition.fromString("\\llbracket")); // blackboard bold [
+  // defineMacro(
+  //     "\u27e7", MacroDefinition.fromString("\\rrbracket")); // blackboard bold ]
 
-  defineMacro(
-      "\\lBrace",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathopen{\\{\\mkern-3.2mu[}}"
-          "{\\mathopen{\\char`\u2983}}"));
-  defineMacro(
-      "\\rBrace",
-      MacroDefinition.fromString("\\html@mathml{"
-          "\\mathclose{]\\mkern-3.2mu\\}}}"
-          "{\\mathclose{\\char`\u2984}}"));
+  // defineMacro(
+  //     "\\lBrace",
+  //     MacroDefinition.fromString("\\html@mathml{"
+  //         "\\mathopen{\\{\\mkern-3.2mu[}}"
+  //         "{\\mathopen{\\char`\u2983}}"));
+  // defineMacro(
+  //     "\\rBrace",
+  //     MacroDefinition.fromString("\\html@mathml{"
+  //         "\\mathclose{]\\mkern-3.2mu\\}}}"
+  //         "{\\mathclose{\\char`\u2984}}"));
 
-  defineMacro(
-      "\u2983", MacroDefinition.fromString("\\lBrace")); // blackboard bold {
-  defineMacro(
-      "\u2984", MacroDefinition.fromString("\\rBrace")); // blackboard bold }
+  // defineMacro(
+  //     "\u2983", MacroDefinition.fromString("\\lBrace")); // blackboard bold {
+  // defineMacro(
+  //     "\u2984", MacroDefinition.fromString("\\rBrace")); // blackboard bold }
 
 // TODO: Create variable sized versions of the last two items. I believe that
 // will require font glyphs.
@@ -1062,7 +858,7 @@ void _init() {
 // https://en.wikipedia.org/wiki/Help:Displaying_a_formula#Deprecated_syntax
 
 // We also omit texvc's \O, which conflicts with \text{\O}
-
+// TODO: make as override font
   defineMacro("\\darr", MacroDefinition.fromString("\\downarrow"));
   defineMacro("\\dArr", MacroDefinition.fromString("\\Downarrow"));
   defineMacro("\\Darr", MacroDefinition.fromString("\\Downarrow"));

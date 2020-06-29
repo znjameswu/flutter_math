@@ -19,6 +19,7 @@ The AST of this project has a very similar structure compared with MathML, the A
 - Matrix won't render multiple \hlines and || column separators, just as MathJax won't either.
 - \dfrac, \tfrac ... will be rendered slightly different from KaTeX and will be in line with MathJax's rendering behavior. KaTeX has an `adjustStyle` function whose behvior we have no intention to follow. 
 - \overbrace and \underbase with sub-sup pairs will be parsed differently to KaTeX and in line with MathJax. (Possibly KaTeX bug?)
+- \colon's behavior will be in line with MathJax rather than KaTeX.
 
 
 Text and Math mode AST design Rationale:
@@ -49,6 +50,7 @@ KaTeX functionalities that need further investigation
 - Custom fonts added by plugins
 - spacing (maybe need to delete spacings in symbols.dart)
 - text-mode accent
+- \not
 
 
 KaTeX functionalities that we won't support
@@ -58,6 +60,10 @@ KaTeX functionalities that we won't support
 - mathchoice
 - smash
 - \overlinesegment \underlinesegment
+- There will be no automatic thinspace between \cdots and right delimiter. (which is odd. MathJax and Tex don't have them either)
+- \pmb
+- \hspace*
+- Exotic composite symbols: \Coloneqq, \coloneq, \Coloneq, \Eqqcolon, \Eqcolon, \colonapprox, \Colonapprox, \colonsim, \Colonsim, \simcolon, \simcoloncolon, \approxcolon, \approxcoloncolon, and also their equivalent \coloncolonequals ...
 
 variantForm is basically in line with MathJax, for the exception of \u210F(\hbar)
 
