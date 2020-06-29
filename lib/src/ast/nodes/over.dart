@@ -28,7 +28,7 @@ class OverNode extends SlotableNode {
         italic: 0.0,
         options: options,
         widget: Padding(
-          padding: EdgeInsets.only(top: spacing, bottom: spacing),
+          padding: EdgeInsets.only(top: spacing),
           child: VList(
             children: <Widget>[
               // TexBook Rule 13a

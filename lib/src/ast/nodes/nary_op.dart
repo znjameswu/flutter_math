@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/render/layout/reset_dimension.dart';
+import 'package:flutter_math/src/render/layout/vlist.dart';
 
 import '../../render/layout/line.dart';
 import '../../render/layout/multiscripts.dart';
@@ -22,8 +24,8 @@ class NaryOperatorNode extends SlotableNode {
   final EquationRowNode lowerLimit;
   final EquationRowNode upperLimit;
   final EquationRowNode naryand;
-  bool _limits;
-  bool get limits => _limits ??= _naryDefaultLimit.contains(operator);
+  final bool limits;
+  bool get canlimits => _naryDefaultLimit.contains(operator);
 
   final bool allowLargeOp; // for \smallint
 
@@ -32,10 +34,9 @@ class NaryOperatorNode extends SlotableNode {
     @required this.lowerLimit,
     @required this.upperLimit,
     @required this.naryand,
-    bool limits,
+    this.limits,
     this.allowLargeOp = true,
-  })  : assert(naryand != null),
-        _limits = limits;
+  }) : assert(naryand != null);
 
   @override
   List<BuildResult> buildSlotableWidget(
@@ -47,18 +48,66 @@ class NaryOperatorNode extends SlotableNode {
     final symbolMetrics = lookupChar(operator, font, Mode.math);
     final symbolWidget =
         makeChar(operator, font, symbolMetrics, options, needItalic: true);
-    final operatorWidget = lowerLimit == null && upperLimit == null
-        ? symbolWidget
-        : Multiscripts(
-            italic: symbolMetrics.italic.cssEm.toLpUnder(options),
-            isBaseCharacterBox: false,
-            baseOptions: options,
-            base: symbolWidget,
-            sub: childBuildResults[0]?.widget,
-            subOptions: childBuildResults[0]?.options,
-            sup: childBuildResults[1]?.widget,
-            supOptions: childBuildResults[1]?.options,
-          );
+
+    var operatorWidget = symbolWidget;
+
+    // Attach limits to the base symbol
+    if (lowerLimit != null || upperLimit != null) {
+      // Should we place the limit as under/over or sub/sup
+      final shouldLimits = limits ??
+          (_naryDefaultLimit.contains(operator) &&
+              options.style >= MathStyle.display);
+      final italic = symbolMetrics.italic.cssEm.toLpUnder(options);
+      if (!shouldLimits) {
+        operatorWidget = Multiscripts(
+          italic: italic,
+          isBaseCharacterBox: false,
+          baseOptions: options,
+          base: symbolWidget,
+          sub: childBuildResults[0]?.widget,
+          subOptions: childBuildResults[0]?.options,
+          sup: childBuildResults[1]?.widget,
+          supOptions: childBuildResults[1]?.options,
+        );
+      } else {
+        final spacing =
+            options.fontMetrics.bigOpSpacing5.cssEm.toLpUnder(options);
+        operatorWidget = Padding(
+          padding: EdgeInsets.only(
+            top: upperLimit != null ? spacing : 0,
+            bottom: lowerLimit != null ? spacing : 0,
+          ),
+          child: VList(
+            baselineReferenceWidgetIndex: upperLimit != null ? 1 : 0,
+            children: [
+              if (upperLimit != null)
+                VListElement(
+                  hShift: 0.5 * italic,
+                  child: ResetDimension(
+                    depth: options.fontMetrics.bigOpSpacing1.cssEm
+                        .toLpUnder(options),
+                    minBottomPadding: options.fontMetrics.bigOpSpacing3.cssEm
+                        .toLpUnder(options),
+                    child: childBuildResults[1].widget,
+                  ),
+                ),
+              symbolWidget,
+              if (lowerLimit != null)
+                VListElement(
+                  hShift: -0.5 * italic,
+                  child: ResetDimension(
+                    height: options.fontMetrics.bigOpSpacing2.cssEm
+                        .toLpUnder(options),
+                    minTopPadding: options.fontMetrics.bigOpSpacing4.cssEm
+                        .toLpUnder(options),
+                    child: childBuildResults[0].widget,
+                  ),
+                ),
+            ],
+          ),
+        );
+      }
+    }
     final widget = Line(children: [
       LineElement(
         child: operatorWidget,

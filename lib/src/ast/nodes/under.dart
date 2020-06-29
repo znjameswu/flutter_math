@@ -29,7 +29,7 @@ class UnderNode extends SlotableNode {
         italic: 0.0,
         options: options,
         widget: Padding(
-          padding: EdgeInsets.only(top: spacing, bottom: spacing),
+          padding: EdgeInsets.only(bottom: spacing),
           child: VList(
             children: <Widget>[
               childBuildResults[0].widget,
