@@ -76,7 +76,7 @@ extension MathStyleExtOnSize on SizeMode {
     if (style.index <= MathStyle.textCramped.index) {
       return this;
     }
-    return SizeMode.values[sizeStyleMap[this.index][style.size - 1]];
+    return SizeMode.values[sizeStyleMap[this.index][style.size - 1] - 1];
   }
 
   static const sizeStyleMap = [
