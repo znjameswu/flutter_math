@@ -25,6 +25,8 @@ class AtomNode extends LeafNode {
 
   final Mode mode;
 
+  bool get noBreak => symbol == '\u00AF';
+
   AtomNode({
     @required this.symbol,
     this.variantForm = false,

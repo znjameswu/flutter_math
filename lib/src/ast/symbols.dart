@@ -1187,11 +1187,11 @@ const symbolRenderConfigs = {
     math: RenderConfig(AtomType.inner, mainrm), // \u22F1, \\ddots, 
   ),
   '\u0131': SymbolRenderConfig( // ı 
-    math: RenderConfig(AtomType.ord, mathdefault), // \u0131, \\imath, 
+    math: RenderConfig(AtomType.ord, mainit), // \u0131, \\imath, 
     text: RenderConfig(AtomType.ord, mainrm), // \u0131, \\i, 
   ),
   '\u0237': SymbolRenderConfig( // ȷ 
-    math: RenderConfig(AtomType.ord, mathdefault), // \u0237, \\jmath, 
+    math: RenderConfig(AtomType.ord, mainit), // \u0237, \\jmath, 
     text: RenderConfig(AtomType.ord, mainrm), // \u0237, \\j, 
   ),
   '\u00B0': SymbolRenderConfig( // ° 
@@ -1199,8 +1199,8 @@ const symbolRenderConfigs = {
     text: RenderConfig(AtomType.ord, mainrm), // \u00B0, \\degree, \\textdegree, 
   ),
   '\u00A3': SymbolRenderConfig( // £ 
-    math: RenderConfig(AtomType.ord, mathdefault), // \u00A3, \\pounds, \\mathsterling, 
-    text: RenderConfig(AtomType.ord, mathdefault), // \u00A3, \\pounds, \\textsterling, 
+    math: RenderConfig(AtomType.ord, mainit), // \u00A3, \\pounds, \\mathsterling, 
+    text: RenderConfig(AtomType.ord, mainit), // \u00A3, \\pounds, \\textsterling, 
   ),
   '/': SymbolRenderConfig( // / 
     math: RenderConfig(AtomType.ord, mainrm), // /, 
@@ -3514,6 +3514,14 @@ const symbolRenderConfigs = {
     math: RenderConfig(AtomType.ord, mathdefault), // \u00FE, 
     text: RenderConfig(AtomType.ord, mainrm), // \u00FE, 
   ),
+  '\u00A0': SymbolRenderConfig( //   
+    math: RenderConfig(AtomType.spacing, mainrm), // \u00A0, \\ , ~, \\space, \\nobreakspace, 
+    text: RenderConfig(AtomType.spacing, mainrm), // \u00A0, \\ , ~, \\space, \\nobreakspace, 
+  ),
+  ' ': SymbolRenderConfig( //   
+    math: RenderConfig(AtomType.spacing, mainrm, '\u00A0'), //  , 
+    text: RenderConfig(AtomType.spacing, mainrm, '\u00A0'), //  , 
+  ),
   '\u00A7': SymbolRenderConfig( // § 
     text: RenderConfig(AtomType.ord, mainrm), // \u00A7, \\S, 
   ),
@@ -3543,9 +3551,6 @@ const symbolRenderConfigs = {
   ),
   '\'': SymbolRenderConfig( // ' 
     text: RenderConfig(AtomType.ord, mainrm, '\u2019'), // \', 
-  ),
-  ' ': SymbolRenderConfig( //   
-    text: RenderConfig(AtomType.spacing, mainrm, '\u00A0'), //  , 
   ),
   '\u2013': SymbolRenderConfig( // – 
     text: RenderConfig(AtomType.ord, mainrm), // \u2013, --, \\textendash, 
@@ -3775,9 +3780,6 @@ const symbolRenderConfigs = {
   ),
   '\uE020': SymbolRenderConfig( //  
     math: RenderConfig(AtomType.rel, mainrm), // \\@not, 
-  ),
-  '\u00A0': SymbolRenderConfig( //   
-    math: RenderConfig(AtomType.spacing, mainrm), // \\ , ~, \\space, \\nobreakspace, 
   ),
   '\u22C4': SymbolRenderConfig( // ⋄ 
     math: RenderConfig(AtomType.bin, mainrm), // \\diamond, 

@@ -29,6 +29,7 @@ import '../symbols.dart';
 
 part 'base/accent.dart';
 part 'base/accent_under.dart';
+part 'base/break.dart';
 part 'base/color.dart';
 part 'base/cr.dart';
 part 'base/delimsizing.dart';
@@ -48,6 +49,7 @@ part 'base/text.dart';
 const baseFunctionEntries = {
   ..._accentEntries,
   ..._accentUnderEntries,
+  ..._breakEntries,
   ..._colorEntries,
   ..._crEntries,
   ..._delimSizingEntries,
