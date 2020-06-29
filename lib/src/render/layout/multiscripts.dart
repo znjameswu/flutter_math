@@ -233,21 +233,29 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
       final presubShift = prescriptRes.item2;
       final presupShift = prescriptRes.item1;
 
+      final baseHeight = isComputingIntrinsics ? baseSize : base.layoutHeight;
+      final baseDepth = baseSize - baseHeight;
+
       final subHeight =
           isComputingIntrinsics ? subSize : (sub?.layoutHeight ?? 0.0);
-      final subDepth = isComputingIntrinsics ? 0.0 : (sub?.layoutDepth ?? 0.0);
+      final subDepth = subSize - subHeight;
       final supHeight =
           isComputingIntrinsics ? supSize : (sup?.layoutHeight ?? 0.0);
       final presubHeight =
           isComputingIntrinsics ? presubSize : (presub?.layoutHeight ?? 0.0);
-      final presubDepth =
-          isComputingIntrinsics ? 0.0 : (presub?.layoutDepth ?? 0.0);
+      final presubDepth = presubSize - presubHeight;
       final presupHeight =
           isComputingIntrinsics ? presupSize : (presup?.layoutHeight ?? 0.0);
 
       // Rule 18f
-      final height = math.max(supHeight + supShift, presupHeight + presupShift);
-      final depth = math.max(subDepth + subShift, presubDepth + presubShift);
+      final height = math.max(
+        baseHeight,
+        math.max(supHeight + supShift, presupHeight + presupShift),
+      );
+      final depth = math.max(
+        baseDepth,
+        math.max(subDepth + subShift, presubDepth + presubShift),
+      );
 
       if (!isComputingIntrinsics) {
         baselineDistance = height;
