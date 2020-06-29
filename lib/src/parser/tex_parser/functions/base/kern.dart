@@ -24,8 +24,11 @@
 part of latex_base;
 
 const _kernEntries = {
-  ['\\kern', '\\mkern', '\\hskip', '\\mskip']:
-      FunctionSpec(numArgs: 1, handler: _kernHandler),
+  ['\\kern', '\\mkern', '\\hskip', '\\mskip']: FunctionSpec(
+    numArgs: 1,
+    allowedInText: true,
+    handler: _kernHandler,
+  ),
 };
 GreenNode _kernHandler(TexParser parser, FunctionContext context) {
   final size = parser.parseArgSize(optional: false);
@@ -50,5 +53,9 @@ GreenNode _kernHandler(TexParser parser, FunctionContext context) {
     }
   }
 
-  return SpaceNode(dimension: size);
+  return SpaceNode(
+    height: Measurement.zero,
+    width: size,
+    mode: parser.mode,
+  );
 }
