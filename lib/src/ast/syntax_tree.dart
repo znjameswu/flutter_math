@@ -87,7 +87,7 @@ class SyntaxNode {
   NodeRange _range;
   NodeRange get range => _range ??= value.getRange(pos);
 
-  int get width => value.width;
+  int get width => value.editingWidth;
   int get capturedCursor => value.capturedCursor;
 
   bool get isNull => value == null;
@@ -184,7 +184,7 @@ class NodeRange {
 /// - Necessary parameters for this math node.
 /// - Layout algorithm for this math node, if renderable.
 /// - Strutural information of the tree ([children])
-/// - Context-free properties for other purposes. ([width], etc.)
+/// - Context-free properties for other purposes. ([editingWidth], etc.)
 ///
 /// Due to their context-free property, [GreenNode] can be canonicalized and
 /// deduplicated.
@@ -253,17 +253,17 @@ abstract class GreenNode {
   ///
   /// Used only for editing functionalities.
   ///
-  /// [width] stores intrinsic width in the editing mode.
+  /// [editingWidth] stores intrinsic width in the editing mode.
   ///
   /// Please calculate (and cache) the width based on [children]'s widths.
   /// Note that it should strictly simulate the movement of the curosr.
-  int get width;
+  int get editingWidth;
 
   /// Number of cursor positions that can be captured within this node.
   ///
-  /// By definition, [capturedCursor] = [width] - 1.
+  /// By definition, [capturedCursor] = [editingWidth] - 1.
   /// By definition, [NodeRange.end] - [NodeRange.start] = capturedCursor - 1.
-  int get capturedCursor => width - 1;
+  int get capturedCursor => editingWidth - 1;
 
   NodeRange getRange(int pos) => NodeRange(pos + 1, pos + capturedCursor);
 
@@ -294,7 +294,7 @@ abstract class ParentableNode<T extends GreenNode> extends GreenNode {
   List<T> get children;
 
   int _width;
-  int get width => _width ??= computeWidth();
+  int get editingWidth => _width ??= computeWidth();
 
   int computeWidth();
 
@@ -359,7 +359,7 @@ abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
 /// explicitly unwrap transparent nodes during building stage.
 abstract class TransparentNode extends ParentableNode<GreenNode> {
   @override
-  int computeWidth() => children.map((child) => child.width).sum();
+  int computeWidth() => children.map((child) => child.editingWidth).sum();
 
   @override
   List<int> computeChildPositions() {
@@ -367,7 +367,7 @@ abstract class TransparentNode extends ParentableNode<GreenNode> {
     final result = <int>[];
     for (final child in children) {
       result.add(curPos);
-      curPos += child.width;
+      curPos += child.editingWidth;
     }
     return result;
   }
@@ -398,7 +398,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
   final List<GreenNode> children;
 
   @override
-  int computeWidth() => children.map((child) => child.width).sum() + 2;
+  int computeWidth() => children.map((child) => child.editingWidth).sum() + 2;
 
   @override
   List<int> computeChildPositions() {
@@ -406,7 +406,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
     final result = <int>[];
     for (final child in children) {
       result.add(curPos);
-      curPos += child.width;
+      curPos += child.editingWidth;
     }
     return result;
   }
@@ -544,7 +544,7 @@ abstract class LeafNode extends GreenNode {
   List<int> get childPositions => const [];
 
   @override
-  int get width => 1;
+  int get editingWidth => 1;
 }
 
 enum AtomType {
@@ -586,7 +586,7 @@ class TemporaryNode extends LeafNode {
       throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
-  int get width =>
+  int get editingWidth =>
       throw UnsupportedError('Temporary node $runtimeType encountered.');
 }
 
