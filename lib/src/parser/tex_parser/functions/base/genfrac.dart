@@ -188,16 +188,16 @@ GreenNode _genfracHandler(TexParser parser, FunctionContext context) {
   final denom = parser.parseArgNode(mode: Mode.math, optional: false);
 
   final leftDelim =
-      (leftDelimArg is MathAtomNode && leftDelimArg.atomType == AtomType.open)
+      (leftDelimArg is AtomNode && leftDelimArg.atomType == AtomType.open)
           ? leftDelimArg.symbol
           : null;
 
-  final rightDelim = (rightDelimArg is MathAtomNode &&
+  final rightDelim = (rightDelimArg is AtomNode &&
           rightDelimArg.atomType == AtomType.close)
       ? rightDelimArg.symbol
       : null;
 
-  final textOrd = assertNodeType<MathAtomNode>(styleArg.expandEquationRow()[0]);
+  final textOrd = assertNodeType<AtomNode>(styleArg.expandEquationRow()[0]);
   final style = int.tryParse(textOrd.symbol);
 
   GreenNode res = FracNode(

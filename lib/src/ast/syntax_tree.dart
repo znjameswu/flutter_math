@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import '../render/layout/line.dart';
 import '../utils/iterable_extensions.dart';
-import 'nodes/math_atom.dart';
+import 'nodes/atom.dart';
 import 'nodes/sqrt.dart';
 import 'options.dart';
 import 'spacing.dart';
@@ -144,7 +144,7 @@ class SyntaxNode {
 /// The [NodeRange] is a closed interval where the cursor whose position falls
 /// inside this interval will be captured by the corresponding node. If the node
 /// only captures 1 cursor position, then [start] == [end]. If the node does not
-/// capture cursor at all (e.g. [MathAtomNode]), then [start] > [end]
+/// capture cursor at all (e.g. [AtomNode]), then [start] > [end]
 ///
 /// The position of a cursor is defined as number of "Right" keystrokes needed
 /// to move the cursor from the starting position to the current position.

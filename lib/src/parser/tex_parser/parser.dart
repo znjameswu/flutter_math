@@ -27,9 +27,8 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 
 import '../../ast/nodes/accent.dart';
-import '../../ast/nodes/math_atom.dart';
+import '../../ast/nodes/atom.dart';
 import '../../ast/nodes/multiscripts.dart';
-import '../../ast/nodes/text_atom.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/syntax_tree.dart';
@@ -678,9 +677,10 @@ class TexParser {
       return EquationRowNode(
         children: arg
             .split('')
-            .map((char) => MathAtomNode(
+            .map((char) => AtomNode(
                   symbol: char,
                   overrideFont: const FontOptions(fontFamily: 'Typewritter'),
+                  mode: Mode.text,
                 ))
             .toList(growable: false),
       );
@@ -736,7 +736,7 @@ class TexParser {
         this.settings.reportNonstrict('unicodeTextInMathMode',
             'Unicode text character "${text[0]} used in math mode"', nucleus);
       }
-      symbol = MathAtomNode(symbol: text);
+      symbol = AtomNode(symbol: text);
     } else {
       return null;
     }
@@ -818,7 +818,7 @@ class ScriptsParsingResults {
 GreenNode makeOrdNode(Mode mode, String symbol, bool variantForm, AtomType type,
     FontOptions font) {
   // TODO make a special case for spacing
-  return MathAtomNode(
+  return AtomNode(
       symbol: symbol,
       variantForm: variantForm,
       atomType: type,

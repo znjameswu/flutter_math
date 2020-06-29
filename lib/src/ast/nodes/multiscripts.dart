@@ -4,7 +4,7 @@ import '../../render/layout/multiscripts.dart';
 import '../options.dart';
 import '../style.dart';
 import '../syntax_tree.dart';
-import 'math_atom.dart';
+import 'atom.dart';
 
 /// Word:   _     ^
 /// Latex:  _     ^
@@ -39,7 +39,7 @@ class MultiscriptsNode extends SlotableNode {
             alignPostscripts: alignPostscripts,
             italic: childBuildResults[0].italic,
             isBaseCharacterBox: base.flattenedChildList.length == 1 &&
-                base.flattenedChildList[0] is MathAtomNode,
+                base.flattenedChildList[0] is AtomNode,
             baseOptions: childBuildResults[0].options,
             subOptions: childBuildResults[1]?.options,
             supOptions: childBuildResults[2]?.options,

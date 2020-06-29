@@ -13,13 +13,7 @@ enum DelimiterSize {
   size4,
 }
 
-abstract class AtomNode extends LeafNode {
-  String get symbol;
-  bool get variantForm;
-  AtomType get atomType;
-}
-
-class MathAtomNode extends LeafNode implements AtomNode {
+class AtomNode extends LeafNode {
   final String symbol;
   final bool variantForm;
   AtomType _atomType;
@@ -31,7 +25,7 @@ class MathAtomNode extends LeafNode implements AtomNode {
 
   final Mode mode;
 
-  MathAtomNode({
+  AtomNode({
     @required this.symbol,
     this.variantForm = false,
     AtomType atomType,

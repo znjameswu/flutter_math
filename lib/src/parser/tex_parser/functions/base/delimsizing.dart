@@ -145,8 +145,8 @@ final _delimiterSymbols = _delimiterCommands
     .map((command) => texSymbolCommandConfigs[Mode.math][command])
     .toList();
 
-MathAtomNode _checkDelimiter(GreenNode delim, FunctionContext context) {
-  if (delim is MathAtomNode) {
+AtomNode _checkDelimiter(GreenNode delim, FunctionContext context) {
+  if (delim is AtomNode) {
     if (_delimiterSymbols.any((symbol) =>
         symbol.symbol == delim.symbol &&
         symbol.variantForm == delim.variantForm)) {
@@ -166,7 +166,7 @@ GreenNode _delimSizeHandler(TexParser parser, FunctionContext context) {
   final delim = _checkDelimiter(delimArg, context);
   return StyleNode(
     children: [
-      MathAtomNode(
+      AtomNode(
         symbol: delim.symbol,
         atomType: _delimiterTypes[context.funcName],
       )
