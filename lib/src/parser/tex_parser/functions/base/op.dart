@@ -132,7 +132,7 @@ NaryOperatorNode _parseNaryOperator(
   String command,
   TexParser parser,
 ) {
-  final scriptsResult = parser.parseScripts();
+  final scriptsResult = parser.parseScripts(allowLimits: true);
   // final alwaysHandleSubsup = scriptsResult.limits != null;
   EquationRowNode arg;
   try {
@@ -165,7 +165,7 @@ NaryOperatorNode _parseNaryOperator(
 ///change form according to style.
 FunctionNode _parseMathFunction(GreenNode funcNameBase, TexParser parser,
     {bool defaultLimits = false}) {
-  final scriptsResult = parser.parseScripts();
+  final scriptsResult = parser.parseScripts(allowLimits: true);
   EquationRowNode arg;
   try {
     arg = parser

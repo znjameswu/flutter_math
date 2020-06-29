@@ -1,6 +1,7 @@
 library latex_base;
 
 
+import 'package:flutter_math/src/render/layout/multiscripts.dart';
 import 'package:meta/meta.dart';
 
 import '../../../ast/nodes/accent.dart';
@@ -37,6 +38,7 @@ part 'base/delimsizing.dart';
 part 'base/environment.dart';
 part 'base/font.dart';
 part 'base/genfrac.dart';
+part 'base/horiz_brace.dart';
 part 'base/kern.dart';
 part 'base/math.dart';
 part 'base/op.dart';
@@ -55,6 +57,7 @@ const baseFunctionEntries = {
   ..._environmentEntries,
   ..._fontEntries,
   ..._genfracEntries,
+  ..._horizBraceEntries,
   ..._kernEntries,
   ..._mathEntries,
   ..._opEntries,
