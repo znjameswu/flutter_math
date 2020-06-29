@@ -89,12 +89,10 @@ class AccentNode extends SlotableNode {
           baselineReferenceWidgetIndex: 1,
           children: <Widget>[
             VListElement(
-              customCrossSize: (width) => BoxConstraints(minWidth: width),
-              child: Padding(
-                // To shift the center by 1 * skew
-                padding: EdgeInsets.only(left: 2 * skew),
-                child: accentWidget,
-              ),
+              customCrossSize: (width) =>
+                  BoxConstraints(minWidth: width - 2 * skew),
+              hShift: skew,
+              child: accentWidget,
             ),
             childBuildResults[0].widget,
           ],

@@ -3,6 +3,7 @@ import 'dart:math' as math;
 extension NumIterableExtension<T extends num> on Iterable<T> {
   T sum() => this.isEmpty ? 0 as T : this.reduce((a, b) => a + b as T);
   T max() => this.isEmpty ? null: this.reduce(math.max);
+  T min() => this.isEmpty ? null: this.reduce(math.min);
 }
 
 extension NullableListGetterExt<T> on Iterable<T> {

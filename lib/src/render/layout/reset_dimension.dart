@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
@@ -10,13 +12,17 @@ class ResetDimension extends StatelessWidget {
   final double height;
   final double depth;
   final double width;
+  final double minTopPadding;
+  final double minBottomPadding;
   final CrossAxisAlignment alignment;
   final Widget child;
-  ResetDimension({
+  const ResetDimension({
     Key key,
     this.height,
     this.depth,
     this.width,
+    this.minTopPadding,
+    this.minBottomPadding,
     this.alignment = CrossAxisAlignment.center,
     @required this.child,
   }) : super();
@@ -39,19 +45,25 @@ class ResetDimensionLayoutDelegate extends IntrinsicLayoutDelegate<int> {
   final double height;
   final double depth;
   final double width;
+  final double minTopPadding;
+  final double minBottomPadding;
   final CrossAxisAlignment alignment;
   ResetDimensionLayoutDelegate({
     Key key,
     @required this.height,
     @required this.depth,
     this.width,
+    this.minTopPadding,
+    this.minBottomPadding,
     this.alignment,
   });
+
+  var distanceToBaseline = 0.0;
 
   @override
   double computeDistanceToActualBaseline(
           TextBaseline baseline, Map<int, RenderBox> childrenTable) =>
-      height;
+      distanceToBaseline;
 
   @override
   AxisConfiguration<int> performIntrinsicLayout({
@@ -87,8 +99,16 @@ class ResetDimensionLayoutDelegate extends IntrinsicLayoutDelegate<int> {
           : childrenTable[0].layoutHeight);
       final childDepth = childSize(childrenTable[0]) - childHeight;
 
-      final finalHeight = height ?? childHeight;
-      final finalDepth = depth ?? childDepth;
+      final finalHeight = math.max(
+        height ?? childHeight,
+        (minTopPadding ?? -double.infinity) + childHeight,
+      );
+      final finalDepth = math.max(
+        depth ?? childDepth,
+        (minBottomPadding ?? -double.infinity) + childDepth,
+      );
+
+      distanceToBaseline = finalHeight;
       return AxisConfiguration(
         size: finalHeight + finalDepth,
         offsetTable: {

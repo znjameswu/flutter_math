@@ -10,9 +10,11 @@ class VListParentData extends ContainerBoxParentData<RenderBox> {
 
   double trailingMargin = 0.0;
 
+  double hShift = 0.0;
+
   @override
   String toString() =>
-      '${super.toString()}; customCrossSize=${customCrossSize != null}; trailingMargin=$trailingMargin';
+      '${super.toString()}; customCrossSize=${customCrossSize != null}; trailingMargin=$trailingMargin; horizontalShift=$hShift';
 }
 
 class VListElement extends ParentDataWidget<VListParentData> {
@@ -20,10 +22,13 @@ class VListElement extends ParentDataWidget<VListParentData> {
 
   final double trailingMargin;
 
+  final double hShift;
+
   const VListElement({
     Key key,
     this.customCrossSize,
     this.trailingMargin = 0.0,
+    this.hShift = 0.0,
     @required Widget child,
   })  : assert(trailingMargin != null),
         super(key: key, child: child);
@@ -44,6 +49,11 @@ class VListElement extends ParentDataWidget<VListParentData> {
       needsLayout = true;
     }
 
+    if (parentData.hShift != hShift) {
+      parentData.hShift = hShift;
+      needsLayout = true;
+    }
+
     if (needsLayout) {
       final targetParent = renderObject.parent;
       if (targetParent is RenderObject) targetParent.markNeedsLayout();
@@ -56,6 +66,7 @@ class VListElement extends ParentDataWidget<VListParentData> {
     properties.add(FlagProperty('customSize',
         value: customCrossSize != null, ifTrue: 'using relative size'));
     properties.add(DoubleProperty('trailingMargin', trailingMargin));
+    properties.add(DoubleProperty('horizontalShift', hShift));
   }
 
   @override
@@ -292,14 +303,30 @@ class RenderRelativeWidthColumn extends RenderBox
     return distanceToBaseline;
   }
 
+  double getRightMost(CrossAxisAlignment crossAxisAlignment, double width) {
+    switch (crossAxisAlignment) {
+      case CrossAxisAlignment.center:
+        return width / 2;
+      case CrossAxisAlignment.end:
+        return 0;
+      case CrossAxisAlignment.start:
+      case CrossAxisAlignment.baseline:
+      case CrossAxisAlignment.stretch: // TODO
+      default:
+        return width;
+    }
+  }
+
   @override
   void performLayout() {
     distanceToBaseline = null;
     assert(_debugHasNecessaryDirections);
     assert(constraints != null);
 
-    var crossSize = 0.0;
+    // First we lay out all fix-sized children
+    var rightMost = 0.0;
     var allocatedSize = 0.0; // Sum of the sizes of the non-flexible children.
+    var leftMost = 0.0;
     var child = firstChild;
     final relativeChildren = <RenderBox>[];
     while (child != null) {
@@ -309,32 +336,37 @@ class RenderRelativeWidthColumn extends RenderBox
       } else {
         final innerConstraints = BoxConstraints(maxWidth: constraints.maxWidth);
         child.layout(innerConstraints, parentUsesSize: true);
-        crossSize = math.max(crossSize, child.size.width);
+        final width = child.size.width;
+        final right = getRightMost(crossAxisAlignment, width);
+        leftMost = math.min(leftMost, right - width);
+        rightMost = math.max(rightMost, right);
         allocatedSize += child.size.height + childParentData.trailingMargin;
       }
       assert(child.parentData == childParentData);
       child = childParentData.nextSibling;
     }
 
+    final fixedChildrenCrossSize = rightMost - leftMost;
+
+    // Then we lay out custom sized children
     for (final child in relativeChildren) {
       final childParentData = child.parentData as VListParentData;
       assert(childParentData.customCrossSize != null);
-      child.layout(childParentData.customCrossSize(crossSize),
+      child.layout(childParentData.customCrossSize(fixedChildrenCrossSize),
           parentUsesSize: true);
-      crossSize = math.max(crossSize, child.size.width);
+      final width = child.size.width;
+      final right = getRightMost(crossAxisAlignment, width);
+      leftMost = math.min(leftMost, right - width);
+      rightMost = math.max(rightMost, right);
       allocatedSize += child.size.height + childParentData.trailingMargin;
     }
 
-    // Align items along the main axis.
-    size = constraints.constrain(Size(crossSize, allocatedSize));
+    // Calculate size
+    size = constraints.constrain(Size(rightMost - leftMost, allocatedSize));
     final actualSize = size.height;
-    crossSize = size.width;
+    final crossSize = size.width;
     final actualSizeDelta = actualSize - allocatedSize;
     _overflow = math.max(0.0, -actualSizeDelta);
-    // flipMainAxis is used to decide whether to lay out left-to-right/top-to-bottom (false), or
-    // right-to-left/bottom-to-top (true). The _startIsTopLeft will return null if there's only
-    // one child and the relevant direction is null, in which case we arbitrarily decide not to
-    // flip, but that doesn't have any detectable effect.
 
     // Position elements
     var index = 0;
@@ -346,22 +378,23 @@ class RenderRelativeWidthColumn extends RenderBox
       switch (crossAxisAlignment) {
         case CrossAxisAlignment.start:
           childCrossPosition = textDirection == TextDirection.ltr
-              ? 0.0
-              : crossSize - child.size.width;
+              ? childParentData.hShift - leftMost
+              : rightMost - child.size.width + crossSize;
           break;
         case CrossAxisAlignment.end:
           childCrossPosition = textDirection == TextDirection.rtl
-              ? 0.0
-              : crossSize - child.size.width;
+              ? childParentData.hShift - leftMost
+              : rightMost - child.size.width + crossSize;
           break;
         case CrossAxisAlignment.center:
-          childCrossPosition = (crossSize - child.size.width) * 0.5;
+          childCrossPosition = - child.size.width / 2 - leftMost;
           break;
         case CrossAxisAlignment.stretch:
         case CrossAxisAlignment.baseline:
           childCrossPosition = 0.0;
           break;
       }
+      childCrossPosition += childParentData.hShift;
       childParentData.offset = Offset(childCrossPosition, childMainPosition);
 
       if (index == baselineReferenceWidgetIndex) {

@@ -176,21 +176,40 @@ FunctionNode _parseMathFunction(GreenNode funcNameBase, TexParser parser,
   }
   final limits = scriptsResult.limits ?? defaultLimits;
   final base = funcNameBase.wrapWithEquationRow();
-  // final
-  return FunctionNode(
-    functionName: limits
-        ? UnderOverNode(
-            base: base,
-            below: scriptsResult.subscript,
-            above: scriptsResult.superscript,
-          ).wrapWithEquationRow()
-        : MultiscriptsNode(
-            base: base,
-            sub: scriptsResult.subscript,
-            sup: scriptsResult.superscript,
-          ).wrapWithEquationRow(),
-    argument: arg,
-  );
+  if (scriptsResult.subscript == null && scriptsResult.subscript == null) {
+    return FunctionNode(
+      functionName: base,
+      argument: arg,
+    );
+  }
+  if (limits) {
+    var functionName = base;
+    if (scriptsResult.subscript != null) {
+      functionName = UnderNode(
+        base: functionName,
+        below: scriptsResult.subscript,
+      ).wrapWithEquationRow();
+    }
+    if (scriptsResult.superscript != null) {
+      functionName = OverNode(
+        base: functionName,
+        above: scriptsResult.superscript,
+      ).wrapWithEquationRow();
+    }
+    return FunctionNode(
+      functionName: functionName.wrapWithEquationRow(),
+      argument: arg,
+    );
+  } else {
+    return FunctionNode(
+      functionName: MultiscriptsNode(
+        base: base,
+        sub: scriptsResult.subscript,
+        sup: scriptsResult.superscript,
+      ).wrapWithEquationRow(),
+      argument: arg,
+    );
+  }
 }
 
 const _singleCharBigOps = {
