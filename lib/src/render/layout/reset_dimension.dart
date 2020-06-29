@@ -33,6 +33,8 @@ class ResetDimension extends StatelessWidget {
           height: height,
           depth: depth,
           width: width,
+          minTopPadding: minTopPadding,
+          minBottomPadding: minBottomPadding,
           alignment: alignment,
         ),
         children: <Widget>[

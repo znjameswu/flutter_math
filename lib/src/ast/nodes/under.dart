@@ -37,9 +37,9 @@ class UnderNode extends SlotableNode {
               // TexBook Rule 13a
               ResetDimension(
                 height:
-                    options.fontMetrics.bigOpSpacing2.cssEm.toLpUnder(options),
-                minTopPadding:
                     options.fontMetrics.bigOpSpacing4.cssEm.toLpUnder(options),
+                minTopPadding:
+                    options.fontMetrics.bigOpSpacing2.cssEm.toLpUnder(options),
                 child: childBuildResults[1].widget,
               ),
             ],

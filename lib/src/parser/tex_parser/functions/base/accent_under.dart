@@ -31,6 +31,8 @@ const _accentUnderEntries = {
     '\\undergroup',
     // '\\underlinesegment': ,
     '\\utilde',
+
+    '\\underline'
   ]: FunctionSpec(numArgs: 1, handler: _accentUnderHandler),
 };
 
@@ -41,6 +43,8 @@ const _accentUnderMapping = {
   '\\undergroup': '\u23e0',
   // '\\underlinesegment',
   '\\utilde': '\u007e',
+
+  '\\underline': '\u00af'
 };
 GreenNode _accentUnderHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: null, optional: false);

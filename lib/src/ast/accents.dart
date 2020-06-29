@@ -86,7 +86,7 @@ const accentRenderConfigs = {
 
   '\u23de': AccentRenderConfig(
     overImageName: 'overbrace',
-    underImageName: 'under',
+    underImageName: 'underbrace',
   ),
   
   ...katexCompatibleAccents,

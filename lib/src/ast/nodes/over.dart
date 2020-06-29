@@ -35,9 +35,9 @@ class OverNode extends SlotableNode {
               // TexBook Rule 13a
               ResetDimension(
                 depth:
-                    options.fontMetrics.bigOpSpacing1.cssEm.toLpUnder(options),
-                minBottomPadding:
                     options.fontMetrics.bigOpSpacing3.cssEm.toLpUnder(options),
+                minBottomPadding:
+                    options.fontMetrics.bigOpSpacing1.cssEm.toLpUnder(options),
                 child: childBuildResults[1].widget,
               ),
               childBuildResults[0].widget,

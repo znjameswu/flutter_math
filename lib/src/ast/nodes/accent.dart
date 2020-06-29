@@ -81,11 +81,13 @@ class AccentNode extends SlotableNode {
             final defaultRuleThickness = options
                 .fontMetrics.defaultRuleThickness.cssEm
                 .toLpUnder(options);
-            return Container(
+            return Padding(
               padding: EdgeInsets.only(bottom: 3 * defaultRuleThickness),
-              width: constraints.minWidth,
-              height: defaultRuleThickness, // TODO minRuleThickness
-              color: Colors.black,
+              child: Container(
+                width: constraints.minWidth,
+                height: defaultRuleThickness, // TODO minRuleThickness
+                color: Colors.black,
+              ),
             );
           } else {
             var svgWidget = strechySvgSpan(

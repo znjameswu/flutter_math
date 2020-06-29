@@ -45,12 +45,14 @@ class AccentUnderNode extends SlotableNode {
                       final defaultRuleThickness = options
                           .fontMetrics.defaultRuleThickness.cssEm
                           .toLpUnder(options);
-                      return Container(
+                      return Padding(
                         padding:
-                            EdgeInsets.only(bottom: 3 * defaultRuleThickness),
-                        width: constraints.minWidth,
-                        height: defaultRuleThickness, // TODO minRuleThickness
-                        color: Colors.black,
+                            EdgeInsets.only(top: 3 * defaultRuleThickness),
+                        child: Container(
+                          width: constraints.minWidth,
+                          height: defaultRuleThickness, // TODO minRuleThickness
+                          color: Colors.black,
+                        ),
                       );
                     } else {
                       return strechySvgSpan(
