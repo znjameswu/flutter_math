@@ -152,6 +152,7 @@ const Map<AtomType, Map<AtomType, Measurement>> _spacings = {
     AtomType.punct: thinspace,
     AtomType.inner: thinspace,
   },
+  AtomType.spacing: {},
 };
 
 const Map<AtomType, Map<AtomType, Measurement>> _tightSpacings = {
@@ -172,6 +173,7 @@ const Map<AtomType, Map<AtomType, Measurement>> _tightSpacings = {
   AtomType.inner: {
     AtomType.op: thinspace,
   },
+  AtomType.spacing: {},
 };
 
 Measurement getSpacingSize(AtomType left, AtomType right, MathStyle style) =>

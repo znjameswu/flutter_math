@@ -11,7 +11,7 @@ class TextAtomNode extends LeafNode implements AtomNode {
   final bool variantForm;
   AtomType _atomType;
   AtomType get atomType => _atomType ??=
-      symbolRenderConfigs[symbol].math.defaultType ?? AtomType.ord;
+      symbolRenderConfigs[symbol].text.defaultType ?? AtomType.ord;
   final FontOptions overrideFont;
 
   TextAtomNode({
