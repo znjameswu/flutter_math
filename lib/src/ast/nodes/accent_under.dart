@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../render/layout/vlist.dart';
@@ -33,17 +34,32 @@ class AccentUnderNode extends SlotableNode {
               VListElement(
                 trailingMargin:
                     label == '\u007e' ? 0.12.cssEm.toLpUnder(options) : 0.0,
-                    // Special case for \utilde
+                // Special case for \utilde
                 child: childBuildResults[0].widget,
               ),
               VListElement(
                 customCrossSize: (width) => BoxConstraints(minWidth: width),
                 child: LayoutBuilder(
-                  builder: (context, constraints) => strechySvgSpan(
-                    accentRenderConfigs[label].underImageName,
-                    constraints.minWidth,
-                    options,
-                  ),
+                  builder: (context, constraints) {
+                    if (label == '\u00AF') {
+                      final defaultRuleThickness = options
+                          .fontMetrics.defaultRuleThickness.cssEm
+                          .toLpUnder(options);
+                      return Container(
+                        padding:
+                            EdgeInsets.only(bottom: 3 * defaultRuleThickness),
+                        width: constraints.minWidth,
+                        height: defaultRuleThickness, // TODO minRuleThickness
+                        color: Colors.black,
+                      );
+                    } else {
+                      return strechySvgSpan(
+                        accentRenderConfigs[label].underImageName,
+                        constraints.minWidth,
+                        options,
+                      );
+                    }
+                  },
                 ),
               )
             ],
