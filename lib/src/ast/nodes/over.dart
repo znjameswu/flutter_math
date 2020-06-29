@@ -30,6 +30,7 @@ class OverNode extends SlotableNode {
         widget: Padding(
           padding: EdgeInsets.only(top: spacing),
           child: VList(
+            baselineReferenceWidgetIndex: 1,
             children: <Widget>[
               // TexBook Rule 13a
               ResetDimension(

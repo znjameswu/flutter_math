@@ -31,6 +31,7 @@ class UnderNode extends SlotableNode {
         widget: Padding(
           padding: EdgeInsets.only(bottom: spacing),
           child: VList(
+            baselineReferenceWidgetIndex: 0,
             children: <Widget>[
               childBuildResults[0].widget,
               // TexBook Rule 13a
