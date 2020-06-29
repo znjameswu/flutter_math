@@ -85,7 +85,6 @@ const accentRenderConfigs = {
   ),
 
   '\u23de': AccentRenderConfig(
-    // '\u20e1'
     overImageName: 'overbrace',
     underImageName: 'under',
   ),

@@ -76,7 +76,7 @@ class AccentNode extends SlotableNode {
       // Strechy accent
       accentWidget = LayoutBuilder(
         builder: (context, constraints) {
-          // \overline needs a special case, as KaTeX used a special case
+          // \overline needs a special case, as KaTeX does.
           if (label == '\u00AF') {
             final defaultRuleThickness = options
                 .fontMetrics.defaultRuleThickness.cssEm
@@ -87,12 +87,22 @@ class AccentNode extends SlotableNode {
               height: defaultRuleThickness, // TODO minRuleThickness
               color: Colors.black,
             );
+          } else {
+            var svgWidget = strechySvgSpan(
+              accentRenderConfigs[label].overImageName,
+              constraints.minWidth,
+              options,
+            );
+            // \horizBrace also needs a special case, as KaTeX does.
+            if (label == '\u23de') {
+              return Padding(
+                padding: EdgeInsets.only(bottom: 0.1.cssEm.toLpUnder(options)),
+                child: svgWidget,
+              );
+            } else {
+              return svgWidget;
+            }
           }
-          return strechySvgSpan(
-            accentRenderConfigs[label].overImageName,
-            constraints.minWidth,
-            options,
-          );
         },
       );
     }
