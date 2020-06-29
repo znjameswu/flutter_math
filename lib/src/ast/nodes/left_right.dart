@@ -372,7 +372,7 @@ Widget makeStakedDelim(
       .max(0, (minDelimiterHeight - minHeight) / (repeatHeight * middleFactor))
       .ceil();
 
-  final realHeight = minHeight + repeatCount * middleFactor * repeatHeight;
+  // final realHeight = minHeight + repeatCount * middleFactor * repeatHeight;
 
   final axisHeight = options.fontMetrics.axisHeight.cssEm.toLpUnder(options);
 

@@ -129,17 +129,6 @@ Widget makeChar(String character, FontOptions font,
   }
 }
 
-// CharacterMetrics lookupSymbol(String symbol, bool variantForm, FontOptions font, Mode mode) {
-//   final renderConfig = mode == Mode.math
-//       ? symbolRenderConfigs[value].math
-//       : symbolRenderConfigs[value].text;
-//   return getCharacterMetrics(
-//     character: renderConfig?.replaceChar ?? value,
-//     fontName: font.fontName,
-//     mode: mode,
-//   );
-// }
-
 CharacterMetrics lookupChar(String char, FontOptions font, Mode mode) =>
     getCharacterMetrics(
       character: char,

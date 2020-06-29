@@ -66,9 +66,8 @@ class _RenderLayoutBuilderPreserveBaseline extends RenderBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) {
-    return child?.hitTest(result, position: position) ?? false;
-  }
+  bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
+      child?.hitTest(result, position: position) ?? false;
 
   @override
   void paint(PaintingContext context, Offset offset) {

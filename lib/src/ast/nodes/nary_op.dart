@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/render/layout/reset_dimension.dart';
-import 'package:flutter_math/src/render/layout/vlist.dart';
 
 import '../../render/layout/line.dart';
 import '../../render/layout/multiscripts.dart';
+import '../../render/layout/reset_dimension.dart';
+import '../../render/layout/vlist.dart';
 import '../../render/symbols/make_atom.dart';
 import '../options.dart';
 import '../size.dart';
