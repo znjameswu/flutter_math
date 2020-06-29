@@ -41,7 +41,8 @@ class NaryOperatorNode extends SlotableNode {
   @override
   List<BuildResult> buildSlotableWidget(
       Options options, List<BuildResult> childBuildResults) {
-    final large = allowLargeOp && (options.style == MathStyle.display);
+    final large =
+        allowLargeOp && (options.style.size == MathStyle.display.size);
     final font = large
         ? FontOptions(fontFamily: 'Size2')
         : FontOptions(fontFamily: 'Size1');
@@ -56,7 +57,7 @@ class NaryOperatorNode extends SlotableNode {
       // Should we place the limit as under/over or sub/sup
       final shouldLimits = limits ??
           (_naryDefaultLimit.contains(operator) &&
-              options.style >= MathStyle.display);
+              options.style.size == MathStyle.display.size);
       final italic = symbolMetrics.italic.cssEm.toLpUnder(options);
       if (!shouldLimits) {
         operatorWidget = Multiscripts(
