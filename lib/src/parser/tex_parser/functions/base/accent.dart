@@ -47,6 +47,8 @@ const _accentEntries = {
     // '\\overlinesegment',
     '\\overleftharpoon',
     '\\overrightharpoon',
+
+    '\\overline'
   ]: FunctionSpec(
     numArgs: 1,
     handler: _accentHandler,
@@ -127,6 +129,8 @@ const _accentCommandMapping = {
   // '\\H': '\u',
   // '\\v': '\u02c7',
   // '\\textcircled': '\u',
+
+  '\\overline': '\u00AF',
 };
 
 GreenNode _accentHandler(TexParser parser, FunctionContext context) {

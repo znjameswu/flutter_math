@@ -1,7 +1,5 @@
 library latex_base;
 
-
-import 'package:flutter_math/src/render/layout/multiscripts.dart';
 import 'package:meta/meta.dart';
 
 import '../../../ast/nodes/accent.dart';

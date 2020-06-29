@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../render/constants.dart';
@@ -72,12 +73,27 @@ class AccentNode extends SlotableNode {
         ),
       );
     } else {
+      // Strechy accent
       accentWidget = LayoutBuilder(
-        builder: (context, constraints) => strechySvgSpan(
-          accentRenderConfigs[label].overImageName,
-          constraints.minWidth,
-          options,
-        ),
+        builder: (context, constraints) {
+          // \overline needs a special case, as KaTeX used a special case
+          if (label == '\u00AF') {
+            final defaultRuleThickness = options
+                .fontMetrics.defaultRuleThickness.cssEm
+                .toLpUnder(options);
+            return Container(
+              padding: EdgeInsets.only(bottom: 3 * defaultRuleThickness),
+              width: constraints.minWidth,
+              height: defaultRuleThickness, // TODO minRuleThickness
+              color: Colors.black,
+            );
+          }
+          return strechySvgSpan(
+            accentRenderConfigs[label].overImageName,
+            constraints.minWidth,
+            options,
+          );
+        },
       );
     }
     return [

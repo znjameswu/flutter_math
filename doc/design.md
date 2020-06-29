@@ -42,7 +42,6 @@ KaTeX functionalities that need further investigation
 - enclose
 - htmlmathml
 - mclass
-- overline
 - phantom
 - raisebox
 - rule
