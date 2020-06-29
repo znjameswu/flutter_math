@@ -219,6 +219,7 @@ class TexParser {
             throw ParseError('Limit controls must follow a math operator', lex);
           }
           limits = lex.text == '\\limits';
+          this.consume();
           break;
         case '^':
           if (superscript != null) {
