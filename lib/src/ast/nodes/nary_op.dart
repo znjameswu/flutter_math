@@ -85,9 +85,9 @@ class NaryOperatorNode extends SlotableNode {
                 VListElement(
                   hShift: 0.5 * italic,
                   child: ResetDimension(
-                    depth: options.fontMetrics.bigOpSpacing1.cssEm
+                    depth: options.fontMetrics.bigOpSpacing3.cssEm
                         .toLpUnder(options),
-                    minBottomPadding: options.fontMetrics.bigOpSpacing3.cssEm
+                    minBottomPadding: options.fontMetrics.bigOpSpacing1.cssEm
                         .toLpUnder(options),
                     child: childBuildResults[1].widget,
                   ),
@@ -97,9 +97,9 @@ class NaryOperatorNode extends SlotableNode {
                 VListElement(
                   hShift: -0.5 * italic,
                   child: ResetDimension(
-                    height: options.fontMetrics.bigOpSpacing2.cssEm
+                    height: options.fontMetrics.bigOpSpacing4.cssEm
                         .toLpUnder(options),
-                    minTopPadding: options.fontMetrics.bigOpSpacing4.cssEm
+                    minTopPadding: options.fontMetrics.bigOpSpacing2.cssEm
                         .toLpUnder(options),
                     child: childBuildResults[0].widget,
                   ),
