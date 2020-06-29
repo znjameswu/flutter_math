@@ -126,7 +126,7 @@ class TexParser {
         }
       } else {
         // Add a normal atom
-        final atom = this._parseAtom(breakOnTokenText).expandEquationRow();
+        final atom = this.parseAtom(breakOnTokenText).expandEquationRow();
         if (atom == null) {
           break;
         }
@@ -181,7 +181,7 @@ class TexParser {
     }
   }
 
-  GreenNode _parseAtom(String breakOnTokenText) {
+  GreenNode parseAtom(String breakOnTokenText) {
     final base = this.parseGroup('atom',
         optional: false, greediness: null, breakOnTokenText: breakOnTokenText);
 
@@ -193,7 +193,7 @@ class TexParser {
 
     if (!scriptsResult.empty) {
       return MultiscriptsNode(
-        base: base.wrapWithEquationRow(),
+        base: base?.wrapWithEquationRow() ?? EquationRowNode.empty(),
         sub: scriptsResult.subscript,
         sup: scriptsResult.superscript,
       );

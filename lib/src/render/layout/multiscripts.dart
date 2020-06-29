@@ -7,6 +7,7 @@ import 'package:tuple/tuple.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/style.dart';
+import '../../utils/iterable_extensions.dart';
 import '../utils/render_box_offset.dart';
 import 'custom_layout.dart';
 
@@ -241,21 +242,29 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
       final subDepth = subSize - subHeight;
       final supHeight =
           isComputingIntrinsics ? supSize : (sup?.layoutHeight ?? 0.0);
+      final supDepth = supSize - supHeight;
       final presubHeight =
           isComputingIntrinsics ? presubSize : (presub?.layoutHeight ?? 0.0);
       final presubDepth = presubSize - presubHeight;
       final presupHeight =
           isComputingIntrinsics ? presupSize : (presup?.layoutHeight ?? 0.0);
+      final presupDepth = presupSize - presupHeight;
 
       // Rule 18f
-      final height = math.max(
+      final height = [
         baseHeight,
-        math.max(supHeight + supShift, presupHeight + presupShift),
-      );
-      final depth = math.max(
+        if (sub != null) subHeight - subShift,
+        if (sup != null) supHeight + supShift,
+        if (presub != null) presubHeight - presubShift,
+        if (presup != null) presupHeight + presupShift,
+      ].max();
+      final depth = [
         baseDepth,
-        math.max(subDepth + subShift, presubDepth + presubShift),
-      );
+        if (sub != null) subDepth + subShift,
+        if (sup != null) supDepth - supShift,
+        if (presub != null) presubDepth + presubShift,
+        if (presup != null) presupDepth - presupShift,
+      ].max();
 
       if (!isComputingIntrinsics) {
         baselineDistance = height;

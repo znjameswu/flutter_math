@@ -131,24 +131,11 @@ const _opEntries = {
 NaryOperatorNode _parseNaryOperator(
   String command,
   TexParser parser,
+  FunctionContext context,
 ) {
   final scriptsResult = parser.parseScripts(allowLimits: true);
-  // final alwaysHandleSubsup = scriptsResult.limits != null;
   EquationRowNode arg;
-  try {
-    arg = parser
-        .parseArgNode(mode: Mode.math, optional: false)
-        .wrapWithEquationRow();
-  } on ParseError catch (e) {
-    if (!e.message.startsWith('parser error Expected group after ')) {
-      rethrow;
-    }
-  }
-  // final limitsBehavior = scriptsResult.limits == null
-  //     ? LimitsBehavior.Default
-  //     : (scriptsResult.limits == true)
-  //         ? LimitsBehavior.underover
-  //         : LimitsBehavior.subsup;
+  arg = parser.parseAtom(context.breakOnTokenText)?.wrapWithEquationRow();
 
   return NaryOperatorNode(
     operator: texSymbolCommandConfigs[Mode.math][command].symbol,
@@ -163,19 +150,15 @@ NaryOperatorNode _parseNaryOperator(
 ///This behavior is in accordance with UnicodeMath, and is different from KaTeX.
 ///Math functions' default limits behavior is fixed on creation and will NOT
 ///change form according to style.
-FunctionNode _parseMathFunction(GreenNode funcNameBase, TexParser parser,
+FunctionNode _parseMathFunction(
+    GreenNode funcNameBase, TexParser parser, FunctionContext context,
     {bool defaultLimits = false}) {
   final scriptsResult = parser.parseScripts(allowLimits: true);
   EquationRowNode arg;
-  try {
-    arg = parser
-        .parseArgNode(mode: Mode.math, optional: false)
-        .wrapWithEquationRow();
-  } on ParseError catch (e) {
-    if (!e.message.startsWith('parser error Expected group after ')) {
-      rethrow;
-    }
-  }
+  arg = parser
+      .parseAtom(context.breakOnTokenText)
+      // .parseArgNode(mode: Mode.math, optional: false)
+      ?.wrapWithEquationRow();
   final limits = scriptsResult.limits ?? defaultLimits;
   final base = funcNameBase.wrapWithEquationRow();
   if (scriptsResult.subscript == null && scriptsResult.subscript == null) {
@@ -233,20 +216,20 @@ GreenNode _bigOpHandler(TexParser parser, FunctionContext context) {
   final fName = context.funcName.length == 1
       ? _singleCharBigOps[context.funcName]
       : context.funcName;
-  return _parseNaryOperator(fName, parser);
+  return _parseNaryOperator(fName, parser, context);
 }
 
 GreenNode _mathopHandler(TexParser parser, FunctionContext context) {
   final fName = parser.parseArgNode(mode: Mode.math, optional: false);
-  return _parseMathFunction(fName, parser);
+  return _parseMathFunction(fName, parser, context);
 }
 
 GreenNode _mathFunctionHandler(TexParser parser, FunctionContext context) =>
-    _parseMathFunction(MathAtomNode(symbol: context.funcName), parser,
+    _parseMathFunction(MathAtomNode(symbol: context.funcName), parser, context,
         defaultLimits: false);
 
 GreenNode _mathLimitsHandler(TexParser parser, FunctionContext context) =>
-    _parseMathFunction(MathAtomNode(symbol: context.funcName), parser,
+    _parseMathFunction(MathAtomNode(symbol: context.funcName), parser, context,
         defaultLimits: true);
 
 const singleCharIntegrals = {
@@ -261,5 +244,5 @@ GreenNode _integralHandler(TexParser parser, FunctionContext context) {
   final fName = context.funcName.length == 1
       ? _singleCharBigOps[context.funcName]
       : context.funcName;
-  return _parseNaryOperator(fName, parser);
+  return _parseNaryOperator(fName, parser, context);
 }
