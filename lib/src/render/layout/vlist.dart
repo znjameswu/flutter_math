@@ -73,6 +73,37 @@ class VListElement extends ParentDataWidget<VListParentData> {
   Type get debugTypicalAncestorWidgetClass => VList;
 }
 
+/// Vertical List exposes layout width to children, allows arbitrary horizontal
+/// shift, and passes baseline information to parent.
+///
+/// Should be used in combination with [VListElement] and [LayoutBuilder]
+///
+/// The children are grouped into fixed ([VListElement.customCrossSize] == null
+/// ) and custom-sized ([VListElement.customCrossSize] != null).
+///
+/// Each child is positioned as follows:
+///
+/// - On the vertical axis, [VList] will stack all children with spacings
+/// specified by [VListElement.trailingMargin] (can be negative, 0 if not
+/// specified).
+/// - On the horizontal axis, [VList] will first position the child according
+/// to [crossAxisAlignment], then apply a shift specified by
+/// [VListElement.hShift].
+///
+/// The layout process is as follows:
+///
+/// - Layout all fixed children with [crossAxisAlignment]
+/// - Apply [VListElement.hShift].
+/// - Calculate width and height to contain all fixed children, including
+/// negative overflow. Use this width to generate constraints for all
+/// custom-sized children.
+/// - Layout all children with [crossAxisAlignment]
+/// - Apply [VListElement.hShift].
+/// - Calculate width and height to contain all children. x = 0 will be aligned
+/// to the leftmost of children.
+///
+/// In implementation it is a two-pass layout process and even more efficient
+/// than Flutter's Column.
 class VList extends MultiChildRenderObjectWidget {
   VList({
     Key key,
@@ -387,7 +418,7 @@ class RenderRelativeWidthColumn extends RenderBox
               : rightMost - child.size.width + crossSize;
           break;
         case CrossAxisAlignment.center:
-          childCrossPosition = - child.size.width / 2 - leftMost;
+          childCrossPosition = -child.size.width / 2 - leftMost;
           break;
         case CrossAxisAlignment.stretch:
         case CrossAxisAlignment.baseline:
