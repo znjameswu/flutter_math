@@ -340,7 +340,7 @@ _SqrtSvgRes sqrtImage(
     final advanceWidth = 1.056.cssEm.toLpUnder(options);
     final viewPortWidth = advanceWidth + baseWidth;
     final viewBoxWidth = viewPortWidth.lp.toCssEmUnder(options) * 1000;
-    final svgPath = sqrtPath('sqrt${delimConf.font.fontName.substring(0, 5)}',
+    final svgPath = sqrtPath('sqrtTall',
         extraViniculum, viewBoxHeight);
     final svgString = svgStringFromPath(
       svgPath,
