@@ -54,9 +54,6 @@ class MathAtomNode extends LeafNode implements AtomNode {
       oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
 
   @override
-  int get width => 1;
-
-  @override
   AtomType get leftType => atomType;
 
   @override

@@ -44,9 +44,6 @@ class TextAtomNode extends LeafNode implements AtomNode {
       oldOptions.mathFontOptions != newOptions.mathFontOptions ||
       oldOptions.textFontOptions != newOptions.textFontOptions ||
       oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
-
-  @override
-  int get width => 1;
 }
 
 //ignore: non_constant_identifier_names

@@ -30,9 +30,4 @@ class SpaceNode extends LeafNode {
     // TODO: implement shouldRebuildWidget
     throw UnimplementedError();
   }
-
-  @override
-  // TODO: implement width
-  int get width => throw UnimplementedError();
-
 }

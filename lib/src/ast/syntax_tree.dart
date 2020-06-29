@@ -542,6 +542,9 @@ abstract class LeafNode extends GreenNode {
 
   @override
   List<int> get childPositions => const [];
+
+  @override
+  int get width => 1;
 }
 
 enum AtomType {
