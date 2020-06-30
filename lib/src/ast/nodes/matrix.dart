@@ -62,24 +62,17 @@ class MatrixNode extends SlotableNode {
   }
 
   @override
-  List<EquationRowNode> computeChildren() {
-    // TODO: implement computeChildren
-    throw UnimplementedError();
-  }
+  List<EquationRowNode> computeChildren() =>
+      body.expand((row) => row).toList(growable: false);
 
   @override
-  // TODO: implement leftType
-  AtomType get leftType => throw UnimplementedError();
+  AtomType get leftType => AtomType.ord;
 
   @override
-  // TODO: implement rightType
-  AtomType get rightType => throw UnimplementedError();
+  AtomType get rightType => AtomType.ord;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) {
-    // TODO: implement shouldRebuildWidget
-    throw UnimplementedError();
-  }
+  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(
