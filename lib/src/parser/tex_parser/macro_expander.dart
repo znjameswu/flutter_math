@@ -61,8 +61,8 @@ class MacroExpander implements MacroContext {
   Token expandNextToken() {
     while (true) {
       final expanded = this.expandOnce();
-      if (expanded.length == 1) {
-        if (expanded.first.text == r'\relax') {
+      if (expanded!= null) {
+        if (expanded.text == r'\relax') {
           this.stack.removeLast();
         } else {
           return this.stack.removeLast();
@@ -81,7 +81,7 @@ class MacroExpander implements MacroContext {
     this.macros.endGroup();
   }
 
-  List<Token> expandOnce([bool expandableOnly = false]) {
+  Token expandOnce([bool expandableOnly = false]) {
     final topToken = this.popToken();
     final name = topToken.text;
     final expansion = !topToken.noexpand ? this._getExpansion(name) : null;
@@ -93,7 +93,7 @@ class MacroExpander implements MacroContext {
         throw ParseError('Undefined control sequence: $name');
       }
       this.pushToken(topToken);
-      return [topToken];
+      return topToken;
     }
     this.expansionCount += 1;
     if (this.expansionCount > this.settings.maxExpand) {
@@ -129,7 +129,7 @@ class MacroExpander implements MacroContext {
       }
     }
     this.pushTokens(tokens);
-    return tokens;
+    return null;
   }
 
   void pushToken(Token token) {
@@ -216,8 +216,29 @@ class MacroExpander implements MacroContext {
 
   Lexer getNewLexer(String input) => Lexer(input, this.settings);
 
-  String expandMacroAsText(String s) {
-    throw UnimplementedError();
+  String expandMacroAsText(String name) {
+    final tokens = this.expandMacro(name);
+    if (tokens != null) {
+      return tokens.map((token) => token.text).join('');
+    }
+    return null;
+  }
+
+  List<Token> expandMacro(String name) {
+    if (this.macros.get(name) == null) {
+      return null;
+    }
+    final output = <Token>[];
+    final oldStackLength = this.stack.length;
+    this.pushToken(Token(name));
+    while (this.stack.length > oldStackLength) {
+      final expanded = this.expandOnce();
+      // expandOnce returns Token if and only if it's fully expanded.
+      if (expanded != null) {
+        output.add(this.stack.removeLast());
+      }
+    }
+    return output;
   }
 }
 
@@ -228,7 +249,7 @@ abstract class MacroContext {
   Token popToken();
   void consumeSpaces();
 //  Token expandAfterFuture();
-  List<Token> expandOnce([bool expandableOnly]);
+  Token expandOnce([bool expandableOnly]);
   Token expandAfterFuture();
   Token expandNextToken();
 //

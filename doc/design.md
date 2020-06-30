@@ -51,6 +51,7 @@ KaTeX functionalities that need further investigation
 - spacing (maybe need to delete spacings in symbols.dart)
 - text-mode accent
 - \not
+- \pod, \pmod, \mod all depend on \mathchoice, what shoud we do?
 
 
 KaTeX functionalities that we won't support
