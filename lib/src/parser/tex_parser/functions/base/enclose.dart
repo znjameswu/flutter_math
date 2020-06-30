@@ -48,7 +48,7 @@ GreenNode _fcolorboxHandler(TexParser parser, FunctionContext context) {
 }
 
 GreenNode _fboxHandler(TexParser parser, FunctionContext context) {
-  final body = parser.parseArgNode(mode: Mode.text, optional: false);
+  final body = parser.parseArgHbox(optional: false);
   return EnclosureNode(
     hasBorder: true,
     base: body.wrapWithEquationRow(),
