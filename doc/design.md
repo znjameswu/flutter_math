@@ -39,7 +39,6 @@ We separate text-mode symbols and math-mode symbols by their types at the parsin
 
 KaTeX functionalities that need further investigation
 - char
-- phantom
 - raisebox
 - Custom fonts added by plugins
 - text-mode accent
