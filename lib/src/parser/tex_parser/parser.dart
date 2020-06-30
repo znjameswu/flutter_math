@@ -25,6 +25,8 @@ import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_math/src/ast/nodes/style.dart';
+import 'package:flutter_math/src/ast/style.dart';
 
 import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/atom.dart';
@@ -565,6 +567,23 @@ class TexParser {
     );
     _assertOptionalBeforeReturn(res, optional: optional);
     return res;
+  }
+
+  GreenNode parseArgHbox({@required bool optional}) {
+    final res = parseArgNode(mode: Mode.text, optional: optional);
+    if (res is EquationRowNode) {
+      return EquationRowNode(children: [
+        StyleNode(
+          optionsDiff: OptionsDiff(style: MathStyle.text),
+          children: res.children,
+        )
+      ]);
+    } else {
+      return StyleNode(
+        optionsDiff: OptionsDiff(style: MathStyle.text),
+        children: res.children,
+      );
+    }
   }
 
   GreenNode parserArgHbox({@required bool optional}) {

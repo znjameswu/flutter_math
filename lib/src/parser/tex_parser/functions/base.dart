@@ -1,5 +1,6 @@
 library latex_base;
 
+import 'package:flutter_math/src/ast/nodes/raise_box.dart';
 import 'package:meta/meta.dart';
 
 
@@ -48,6 +49,7 @@ part 'base/math.dart';
 part 'base/op.dart';
 part 'base/operator_name.dart';
 part 'base/phantom.dart';
+part 'base/raise_box.dart';
 part 'base/sizing.dart';
 part 'base/sqrt.dart';
 part 'base/styling.dart';
@@ -70,6 +72,8 @@ const baseFunctionEntries = {
   ..._mathEntries,
   ..._opEntries,
   ..._operatorNameEntries,
+  ..._phantomEntries,
+  ..._raiseBoxEntries,
   ..._sizingEntries,
   ..._sqrtEntries,
   ..._stylingEntries,
