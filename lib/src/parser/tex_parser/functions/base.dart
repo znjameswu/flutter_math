@@ -1,5 +1,7 @@
 library latex_base;
 
+import 'package:flutter_math/src/ast/nodes/enclosure.dart';
+import 'package:flutter_math/src/ast/nodes/stretchy_op.dart';
 import 'package:meta/meta.dart';
 
 import '../../../ast/nodes/accent.dart';
@@ -29,10 +31,12 @@ import '../symbols.dart';
 
 part 'base/accent.dart';
 part 'base/accent_under.dart';
+part 'base/arrow.dart';
 part 'base/break.dart';
 part 'base/color.dart';
 part 'base/cr.dart';
 part 'base/delimsizing.dart';
+part 'base/enclose.dart';
 part 'base/environment.dart';
 part 'base/font.dart';
 part 'base/genfrac.dart';
@@ -49,10 +53,12 @@ part 'base/text.dart';
 const baseFunctionEntries = {
   ..._accentEntries,
   ..._accentUnderEntries,
+  ..._arrowEntries,
   ..._breakEntries,
   ..._colorEntries,
   ..._crEntries,
   ..._delimSizingEntries,
+  ..._encloseEntries,
   ..._environmentEntries,
   ..._fontEntries,
   ..._genfracEntries,

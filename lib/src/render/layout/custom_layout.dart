@@ -78,7 +78,7 @@ class CustomLayout<T> extends MultiChildRenderObjectWidget {
   CustomLayout({
     Key key,
     @required this.delegate,
-    List<Widget> children = const <Widget>[],
+    @required List<Widget> children = const <Widget>[],
   })  : assert(delegate != null),
         super(key: key, children: children);
 
