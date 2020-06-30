@@ -25,14 +25,14 @@ import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_math/src/ast/nodes/style.dart';
-import 'package:flutter_math/src/ast/style.dart';
 
 import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/atom.dart';
 import '../../ast/nodes/multiscripts.dart';
+import '../../ast/nodes/style.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
+import '../../ast/style.dart';
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../font/metrics/unicode_scripts.dart';

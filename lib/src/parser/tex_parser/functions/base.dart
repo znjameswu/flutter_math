@@ -1,6 +1,5 @@
 library latex_base;
 
-import 'package:flutter_math/src/ast/nodes/raise_box.dart';
 import 'package:meta/meta.dart';
 
 
@@ -15,6 +14,7 @@ import '../../../ast/nodes/multiscripts.dart';
 import '../../../ast/nodes/nary_op.dart';
 import '../../../ast/nodes/over.dart';
 import '../../../ast/nodes/phantom.dart';
+import '../../../ast/nodes/raise_box.dart';
 import '../../../ast/nodes/space.dart';
 import '../../../ast/nodes/sqrt.dart';
 import '../../../ast/nodes/stretchy_op.dart';

@@ -2,12 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_math/src/render/layout/custom_layout.dart';
 
+import '../../render/layout/custom_layout.dart';
+import '../../render/utils/render_box_offset.dart';
 import '../options.dart';
 import '../size.dart';
 import '../syntax_tree.dart';
-import '../../render/utils/render_box_offset.dart';
 
 class EnclosureNode extends SlotableNode {
   final EquationRowNode base;

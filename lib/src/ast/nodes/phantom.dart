@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_math/src/render/layout/reset_dimension.dart';
 import 'package:meta/meta.dart';
 
+import '../../render/layout/reset_dimension.dart';
 import '../options.dart';
 import '../syntax_tree.dart';
 

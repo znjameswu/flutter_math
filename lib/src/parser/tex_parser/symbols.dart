@@ -2191,8 +2191,8 @@ const texSymbolCommandConfigs = {
 const extraLatin = {'Ç', 'Ð', 'Þ', 'ç', 'þ'};
 
 const ligatures = {
-  "–": '--',
-  "—": '---',
-  "“": '``',
-  "”": "''",
+  '–': '--',
+  '—': '---',
+  '“': '``',
+  '”': "''",
 };
