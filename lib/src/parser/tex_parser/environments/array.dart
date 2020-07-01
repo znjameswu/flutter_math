@@ -151,7 +151,7 @@ MatrixNode parseArray(
         body.removeLast();
       }
       if (hLinesBeforeRow.length < body.length + 1) {
-        hLinesBeforeRow.add(MatrixSeparatorStyle.none);
+        hLinesBeforeRow.add(null);
       }
       break;
     } else if (next == '\\cr') {
@@ -176,12 +176,11 @@ MatrixNode parseArray(
 
   return MatrixNode(
     body: body,
-    columnLines: separators,
+    vLines: separators,
     columnAligns: colAligns,
     rowSpacing: rowGaps,
     arrayStretch: arrayStretch,
-    hskipBeforeAndAfter:
-        isSmall ? 5.0.pt : (5.0 / 18).em, // TODO: options.havingStyle(script)
+    hskipBeforeAndAfter: true, // TODO: options.havingStyle(script)
   );
 }
 
@@ -231,7 +230,7 @@ GreenNode _arrayHandler(TexParser parser, EnvContext context) {
           'c': MatrixColumnAlign.center,
         }[ca]);
         if (alignSpecified) {
-          separators.add(MatrixSeparatorStyle.none);
+          separators.add(null);
         }
         alignSpecified = true;
         lastIsSeparator = false;
@@ -269,9 +268,9 @@ GreenNode _matrixHandler(TexParser parser, EnvContext context) {
     'matrix': null,
     'pmatrix': ['(', ')'],
     'bmatrix': ['[', ']'],
-    'Bmatrix': ['\\{', '\\}'],
+    'Bmatrix': ['{', '}'],
     'vmatrix': ['|', '|'],
-    'Vmatrix': ['\\Vert', '\\Vert'],
+    'Vmatrix': ['\u2223', '\u2223'],
   }[context.envName];
   final res = parseArray(
     parser,
