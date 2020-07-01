@@ -142,7 +142,6 @@ MatrixNode parseArray(
     final next = parser.fetch().text;
     if (next == '&') {
       parser.consume();
-      break;
     } else if (next == '\\end') {
       // Arrays terminate newlines with `\crcr` which consumes a `\cr` if
       // the last line is empty.
@@ -180,7 +179,7 @@ MatrixNode parseArray(
     columnAligns: colAligns,
     rowSpacing: rowGaps,
     arrayStretch: arrayStretch,
-    hskipBeforeAndAfter: true, // TODO: options.havingStyle(script)
+    hskipBeforeAndAfter: true,
   );
 }
 

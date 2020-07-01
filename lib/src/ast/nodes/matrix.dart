@@ -48,10 +48,12 @@ class MatrixNode extends SlotableNode {
 
   final List<List<EquationRowNode>> body;
 
-  int get rows => body.length;
-  int get cols => body.firstOrNull?.length ?? 0;
+  final int rows;
+  final int cols;
 
-  MatrixNode({
+  MatrixNode._({
+    this.rows,
+    this.cols,
     this.arrayStretch = 1.0,
     this.hskipBeforeAndAfter = false,
     this.isSmall = false,
@@ -62,12 +64,60 @@ class MatrixNode extends SlotableNode {
     this.hLines,
     @required this.body,
   })  : assert(body != null),
+        assert(body.length == rows),
         assert(body.every((row) => row != null)),
         assert(body.every((row) => row.length == cols)),
         assert(columnAligns.length == cols),
         assert(vLines.length == cols + 1),
-        assert(rowSpacing.length == rows - 1),
+        assert(rowSpacing.length == rows),
         assert(hLines.length == rows + 1);
+
+  factory MatrixNode({
+    double arrayStretch = 1.0,
+    bool hskipBeforeAndAfter = false,
+    bool isSmall = false,
+    List<MatrixColumnAlign> columnAligns,
+    List<MatrixSeparatorStyle> vLines,
+    List<Measurement> rowSpacing,
+    List<MatrixSeparatorStyle> hLines,
+    @required List<List<EquationRowNode>> body,
+  }) {
+    final cols = [
+      body.map((row) => row.length).max(),
+      columnAligns.length,
+      vLines.length - 1,
+    ].max();
+    final sanitizedColumnAligns =
+        columnAligns.extendToByFill(cols, MatrixColumnAlign.center);
+    final sanitizedVLines = vLines.extendToByFill(cols + 1, null);
+
+    final rows = [
+      body.length,
+      rowSpacing.length,
+      hLines.length - 1,
+    ].max();
+
+    final sanitizedBody = body
+        .map((row) => row.extendToByFill(cols, null))
+        .toList(growable: false)
+        .extendToByFill(rows, List.filled(cols, null));
+    final sanitizedRowSpacing =
+        rowSpacing.extendToByFill(rows, Measurement.zero);
+    final sanitizedHLines = hLines.extendToByFill(rows + 1, null);
+
+    return MatrixNode._(
+      rows: rows,
+      cols: cols,
+      arrayStretch: arrayStretch,
+      hskipBeforeAndAfter: hskipBeforeAndAfter,
+      isSmall: isSmall,
+      columnAligns: sanitizedColumnAligns,
+      vLines: sanitizedVLines,
+      rowSpacing: sanitizedRowSpacing,
+      hLines: sanitizedHLines,
+      body: sanitizedBody,
+    );
+  }
 
   @override
   List<BuildResult> buildSlotableWidget(
