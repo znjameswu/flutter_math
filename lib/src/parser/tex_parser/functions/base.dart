@@ -35,6 +35,7 @@ import '../symbols.dart';
 part 'base/accent.dart';
 part 'base/accent_under.dart';
 part 'base/arrow.dart';
+part 'base/array.dart';
 part 'base/break.dart';
 part 'base/color.dart';
 part 'base/cr.dart';
