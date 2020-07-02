@@ -44,7 +44,7 @@ class FracNode extends SlotableNode {
 
   @override
   List<BuildResult> buildSlotableWidget(
-      Options options, List<BuildResult> childBuildResults)  =>
+          Options options, List<BuildResult> childBuildResults) =>
       [
         BuildResult(
           options: options,
@@ -198,13 +198,15 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
 
   @override
   void additionalPaint(PaintingContext context, Offset offset) {
-    final paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = theta;
-    context.canvas.drawLine(
-      Offset(0.5 * (width - barLength), height - a) + offset,
-      Offset(0.5 * (width + barLength), height - a) + offset,
-      paint,
-    );
+    if (theta != 0) {
+      final paint = Paint()
+        ..color = Colors.black
+        ..strokeWidth = theta;
+      context.canvas.drawLine(
+        Offset(0.5 * (width - barLength), height - a) + offset,
+        Offset(0.5 * (width + barLength), height - a) + offset,
+        paint,
+      );
+    }
   }
 }

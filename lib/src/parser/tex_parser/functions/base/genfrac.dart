@@ -102,8 +102,8 @@ GreenNode _internalFracHandler({
       break;
     case '\\\\bracefrac':
       hasBarLine = false;
-      leftDelim = '\\{';
-      rightDelim = '\\}';
+      leftDelim = '{';
+      rightDelim = '}';
       break;
     case '\\\\brackfrac':
       hasBarLine = false;
