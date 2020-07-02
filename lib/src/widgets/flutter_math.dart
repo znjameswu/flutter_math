@@ -1,6 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import '../ast/options.dart';
 import '../ast/syntax_tree.dart';
+import '../parser/tex_parser/parse_error.dart';
+import '../parser/tex_parser/parser.dart';
+import '../parser/tex_parser/settings.dart';
 import 'controller.dart';
 import 'scope.dart';
 
@@ -34,6 +38,19 @@ class FlutterMath extends StatefulWidget {
         assert(focusNode != null),
         super(key: key);
 
+  static Widget fromTexString(String expression) {
+    try {
+      final tree = SyntaxTree(
+        greenRoot: TexParser(expression, Settings()).parse(),
+      );
+      return tree.buildWidget(Options.displayOptions);
+    } on ParseError catch (e) {
+      return Text(e.message);
+    } on Object catch (e) {
+      return Text('Internal error: $e');
+    }
+  }
+
   // const FlutterMath.fromAst({
   //   Key key,
   //   @required SyntaxTree equation,
@@ -54,7 +71,6 @@ class _FlutterMathState extends State<FlutterMath> {
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
-      create: (_) => FlutterMathScope(),
-    );
+        create: (_) => FlutterMathScope(),
+      );
 }
-

@@ -97,7 +97,7 @@ const katexCompatibleAccents = {
   ),
   '\u23e0': AccentRenderConfig( // '\u0311'
     overImageName: 'overgroup',
-    underImageName: 'undergroup,'
+    underImageName: 'undergroup'
   ),
   // '\u': AccentRenderConfig(
   //   overImageName: 'overlinesegment',

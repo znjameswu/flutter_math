@@ -199,7 +199,8 @@ class RenderCustomLayout<T> extends RenderBox
 
   @override
   void performLayout() {
-    size = delegate.performLayout(constraints, childrenTable, this);
+    final size = delegate.performLayout(constraints, childrenTable, this);
+    this.size = constraints.constrain(size);
   }
 
   @override
