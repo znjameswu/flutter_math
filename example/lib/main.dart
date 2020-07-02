@@ -43,17 +43,21 @@ class MyHomePage extends StatelessWidget {
               'Flutter Math Demo',
             ),
             bottom: TabBar(tabs: [
-              Text('Features'),
               Text('Demo'),
+              Text('Features'),
               Text('Docs'),
             ]),
           ),
-          body: TabBarView(children: [FeaturePage(), DemoPage(), DocsPage()]),
+          body: TabBarView(children: [
+            DemoPage(),
+            FeaturePage(),
+            DocsPage(),
+          ]),
           floatingActionButton: FloatingActionButton(
             onPressed: () {},
             tooltip: 'Increment',
             child: Icon(Icons.add),
-          ), 
+          ),
         ),
       );
 }
