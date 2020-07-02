@@ -161,7 +161,7 @@ class MacroExpander implements MacroContext {
   }
 
   List<List<Token>> consumeArgs(int numArgs) {
-    final args = <List<Token>>[];
+    final args = List<List<Token>>.filled(numArgs, null);
     for (var i = 0; i < numArgs; ++i) {
       this.consumeSpaces();
       final startOfArg = this.popToken();
