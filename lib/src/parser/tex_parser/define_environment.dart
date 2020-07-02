@@ -27,6 +27,7 @@ import 'package:meta/meta.dart';
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import 'environments/array.dart';
+import 'environments/eqn_array.dart';
 import 'parser.dart';
 
 class EnvContext {
@@ -57,4 +58,5 @@ class EnvSpec {
 
 final environments = {
   ...arrayEntries,
+  ...eqnArrayEntries,
 };

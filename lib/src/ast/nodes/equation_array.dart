@@ -1,4 +1,3 @@
-import 'package:flutter_math/src/ast/nodes/matrix.dart';
 import 'package:meta/meta.dart';
 
 import '../../render/layout/eqn_array.dart';
@@ -6,6 +5,7 @@ import '../../utils/iterable_extensions.dart';
 import '../options.dart';
 import '../size.dart';
 import '../syntax_tree.dart';
+import 'matrix.dart';
 
 class EquationArrayNode extends SlotableNode {
   final double arrayStretch;

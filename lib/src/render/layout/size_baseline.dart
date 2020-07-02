@@ -18,9 +18,7 @@ class SizePreserveBaseline {
   })  : depth = size.height - height,
         width = size.width;
 
-  Size asSize() {
-    return Size(width, height + depth);
-  }
+  Size asSize() => Size(width, height + depth);
 
   SizePreserveBaseline operator *(double operand) => SizePreserveBaseline(
       height: height * operand, depth: depth * operand, width: width * operand);

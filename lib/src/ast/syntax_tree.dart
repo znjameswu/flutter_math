@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/ast/nodes/space.dart';
 
 import '../render/layout/line.dart';
 import '../utils/iterable_extensions.dart';
 import 'nodes/atom.dart';
+import 'nodes/space.dart';
 import 'nodes/sqrt.dart';
 import 'options.dart';
 import 'spacing.dart';

@@ -586,11 +586,6 @@ class TexParser {
     }
   }
 
-  GreenNode parserArgHbox({@required bool optional}) {
-    //TODO
-    throw UnimplementedError();
-  }
-
   String parseArgRaw({@required bool optional}) {
     currArgParsingContext.newArgument(optional: optional);
     final i = currArgParsingContext.currArgNum;
@@ -835,15 +830,13 @@ class ScriptsParsingResults {
 }
 
 GreenNode makeOrdNode(Mode mode, String symbol, bool variantForm, AtomType type,
-    FontOptions font) {
-  // TODO make a special case for spacing
-  return AtomNode(
-      symbol: symbol,
-      variantForm: variantForm,
-      atomType: type,
-      overrideFont: font,
-      mode: mode);
-}
+        FontOptions font) =>
+    AtomNode(
+        symbol: symbol,
+        variantForm: variantForm,
+        atomType: type,
+        overrideFont: font,
+        mode: mode);
 
 T assertNodeType<T extends GreenNode>(GreenNode node) {
   if (node is T) {

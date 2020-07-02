@@ -60,6 +60,7 @@ const baseFunctionEntries = {
   ..._accentEntries,
   ..._accentUnderEntries,
   ..._arrowEntries,
+  ..._arrayEntries,
   ..._breakEntries,
   ..._colorEntries,
   ..._crEntries,

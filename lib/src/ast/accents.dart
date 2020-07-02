@@ -57,7 +57,6 @@ const accentRenderConfigs = {
   '\u00AF': AccentRenderConfig(
     // '\u0304'
     overChar: '\u02c9', // \bar
-    // TODO: overline requires extra attention.
   ),
   '\u2192': AccentRenderConfig(
     // '\u20D7'

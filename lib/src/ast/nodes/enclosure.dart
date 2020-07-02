@@ -49,8 +49,8 @@ class EnclosureNode extends SlotableNode {
               ? BoxDecoration(
                   border: Border.all(
                     // TODO minRuleThickness
-                    width: options.fontMetrics.fboxrule.cssEm
-                        .toLpUnder(options),
+                    width:
+                        options.fontMetrics.fboxrule.cssEm.toLpUnder(options),
                     color: bordercolor ?? options.color,
                   ),
                 )
@@ -65,8 +65,8 @@ class EnclosureNode extends SlotableNode {
         ),
         if (notation.contains('updiagnoalstrike'))
           Positioned(
-            child: LayoutBuilder(builder: (context, constraints) {
-              return CustomPaint(
+            child: LayoutBuilder(
+              builder: (context, constraints) => CustomPaint(
                 size: constraints.biggest,
                 painter: LinePainter(
                   startRelativeX: 0,
@@ -76,13 +76,13 @@ class EnclosureNode extends SlotableNode {
                   lineWidth: 0.046.cssEm.toLpUnder(options),
                   color: bordercolor ?? options.color,
                 ),
-              );
-            }),
+              ),
+            ),
           ),
         if (notation.contains('downdiagnoalstrike'))
           Positioned(
-            child: LayoutBuilder(builder: (context, constraints) {
-              return CustomPaint(
+            child: LayoutBuilder(
+              builder: (context, constraints) => CustomPaint(
                 size: constraints.biggest,
                 painter: LinePainter(
                   startRelativeX: 0,
@@ -92,8 +92,8 @@ class EnclosureNode extends SlotableNode {
                   lineWidth: 0.046.cssEm.toLpUnder(options),
                   color: bordercolor ?? options.color,
                 ),
-              );
-            }),
+              ),
+            ),
           ),
       ],
     );
@@ -204,13 +204,12 @@ class HorizontalStrikeDelegate extends CustomLayoutDelegate<int> {
 
   @override
   double getIntrinsicSize(
-      {Axis sizingDirection,
-      bool max,
-      double extent,
-      double Function(RenderBox child, double extent) childSize,
-      Map<int, RenderBox> childrenTable}) {
-    return childSize(childrenTable[0], double.infinity);
-  }
+          {Axis sizingDirection,
+          bool max,
+          double extent,
+          double Function(RenderBox child, double extent) childSize,
+          Map<int, RenderBox> childrenTable}) =>
+      childSize(childrenTable[0], double.infinity);
 
   @override
   Size performLayout(BoxConstraints constraints,
