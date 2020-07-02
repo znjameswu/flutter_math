@@ -7,15 +7,20 @@ This project aims to achieve maximum compatibility and fidelity with regard to t
 
 The TeX parser is a completely rewritten Dart port of the KaTeX parser, with almost full features. There are only a few differences. List of some unsupported features can be found [here](doc/unsupported.md).
 
+This work 
+
 ## Rendering Samples
 
 `x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}`
+
 ![Example1](doc/img/delta.png)
 
 `i\hbar\frac{\partial}{\partial t}\Psi(\vec x,t) = -\frac{\hbar}{2m}\nabla^2\Psi(\vec x,t)+ V(\vec x)\Psi(\vec x,t)`
+
 ![Example2](doc/img/schrodinger.png)
 
 `\hat f(\xi) = \int_{-\infty}^\infty f(x)e^{- 2\pi i \xi x}\mathrm{d}x`
+
 ![Example3](doc/img/fourier.png)
 
 
@@ -90,16 +95,16 @@ Currently only Android platform has been tested. If you encounter iOS problems, 
 Due to the way KaTeX depends on SVG resources and the poor support for SVG on Flutter Web, currently there is no plan to support Flutter Web.
 
 ## API usage
-The usage is straightforward. Just `FlutterMath.fromString(expression: '\frac a b')`. There is also optional arguments of `Options` and `Settings`, which correspond to Options and Settings in KaTeX and support a subset of their features.
+The usage is straightforward. Just `FlutterMath.fromTexString(expression: '\frac a b')`. There is also optional arguments of `Options` and `Settings`, which correspond to Options and Settings in KaTeX and support a subset of their features.
 
 Display-style equations:
 ```dart
-FlutterMath.fromString(expression: '\frac a b', options: Options.displayOptions),
+FlutterMath.fromTexString(expression: '\frac a b', options: Options.displayOptions),
 ```
 
 In-line equations
 ```dart
-FlutterMath.fromString(expression: '\frac a b', options: Options.textOptions),
+FlutterMath.fromTexString(expression: '\frac a b', options: Options.textOptions),
 ```
 
 ## Goals

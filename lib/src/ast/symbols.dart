@@ -3952,3 +3952,10 @@ const symbolRenderConfigs = {
     text: RenderConfig(null, mainrm), // \\H, 
   ),
 };
+
+const ligatures = {
+  '–': '--',
+  '—': '---',
+  '“': '``',
+  '”': "''",
+};

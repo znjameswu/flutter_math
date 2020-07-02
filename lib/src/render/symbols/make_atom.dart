@@ -7,7 +7,6 @@ import '../../ast/symbols.dart';
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../font/metrics/font_metrics.dart';
-import '../../parser/tex_parser/symbols.dart';
 import '../layout/reset_dimension.dart';
 
 List<BuildResult> makeAtom({

@@ -2,9 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import '../ast/options.dart';
 import '../ast/syntax_tree.dart';
-import '../parser/tex_parser/parse_error.dart';
-import '../parser/tex_parser/parser.dart';
-import '../parser/tex_parser/settings.dart';
+import '../parser/tex/parse_error.dart';
+import '../parser/tex/parser.dart';
+import '../parser/tex/settings.dart';
 import 'controller.dart';
 import 'scope.dart';
 

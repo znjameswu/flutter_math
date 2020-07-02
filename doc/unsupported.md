@@ -15,6 +15,7 @@
 - Composite operators (e.g. negated operators, \not)
 - Composite symbols drawn by macros using horizontal lapping
 - `gather` environment
+- `Vmatrix` environment
 - `\@char` char input by unicode
 
 ## Known render differences to KaTeX
@@ -24,8 +25,10 @@
 - `\color` commands inside a block will NOT be applied to right delimiters. This is in line with MathJax rather than KaTeX. 
 - The parsing behavior of `\overbrace` and `\underbase` with sub-sup pairs will be in line with MathJax rather than KaTeX. (Possibly KaTeX bug?)
 - `\colon`'s behavior will be in line with MathJax rather than KaTeX.
+- `\cancel`, `\xcancel`, `\bcancel` will render differently compared to KaTeX. The vertical padding will be more similar to MathJaX.
 - Due to the lack of `\mathchoice`, `\pod`, `\pmod`, `\mod` will have fixed spacing.
 - `\dfrac`, `\tfrac` ... will have slight size deviation from KaTeX and will be in line with MathJax's rendering behavior. 
+- Rendering of `\sqrt` might be slightly different. Due to a different style choosing scheme.
 - There will be no automatic thinspace between `\cdots` and right delimiter, (which is odd. MathJax and Tex don't have them either)
 
 
