@@ -381,12 +381,12 @@ class RenderLine extends RenderBox
       if (childParentData.alignerOrSpacer) {
         child.layout(BoxConstraints.tightFor(width: 0.0), parentUsesSize: true);
         colWidths.add(0);
-      } else {
-        colWidths.last += child.size.width + childParentData.trailingMargin;
-        mainPos += child.size.width + childParentData.trailingMargin;
       }
       childParentData.offset =
           Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
+      colWidths.last += child.size.width + childParentData.trailingMargin;
+      mainPos += child.size.width + childParentData.trailingMargin;
+
       child = childParentData.nextSibling;
     }
 

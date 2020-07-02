@@ -56,7 +56,22 @@ class EnvSpec {
   });
 }
 
-final environments = {
+final Map<String, EnvSpec> _environments = {};
+Map<String, EnvSpec> get environments{
+  if (_environments.isEmpty) {
+    _environmentsEntries.forEach((key, value) {
+      for (final name in key) {
+        _environments[name] = value;
+      }
+    });
+  }
+  return _environments;
+}
+
+
+
+
+final _environmentsEntries = {
   ...arrayEntries,
   ...eqnArrayEntries,
 };
