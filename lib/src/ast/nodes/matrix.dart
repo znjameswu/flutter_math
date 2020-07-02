@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/render/layout/shift_baseline.dart';
 
 import '../../render/layout/custom_layout.dart';
 import '../../render/utils/render_box_offset.dart';
@@ -76,10 +77,10 @@ class MatrixNode extends SlotableNode {
     double arrayStretch = 1.0,
     bool hskipBeforeAndAfter = false,
     bool isSmall = false,
-    List<MatrixColumnAlign> columnAligns,
-    List<MatrixSeparatorStyle> vLines,
-    List<Measurement> rowSpacings,
-    List<MatrixSeparatorStyle> hLines,
+    @required List<MatrixColumnAlign> columnAligns,
+    @required List<MatrixSeparatorStyle> vLines,
+    @required List<Measurement> rowSpacings,
+    @required List<MatrixSeparatorStyle> hLines,
     @required List<List<EquationRowNode>> body,
   }) {
     final cols = [
@@ -128,29 +129,33 @@ class MatrixNode extends SlotableNode {
       BuildResult(
         options: options,
         italic: 0.0,
-        widget: CustomLayout<int>(
-          delegate: MatrixLayoutDelegate(
-            rows: rows,
-            cols: cols,
-            ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
-                .toLpUnder(options),
-            arrayskip: arrayStretch * 12.0.pt.toLpUnder(options),
-            rowSpacings: rowSpacings
-                .map((e) => e?.toLpUnder(options) ?? 0.0)
+        widget: ShiftBaseline(
+          relativePos: 0.5,
+          offset: options.fontMetrics.axisHeight.cssEm.toLpUnder(options),
+          child: CustomLayout<int>(
+            delegate: MatrixLayoutDelegate(
+              rows: rows,
+              cols: cols,
+              ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
+                  .toLpUnder(options),
+              arrayskip: arrayStretch * 12.0.pt.toLpUnder(options),
+              rowSpacings: rowSpacings
+                  .map((e) => e?.toLpUnder(options) ?? 0.0)
+                  .toList(growable: false),
+              hLines: hLines,
+              hskipBeforeAndAfter: hskipBeforeAndAfter,
+              arraycolsep: isSmall
+                  ? (5 / 18).cssEm.toLpUnder(options)
+                  : 5.0.pt.toLpUnder(options),
+              vLines: vLines,
+              columnAligns: columnAligns,
+            ),
+            children: childBuildResults
+                .mapIndexed((result, index) =>
+                    CustomLayoutId(id: index, child: result?.widget))
+                .where((element) => element.child != null)
                 .toList(growable: false),
-            hLines: hLines,
-            hskipBeforeAndAfter: hskipBeforeAndAfter,
-            arraycolsep: isSmall
-                ? (5 / 18).cssEm.toLpUnder(options)
-                : 5.0.pt.toLpUnder(options),
-            vLines: vLines,
-            columnAligns: columnAligns,
           ),
-          children: childBuildResults
-              .mapIndexed((result, index) =>
-                  CustomLayoutId(id: index, child: result?.widget))
-              .where((element) => element.child != null)
-              .toList(growable: false),
         ),
       ),
     ];

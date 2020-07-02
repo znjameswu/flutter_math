@@ -97,7 +97,7 @@ class FunctionSpec<T extends GreenNode> {
   const FunctionSpec({
     @required this.numArgs,
     // this.argTypes = const [],
-    this.greediness = 1,
+    this.greediness,
     this.allowedInText = false,
     this.allowedInMath = true,
     this.numOptionalArgs = 0,

@@ -1,3 +1,4 @@
+import 'package:flutter_math/src/render/layout/shift_baseline.dart';
 import 'package:meta/meta.dart';
 
 import '../../render/layout/eqn_array.dart';
@@ -36,17 +37,22 @@ class EquationArrayNode extends SlotableNode {
         BuildResult(
           options: options,
           italic: 0.0,
-          widget: EqnArray(
-            ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
-                .toLpUnder(options),
-            jotSize: 3.0.pt.toLpUnder(options),
-            arrayskip: 12.0.pt.toLpUnder(options) * arrayStretch,
-            hlines: hlines,
-            rowSpacings: rowSpacings
-                .map((e) => e.toLpUnder(options))
-                .toList(growable: false),
-            children:
-                childBuildResults.map((e) => e.widget).toList(growable: false),
+          widget: ShiftBaseline(
+            relativePos: 0.5,
+            offset: options.fontMetrics.axisHeight.cssEm.toLpUnder(options),
+            child: EqnArray(
+              ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
+                  .toLpUnder(options),
+              jotSize: 3.0.pt.toLpUnder(options),
+              arrayskip: 12.0.pt.toLpUnder(options) * arrayStretch,
+              hlines: hlines,
+              rowSpacings: rowSpacings
+                  .map((e) => e.toLpUnder(options))
+                  .toList(growable: false),
+              children: childBuildResults
+                  .map((e) => e.widget)
+                  .toList(growable: false),
+            ),
           ),
         )
       ];

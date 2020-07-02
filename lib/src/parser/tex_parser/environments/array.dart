@@ -29,6 +29,7 @@ import '../../../ast/options.dart';
 import '../../../ast/size.dart';
 import '../../../ast/style.dart';
 import '../../../ast/syntax_tree.dart';
+import '../../../utils/iterable_extensions.dart';
 import '../define_environment.dart';
 import '../functions/base.dart';
 import '../macros.dart';
@@ -90,8 +91,8 @@ MatrixNode parseArray(
   TexParser parser, {
   bool hskipBeforeAndAfter = false,
   double arrayStretch,
-  List<MatrixSeparatorStyle> separators,
-  List<MatrixColumnAlign> colAligns,
+  List<MatrixSeparatorStyle> separators = const [],
+  List<MatrixColumnAlign> colAligns = const [],
   MathStyle style,
   bool isSmall = false,
 }) {
@@ -122,7 +123,7 @@ MatrixNode parseArray(
   final hLinesBeforeRow = <MatrixSeparatorStyle>[];
 
   // Test for \hline at the top of the array.
-  hLinesBeforeRow.add(getHLines(parser).last);
+  hLinesBeforeRow.add(getHLines(parser).lastOrNull);
 
   while (true) {
     // Parse each cell in its own group (namespace)
@@ -159,7 +160,7 @@ MatrixNode parseArray(
       rowGaps.add(cr.size);
 
       // check for \hline(s) following the row separator
-      hLinesBeforeRow.add(getHLines(parser).last);
+      hLinesBeforeRow.add(getHLines(parser).lastOrNull);
 
       row = [];
       body.add(row);
@@ -179,7 +180,8 @@ MatrixNode parseArray(
     columnAligns: colAligns,
     rowSpacings: rowGaps,
     arrayStretch: arrayStretch,
-    hskipBeforeAndAfter: true,
+    hLines: hLinesBeforeRow,
+    hskipBeforeAndAfter: hskipBeforeAndAfter,
   );
 }
 

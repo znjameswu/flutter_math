@@ -24,7 +24,7 @@
 import 'parse_error.dart';
 
 class Namespace<T> {
-  Namespace(this.builtins, this.current);
+  Namespace(this.builtins, Map<String, T> current): current = Map.from(current);
   final Map<String, T> current;
   final Map<String, T> builtins;
   final undefStack = <Map<String, T>>[];

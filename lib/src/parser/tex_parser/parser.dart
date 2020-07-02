@@ -388,7 +388,9 @@ class TexParser {
     }
     this.consume();
 
-    if (greediness != null && funcData.greediness <= greediness) {
+    if (greediness != null &&
+        funcData.greediness != null &&
+        funcData.greediness <= greediness) {
       throw ParseError(
           '''Got function '$func' with no arguments ${name != null ? ' as $name' : ''}''',
           token);
