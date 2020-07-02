@@ -33,7 +33,7 @@ const supportedData = {
     // r'\overlinesegment{AB}',
     r'\hat{\theta}',
     r'\underline{AB}',
-    r'\underlinesegment{AB}',
+    // r'\underlinesegment{AB}',
     r'\widehat{ac}',
     r'\widecheck{ac}',
   ],
