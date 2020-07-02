@@ -1,14 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/ast/style.dart';
-import 'package:flutter_math/src/render/layout/shift_baseline.dart';
 
 import '../../render/layout/custom_layout.dart';
+import '../../render/layout/shift_baseline.dart';
 import '../../render/utils/render_box_offset.dart';
 import '../../utils/iterable_extensions.dart';
 import '../options.dart';
 import '../size.dart';
+import '../style.dart';
 import '../syntax_tree.dart';
 
 enum MatrixSeparatorStyle {

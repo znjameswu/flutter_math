@@ -1,7 +1,7 @@
-import 'package:flutter_math/src/render/layout/shift_baseline.dart';
 import 'package:meta/meta.dart';
 
 import '../../render/layout/eqn_array.dart';
+import '../../render/layout/shift_baseline.dart';
 import '../../utils/iterable_extensions.dart';
 import '../options.dart';
 import '../size.dart';

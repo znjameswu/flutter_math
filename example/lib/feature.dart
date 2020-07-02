@@ -1,8 +1,8 @@
-import 'package:example/display.dart';
-import 'package:example/supported_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'display.dart';
+import 'supported_data.dart';
 class FeaturePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView(

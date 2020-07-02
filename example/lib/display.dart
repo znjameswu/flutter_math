@@ -10,8 +10,7 @@ class DisplayMath extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -28,5 +27,4 @@ class DisplayMath extends StatelessWidget {
         )
       ],
     );
-  }
 }

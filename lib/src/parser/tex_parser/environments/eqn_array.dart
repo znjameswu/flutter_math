@@ -21,16 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:flutter_math/flutter_math.dart';
-import 'package:flutter_math/src/ast/nodes/left_right.dart';
-import 'package:flutter_math/src/ast/style.dart';
 
 import '../../../ast/nodes/atom.dart';
 import '../../../ast/nodes/equation_array.dart';
+import '../../../ast/nodes/left_right.dart';
 import '../../../ast/nodes/matrix.dart';
 import '../../../ast/nodes/space.dart';
 import '../../../ast/nodes/style.dart';
+import '../../../ast/options.dart';
 import '../../../ast/size.dart';
+import '../../../ast/style.dart';
 import '../../../ast/syntax_tree.dart';
 import '../../../ast/types.dart';
 import '../../../utils/iterable_extensions.dart';
