@@ -291,6 +291,7 @@ _SqrtSvgRes sqrtImage(
         svgPath,
         Size(viewPortWidth, viewPortHeight),
         Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
+        options.color,
       );
       return _SqrtSvgRes(
         img: svg.fromSvgString(svgString, svgString),
@@ -317,6 +318,7 @@ _SqrtSvgRes sqrtImage(
         svgPath,
         Size(viewPortWidth, viewPortHeight),
         Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
+        options.color,
       );
       return _SqrtSvgRes(
         img: svg.fromSvgString(svgString, svgString),
@@ -346,6 +348,7 @@ _SqrtSvgRes sqrtImage(
       svgPath,
       Size(viewPortWidth, viewPortHeight),
       Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
+      options.color,
     );
     return _SqrtSvgRes(
       img: svg.fromSvgString(svgString, svgString),

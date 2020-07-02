@@ -46,7 +46,9 @@ class DisplayMath extends StatelessWidget {
                   ),
                   TableRow(
                     children: [
-                      Center(child: FlutterMath.fromTexString(expression)),
+                      Center(
+                          child: FlutterMath.fromTexString(
+                              expression: expression)),
                       Center(
                         child: TeXView(
                           renderingEngine: const TeXViewRenderingEngine.katex(),
@@ -59,40 +61,6 @@ class DisplayMath extends StatelessWidget {
                   ),
                 ],
               ),
-              // Row(
-              //   mainAxisSize: MainAxisSize.max,
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: <Widget>[
-              //     Expanded(
-              //       child: Container(
-              //         decoration: BoxDecoration(
-              //             border: Border(
-              //                 right: BorderSide(width: 1.0, color: Colors.grey))),
-              //         child: Column(
-              //           crossAxisAlignment: CrossAxisAlignment.center,
-              //           children: <Widget>[
-              //             Text('Flutter Math'),
-              //             FlutterMath.fromTexString(expression)
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //     Expanded(
-              //       child: Column(
-              //         crossAxisAlignment: CrossAxisAlignment.center,
-              //         children: [
-              //           Text('flutter_tex'),
-              //           TeXView(
-              //               renderingEngine: const TeXViewRenderingEngine.katex(),
-              //               child: TeXViewDocument(
-              //                 '\$\$$expression\$\$',
-              //               )),
-              //         ],
-              //       ),
-              //     ),
-              //   ],
-              // )
             ],
           ),
         ),

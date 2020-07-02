@@ -14,12 +14,6 @@ The AST of this project has a very similar structure compared with MathML, the A
 
 - MultiscriptNode do not support extra pairs of postscripts as <mmultiscripts> in MathML does. Extra postscript pairs conflict with UnicodeMath input syntax. 
 - <msubsup> and part of <mmultiscripts> are merged into one single MultiscriptsNode. After removing the support of extra postscript feature, they become largely the same. In current TeX height/depth calculation mechanism, nesting subsups with presubscripts will fail to generate aligned scripts. We have to merge it into one node anyway.
-- Math functions with limit-like subscript and superscript will not be adaptive to different styles. This is due to the design of AST, and is in accordance with UnicodeMath designs. This is different from TeX spec.
-- \color commands inside a block will NOT affect right delimiters. This is different from KaTeX and in accordance with MathJax. It is more consistent for our AST design better.
-- Matrix won't render multiple \hlines and || column separators, just as MathJax won't either.
-- \dfrac, \tfrac ... will be rendered slightly different from KaTeX and will be in line with MathJax's rendering behavior. KaTeX has an `adjustStyle` function whose behvior we have no intention to follow. 
-- \overbrace and \underbase with sub-sup pairs will be parsed differently to KaTeX and in line with MathJax. (Possibly KaTeX bug?)
-- \colon's behavior will be in line with MathJax rather than KaTeX.
 
 
 Text and Math mode AST design Rationale:
@@ -37,25 +31,7 @@ We separate text-mode symbols and math-mode symbols by their types at the parsin
     - How can I nest math inside text?
 
 
-KaTeX functionalities that need further investigation
-- char
-- Custom fonts added by plugins
-- text-mode accent
-- \not
-- \pod, \pmod, \mod all depend on \mathchoice, what shoud we do?
 
-
-KaTeX functionalities that we won't support
-- href
-- includegraphics
-- lap
-- mathchoice
-- smash
-- \overlinesegment \underlinesegment
-- There will be no automatic thinspace between \cdots and right delimiter. (which is odd. MathJax and Tex don't have them either)
-- \pmb
-- \hspace*
-- Exotic composite symbols: \Coloneqq, \coloneq, \Coloneq, \Eqqcolon, \Eqcolon, \colonapprox, \Colonapprox, \colonsim, \Colonsim, \simcolon, \simcoloncolon, \approxcolon, \approxcoloncolon, and also their equivalent \coloncolonequals ...
 
 variantForm is basically in line with MathJax, for the exception of \u210F(\hbar)
 

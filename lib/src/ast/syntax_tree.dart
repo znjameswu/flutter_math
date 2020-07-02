@@ -436,12 +436,46 @@ class EquationRowNode extends ParentableNode<GreenNode>
     final flattenedChildOptions =
         flattenedBuildResults.map((e) => e.options).toList();
     // assert(flattenedChildList.length == actualChildWidgets.length);
+
+    // bin can only be bin, if it satisfies some conditions. Otherwise it will
+    // be seen as an ord
+    final leftTypes =
+        flattenedChildList.map((e) => e.leftType).toList(growable: false);
+    final rightTypes =
+        flattenedChildList.map((e) => e.rightType).toList(growable: false);
+    for (var i = 0; i < flattenedChildList.length; i++) {
+      if (i > 0 &&
+          leftTypes[i] == AtomType.bin &&
+          const {
+            AtomType.bin,
+            AtomType.open,
+            AtomType.rel,
+            AtomType.op,
+            AtomType.punct,
+          }.contains(rightTypes[i - 1])) {
+        leftTypes[i] = AtomType.ord;
+        if (rightTypes[i] == AtomType.bin) {
+          rightTypes[i] = AtomType.ord;
+        }
+      } else if (i < flattenedChildList.length - 1 &&
+          rightTypes[i] == AtomType.bin &&
+          const {
+            AtomType.rel,
+            AtomType.close,
+            AtomType.punct,
+          }.contains(leftTypes[i + 1])) {
+        rightTypes[i] = AtomType.ord;
+        if (leftTypes[i] == AtomType.bin) {
+          leftTypes[i] = AtomType.ord;
+        }
+      }
+    }
     final spacings =
         List<double>.filled(flattenedChildList.length, 0, growable: false);
     for (var i = 0; i < flattenedChildList.length - 1; i++) {
       spacings[i] = getSpacingSize(
-        flattenedChildList[i].rightType,
-        flattenedChildList[i + 1].leftType,
+        rightTypes[i],
+        leftTypes[i + 1],
         flattenedChildOptions[i + 1].style,
       ).toLpUnder(
           flattenedChildOptions[i + 1]); // Behavior in accordance with KaTeX
@@ -483,13 +517,19 @@ class EquationRowNode extends ParentableNode<GreenNode>
 
   AtomType _leftType;
   @override
-  AtomType get leftType => _leftType ??=
-      overrideType ?? children.firstOrNull?.leftType ?? AtomType.ord;
+  AtomType get leftType => _leftType ??= overrideType ??
+      (children.firstOrNull?.leftType != AtomType.bin
+          ? children.firstOrNull?.leftType
+          : AtomType.ord) ??
+      AtomType.ord;
 
   AtomType _rightType;
   @override
-  AtomType get rightType => _rightType ??=
-      overrideType ?? children.lastOrNull?.rightType ?? AtomType.ord;
+  AtomType get rightType => _rightType ??= overrideType ??
+      (children.lastOrNull?.rightType != AtomType.bin
+          ? children.lastOrNull?.rightType
+          : AtomType.ord) ??
+      AtomType.ord;
 }
 
 extension GreenNodeWrappingExt on GreenNode {

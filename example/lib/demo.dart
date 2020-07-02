@@ -35,7 +35,8 @@ class DemoPage extends StatelessWidget {
                     ),
                     Consumer<TextEditingController>(
                       builder: (context, controller, _) =>
-                          FlutterMath.fromTexString(controller.value.text),
+                          FlutterMath.fromTexString(
+                              expression: controller.value.text),
                     ),
                   ],
                 ),
@@ -51,13 +52,12 @@ class DemoPage extends StatelessWidget {
                       style: Theme.of(context).textTheme.headline6,
                     ),
                     Consumer<TextEditingController>(
-                      builder: (context, controller, _) =>
-                          TeXView(
-                          renderingEngine: const TeXViewRenderingEngine.katex(),
-                          child: TeXViewDocument(
-                            '\$\$${controller.value.text}\$\$',
-                          ),
+                      builder: (context, controller, _) => TeXView(
+                        renderingEngine: const TeXViewRenderingEngine.katex(),
+                        child: TeXViewDocument(
+                          '\$\$${controller.value.text}\$\$',
                         ),
+                      ),
                     ),
                   ],
                 ),

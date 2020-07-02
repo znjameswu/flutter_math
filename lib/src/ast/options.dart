@@ -14,11 +14,11 @@ class Options {
   // final Size size;
   SizeMode get size => sizeUnderTextStyle.underStyle(style);
   final SizeMode sizeUnderTextStyle;
-  final bool phantom;
+  // final bool phantom;
   final FontOptions textFontOptions;
   final FontOptions mathFontOptions;
   double get sizeMultiplier => this.size.sizeMultiplier;
-  final double maxSize;
+  // final double maxSize;
   // final num minRuleThickness; //???
   // final bool isBlank;
   // final bool mathord;
@@ -29,26 +29,22 @@ class Options {
   FontMetrics get fontMetrics => getGlobalMetrics(size);
   const Options({
     @required this.style,
-    @required this.color,
-    @required this.sizeUnderTextStyle,
-    @required this.phantom,
-    @required this.textFontOptions,
-    @required this.mathFontOptions,
-    @required this.maxSize,
+    this.color = Colors.black,
+    this.sizeUnderTextStyle = SizeMode.normalsize,
+    // @required this.phantom,
+    this.textFontOptions,
+    this.mathFontOptions,
+    // @required this.maxSize,
     // @required this.minRuleThickness,
     // @required this.tableColCount,
   });
 
   static const displayOptions = Options(
-      style: MathStyle.display,
-      color: Colors.black,
-      sizeUnderTextStyle: SizeMode.normalsize,
-      phantom: false,
-      textFontOptions: null,
-      mathFontOptions: null,
-      maxSize: double.infinity
-      // minRuleThickness:
-      );
+    style: MathStyle.display,
+  );
+  static const textOptions = Options(
+    style: MathStyle.text,
+  );
 
   // Options discardNonInheritable() {
   //   if (tableColCount == 0) return this;
@@ -105,10 +101,10 @@ class Options {
     return this.copyWith(color: color);
   }
 
-  Options withPhantom() {
-    if (this.phantom) return this;
-    return this.copyWith(phantom: true);
-  }
+  // Options withPhantom() {
+  //   if (this.phantom) return this;
+  //   return this.copyWith(phantom: true);
+  // }
 
   Options withTextFont(PartialFontOptions font) => this.copyWith(
         mathFontOptions: null,
@@ -122,7 +118,9 @@ class Options {
   }
   // TODO()
 
-  Color getColor() => this.phantom ? Color(0x00000000) : this.color;
+  Color getColor() =>
+      // this.phantom ? Color(0x00000000) :
+      this.color;
 
   Options copyWith({
     MathStyle style,
@@ -139,10 +137,10 @@ class Options {
         style: style ?? this.style,
         color: color ?? this.color,
         sizeUnderTextStyle: sizeUnderTextStyle ?? this.sizeUnderTextStyle,
-        phantom: phantom ?? this.phantom,
+        // phantom: phantom ?? this.phantom,
         textFontOptions: textFontOptions ?? this.textFontOptions,
         mathFontOptions: mathFontOptions ?? this.mathFontOptions,
-        maxSize: maxSize ?? this.maxSize,
+        // maxSize: maxSize ?? this.maxSize,
         // minRuleThickness: minRuleThickness ?? this.minRuleThickness,
         // tableColCount: tableColCount ?? this.tableColCount,
       );
@@ -158,9 +156,9 @@ class Options {
     if (partialOptions.color != null) {
       res = res.withColor(partialOptions.color);
     }
-    if (partialOptions.phantom == true) {
-      res = res.withPhantom();
-    }
+    // if (partialOptions.phantom == true) {
+    //   res = res.withPhantom();
+    // }
     if (partialOptions.textFontOptions != null) {
       res = res.withTextFont(partialOptions.textFontOptions);
     }
@@ -176,7 +174,7 @@ class OptionsDiff {
   final SizeMode size;
 
   final Color color;
-  final bool phantom;
+  // final bool phantom;
   // SizeMode get size => sizeUnderTextStyle.underStyle(style);
   // final SizeMode sizeUnderTextStyle;
   final PartialFontOptions textFontOptions;
@@ -186,7 +184,7 @@ class OptionsDiff {
     this.style,
     this.color,
     this.size,
-    this.phantom,
+    // this.phantom,
     this.textFontOptions,
     this.mathFontOptions,
   });
@@ -227,11 +225,12 @@ class FontOptions {
     String fontFamily,
     FontWeight fontWeight,
     FontStyle fontShape,
-  }) => FontOptions(
-      fontFamily: fontFamily ?? this.fontFamily,
-      fontWeight: fontWeight ?? this.fontWeight,
-      fontShape: fontShape ?? this.fontShape,
-    );
+  }) =>
+      FontOptions(
+        fontFamily: fontFamily ?? this.fontFamily,
+        fontWeight: fontWeight ?? this.fontWeight,
+        fontShape: fontShape ?? this.fontShape,
+      );
 
   FontOptions mergeWith(PartialFontOptions value) {
     if (value == null) return this;

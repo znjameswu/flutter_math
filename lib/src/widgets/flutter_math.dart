@@ -38,16 +38,20 @@ class FlutterMath extends StatefulWidget {
         assert(focusNode != null),
         super(key: key);
 
-  static Widget fromTexString(String expression) {
+  static Widget fromTexString({
+    String expression,
+    Options options = Options.displayOptions,
+    Settings settings = const Settings(),
+  }) {
     try {
       final tree = SyntaxTree(
-        greenRoot: TexParser(expression, Settings()).parse(),
+        greenRoot: TexParser(expression, settings).parse(),
       );
       return tree.buildWidget(Options.displayOptions);
     } on ParseError catch (e) {
       return Text(e.message);
     } on Object catch (e) {
-      return Text('Internal error: $e');
+      return Text('Internal error: $e. Please report.');
     }
   }
 

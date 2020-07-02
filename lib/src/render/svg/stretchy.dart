@@ -132,6 +132,7 @@ Widget strechySvgSpan(String name, double width, Options options) {
       svgPaths[pathName],
       Size(width, height),
       Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
+      options.color,
     );
   } else {
     final data = katexImagesData[name];
@@ -169,6 +170,7 @@ Widget strechySvgSpan(String name, double width, Options options) {
             svgPaths[data.paths[i]],
             Size(widths[i], height),
             Rect.fromLTWH(0, 0, viewBoxWidth, data.viewBoxHeight),
+            options.color,
             aligns[i],
             BoxFit.fitHeight
           )

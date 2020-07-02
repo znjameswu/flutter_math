@@ -56,6 +56,7 @@ class _RenderLayoutBuilderPreserveBaseline extends RenderBox
   @override
   void performLayout() {
     final constraints = this.constraints;
+    // rebuildIfNecessary();
     layoutAndBuildChild();
     if (child != null) {
       child.layout(constraints, parentUsesSize: true);

@@ -49,8 +49,6 @@ GreenNode _textcolorHandler(TexParser parser, FunctionContext context) {
 GreenNode _colorHandler(TexParser parser, FunctionContext context) {
   final color = parser.parseArgColor(optional: false);
 
-  //TODO: we do not plan to follow KaTeX's behavior here
-
   final body = parser.parseExpression(
       breakOnInfix: true, breakOnTokenText: context.breakOnTokenText);
   return StyleNode(

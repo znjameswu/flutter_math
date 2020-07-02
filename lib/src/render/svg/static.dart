@@ -27,6 +27,7 @@ Widget staticSvg(String name, Options options, {bool needBaseline = false}) {
         svgPaths[name],
         Size(viewPortWidth, viewPortHeight),
         Rect.fromLTWH(0, 0, 1000 * width, 1000 * height),
+        options.color
       );
   if (needBaseline) {
     return ResetBaseline(
