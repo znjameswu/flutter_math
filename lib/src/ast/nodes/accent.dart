@@ -66,6 +66,8 @@ class AccentNode extends SlotableNode {
           depth: 0.0, // Cut off xHeight
           width: constraints.minWidth, // Ensure width
           child: ShiftBaseline(
+            // \tilde is submerged below baseline in KaTeX fonts
+            relativePos: 1.0,
             // Shift baseline up by xHeight
             offset: -options.fontMetrics.xHeight.cssEm.toLpUnder(options),
             child: accentSymbolWidget,
