@@ -249,6 +249,7 @@ class TexParser {
               primeCommand.font,
             ),
           ];
+          this.consume();
           while (this.fetch().text == "'") {
             superscriptList.add(makeOrdNode(
               mode,
