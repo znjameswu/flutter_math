@@ -28,7 +28,7 @@ const _operatorNameEntries = {
       FunctionSpec(numArgs: 1, handler: _operatorNameHandler),
 };
 GreenNode _operatorNameHandler(TexParser parser, FunctionContext context) {
-  final name = parser.parseArgNode(mode: null, optional: false);
+  final name = parser.parseArgNode(mode: Mode.text, optional: false);
   final body = parser.parseGroup(context.funcName,
           optional: false, greediness: 1, mode: null, consumeSpaces: true) ??
       EquationRowNode(children: []);

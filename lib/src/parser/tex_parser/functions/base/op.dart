@@ -55,10 +55,10 @@ const _opEntries = {
     numArgs: 0,
     handler: _bigOpHandler,
   ),
-  ['\\mathop']: FunctionSpec(
-    numArgs: 1,
-    handler: _mathopHandler,
-  ),
+  // ['\\mathop']: FunctionSpec(
+  //   numArgs: 1,
+  //   handler: _mathopHandler,
+  // ),
   [
     '\\arcsin',
     '\\arccos',
@@ -126,6 +126,7 @@ const _opEntries = {
     numArgs: 0,
     handler: _integralHandler,
   ),
+
 };
 
 NaryOperatorNode _parseNaryOperator(
@@ -156,9 +157,10 @@ FunctionNode _parseMathFunction(
   final scriptsResult = parser.parseScripts(allowLimits: true);
   EquationRowNode arg;
   arg = parser
-      .parseAtom(context.breakOnTokenText)
-      // .parseArgNode(mode: Mode.math, optional: false)
-      ?.wrapWithEquationRow();
+          .parseAtom(context.breakOnTokenText)
+          // .parseArgNode(mode: Mode.math, optional: false)
+          ?.wrapWithEquationRow() ??
+      EquationRowNode.empty();
   final limits = scriptsResult.limits ?? defaultLimits;
   final base = funcNameBase.wrapWithEquationRow();
   if (scriptsResult.subscript == null && scriptsResult.subscript == null) {
@@ -219,18 +221,26 @@ GreenNode _bigOpHandler(TexParser parser, FunctionContext context) {
   return _parseNaryOperator(fName, parser, context);
 }
 
-GreenNode _mathopHandler(TexParser parser, FunctionContext context) {
-  final fName = parser.parseArgNode(mode: Mode.math, optional: false);
-  return _parseMathFunction(fName, parser, context);
-}
+// GreenNode _mathopHandler(TexParser parser, FunctionContext context) {
+//   final fName = parser.parseArgNode(mode: Mode.math, optional: false);
+//   return _parseMathFunction(fName, parser, context);
+// }
 
 GreenNode _mathFunctionHandler(TexParser parser, FunctionContext context) =>
-    _parseMathFunction(AtomNode(symbol: context.funcName), parser, context,
-        defaultLimits: false);
+    _parseMathFunction(
+      stringToNode(context.funcName.substring(1), Mode.text),
+      parser,
+      context,
+      defaultLimits: false,
+    );
 
 GreenNode _mathLimitsHandler(TexParser parser, FunctionContext context) =>
-    _parseMathFunction(AtomNode(symbol: context.funcName), parser, context,
-        defaultLimits: true);
+    _parseMathFunction(
+      stringToNode(context.funcName.substring(1), Mode.text),
+      parser,
+      context,
+      defaultLimits: true,
+    );
 
 const singleCharIntegrals = {
   '\u222b': '\\int',

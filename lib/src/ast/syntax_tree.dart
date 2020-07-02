@@ -395,6 +395,8 @@ abstract class TransparentNode extends ParentableNode<GreenNode> {
 
 class EquationRowNode extends ParentableNode<GreenNode>
     with PositionDependentMixin {
+  final AtomType overrideType;
+
   @override
   final List<GreenNode> children;
 
@@ -412,7 +414,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
     return result;
   }
 
-  EquationRowNode({@required this.children})
+  EquationRowNode({@required this.children, this.overrideType})
       : assert(children != null),
         assert(children.every((child) => child != null))
   // assert(children.every((child) => child is! EquationRowNode))
@@ -481,13 +483,13 @@ class EquationRowNode extends ParentableNode<GreenNode>
 
   AtomType _leftType;
   @override
-  AtomType get leftType =>
-      _leftType ??= children.firstOrNull?.leftType ?? AtomType.ord;
+  AtomType get leftType => _leftType ??=
+      overrideType ?? children.firstOrNull?.leftType ?? AtomType.ord;
 
   AtomType _rightType;
   @override
-  AtomType get rightType =>
-      _rightType ??= children.lastOrNull?.rightType ?? AtomType.ord;
+  AtomType get rightType => _rightType ??=
+      overrideType ?? children.lastOrNull?.rightType ?? AtomType.ord;
 }
 
 extension GreenNodeWrappingExt on GreenNode {

@@ -49,6 +49,7 @@ part 'base/genfrac.dart';
 part 'base/horiz_brace.dart';
 part 'base/kern.dart';
 part 'base/math.dart';
+part 'base/mclass.dart';
 part 'base/op.dart';
 part 'base/operator_name.dart';
 part 'base/phantom.dart';
@@ -75,6 +76,7 @@ const baseFunctionEntries = {
   ..._horizBraceEntries,
   ..._kernEntries,
   ..._mathEntries,
+  ..._mclassEntries,
   ..._opEntries,
   ..._operatorNameEntries,
   ..._phantomEntries,

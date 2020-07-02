@@ -59,3 +59,12 @@ class AtomNode extends LeafNode {
   @override
   AtomType get rightType => atomType;
 }
+
+EquationRowNode stringToNode(String string, [Mode mode = Mode.text]) {
+  return EquationRowNode(
+    children: string
+        .split('')
+        .map((ch) => AtomNode(symbol: ch, mode: mode))
+        .toList(growable: false),
+  );
+}
