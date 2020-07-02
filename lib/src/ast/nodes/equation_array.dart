@@ -1,46 +1,74 @@
+import 'package:flutter_math/src/ast/nodes/matrix.dart';
+import 'package:meta/meta.dart';
+
+import '../../render/layout/eqn_array.dart';
+import '../../utils/iterable_extensions.dart';
 import '../options.dart';
+import '../size.dart';
 import '../syntax_tree.dart';
 
-class EquationArrayRowNode extends EquationRowNode {}
+class EquationArrayNode extends SlotableNode {
+  final double arrayStretch;
+  final bool addJot;
+  final List<EquationRowNode> body;
+  final List<MatrixSeparatorStyle> hlines;
+  final List<Measurement> rowSpacings;
 
-class EquationArrayNode extends SlotableNode<EquationArrayRowNode> {
+  final int rows;
+
+  EquationArrayNode(
+      {@required this.addJot,
+      @required this.body,
+      this.arrayStretch = 1.0,
+      List<MatrixSeparatorStyle> hlines,
+      List<Measurement> rowSpacings})
+      : assert(body != null),
+        assert(body.every((element) => element != null)),
+        hlines = (hlines ?? []).extendToByFill(body.length, null),
+        rowSpacings =
+            (rowSpacings ?? []).extendToByFill(body.length, Measurement.zero),
+        rows = body.length;
+
   @override
   List<BuildResult> buildSlotableWidget(
-      Options options, List<BuildResult> childBuildResults) {
-    // TODO: implement buildWidget
-    throw UnimplementedError();
-  }
+          Options options, List<BuildResult> childBuildResults) =>
+      [
+        BuildResult(
+          options: options,
+          italic: 0.0,
+          widget: EqnArray(
+            ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
+                .toLpUnder(options),
+            jotSize: 3.0.pt.toLpUnder(options),
+            arrayskip: 12.0.pt.toLpUnder(options) * arrayStretch,
+            hlines: hlines,
+            rowSpacings: rowSpacings
+                .map((e) => e.toLpUnder(options))
+                .toList(growable: false),
+            children:
+                childBuildResults.map((e) => e.widget).toList(growable: false),
+          ),
+        )
+      ];
 
   @override
-  List<Options> computeChildOptions(Options options) {
-    // TODO: implement computeChildOptions
-    throw UnimplementedError();
-  }
+  List<Options> computeChildOptions(Options options) =>
+      List.filled(rows, options, growable: false);
 
   @override
-  List<EquationArrayRowNode> computeChildren() {
-    // TODO: implement computeChildren
-    throw UnimplementedError();
-  }
+  List<EquationRowNode> computeChildren() => body;
 
   @override
-  // TODO: implement leftType
-  AtomType get leftType => throw UnimplementedError();
+  AtomType get leftType => AtomType.ord;
 
   @override
-  // TODO: implement rightType
-  AtomType get rightType => throw UnimplementedError();
+  AtomType get rightType => AtomType.ord;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) {
-    // TODO: implement shouldRebuildWidget
-    throw UnimplementedError();
-  }
+  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
 
   @override
-  ParentableNode<EquationArrayRowNode> updateChildren(
-      List<EquationArrayRowNode> newChildren) {
-    // TODO: implement updateChildren
-    throw UnimplementedError();
-  }
+  ParentableNode<EquationRowNode> updateChildren(
+          List<EquationRowNode> newChildren) =>
+      EquationArrayNode(addJot: addJot, body: newChildren);
 }

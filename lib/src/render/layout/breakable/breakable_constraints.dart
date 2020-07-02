@@ -7,15 +7,17 @@ import 'breakable_size.dart';
 
 class BreakableBoxConstraints extends BoxConstraints {
   final double maxWidthFirstLine;
-  final double maxWidthRestLines;
+  final double maxWidthBodyLines;
+  final double lastLineRightMargin;
   const BreakableBoxConstraints({
     double minWidth = 0.0,
     this.maxWidthFirstLine = double.infinity,
-    this.maxWidthRestLines = double.infinity,
+    this.maxWidthBodyLines = double.infinity,
+    this.lastLineRightMargin = 0.0,
     double minHeight = 0.0,
     double maxHeight = double.infinity,
   })  : assert(maxWidthFirstLine >= 0),
-        assert(maxWidthRestLines >= 0),
+        assert(maxWidthBodyLines >= 0),
         super(
             minWidth: minWidth,
             maxWidth: maxWidthFirstLine,
@@ -23,9 +25,11 @@ class BreakableBoxConstraints extends BoxConstraints {
             maxHeight: maxHeight);
   BreakableBoxConstraints.fromBox({
     BoxConstraints boxConstraints,
-    this.maxWidthRestLines = double.infinity,
-  })  : assert(maxWidthRestLines >= 0),
+    this.maxWidthBodyLines = double.infinity,
+    double maxWidthLastLine,
+  })  : assert(maxWidthBodyLines >= 0),
         maxWidthFirstLine = boxConstraints.maxWidth,
+        lastLineRightMargin = maxWidthLastLine ?? maxWidthBodyLines,
         super(
           minWidth: boxConstraints.minWidth,
           maxWidth: boxConstraints.maxWidth,
@@ -33,7 +37,7 @@ class BreakableBoxConstraints extends BoxConstraints {
           maxHeight: boxConstraints.maxHeight,
         );
 
-  double get restLineStartPos => maxWidthFirstLine - maxWidthRestLines;
+  double get restLineStartPos => maxWidthFirstLine - maxWidthBodyLines;
 
   @override
   BreakableBoxConstraints copyWith({
@@ -50,7 +54,7 @@ class BreakableBoxConstraints extends BoxConstraints {
         maxHeight: maxHeight ?? this.maxHeight,
         maxWidthFirstLine:
             maxWidthFirstLine ?? (maxWidth ?? this.maxWidthFirstLine),
-        maxWidthRestLines: maxWidthRestLines ?? this.maxWidthRestLines,
+        maxWidthBodyLines: maxWidthRestLines ?? this.maxWidthBodyLines,
       );
 
   @override
@@ -58,22 +62,22 @@ class BreakableBoxConstraints extends BoxConstraints {
     final res = super.deflate(edges);
     return BreakableBoxConstraints.fromBox(
       boxConstraints: res,
-      maxWidthRestLines:
-          math.max(res.minWidth, maxWidthRestLines - edges.horizontal),
+      maxWidthBodyLines:
+          math.max(res.minWidth, maxWidthBodyLines - edges.horizontal),
     );
   }
 
   @override
   BreakableBoxConstraints loosen() => BreakableBoxConstraints.fromBox(
         boxConstraints: super.loosen(),
-        maxWidthRestLines: maxWidthRestLines,
+        maxWidthBodyLines: maxWidthBodyLines,
       );
 
   @override
   BreakableBoxConstraints enforce(BoxConstraints constraints) =>
       BreakableBoxConstraints.fromBox(
         boxConstraints: super.enforce(constraints),
-        maxWidthRestLines: maxWidthRestLines
+        maxWidthBodyLines: maxWidthBodyLines
             .clamp(constraints.minWidth, constraints.maxWidth)
             .toDouble(),
       );
@@ -82,9 +86,9 @@ class BreakableBoxConstraints extends BoxConstraints {
   BreakableBoxConstraints tighten({double width, double height}) =>
       BreakableBoxConstraints.fromBox(
         boxConstraints: super.tighten(width: width, height: height),
-        maxWidthRestLines: width == null
-            ? maxWidthRestLines
-            : width.clamp(minWidth, maxWidthRestLines).toDouble(),
+        maxWidthBodyLines: width == null
+            ? maxWidthBodyLines
+            : width.clamp(minWidth, maxWidthBodyLines).toDouble(),
       );
 
   @override
@@ -99,7 +103,7 @@ class BreakableBoxConstraints extends BoxConstraints {
   @override
   BreakableBoxConstraints widthConstraints() => BreakableBoxConstraints.fromBox(
         boxConstraints: super.widthConstraints(),
-        maxWidthRestLines: maxWidthRestLines,
+        maxWidthBodyLines: maxWidthBodyLines,
       );
 
   @override
@@ -127,7 +131,7 @@ class BreakableBoxConstraints extends BoxConstraints {
       for (var i = 0; i < size.lineSizes.length; i++) {
         lineSizes[i] = BoxConstraints(
                 minWidth: minWidth,
-                maxWidth: i == 0 ? maxWidthFirstLine : maxWidthRestLines,
+                maxWidth: i == 0 ? maxWidthFirstLine : maxWidthBodyLines,
                 minHeight: minHeight,
                 maxHeight: remainingHeight)
             .constrain(size.lineSizes[i]);
@@ -153,7 +157,7 @@ class BreakableBoxConstraints extends BoxConstraints {
       for (var i = 0; i < size.lineSizes.length; i++) {
         lineSizes[i] = BoxConstraints(
                 minWidth: minWidth,
-                maxWidth: i == 0 ? maxWidthFirstLine : maxWidthRestLines,
+                maxWidth: i == 0 ? maxWidthFirstLine : maxWidthBodyLines,
                 minHeight: minHeight,
                 maxHeight: remainingHeight)
             .constrainSizeAndAttemptToPreserveAspectRatio(size.lineSizes[i]);
@@ -177,41 +181,41 @@ class BreakableBoxConstraints extends BoxConstraints {
   BreakableBoxConstraints operator *(double factor) =>
       BreakableBoxConstraints.fromBox(
         boxConstraints: super * factor,
-        maxWidthRestLines: maxWidthRestLines * factor,
+        maxWidthBodyLines: maxWidthBodyLines * factor,
       );
 
   @override
   BreakableBoxConstraints operator /(double factor) =>
       BreakableBoxConstraints.fromBox(
         boxConstraints: super / factor,
-        maxWidthRestLines: maxWidthRestLines / factor,
+        maxWidthBodyLines: maxWidthBodyLines / factor,
       );
 
   @override
   BreakableBoxConstraints operator ~/(double factor) =>
       BreakableBoxConstraints.fromBox(
         boxConstraints: super ~/ factor,
-        maxWidthRestLines: (maxWidthRestLines ~/ factor).toDouble(),
+        maxWidthBodyLines: (maxWidthBodyLines ~/ factor).toDouble(),
       );
 
   @override
   BreakableBoxConstraints operator %(double factor) =>
       BreakableBoxConstraints.fromBox(
         boxConstraints: super % factor,
-        maxWidthRestLines: maxWidthRestLines % factor,
+        maxWidthBodyLines: maxWidthBodyLines % factor,
       );
 
   @override
   bool operator ==(dynamic other) =>
       other is BreakableBoxConstraints &&
       super == other &&
-      maxWidthRestLines == other.maxWidthRestLines;
+      maxWidthBodyLines == other.maxWidthBodyLines;
 
   @override
-  int get hashCode => hashValues(super.hashCode, maxWidthRestLines);
+  int get hashCode => hashValues(super.hashCode, maxWidthBodyLines);
 
   @override
   String toString() =>
       'Breakable${super.toString()}(maxWidthFirstLine: $maxWidthFirstLine, '
-      'maxWidthRestLines: $maxWidthRestLines)';
+      'maxWidthRestLines: $maxWidthBodyLines)';
 }

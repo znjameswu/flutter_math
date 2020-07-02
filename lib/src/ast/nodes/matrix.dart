@@ -41,7 +41,7 @@ class MatrixNode extends SlotableNode {
   // INCLUDE OUTERMOST LINES! DIFFERENT FROM MATHML!
   final List<MatrixSeparatorStyle> vLines;
 
-  final List<Measurement> rowSpacing;
+  final List<Measurement> rowSpacings;
 
   // INCLUDE OUTERMOST LINES! DIFFERENT FROM MATHML!
   final List<MatrixSeparatorStyle> hLines;
@@ -59,7 +59,7 @@ class MatrixNode extends SlotableNode {
     this.isSmall = false,
     this.columnAligns,
     this.vLines,
-    this.rowSpacing,
+    this.rowSpacings,
     // this.rowAligns,
     this.hLines,
     @required this.body,
@@ -69,7 +69,7 @@ class MatrixNode extends SlotableNode {
         assert(body.every((row) => row.length == cols)),
         assert(columnAligns.length == cols),
         assert(vLines.length == cols + 1),
-        assert(rowSpacing.length == rows),
+        assert(rowSpacings.length == rows),
         assert(hLines.length == rows + 1);
 
   factory MatrixNode({
@@ -78,7 +78,7 @@ class MatrixNode extends SlotableNode {
     bool isSmall = false,
     List<MatrixColumnAlign> columnAligns,
     List<MatrixSeparatorStyle> vLines,
-    List<Measurement> rowSpacing,
+    List<Measurement> rowSpacings,
     List<MatrixSeparatorStyle> hLines,
     @required List<List<EquationRowNode>> body,
   }) {
@@ -93,7 +93,7 @@ class MatrixNode extends SlotableNode {
 
     final rows = [
       body.length,
-      rowSpacing.length,
+      rowSpacings.length,
       hLines.length - 1,
     ].max();
 
@@ -102,7 +102,7 @@ class MatrixNode extends SlotableNode {
         .toList(growable: false)
         .extendToByFill(rows, List.filled(cols, null));
     final sanitizedRowSpacing =
-        rowSpacing.extendToByFill(rows, Measurement.zero);
+        rowSpacings.extendToByFill(rows, Measurement.zero);
     final sanitizedHLines = hLines.extendToByFill(rows + 1, null);
 
     return MatrixNode._(
@@ -113,7 +113,7 @@ class MatrixNode extends SlotableNode {
       isSmall: isSmall,
       columnAligns: sanitizedColumnAligns,
       vLines: sanitizedVLines,
-      rowSpacing: sanitizedRowSpacing,
+      rowSpacings: sanitizedRowSpacing,
       hLines: sanitizedHLines,
       body: sanitizedBody,
     );
@@ -135,7 +135,7 @@ class MatrixNode extends SlotableNode {
             ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
                 .toLpUnder(options),
             arrayskip: arrayStretch * 12.0.pt.toLpUnder(options),
-            rowSpacing: rowSpacing
+            rowSpacings: rowSpacings
                 .map((e) => e?.toLpUnder(options) ?? 0.0)
                 .toList(growable: false),
             hLines: hLines,
@@ -201,7 +201,7 @@ class MatrixNode extends SlotableNode {
         isSmall: isSmall ?? this.isSmall,
         columnAligns: columnAligns ?? this.columnAligns,
         vLines: columnLines ?? this.vLines,
-        rowSpacing: rowSpacing ?? this.rowSpacing,
+        rowSpacings: rowSpacing ?? this.rowSpacings,
         hLines: rowLines ?? this.hLines,
         body: body ?? this.body,
       );
@@ -212,7 +212,7 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
   final int cols;
   final double ruleThickness;
   final double arrayskip;
-  final List<double> rowSpacing;
+  final List<double> rowSpacings;
   final List<MatrixSeparatorStyle> hLines;
   final bool hskipBeforeAndAfter;
   final double arraycolsep;
@@ -224,7 +224,7 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
     @required this.cols,
     @required this.ruleThickness,
     @required this.arrayskip,
-    @required this.rowSpacing,
+    @required this.rowSpacings,
     @required this.hLines,
     @required this.hskipBeforeAndAfter,
     @required this.arraycolsep,
@@ -353,7 +353,7 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
         pos += rowHeights[i];
         rowBaselinePos[i] = pos;
         pos += rowDepth[i];
-        pos += i < rows - 1 ? rowSpacing[i] : 0;
+        pos += i < rows - 1 ? rowSpacings[i] : 0;
       }
       hLinePos[rows] = pos;
       pos += (hLines[rows] != null) ? ruleThickness : 0.0;

@@ -177,7 +177,7 @@ MatrixNode parseArray(
     body: body,
     vLines: separators,
     columnAligns: colAligns,
-    rowSpacing: rowGaps,
+    rowSpacings: rowGaps,
     arrayStretch: arrayStretch,
     hskipBeforeAndAfter: true,
   );

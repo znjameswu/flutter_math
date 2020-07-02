@@ -9,6 +9,7 @@
 .history
 .svn/
 .katex_symbol_mapping/
+._breakable/
 
 # IntelliJ related
 *.iml

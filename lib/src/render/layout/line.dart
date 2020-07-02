@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import '../constants.dart';
+import '../utils/render_box_offset.dart';
 import 'breakable/breakable_box.dart';
-import 'breakable/breakable_constraints.dart';
-import 'breakable/breakable_offset.dart';
-import 'breakable/breakable_size.dart';
 
 class LineParentData extends ContainerBreakableBoxParentData<RenderBox> {
   // The first canBreakBefore has no effect
@@ -18,21 +17,25 @@ class LineParentData extends ContainerBreakableBoxParentData<RenderBox> {
 
   double trailingMargin = 0.0;
 
+  bool alignerOrSpacer = false;
+
   @override
   String toString() =>
-      '${super.toString()}; canBreakBefore = $canBreakBefore; customSize = ${customCrossSize != null}; trailingMargin = $trailingMargin';
+      '${super.toString()}; canBreakBefore = $canBreakBefore; customSize = ${customCrossSize != null}; trailingMargin = $trailingMargin; alignerOrSpacer = $alignerOrSpacer';
 }
 
 class LineElement extends ParentDataWidget<LineParentData> {
   final bool canBreakBefore;
   final BoxConstraints Function(double height, double depth) customCrossSize;
   final double trailingMargin;
+  final bool alignerOrSpacer;
 
   const LineElement({
     Key key,
     this.canBreakBefore = false,
     this.customCrossSize,
     this.trailingMargin = 0.0,
+    this.alignerOrSpacer = false,
     @required Widget child,
   })  : assert(trailingMargin != null),
         super(key: key, child: child);
@@ -58,6 +61,11 @@ class LineElement extends ParentDataWidget<LineParentData> {
       needsLayout = true;
     }
 
+    if (parentData.alignerOrSpacer != alignerOrSpacer) {
+      parentData.alignerOrSpacer = alignerOrSpacer;
+      needsLayout = true;
+    }
+
     if (needsLayout) {
       final targetParent = renderObject.parent;
       if (targetParent is RenderObject) targetParent.markNeedsLayout();
@@ -72,6 +80,8 @@ class LineElement extends ParentDataWidget<LineParentData> {
     properties.add(FlagProperty('customSize',
         value: customCrossSize != null, ifTrue: 'using relative size'));
     properties.add(DoubleProperty('trailingMargin', trailingMargin));
+    properties.add(FlagProperty('alignerOrSpacer',
+        value: alignerOrSpacer, ifTrue: 'is a alignment symbol'));
   }
 
   @override
@@ -136,7 +146,7 @@ class Line extends MultiChildRenderObjectWidget {
   }
 }
 
-class RenderLine extends RenderBreakableBox
+class RenderLine extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, LineParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, LineParentData>,
@@ -322,19 +332,22 @@ class RenderLine extends RenderBreakableBox
     assert(_debugHasNecessaryDirections);
     assert(constraints != null);
 
-    // var allocatedSize = 0.0; // Sum of the sizes of the non-flexible children.
+    // First pass, layout fixed-sized children to calculate height and depth
     maxHeightAboveBaseline = 0.0;
     var maxDepthBelowBaseline = 0.0;
     var child = firstChild;
     final relativeChildren = <RenderBox>[];
+    final alignerAndSpacers = <RenderBox>[];
     while (child != null) {
       final childParentData = child.parentData as LineParentData;
       if (childParentData.customCrossSize != null) {
         relativeChildren.add(child);
+      } else if (childParentData.alignerOrSpacer) {
+        alignerAndSpacers.add(child);
       } else {
-        final innerConstraints =
-            BoxConstraints(maxHeight: constraints.maxHeight);
-        child.layout(innerConstraints, parentUsesSize: true);
+        // final innerConstraints =
+        //     BoxConstraints(maxHeight: constraints.maxHeight);
+        child.layout(infiniteConstraint, parentUsesSize: true);
         final distance = child.getDistanceToBaseline(textBaseline);
         maxHeightAboveBaseline = math.max(maxHeightAboveBaseline, distance);
         maxDepthBelowBaseline =
@@ -344,8 +357,7 @@ class RenderLine extends RenderBreakableBox
       child = childParentData.nextSibling;
     }
 
-    // var crossSize = maxHeightAboveBaseline + maxDepthBelowBaseline;
-
+    // Second pass, layout custom-sized children
     for (final child in relativeChildren) {
       final childParentData = child.parentData as LineParentData;
       assert(childParentData.customCrossSize != null);
@@ -356,60 +368,118 @@ class RenderLine extends RenderBreakableBox
       );
     }
 
-    final layoutProxy = _BreakableLayoutProxy(
-      constraints: constraints,
-      firstChild: firstChild,
-      crossAxisAlignment: crossAxisAlignment,
-      textBaseline: textBaseline,
-    );
+    // Third pass. Calculate column width separate by aligners and spacers.
+    //
+    // Also determine offset for each children in the meantime, as if there are
+    // no aligning instructions. If there are indeed none, this will be the
+    // final pass.
+    final colWidths = <double>[0.0];
+    child = firstChild;
+    var mainPos = 0.0;
+    while (child != null) {
+      final childParentData = child.parentData as LineParentData;
+      if (childParentData.alignerOrSpacer) {
+        child.layout(BoxConstraints.tightFor(width: 0.0), parentUsesSize: true);
+        colWidths.add(0);
+      } else {
+        colWidths.last += child.size.width + childParentData.trailingMargin;
+        mainPos += child.size.width + childParentData.trailingMargin;
+      }
+      childParentData.offset =
+          Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
+      child = childParentData.nextSibling;
+    }
 
-    final layoutSize = layoutProxy.layout();
+    size = constraints.constrain(
+        Size(mainPos, maxHeightAboveBaseline + maxDepthBelowBaseline));
+    _overflow = mainPos - size.width;
 
-    size = constraints.constrain(layoutSize);
+    if (this.alignColWidth == null) {
+      // It means we are in the initial layout with no aligning instructions
+      if (alignerAndSpacers.isNotEmpty) {
+        alignColWidth = colWidths;
+      }
+    } else {
+      // We will determine the width of the spacers using aligning instructions
+      ///
+      ///       Aligner     Spacer      Aligner
+      ///         |           |           |
+      ///       x | f o o b a |         r | z z z
+      ///         |           |-------|   |
+      ///     y y | f         | o o b a r |
+      ///         |   |-------|           |
+      /// Index:  0           1           2
+      /// Col: 0        1           2
+      ///
+      var aligner = true;
+      var index = 0;
+      for (final alignerOrSpacer in alignerAndSpacers) {
+        if (aligner) {
+          alignerOrSpacer.layout(BoxConstraints.tightFor(width: 0.0));
+        } else {
+          alignerOrSpacer.layout(BoxConstraints.tightFor(
+            width: alignColWidth[index] +
+                alignColWidth[index + 1] -
+                colWidths[index] -
+                colWidths[index + 1],
+          ));
+        }
+        aligner = !aligner;
+        index++;
+      }
 
-    _overflow = 0;
-    for (var i = 0; i < size.lineSizes.length; i++) {
-      _overflow = math.max(
-          _overflow, layoutSize.lineSizes[i].width - size.lineSizes[i].width);
+      // Fourth pass, determine position for each children
+      child = firstChild;
+      var mainPos = 0.0;
+      while (child != null) {
+        final childParentData = child.parentData as LineParentData;
+        mainPos += child.size.width + childParentData.trailingMargin;
+        childParentData.offset =
+            Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
+        child = childParentData.nextSibling;
+      }
+      size = constraints.constrain(
+          Size(mainPos, maxHeightAboveBaseline + maxDepthBelowBaseline));
+      _overflow = mainPos - size.width;
     }
   }
+
+  List<double> alignColWidth;
 
   @override
   bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
       defaultHitTestChildren(result, position: position);
 
-  List<Rect> get rects {
-    final constraints = this.constraints;
-    if (constraints is BreakableBoxConstraints) {
-      var i = 0;
-      var crossPos = 0.0;
-      final res = <Rect>[];
-      for (final size in size.lineSizes) {
-        final mainPos = i == 0
-            ? 0.0
-            : constraints.maxWidthFirstLine - constraints.maxWidthRestLines;
-        res.add(Rect.fromLTWH(mainPos, crossPos, size.width, size.height));
-        crossPos += size.height;
-        i++;
-      }
-      return res;
-    } else {
-      return [Rect.fromLTWH(0, 0, size.width, size.height)];
-    }
-  }
+  // List<Rect> get rects {
+  //   final constraints = this.constraints;
+  //   if (constraints is BreakableBoxConstraints) {
+  //     var i = 0;
+  //     var crossPos = 0.0;
+  //     final res = <Rect>[];
+  //     for (final size in size.lineSizes) {
+  //       final mainPos = i == 0
+  //           ? 0.0
+  //           : constraints.maxWidthFirstLine - constraints.maxWidthBodyLines;
+  //       res.add(Rect.fromLTWH(mainPos, crossPos, size.width, size.height));
+  //       crossPos += size.height;
+  //       i++;
+  //     }
+  //     return res;
+  //   } else {
+  //     return [Rect.fromLTWH(0, 0, size.width, size.height)];
+  //   }
+  // }
 
   @override
   void paint(PaintingContext context, Offset offset) {
     if (!_hasOverflow) {
       if (_background != null) {
-        for (final rect in rects) {
-          context.canvas.drawRect(
-            rect.shift(offset),
-            Paint()
-              ..style = PaintingStyle.fill
-              ..color = _background?.value ?? Colors.transparent,
-          );
-        }
+        context.canvas.drawRect(
+          offset & size,
+          Paint()
+            ..style = PaintingStyle.fill
+            ..color = _background?.value ?? Colors.transparent,
+        );
       }
       defaultPaint(context, offset);
       return;
@@ -446,7 +516,7 @@ class RenderLine extends RenderBreakableBox
       // rect is never used for drawing, just for determining the overflow
       // location and amount.
       Rect overflowChildRect;
-      overflowChildRect = Rect.fromLTWH(0.0, 0.0, 0.0, size.height + _overflow);
+      overflowChildRect = Rect.fromLTWH(0.0, 0.0, size.width + _overflow, 0.0);
 
       paintOverflowIndicator(
           context, offset, Offset.zero & size, overflowChildRect,
@@ -476,207 +546,5 @@ class RenderLine extends RenderBreakableBox
     properties.add(EnumProperty<TextBaseline>('textBaseline', textBaseline,
         defaultValue: null));
     // properties.add(DoubleProperty('baselineOffset', baselineOffset));
-  }
-}
-
-class _BreakableLayoutProxy {
-  double maxHeightAboveBaseline;
-  double maxHeightAboveEndBaseline;
-
-  final BoxConstraints constraints;
-  final RenderBox firstChild;
-  final CrossAxisAlignment crossAxisAlignment;
-  final TextBaseline textBaseline;
-
-  double maxWidthFirstLine;
-  double maxWidthRestLines;
-  double mainPosRestLines;
-
-  _BreakableLayoutProxy({
-    this.constraints,
-    this.firstChild,
-    this.crossAxisAlignment,
-    this.textBaseline,
-  })  : maxWidthFirstLine = constraints is BreakableBoxConstraints
-            ? constraints.maxWidthFirstLine
-            : double.infinity,
-        maxWidthRestLines = constraints is BreakableBoxConstraints
-            ? constraints.maxWidthRestLines
-            : double.infinity,
-        mainPosRestLines = constraints is BreakableBoxConstraints
-            ? constraints.restLineStartPos
-            : 0.0;
-
-  var currLineNum = 0;
-  var currLineCrossPos = 0.0;
-  double get currLineMaxWidth =>
-      currLineNum == 0 ? maxWidthFirstLine : maxWidthRestLines;
-  double get currLineMainPos => currLineNum == 0 ? 0.0 : mainPosRestLines;
-  var currLineFinalHeight = 0.0;
-  var currLineFinalHeightAboveBaseline = 0.0;
-  final currLineWaitingChildren = <RenderBox>[];
-  // final currLineWaitingChildrenMainPos = <double>[];
-  final currLineWaitingSizes = <Size>[];
-  final currLineWaitingBaseline = <double>[];
-  final lastBreakableLineOffsets = <Offset>[];
-
-  var childMainPosition = 0.0;
-
-  BreakableSize layout() {
-    final lineSizes = <Size>[];
-    var child = firstChild;
-    while (child != null) {
-      final childParentData = child.parentData as LineParentData;
-
-      // Judge if we need to start a new line
-      var needStartAtNewLine = true;
-      // If this line is currently emptpy, then we must fill the line with
-      // SOMETHING, even it overflows
-      if (childMainPosition == 0) {
-        needStartAtNewLine = false;
-      } else {
-        // If current line can accomodate, then fill it.
-        if (child is RenderBreakableBox) {
-          final innerConstraints = BreakableBoxConstraints(
-            minWidth: constraints.minWidth,
-            maxWidthFirstLine: currLineMaxWidth - childMainPosition,
-            maxWidthRestLines: maxWidthRestLines,
-            minHeight: constraints.minHeight,
-            maxHeight: constraints.maxHeight - currLineCrossPos,
-          );
-          child.layout(innerConstraints, parentUsesSize: true);
-        }
-        final childMinWidth = (child is RenderBreakableBox)
-            ? child.size.lineSizes.first.width
-            : child.size.width;
-        if (childMainPosition + childMinWidth <= currLineMaxWidth) {
-          needStartAtNewLine = false;
-        }
-      }
-
-      if (needStartAtNewLine) {
-        finalizeCurrLine();
-        lineSizes.add(layoutWaitingChildren());
-        advanceNextLine();
-      }
-
-      if (child is RenderBreakableBox) {
-        final innerConstraints = BreakableBoxConstraints(
-          minWidth: constraints.minWidth,
-          maxWidthFirstLine: currLineMaxWidth - childMainPosition,
-          maxWidthRestLines: maxWidthRestLines,
-          minHeight: constraints.minHeight,
-          maxHeight: constraints.maxHeight - currLineCrossPos,
-        );
-        child.layout(innerConstraints, parentUsesSize: true);
-        if (child.size.lineSizes.length == 1) {
-          addWaitingSize(
-              child, child.size, child.getDistanceToBaseline(textBaseline));
-        } else {
-          addWaitingSize(child, child.size.lineSizes.first,
-              child.getDistanceToBaseline(textBaseline));
-          lastBreakableLineOffsets.add(Offset(
-            currLineMainPos + childMainPosition,
-            currLineFinalHeightAboveBaseline -
-                child.getDistanceToBaseline(textBaseline),
-          ));
-
-          finalizeCurrLine();
-          lineSizes.add(layoutWaitingChildren());
-          advanceNextLine();
-
-          for (var i = 1; i < child.size.lineSizes.length - 1; i++) {
-            final size = child.size.lineSizes[i];
-
-            lastBreakableLineOffsets
-                .add(Offset(currLineMainPos, currLineCrossPos));
-            lineSizes.add(size);
-
-            currLineNum++;
-            currLineCrossPos += size.height;
-          }
-
-          addWaitingSize(child, child.size.lineSizes.last,
-              child.getDistanceToEndBaseline(textBaseline));
-        }
-      } else {
-        // final a = child.getDistanceToBaseline(textBaseline);
-        addWaitingSize(
-            child, child.size, child.getDistanceToBaseline(textBaseline));
-      }
-
-      child = childParentData.nextSibling;
-    }
-    finalizeCurrLine();
-    lineSizes.add(layoutWaitingChildren());
-    return BreakableSize(lineSizes);
-  }
-
-  void finalizeCurrLine() {
-    var currLineMaxHeightAboveBaseline = 0.0;
-    var currLineMaxDepthBelowBaseline = 0.0;
-    for (var i = 0; i < currLineWaitingSizes.length; i++) {
-      currLineMaxHeightAboveBaseline =
-          math.max(currLineMaxHeightAboveBaseline, currLineWaitingBaseline[i]);
-      currLineMaxDepthBelowBaseline = math.max(currLineMaxDepthBelowBaseline,
-          currLineWaitingSizes[i].height - currLineWaitingBaseline[i]);
-    }
-    currLineFinalHeightAboveBaseline = currLineMaxHeightAboveBaseline;
-    currLineFinalHeight =
-        currLineMaxHeightAboveBaseline + currLineMaxDepthBelowBaseline;
-
-    maxHeightAboveBaseline ??= currLineMaxHeightAboveBaseline;
-    maxHeightAboveEndBaseline = currLineMaxHeightAboveBaseline;
-  }
-
-  Size layoutWaitingChildren() {
-    var childMainPos = 0.0;
-    // Position the children that are waiting for layout on the current line
-    for (var i = 0; i < currLineWaitingChildren.length; i++) {
-      final child = currLineWaitingChildren[i];
-
-      final childParentData = child.parentData as LineParentData;
-      // final currLineMainPos = currLineNum == 0 ? 0.0 : mainPosRestLines;
-      // Only support baseline alignment to avoid unecessary code complexity.
-      assert(crossAxisAlignment == CrossAxisAlignment.baseline);
-      // For relative child, they will always be centered.
-      final childCrossPos =
-          currLineFinalHeightAboveBaseline - currLineWaitingBaseline[i];
-      final currentOffset = Offset(
-        currLineMainPos + childMainPos,
-        currLineCrossPos + childCrossPos,
-      );
-      if (child is RenderBreakableBox && lastBreakableLineOffsets.isNotEmpty) {
-        lastBreakableLineOffsets.add(currentOffset);
-        childParentData.offset =
-            BreakableOffset(List.from(lastBreakableLineOffsets));
-        lastBreakableLineOffsets.clear();
-      } else {
-        childParentData.offset = currentOffset;
-      }
-
-      childMainPos += currLineWaitingSizes[i].width;
-    }
-    return Size(
-      childMainPos,
-      currLineFinalHeight,
-    );
-  }
-
-  void advanceNextLine() {
-    // Clear up variables for the next line
-    currLineNum++;
-    childMainPosition = 0;
-    currLineCrossPos += currLineFinalHeight;
-    currLineWaitingChildren.clear();
-    currLineWaitingSizes.clear();
-    currLineWaitingBaseline.clear();
-  }
-
-  void addWaitingSize(RenderBox child, Size size, double heightAboveBaseline) {
-    currLineWaitingChildren.add(child);
-    currLineWaitingSizes.add(size);
-    currLineWaitingBaseline.add(heightAboveBaseline);
-    childMainPosition += size.width;
   }
 }

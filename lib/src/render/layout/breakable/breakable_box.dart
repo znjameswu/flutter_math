@@ -110,6 +110,8 @@ abstract class RenderBreakableBox extends RenderBox {
     }());
   }
 
+  double get firstRunWidth;
+
   // @override
   // Size debugAdoptSize(Size value) {
   //   if (value is BreakableSize) {
