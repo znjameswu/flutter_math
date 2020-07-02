@@ -21,6 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import 'package:flutter_math/flutter_math.dart';
+import 'package:flutter_math/src/ast/nodes/left_right.dart';
+import 'package:flutter_math/src/ast/style.dart';
 
 import '../../../ast/nodes/atom.dart';
 import '../../../ast/nodes/equation_array.dart';
@@ -30,6 +33,7 @@ import '../../../ast/nodes/style.dart';
 import '../../../ast/size.dart';
 import '../../../ast/syntax_tree.dart';
 import '../../../ast/types.dart';
+import '../../../utils/iterable_extensions.dart';
 import '../define_environment.dart';
 import '../functions/base.dart';
 import '../macros.dart';
@@ -56,24 +60,48 @@ const eqnArrayEntries = {
   ['alignedat']: EnvSpec(numArgs: 1, handler: _alignedAtHandler),
 };
 
-GreenNode _casesHandler(TexParser parser, EnvContext context) => parseEqnArray(
-      parser,
-      concatRow: (cells) {
-        final children = [
-          SpaceNode.alignerOrSpacer(),
-          if (cells.length >= 1) ...cells[0].children,
-          if (cells.length >= 1) SpaceNode.alignerOrSpacer(),
-          if (cells.length >= 1)
-            SpaceNode(height: Measurement.zero, width: 1.0.em, mode: Mode.math),
-        ];
-        for (var i = 1; i < cells.length; i++) {
-          children.add(SpaceNode.alignerOrSpacer());
-          children.addAll(cells[i].children);
-          children.add(SpaceNode.alignerOrSpacer());
-        }
+GreenNode _casesHandler(TexParser parser, EnvContext context) {
+  final body = parseEqnArray(
+    parser,
+    concatRow: (cells) {
+      final children = [
+        SpaceNode.alignerOrSpacer(),
+        if (cells.length >= 1) ...cells[0].children,
+        if (cells.length >= 1) SpaceNode.alignerOrSpacer(),
+        if (cells.length >= 1)
+          SpaceNode(height: Measurement.zero, width: 1.0.em, mode: Mode.math),
+      ];
+      for (var i = 1; i < cells.length; i++) {
+        children.add(SpaceNode.alignerOrSpacer());
+        children.addAll(cells[i].children);
+        children.add(SpaceNode.alignerOrSpacer());
+      }
+      if (context.envName == 'dcases' || context.envName == 'drcases') {
+        return EquationRowNode(children: [
+          StyleNode(
+            optionsDiff: OptionsDiff(style: MathStyle.display),
+            children: children,
+          )
+        ]);
+      } else {
         return EquationRowNode(children: children);
-      },
+      }
+    },
+  );
+  if (context.envName == 'rcases' || context.envName == 'drcases') {
+    return LeftRightNode(
+      leftDelim: null,
+      rightDelim: '}',
+      body: [body.wrapWithEquationRow()],
     );
+  } else {
+    return LeftRightNode(
+      leftDelim: '{',
+      rightDelim: null,
+      body: [body.wrapWithEquationRow()],
+    );
+  }
+}
 
 GreenNode _alignedHandler(TexParser parser, EnvContext context) =>
     parseEqnArray(
@@ -116,7 +144,7 @@ GreenNode _alignedAtHandler(TexParser parser, EnvContext context) {
 
 EquationArrayNode parseEqnArray(
   TexParser parser, {
-  bool addJot,
+  bool addJot = false,
   EquationRowNode Function(List<EquationRowNode> cells) concatRow,
 }) {
   // Parse body of array with \\ temporarily mapped to \cr
@@ -147,7 +175,7 @@ EquationArrayNode parseEqnArray(
   final hLinesBeforeRow = <MatrixSeparatorStyle>[];
 
   // Test for \hline at the top of the array.
-  hLinesBeforeRow.add(getHLines(parser).last);
+  hLinesBeforeRow.add(getHLines(parser).lastOrNull);
 
   while (true) {
     // Parse each cell in its own group (namespace)
@@ -176,10 +204,10 @@ EquationArrayNode parseEqnArray(
     } else if (next == '\\cr') {
       final cr = assertNodeType<CrNode>(
           parser.parseArgNode(mode: null, optional: false));
-      rowGaps.add(cr.size);
+      rowGaps.add(cr.size ?? Measurement.zero);
 
       // check for \hline(s) following the row separator
-      hLinesBeforeRow.add(getHLines(parser).last);
+      hLinesBeforeRow.add(getHLines(parser).lastOrNull);
 
       row = [];
       body.add(row);

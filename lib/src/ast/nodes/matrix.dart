@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/ast/style.dart';
 import 'package:flutter_math/src/render/layout/shift_baseline.dart';
 
 import '../../render/layout/custom_layout.dart';
@@ -145,7 +146,9 @@ class MatrixNode extends SlotableNode {
               hLines: hLines,
               hskipBeforeAndAfter: hskipBeforeAndAfter,
               arraycolsep: isSmall
-                  ? (5 / 18).cssEm.toLpUnder(options)
+                  ? (5 / 18)
+                      .cssEm
+                      .toLpUnder(options.havingStyle(MathStyle.script))
                   : 5.0.pt.toLpUnder(options),
               vLines: vLines,
               columnAligns: columnAligns,

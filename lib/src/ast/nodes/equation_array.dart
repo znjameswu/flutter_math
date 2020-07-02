@@ -43,7 +43,7 @@ class EquationArrayNode extends SlotableNode {
             child: EqnArray(
               ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
                   .toLpUnder(options),
-              jotSize: 3.0.pt.toLpUnder(options),
+              jotSize: addJot ? 3.0.pt.toLpUnder(options) : 0.0,
               arrayskip: 12.0.pt.toLpUnder(options) * arrayStretch,
               hlines: hlines,
               rowSpacings: rowSpacings

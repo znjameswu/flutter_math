@@ -149,7 +149,7 @@ class RenderEqnArray extends RenderBox
     }
 
     final nonAligningChildrenWidth =
-        nonAligningChildren.map((e) => e.size.width).max();
+        nonAligningChildren.map((e) => e.size.width).max() ?? 0.0;
     final aligningChildrenWidth = colWidths.sum();
     width = math.max(nonAligningChildrenWidth, aligningChildrenWidth);
 
@@ -171,14 +171,14 @@ class RenderEqnArray extends RenderBox
       } else {
         hPos = (width - child.size.width) / 2;
       }
+      vPos += math.max(child.layoutHeight, 0.7 * arrayskip);
       childParentData.offset = Offset(
         hPos,
-        vPos,
+        vPos - child.layoutHeight,
       );
-      vPos += math.max(child.layoutHeight, 0.7 * arrayskip) +
-          math.max(child.layoutDepth, 0.3 * arrayskip) +
+      vPos +=    math.max(child.layoutDepth, 0.3 * arrayskip) +
           jotSize +
-          rowSpacings[index];
+          rowSpacings[index-1];
       hlinePos.add(vPos);
       vPos += hlines[index] != null ? ruleThickness : 0.0;
       index++;
