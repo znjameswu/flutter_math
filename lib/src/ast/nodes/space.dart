@@ -13,6 +13,8 @@ class SpaceNode extends LeafNode {
   final Measurement height;
   final Measurement width;
   final Measurement depth;
+  // For the sole purpose of \rule
+  final Measurement shift;
   final bool noBreak;
   final Color background;
   final Mode mode;
@@ -21,6 +23,7 @@ class SpaceNode extends LeafNode {
   SpaceNode({
     @required this.height,
     @required this.width,
+    this.shift = Measurement.zero,
     this.depth = Measurement.zero,
     this.noBreak = false,
     this.background,
@@ -31,6 +34,7 @@ class SpaceNode extends LeafNode {
   SpaceNode.alignerOrSpacer()
       : height = Measurement.zero,
         width = Measurement.zero,
+        shift = Measurement.zero,
         depth = Measurement.zero,
         noBreak = false,
         background = null,
@@ -54,8 +58,9 @@ class SpaceNode extends LeafNode {
     final height = this.height.toLpUnder(options);
     final depth = this.depth.toLpUnder(options);
     final width = this.width.toLpUnder(options);
-    final topMost = math.max(height, -depth);
-    final bottomMost = math.min(height, -depth);
+    final shift = this.shift.toLpUnder(options);
+    final topMost = math.max(height, -depth) + shift;
+    final bottomMost = math.min(height, -depth) + shift;
     return [
       BuildResult(
         widget: ResetBaseline(

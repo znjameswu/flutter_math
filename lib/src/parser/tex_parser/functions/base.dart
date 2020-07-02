@@ -1,5 +1,7 @@
 library latex_base;
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 
@@ -51,6 +53,7 @@ part 'base/op.dart';
 part 'base/operator_name.dart';
 part 'base/phantom.dart';
 part 'base/raise_box.dart';
+part 'base/rule.dart';
 part 'base/sizing.dart';
 part 'base/sqrt.dart';
 part 'base/styling.dart';
@@ -76,6 +79,7 @@ const baseFunctionEntries = {
   ..._operatorNameEntries,
   ..._phantomEntries,
   ..._raiseBoxEntries,
+  ..._ruleEntries,
   ..._sizingEntries,
   ..._sqrtEntries,
   ..._stylingEntries,

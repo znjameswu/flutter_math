@@ -342,7 +342,7 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
             childHeights[i * cols + j],
           );
           rowDepth[i] = math.max(
-            rowHeights[i],
+            rowDepth[i],
             childDepth[i * cols + j],
           );
         }
