@@ -114,8 +114,9 @@ Widget makeChar(String character, FontOptions font,
         fontFamily: 'KaTeX_${font.fontFamily}',
         fontWeight: font.fontWeight,
         fontStyle: font.fontShape,
-        fontSize: 1.21.cssEm.toLpUnder(options),
+        fontSize: 1.0.cssEm.toLpUnder(options),
       ),
+      textScaleFactor: 1.0,
     ),
   );
   if (needItalic) {
