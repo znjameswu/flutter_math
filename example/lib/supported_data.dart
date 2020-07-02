@@ -81,7 +81,7 @@ const supportedData = {
   ],
   'Delimiter Sizing': [
     r'\left(\LARGE{AB}\right)',
-    r'( \big( \Big( \bigg( \Bigg($ `( \big( \Big( \bigg( \Bigg(',
+    r'( \big( \Big( \bigg( \Bigg(',
   ],
   'Environment': [
     r'\begin{matrix} a & b \\ c & d \end{matrix}',

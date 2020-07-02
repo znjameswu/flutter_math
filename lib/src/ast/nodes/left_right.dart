@@ -331,9 +331,9 @@ Widget buildCustomSizedDelimWidget(
   }
 
   if (delimConf != null) {
-    final axisHeight = options.fontMetrics.xHeight.cssEm.toLpUnder(options);
+    final axisHeight = options.fontMetrics.axisHeight.cssEm.toLpUnder(options);
     return ShiftBaseline(
-      relativePos: 0.0,
+      relativePos: 0.5,
       offset: axisHeight,
       child: makeChar(delim, delimConf.font,
           lookupChar(delim, delimConf.font, Mode.math), options),
