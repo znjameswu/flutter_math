@@ -119,7 +119,7 @@ Widget makeChar(String character, FontOptions font,
     ),
   );
   if (needItalic) {
-    final italic = characterMetrics?.italic?.cssEm?.toLpUnder(options);
+    final italic = characterMetrics?.italic?.cssEm?.toLpUnder(options) ?? 0.0;
     return Padding(
       padding: EdgeInsets.only(right: italic),
       child: charWidget,

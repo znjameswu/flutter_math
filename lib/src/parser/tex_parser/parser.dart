@@ -101,7 +101,8 @@ class TexParser {
       }
       // Detects a infix function
       if (functions.containsKey(lex.text) &&
-          functions[lex.text].infix != false) {
+          functions[lex.text].infix == true) {
+        this.consume();
         if (infixArgumentMode) {
           throw ParseError('only one infix operator per group', lex);
         }
@@ -117,7 +118,7 @@ class TexParser {
               funcName: lex.text,
               breakOnTokenText: breakOnTokenText,
               token: lex,
-              infixExistingArguments: body,
+              infixExistingArguments: List.from(body, growable: false),
             ),
           );
           body.clear();
