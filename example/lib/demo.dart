@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_math/flutter_math.dart';
 import 'package:provider/provider.dart';
 
+import 'package:flutter_tex/flutter_tex.dart';
+
 class DemoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
@@ -21,9 +23,43 @@ class DemoPage extends StatelessWidget {
             ),
             Expanded(
               child: Center(
-                child: Consumer<TextEditingController>(
-                  builder: (context, controller, _) =>
-                      FlutterMath.fromTexString(controller.value.text),
+                child: Column(
+                  // mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        "Flutter Math's output",
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ),
+                    Consumer<TextEditingController>(
+                      builder: (context, controller, _) =>
+                          FlutterMath.fromTexString(controller.value.text),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Column(
+                  // mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      "Flutter TeX's output",
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    Consumer<TextEditingController>(
+                      builder: (context, controller, _) =>
+                          TeXView(
+                          renderingEngine: const TeXViewRenderingEngine.katex(),
+                          child: TeXViewDocument(
+                            '\$\$${controller.value.text}\$\$',
+                          ),
+                        ),
+                    ),
+                  ],
                 ),
               ),
             )
