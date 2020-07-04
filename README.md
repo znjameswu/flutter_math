@@ -95,23 +95,23 @@ Currently only Android platform has been tested. If you encounter iOS problems, 
 Due to the way KaTeX depends on SVG resources and the poor support for SVG on Flutter Web, currently there is no plan to support Flutter Web.
 
 ## API usage
-Currently the usage is straightforward. Just `FlutterMath.fromTexString(expression: '\frac a b')`. There is also optional arguments of `Options` and `Settings`, which correspond to Options and Settings in KaTeX and support a subset of their features.
+Currently the usage is straightforward. Just `FlutterMath.fromTexString('\frac a b')`. There is also optional arguments of `Options` and `Settings`, which correspond to Options and Settings in KaTeX and support a subset of their features.
 
 Display-style equations:
 ```dart
-FlutterMath.fromTexString(expression: '\frac a b', options: Options.displayOptions)
+FlutterMath.fromTexString('\frac a b', options: Options.displayOptions)
 ```
 
 In-line equations
 ```dart
-FlutterMath.fromTexString(expression: '\frac a b', options: Options.textOptions)
+FlutterMath.fromTexString('\frac a b', options: Options.textOptions)
 ```
 
 You can also resize the output by providing `baseSizeMultiplier` parameter
 
 ```dart
 FlutterMath.fromTexString(
-  expression: '\frac a b', 
+  '\frac a b', 
   options: Options(
     style: MathStyle.display, 
     baseSizeMultiplier: 1.5,

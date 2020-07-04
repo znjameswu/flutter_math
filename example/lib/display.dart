@@ -46,9 +46,7 @@ class DisplayMath extends StatelessWidget {
                   ),
                   TableRow(
                     children: [
-                      Center(
-                          child: FlutterMath.fromTexString(
-                              expression: expression)),
+                      Center(child: FlutterMath.fromTexString(expression)),
                       Center(
                         child: TeXView(
                           renderingEngine: const TeXViewRenderingEngine.katex(),
