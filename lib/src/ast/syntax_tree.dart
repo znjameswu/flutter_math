@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tuple/tuple.dart';
 
 import '../render/layout/line.dart';
 import '../utils/iterable_extensions.dart';
