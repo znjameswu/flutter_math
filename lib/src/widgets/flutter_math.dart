@@ -41,7 +41,7 @@ class FlutterMath {
     String expression, {
     Options options = Options.displayOptions,
     Settings settings = const Settings(),
-    FlutterMathMode mode,
+    FlutterMathMode mode = FlutterMathMode.view,
   }) {
     if (mode != FlutterMathMode.view) {
       throw UnimplementedError('Other mode is still in development!');
