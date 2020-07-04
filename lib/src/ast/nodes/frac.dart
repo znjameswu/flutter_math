@@ -130,10 +130,15 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
     final denomSize = childSize(denom);
 
     if (layoutDirection == Axis.horizontal) {
-      barLength = math.max(numerSize, denomSize);
+      final barLength = math.max(numerSize, denomSize);
       // KaTeX/src/katex.less
       final nullDelimiterWidth = 0.12.cssEm.toLpUnder(options);
-      width = barLength + 2 * nullDelimiterWidth;
+      final width = barLength + 2 * nullDelimiterWidth;
+      if (!isComputingIntrinsics) {
+        this.barLength = barLength;
+        this.width = width;
+      }
+      
       return AxisConfiguration(
         size: width,
         offsetTable: {
@@ -184,8 +189,11 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
           v = phi + hz - a + 0.5 * theta;
         }
       }
-      height = hx + u;
+      final height = hx + u;
       final depth = dz + v;
+      if (!isComputingIntrinsics) {
+        this.height = height;
+      }
       return AxisConfiguration(
         size: height + depth,
         offsetTable: {

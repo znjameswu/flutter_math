@@ -101,14 +101,32 @@ class ResetDimensionLayoutDelegate extends IntrinsicLayoutDelegate<int> {
           : childrenTable[0].layoutHeight);
       final childDepth = childSize(childrenTable[0]) - childHeight;
 
-      final finalHeight = math.max(
-        height ?? childHeight,
-        (minTopPadding ?? -double.infinity) + childHeight,
-      );
-      final finalDepth = math.max(
-        depth ?? childDepth,
-        (minBottomPadding ?? -double.infinity) + childDepth,
-      );
+      var finalHeight = 0.0;
+      if (height != null && minTopPadding != null) {
+        finalHeight = math.max(
+          height,
+          minTopPadding + childHeight,
+        );
+      } else {
+        finalHeight = height ?? ((minTopPadding ?? 0.0) + childHeight);
+      }
+      // final finalHeight = math.max(
+      //   height ?? childHeight,
+      //   (minTopPadding ?? -double.infinity) + childHeight,
+      // );
+      var finalDepth = 0.0;
+      if (depth != null && minBottomPadding != null) {
+        finalDepth = math.max(
+          depth,
+          minBottomPadding + childDepth,
+        );
+      } else {
+        finalDepth = depth ?? ((minBottomPadding ?? 0.0) + childDepth);
+      }
+      // final finalDepth = math.max(
+      //   depth ?? childDepth,
+      //   (minBottomPadding ?? -double.infinity) + childDepth,
+      // );
 
       distanceToBaseline = finalHeight;
       return AxisConfiguration(
