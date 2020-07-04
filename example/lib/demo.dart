@@ -36,7 +36,12 @@ class DemoPage extends StatelessWidget {
                     Consumer<TextEditingController>(
                       builder: (context, controller, _) =>
                           FlutterMath.fromTexString(
-                              expression: controller.value.text),
+                        expression: controller.value.text,
+                        options: Options(
+                          style: MathStyle.display,
+                          baseSizeMultiplier: 1.0,
+                        ),
+                      ),
                     ),
                   ],
                 ),

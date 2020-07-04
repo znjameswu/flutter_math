@@ -9,34 +9,28 @@ import 'size.dart';
 import 'style.dart';
 
 class Options {
+  final double baseSizeMultiplier;
   final MathStyle style;
   final Color color;
-  // final Size size;
   SizeMode get size => sizeUnderTextStyle.underStyle(style);
   final SizeMode sizeUnderTextStyle;
-  // final bool phantom;
   final FontOptions textFontOptions;
   final FontOptions mathFontOptions;
   double get sizeMultiplier => this.size.sizeMultiplier;
   // final double maxSize;
   // final num minRuleThickness; //???
   // final bool isBlank;
-  // final bool mathord;
-  // final bool textord;
-  // final Measurement raise; //raisebox // Hard to implement
 
-  // final int tableColCount;
   FontMetrics get fontMetrics => getGlobalMetrics(size);
   const Options({
+    this.baseSizeMultiplier = 1,
     @required this.style,
     this.color = Colors.black,
     this.sizeUnderTextStyle = SizeMode.normalsize,
-    // @required this.phantom,
     this.textFontOptions,
     this.mathFontOptions,
     // @required this.maxSize,
     // @required this.minRuleThickness,
-    // @required this.tableColCount,
   });
 
   static const displayOptions = Options(
@@ -45,16 +39,6 @@ class Options {
   static const textOptions = Options(
     style: MathStyle.text,
   );
-
-  // Options discardNonInheritable() {
-  //   if (tableColCount == 0) return this;
-  //   return this.copyWith(
-  //     tableColCount: 0,
-  //   );
-  // }
-
-  // Options underTableRow(int tableRowCount) =>
-  //     this.copyWith(tableColCount: tableRowCount);
 
   Options havingStyle(MathStyle style) {
     if (this.style == style) return this;
@@ -101,11 +85,6 @@ class Options {
     return this.copyWith(color: color);
   }
 
-  // Options withPhantom() {
-  //   if (this.phantom) return this;
-  //   return this.copyWith(phantom: true);
-  // }
-
   Options withTextFont(PartialFontOptions font) => this.copyWith(
         mathFontOptions: null,
         textFontOptions:
@@ -123,26 +102,24 @@ class Options {
       this.color;
 
   Options copyWith({
+    double baseSizeMultiplier,
     MathStyle style,
     Color color,
     SizeMode sizeUnderTextStyle,
-    bool phantom,
     FontOptions textFontOptions,
     FontOptions mathFontOptions,
-    double maxSize,
+    // double maxSize,
     // num minRuleThickness,
-    int tableColCount,
   }) =>
       Options(
+        baseSizeMultiplier: baseSizeMultiplier ?? this.baseSizeMultiplier,
         style: style ?? this.style,
         color: color ?? this.color,
         sizeUnderTextStyle: sizeUnderTextStyle ?? this.sizeUnderTextStyle,
-        // phantom: phantom ?? this.phantom,
         textFontOptions: textFontOptions ?? this.textFontOptions,
         mathFontOptions: mathFontOptions ?? this.mathFontOptions,
         // maxSize: maxSize ?? this.maxSize,
         // minRuleThickness: minRuleThickness ?? this.minRuleThickness,
-        // tableColCount: tableColCount ?? this.tableColCount,
       );
 
   Options merge(OptionsDiff partialOptions) {

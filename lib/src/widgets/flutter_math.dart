@@ -47,7 +47,7 @@ class FlutterMath extends StatefulWidget {
       final tree = SyntaxTree(
         greenRoot: TexParser(expression, settings).parse(),
       );
-      return tree.buildWidget(Options.displayOptions);
+      return tree.buildWidget(options);
     } on ParseError catch (e) {
       return Text(e.message);
     } on Object catch (e) {

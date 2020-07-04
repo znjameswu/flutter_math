@@ -126,7 +126,8 @@ class Measurement {
     }
   }
 
-  double toLpUnder(Options options) => toPtUnder(options) / Unit.lp.toPt;
+  double toLpUnder(Options options) =>
+      toPtUnder(options) / Unit.lp.toPt * options.baseSizeMultiplier;
   double toCssEmUnder(Options options) =>
       toPtUnder(options) /
       (const Measurement(value: 1.0, unit: Unit.cssEm)).toPtUnder(options);
