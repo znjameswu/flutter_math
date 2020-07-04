@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tuple/tuple.dart';
 
 import '../render/layout/line.dart';
 import '../utils/iterable_extensions.dart';
@@ -437,49 +438,53 @@ class EquationRowNode extends ParentableNode<GreenNode>
         flattenedBuildResults.map((e) => e.options).toList();
     // assert(flattenedChildList.length == actualChildWidgets.length);
 
-    // bin can only be bin, if it satisfies some conditions. Otherwise it will
-    // be seen as an ord
-    final leftTypes =
-        flattenedChildList.map((e) => e.leftType).toList(growable: false);
-    final rightTypes =
-        flattenedChildList.map((e) => e.rightType).toList(growable: false);
-    for (var i = 0; i < flattenedChildList.length; i++) {
-      if (i > 0 &&
-          leftTypes[i] == AtomType.bin &&
+    // We need to calculate spacings between nodes
+    // There are several caveats to consider
+    // - bin can only be bin, if it satisfies some conditions. Otherwise it will
+    //   be seen as an ord
+    // - There could aligners and spacers. We need to calculate the spacing
+    //   after filtering them out, hence the [traverseNonSpaceNodes]
+    final childSpacingConfs = flattenedChildList
+        .mapIndexed((e, index) => _NodeSpacingConf(
+            e.leftType, e.rightType, flattenedChildOptions[index], 0.0))
+        .toList(growable: false);
+    traverseNonSpaceNodes(childSpacingConfs, (prev, curr) {
+      if (prev?.rightType == AtomType.bin &&
+          const {
+            AtomType.rel,
+            AtomType.close,
+            AtomType.punct,
+            null,
+          }.contains(curr?.leftType)) {
+        prev.rightType = AtomType.ord;
+        if (prev.leftType == AtomType.bin) {
+          prev.leftType = AtomType.ord;
+        }
+      } else if (curr?.leftType == AtomType.bin &&
           const {
             AtomType.bin,
             AtomType.open,
             AtomType.rel,
             AtomType.op,
             AtomType.punct,
-          }.contains(rightTypes[i - 1])) {
-        leftTypes[i] = AtomType.ord;
-        if (rightTypes[i] == AtomType.bin) {
-          rightTypes[i] = AtomType.ord;
-        }
-      } else if (i < flattenedChildList.length - 1 &&
-          rightTypes[i] == AtomType.bin &&
-          const {
-            AtomType.rel,
-            AtomType.close,
-            AtomType.punct,
-          }.contains(leftTypes[i + 1])) {
-        rightTypes[i] = AtomType.ord;
-        if (leftTypes[i] == AtomType.bin) {
-          leftTypes[i] = AtomType.ord;
+            null
+          }.contains(prev?.rightType)) {
+        curr.leftType = AtomType.ord;
+        if (curr.rightType == AtomType.bin) {
+          curr.rightType = AtomType.ord;
         }
       }
-    }
-    final spacings =
-        List<double>.filled(flattenedChildList.length, 0, growable: false);
-    for (var i = 0; i < flattenedChildList.length - 1; i++) {
-      spacings[i] = getSpacingSize(
-        rightTypes[i],
-        leftTypes[i + 1],
-        flattenedChildOptions[i + 1].style,
-      ).toLpUnder(
-          flattenedChildOptions[i + 1]); // Behavior in accordance with KaTeX
-    }
+    });
+
+    traverseNonSpaceNodes(childSpacingConfs, (prev, curr) {
+      if (prev != null && curr != null) {
+        prev.spacingAfter = getSpacingSize(
+          prev.rightType,
+          curr.leftType,
+          curr.options.style,
+        ).toLpUnder(curr.options);
+      }
+    });
 
     return [
       BuildResult(
@@ -492,7 +497,8 @@ class EquationRowNode extends ParentableNode<GreenNode>
                 canBreakBefore: false, // TODO
                 alignerOrSpacer: flattenedChildList[i] is SpaceNode &&
                     (flattenedChildList[i] as SpaceNode).alignerOrSpacer,
-                trailingMargin: spacings[i],
+                // trailingMargin: spacings[i],
+                trailingMargin: childSpacingConfs[i].spacingAfter,
               )
           ],
         ),
@@ -515,21 +521,38 @@ class EquationRowNode extends ParentableNode<GreenNode>
   ParentableNode<GreenNode> updateChildren(List<GreenNode> newChildren) =>
       EquationRowNode(children: newChildren);
 
+  // Left type for a equation row can never be AtomType.bin, nor
+  // AtomTpye.spacing, unless overriden.
+  //
+  // This guarantees some properties.
+  //
+  // If a node's left type is AtomType.bin/AtomTpye.spacing, then it right
+  // node must be the same, vice versa.
   AtomType _leftType;
   @override
-  AtomType get leftType => _leftType ??= overrideType ??
-      (children.firstOrNull?.leftType != AtomType.bin
-          ? children.firstOrNull?.leftType
-          : AtomType.ord) ??
-      AtomType.ord;
+  AtomType get leftType {
+    final firstNonSpace = flattenedChildList.firstWhere(
+        (element) => element.leftType != AtomType.spacing,
+        orElse: () => null);
+    return _leftType ??= overrideType ??
+        (firstNonSpace?.leftType == AtomType.bin
+            ? AtomType.ord
+            : firstNonSpace?.leftType) ??
+        AtomType.ord;
+  }
 
   AtomType _rightType;
   @override
-  AtomType get rightType => _rightType ??= overrideType ??
-      (children.lastOrNull?.rightType != AtomType.bin
-          ? children.lastOrNull?.rightType
-          : AtomType.ord) ??
-      AtomType.ord;
+  AtomType get rightType {
+    final lastNonSpace = flattenedChildList.reversed.firstWhere(
+        (element) => element.rightType != AtomType.spacing,
+        orElse: () => null);
+    _rightType ??= overrideType ??
+        (lastNonSpace?.rightType == AtomType.bin
+            ? AtomType.ord
+            : lastNonSpace?.rightType) ??
+        AtomType.ord;
+  }
 }
 
 extension GreenNodeWrappingExt on GreenNode {
@@ -646,4 +669,40 @@ class BuildResult {
     @required this.italic,
     this.skew = 0.0,
   });
+}
+
+void traverseNonSpaceNodes(
+  List<_NodeSpacingConf> childTypeList,
+  void Function(
+    _NodeSpacingConf prev,
+    _NodeSpacingConf curr,
+  )
+      callback,
+) {
+  _NodeSpacingConf prev;
+  // Tuple2<AtomType, AtomType> curr;
+  for (final child in childTypeList) {
+    if (child.leftType == AtomType.spacing ||
+        child.rightType == AtomType.spacing) {
+      continue;
+    }
+    callback(prev, child);
+    prev = child;
+  }
+  if (prev != null) {
+    callback(prev, null);
+  }
+}
+
+class _NodeSpacingConf {
+  AtomType leftType;
+  AtomType rightType;
+  Options options;
+  double spacingAfter;
+  _NodeSpacingConf(
+    this.leftType,
+    this.rightType,
+    this.options,
+    this.spacingAfter,
+  );
 }

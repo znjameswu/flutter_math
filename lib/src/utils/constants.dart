@@ -1,0 +1,1 @@
+T Null<T>() => null;

@@ -164,7 +164,8 @@ class RenderEqnArray extends RenderBox
       var hPos = 0.0;
       if (child is RenderLine && child.alignColWidth != null) {
         child.alignColWidth = colWidths;
-        child.layout(infiniteConstraint, parentUsesSize: true);
+        child.layout(BoxConstraints(maxWidth: aligningChildrenWidth), // Hack: We need to use a different constraint to trigger another layout
+            parentUsesSize: true);
         hPos = (width - aligningChildrenWidth) / 2 +
             colWidths[0] -
             child.alignColWidth[0];
@@ -176,9 +177,9 @@ class RenderEqnArray extends RenderBox
         hPos,
         vPos - child.layoutHeight,
       );
-      vPos +=    math.max(child.layoutDepth, 0.3 * arrayskip) +
+      vPos += math.max(child.layoutDepth, 0.3 * arrayskip) +
           jotSize +
-          rowSpacings[index-1];
+          rowSpacings[index - 1];
       hlinePos.add(vPos);
       vPos += hlines[index] != null ? ruleThickness : 0.0;
       index++;

@@ -21,6 +21,7 @@
 ## Known render differences to KaTeX
 - Math functions with limit-like subscript and superscript will not adapt to sub/sup under/over styles under different styles. This breaks TeX spec. This is due to the design of AST, and is in accordance with UnicodeMath designs.
 - Multiple `\hlines` and `||` column separators for matrices will not be supported, just as MathJax won't either.
+- `aligned` and `alignedat` will have column spacings more similar to an ordinary equation. This should be an improvement to KaTeX and MathJax.
 - `\genfrac`'s delimiters will have a larger spacing with inner node. (This might be fixed in future)
 - `\color` commands inside a block will NOT be applied to right delimiters. This is in line with MathJax rather than KaTeX. 
 - The parsing behavior of `\overbrace` and `\underbase` with sub-sup pairs will be in line with MathJax rather than KaTeX. (Possibly KaTeX bug?)

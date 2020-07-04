@@ -415,14 +415,14 @@ class RenderLine extends RenderBox
       var index = 0;
       for (final alignerOrSpacer in alignerAndSpacers) {
         if (aligner) {
-          alignerOrSpacer.layout(BoxConstraints.tightFor(width: 0.0));
+          alignerOrSpacer.layout(BoxConstraints.tightFor(width: 0.0), parentUsesSize: true);
         } else {
           alignerOrSpacer.layout(BoxConstraints.tightFor(
             width: alignColWidth[index] +
                 alignColWidth[index + 1] -
                 colWidths[index] -
                 colWidths[index + 1],
-          ));
+          ), parentUsesSize: true);
         }
         aligner = !aligner;
         index++;
@@ -430,21 +430,34 @@ class RenderLine extends RenderBox
 
       // Fourth pass, determine position for each children
       child = firstChild;
+      colWidths.clear();
       var mainPos = 0.0;
       while (child != null) {
         final childParentData = child.parentData as LineParentData;
-        mainPos += child.size.width + childParentData.trailingMargin;
+        if (childParentData.alignerOrSpacer) {
+          colWidths.add(mainPos);
+        }
         childParentData.offset =
             Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
+        mainPos += child.size.width + childParentData.trailingMargin;
         child = childParentData.nextSibling;
       }
       size = constraints.constrain(
           Size(mainPos, maxHeightAboveBaseline + maxDepthBelowBaseline));
       _overflow = mainPos - size.width;
+      alignColWidth = colWidths;
     }
   }
 
-  List<double> alignColWidth;
+  List<double> get alignColWidth =>  _alignColWidth;
+  List<double> _alignColWidth;
+  set alignColWidth(List<double> value) {
+    if (_alignColWidth != value) {
+      _alignColWidth = value;
+      // markNeedsLayout();
+    }
+  }
+  // List<double> alignColWidth;
 
   @override
   bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
