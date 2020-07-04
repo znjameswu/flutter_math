@@ -273,7 +273,7 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
       return AxisConfiguration(
         size: height + depth,
         offsetTable: {
-          _ScriptPos.base: height - base.layoutHeight,
+          _ScriptPos.base: height - baseHeight,
           _ScriptPos.sub: height + subShift - subHeight,
           _ScriptPos.sup: height - supShift - supHeight,
           _ScriptPos.presub: height + presubShift - presubHeight,

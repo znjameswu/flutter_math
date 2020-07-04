@@ -1,10 +1,12 @@
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 // import 'package:provider/provider.dart';
 import '../ast/options.dart';
 import '../ast/syntax_tree.dart';
 import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';
+import 'controller.dart';
 // import 'controller.dart';
 // import 'scope.dart';
 
@@ -19,25 +21,27 @@ extension FlutterMathModeExt on FlutterMathMode {
   bool get canSelect => this != FlutterMathMode.view;
 }
 
-class FlutterMath {
-  // final FlutterMathController controller;
+class FlutterMath extends StatelessWidget {
+  final FlutterMathController controller;
+  final dynamic error;
   // final FocusNode focusNode;
   // final TextSelectionControls selectionControls;
   // final bool autofocus;
-  // final FlutterMathMode mode;
-  // const FlutterMath({
-  //   Key key,
-  //   @required this.controller,
-  //   @required this.focusNode,
-  //   this.selectionControls,
-  //   this.autofocus = true,
-  //   this.mode = FlutterMathMode.edit,
-  // })  : assert(mode != null),
-  //       assert(controller != null),
-  //       assert(focusNode != null),
-  //       super(key: key);
+  final FlutterMathMode mode;
+  const FlutterMath._({
+    Key key,
+    @required this.controller,
+    this.error,
+    // @required this.focusNode,
+    // this.selectionControls,
+    // this.autofocus = true,
+    this.mode = FlutterMathMode.view,
+  })  : assert(mode != null),
+        // assert(controller != null),
+        // assert(focusNode != null),
+        super(key: key);
 
-  static Widget fromTexString(
+  factory FlutterMath.fromTexString(
     String expression, {
     Options options = Options.displayOptions,
     Settings settings = const Settings(),
@@ -47,14 +51,14 @@ class FlutterMath {
       throw UnimplementedError('Other mode is still in development!');
     }
     try {
-      final tree = SyntaxTree(
+      final ast = SyntaxTree(
         greenRoot: TexParser(expression, settings).parse(),
       );
-      return tree.buildWidget(options);
+      return FlutterMath._(controller: FlutterMathController(ast: ast));
     } on ParseError catch (e) {
-      return Text(e.message);
+      return FlutterMath._(controller: null, error: e);
     } on Object catch (e) {
-      return Text('Internal error: $e. Please report.');
+      return FlutterMath._(controller: null, error: e);
     }
   }
 
@@ -69,15 +73,26 @@ class FlutterMath {
   //       super(key: key);
   // @override
   // _FlutterMathState createState() => _FlutterMathState();
+  @override
+  Widget build(BuildContext context) {
+    if (error is ParseError) {
+      return Text((error as ParseError).message);
+    } else if (error != null) {
+      return Text('Internal error: $error. Please report.');
+    } else {
+      return ChangeNotifierProvider.value(
+        value: controller,
+        child: Consumer<FlutterMathController>(
+          builder: (context, controller, _) => controller.ast.buildWidget(),
+        ),
+      );
+    }
+  }
 }
 
 // class _FlutterMathState extends State<FlutterMath> {
-//   SyntaxTree get equation => widget.controller.equation;
+//   SyntaxTree get ast => widget.controller.ast;
 
-//   TextSelection get selection => widget.controller.selection;
+//   // TextSelection get selection => widget.controller.selection;
 
-//   @override
-//   Widget build(BuildContext context) => ChangeNotifierProvider(
-//         create: (_) => FlutterMathScope(),
-//       );
 // }

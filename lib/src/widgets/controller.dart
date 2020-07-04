@@ -3,15 +3,27 @@ import 'package:flutter/widgets.dart';
 import '../ast/syntax_tree.dart';
 
 class FlutterMathController extends ChangeNotifier {
-  FlutterMathController(SyntaxTree equation)
-      : assert(equation != null),
-        _equation = equation;
+  FlutterMathController({SyntaxTree ast, String error})
+      : 
+      // _error = error,
+        _ast = ast;
 
-  SyntaxTree _equation;
-  SyntaxTree get equation => _equation;
-  TextSelection _selection =
-      const TextSelection.collapsed(offset: 0, affinity: TextAffinity.upstream);
+  SyntaxTree _ast;
+  SyntaxTree get ast => _ast;
+  set ast(SyntaxTree value) {
+    _ast = value;
+    notifyListeners();
+    // _error = null;
+  }
 
-  TextSelection get selection => _selection;
+  // String get error =>  _error;
+  // String _error;
+  // set error(String value) {
+  //   _error = value;
+  //   _ast = null;
+  // }
+  // TextSelection _selection =
+  //     const TextSelection.collapsed(offset: 0, affinity: TextAffinity.upstream);
+  // TextSelection get selection => _selection;
 
 }

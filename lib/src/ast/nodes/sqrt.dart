@@ -123,7 +123,7 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
   }) {
     // final base = childrenTable[_SqrtPos.base];
     // final index = childrenTable[_SqrtPos.ind];
-
+    return 0;
     throw UnimplementedError();
   }
 
