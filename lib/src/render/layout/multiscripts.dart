@@ -171,7 +171,7 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
     final presupSize = sizeTable[_ScriptPos.presup] ?? 0;
 
     if (layoutDirection == Axis.horizontal) {
-      final scriptSpace = 0.5.pt.toLpUnder(supOptions);
+      final scriptSpace = 0.5.pt.toLpUnder(baseOptions);
 
       final extendedSubSize = sub != null ? subSize + scriptSpace : 0.0;
       final extendedSupSize = sup != null ? supSize + scriptSpace : 0.0;
