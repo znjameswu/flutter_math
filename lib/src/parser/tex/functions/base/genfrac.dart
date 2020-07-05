@@ -35,7 +35,7 @@ const _genfracEntries = {
     handler: _fracHandler,
   ),
 
-  // Infix generalized fractions -- these are not rendered directly, but 
+  // Infix generalized fractions -- these are not rendered directly, but
   // replaced immediately by one of the variants above.
   ['\\over', '\\choose', '\\atop', '\\brace', '\\brack']:
       FunctionSpec<GreenNode>(
@@ -192,13 +192,16 @@ GreenNode _genfracHandler(TexParser parser, FunctionContext context) {
           ? leftDelimArg.symbol
           : null;
 
-  final rightDelim = (rightDelimArg is AtomNode &&
-          rightDelimArg.atomType == AtomType.close)
-      ? rightDelimArg.symbol
-      : null;
+  final rightDelim =
+      (rightDelimArg is AtomNode && rightDelimArg.atomType == AtomType.close)
+          ? rightDelimArg.symbol
+          : null;
 
-  final textOrd = assertNodeType<AtomNode>(styleArg.expandEquationRow()[0]);
-  final style = int.tryParse(textOrd.symbol);
+  int style;
+  if (styleArg.expandEquationRow().isNotEmpty) {
+    final textOrd = assertNodeType<AtomNode>(styleArg.expandEquationRow()[0]);
+    style = int.tryParse(textOrd.symbol);
+  }
 
   GreenNode res = FracNode(
     numerator: numer.wrapWithEquationRow(),

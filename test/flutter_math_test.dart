@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_single_quotes
 // Import the test package and Counter class
+import 'dart:ui';
+
 import 'package:flutter_math/flutter_math.dart';
 import 'package:flutter_math/src/ast/nodes/atom.dart';
 import 'package:flutter_math/src/ast/nodes/frac.dart';
@@ -498,7 +500,7 @@ void main() {
     });
 
     test("should parse cfrac, dfrac, tfrac, and genfrac as fracs", () {
-      final dfracParse = getParsed(dfracExpression).children[0];
+      final dfracParse = getParsed(dfracExpression).children[0].children[0];
 
       expect(dfracParse, isA<FracNode>());
       if (dfracParse is FracNode) {
@@ -506,7 +508,7 @@ void main() {
         expect(dfracParse.denominator, isNotNull);
       }
 
-      final tfracParse = getParsed(tfracExpression).children[0];
+      final tfracParse = getParsed(tfracExpression).children[0].children[0];
 
       expect(tfracParse, isA<FracNode>());
       if (tfracParse is FracNode) {
@@ -514,7 +516,7 @@ void main() {
         expect(tfracParse.denominator, isNotNull);
       }
 
-      final cfracParse = getParsed(cfracExpression).children[0];
+      final cfracParse = getParsed(cfracExpression).children[0].children[0];
 
       expect(cfracParse, isA<FracNode>());
       if (cfracParse is FracNode) {
@@ -523,6 +525,9 @@ void main() {
       }
 
       var genfracParse = getParsed(genfrac1).children[0];
+
+      expect(genfracParse, isA<StyleNode>());
+      genfracParse = genfracParse.children[0];
 
       expect(genfracParse, isA<LeftRightNode>());
       if (genfracParse is LeftRightNode) {
@@ -582,7 +587,6 @@ void main() {
       if (parse is FracNode) {
         expect(parse.numerator, isNotNull);
         expect(parse.denominator, isNotNull);
-        expect(parse.barSize.value, 0);
       }
 
       parse = getParsed(complexOver).children[0];
@@ -591,7 +595,6 @@ void main() {
       if (parse is FracNode) {
         expect(parse.numerator, isNotNull);
         expect(parse.denominator, isNotNull);
-        expect(parse.barSize.value, 0);
       }
       var parseBraceFrac = getParsed(braceFrac).children[0];
 
@@ -676,7 +679,7 @@ void main() {
       final parse = getParsed(nestedOverExpression).children[0];
       expect(parse, isA<FracNode>());
       if (parse is FracNode) {
-        expect(parse.numerator, isA<FracNode>());
+        expect(parse.numerator.children[0], isA<FracNode>());
         expect(
             (parse.numerator.children[0].children[0].children[0] as AtomNode)
                 .symbol,
@@ -684,9 +687,9 @@ void main() {
         expect(
             (parse.numerator.children[0].children[1].children[0] as AtomNode)
                 .symbol,
-            "3");
+            "2");
         expect(
-            (parse.numerator.children[1].children[0] as AtomNode).symbol, "3");
+            (parse.denominator.children[0] as AtomNode).symbol, "3");
       }
     });
 
@@ -901,9 +904,9 @@ void main() {
       final parse2 = getParsed(customColorExpression2).children[0] as StyleNode;
       final parse3 = getParsed(customColorExpression3).children[0] as StyleNode;
 
-      expect(parse1.optionsDiff.color, "#fA6");
-      expect(parse2.optionsDiff.color, "#fA6fA6");
-      expect(parse3.optionsDiff.color, "#fA6fA6");
+      expect(parse1.optionsDiff.color, Color(0xffffAA66));
+      expect(parse2.optionsDiff.color, Color(0xfffA6fA6));
+      expect(parse3.optionsDiff.color, Color(0xfffA6fA6));
     });
 
     test("should not parse a bad custom color", () {
