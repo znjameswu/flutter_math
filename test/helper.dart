@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_math/flutter_math.dart';
@@ -38,7 +39,10 @@ void testTexToMatchGoldenFile(
       ),
     );
     await tester.pumpAndSettle();
-    await expectLater(find.byType(FlutterMath), matchesGoldenFile(location));
+    if (Platform.isWindows) {
+      // Android-specific code
+      await expectLater(find.byType(FlutterMath), matchesGoldenFile(location));
+    }
   });
 }
 
