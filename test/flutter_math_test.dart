@@ -11,6 +11,7 @@ import 'package:flutter_math/src/ast/nodes/matrix.dart';
 import 'package:flutter_math/src/ast/nodes/multiscripts.dart';
 import 'package:flutter_math/src/ast/nodes/nary_op.dart';
 import 'package:flutter_math/src/ast/nodes/space.dart';
+import 'package:flutter_math/src/ast/nodes/sqrt.dart';
 import 'package:flutter_math/src/ast/nodes/style.dart';
 import 'package:flutter_math/src/ast/size.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -1374,172 +1375,172 @@ void main() {
     // });
   });
 
-// group("A sqrt parser", () {
-//     final sqrt = r'\sqrt{x}';
-//     final missingGroup = r'\sqrt';
+group("A sqrt parser", () {
+    final sqrt = r'\sqrt{x}';
+    final missingGroup = r'\sqrt';
 
-//     test("should parse square roots", () {
-//         expect(sqrt), toParse());
-//     });
+    test("should parse square roots", () {
+        expect(sqrt, toParse());
+    });
 
-//     test("should error when there is no group", () {
-//         expect(missingGroup).not, toParse());
-//     });
+    test("should error when there is no group", () {
+        expect(missingGroup, toNotParse());
+    });
 
-//     test("should produce sqrts", () {
-//         final parse = getParsed(sqrt).children[0];
+    test("should produce sqrts", () {
+        final parse = getParsed(sqrt).children[0];
 
-//         expect(parse.type, "sqrt");
-//     });
+        expect(parse, isA<SqrtNode>());
+    });
 
-//     test("should build sized square roots", () {
-//         expect("\\Large\\sqrt.children[3]{x}").toBuild();
-//     });
-// });
+    test("should build sized square roots", () {
+        expect("\\Large\\sqrt.children[3]{x}",toBuild);
+    });
+});
 
-// group("A TeX-compliant parser", () {
-//     test("should work", () {
-//         expect(r'\frac 2 3', toParse());
-//     });
+group("A TeX-compliant parser", () {
+    test("should work", () {
+        expect(r'\frac 2 3', toParse());
+    });
 
-//     test("should fail if there are not enough arguments", () {
-//         final missingGroups = [
-//             r`([r'\frac{x}',
-//             r`([r'\textcolor{#fff}',
-//             r`([r'\rule{1em}',
-//             r`([r'\llap',
-//             r`([r'\bigl',
-//             r`([r'\text',
-//         ];
+    test("should fail if there are not enough arguments", () {
+        final missingGroups = [
+            r'\frac{x}',
+            r'\textcolor{#fff}',
+            r'\rule{1em}',
+            r'\llap',
+            r'\bigl',
+            r'\text',
+        ];
 
-//         for (var i = 0; i < missingGroups.length; i++) {
-//             expect(missingGroups[i]).not, toParse());
-//         }
-//     });
+        for (var i = 0; i < missingGroups.length; i++) {
+            expect(missingGroups[i], toNotParse());
+        }
+    });
 
-//     test("should fail when there are missing sup/subscripts", () {
-//         expect(r'x^'.not, toParse());
-//         expect(r'x_'.not, toParse());
-//     });
+    test("should fail when there are missing sup/subscripts", () {
+        expect(r'x^', toNotParse());
+        expect(r'x_', toNotParse());
+    });
 
-//     test("should fail when arguments require arguments", () {
-//         final badArguments = [
-//             r`([r'\frac \frac x y z',
-//             r`([r'\frac x \frac y z',
-//             r`([r'\frac \sqrt x y',
-//             r`([r'\frac x \sqrt y',
-//             r`([r'\frac \mathllap x y',
-//             r`([r'\frac x \mathllap y',
-//             // This actually doesn't work in real TeX, but it is suprisingly
-//             // hard to get this to correctly work. So, we take hit of very small
-//             // amounts of non-compatiblity in order for the rest of the tests to
-//             // work
-//             // r`([r'\llap \frac x y',
-//             r`([r'\mathllap \mathllap x',
-//             r`([r'\sqrt \mathllap x',
-//         ];
+    test("should fail when arguments require arguments", () {
+        final badArguments = [
+            r'\frac \frac x y z',
+            r'\frac x \frac y z',
+            r'\frac \sqrt x y',
+            r'\frac x \sqrt y',
+            r'\frac \mathllap x y',
+            r'\frac x \mathllap y',
+            // This actually doesn't work in real TeX, but it is suprisingly
+            // hard to get this to correctly work. So, we take hit of very small
+            // amounts of non-compatiblity in order for the rest of the tests to
+            // work
+            // r`([r'\llap \frac x y',
+            r'\mathllap \mathllap x',
+            r'\sqrt \mathllap x',
+        ];
 
-//         for (var i = 0; i < badArguments.length; i++) {
-//             expect(badArguments[i]).not, toParse());
-//         }
-//     });
+        for (var i = 0; i < badArguments.length; i++) {
+            expect(badArguments[i], toNotParse());
+        }
+    });
 
-//     test("should work when the arguments have braces", () {
-//         final goodArguments = [
-//             r`([r'\frac {\frac x y} z',
-//             r`([r'\frac x {\frac y z}',
-//             r`([r'\frac {\sqrt x} y',
-//             r`([r'\frac x {\sqrt y}',
-//             r`([r'\frac {\mathllap x} y',
-//             r`([r'\frac x {\mathllap y}',
-//             r`([r'\mathllap {\frac x y}',
-//             r`([r'\mathllap {\mathllap x}',
-//             r`([r'\sqrt {\mathllap x}',
-//         ];
+    test("should work when the arguments have braces", () {
+        final goodArguments = [
+            r'\frac {\frac x y} z',
+            r'\frac x {\frac y z}',
+            r'\frac {\sqrt x} y',
+            r'\frac x {\sqrt y}',
+            // r'\frac {\mathllap x} y',
+            // r'\frac x {\mathllap y}',
+            // r'\mathllap {\frac x y}',
+            // r'\mathllap {\mathllap x}',
+            // r'\sqrt {\mathllap x}',
+        ];
 
-//         for (var i = 0; i < goodArguments.length; i++) {
-//             expect(goodArguments[i]), toParse());
-//         }
-//     });
+        for (var i = 0; i < goodArguments.length; i++) {
+            expect(goodArguments[i], toParse());
+        }
+    });
 
-//     test("should fail when sup/subscripts require arguments", () {
-//         final badSupSubscripts = [
-//             r`([r'x^\sqrt x',
-//             r`([r'x^\mathllap x',
-//             r`([r'x_\sqrt x',
-//             r`([r'x_\mathllap x',
-//         ];
+    test("should fail when sup/subscripts require arguments", () {
+        final badSupSubscripts = [
+            r'x^\sqrt x',
+            // r'x^\mathllap x',
+            r'x_\sqrt x',
+            // r'x_\mathllap x',
+        ];
 
-//         for (var i = 0; i < badSupSubscripts.length; i++) {
-//             expect(badSupSubscripts[i]).not, toParse());
-//         }
-//     });
+        for (var i = 0; i < badSupSubscripts.length; i++) {
+            expect(badSupSubscripts[i], toNotParse());
+        }
+    });
 
-//     test("should work when sup/subscripts arguments have braces", () {
-//         final goodSupSubscripts = [
-//             r`([r'x^{\sqrt x}',
-//             r`([r'x^{\mathllap x}',
-//             r`([r'x_{\sqrt x}',
-//             r`([r'x_{\mathllap x}',
-//         ];
+    test("should work when sup/subscripts arguments have braces", () {
+        final goodSupSubscripts = [
+            r'x^{\sqrt x}',
+            // r'x^{\mathllap x}',
+            r'x_{\sqrt x}',
+            // r'x_{\mathllap x}',
+        ];
 
-//         for (var i = 0; i < goodSupSubscripts.length; i++) {
-//             expect(goodSupSubscripts[i]), toParse());
-//         }
-//     });
+        for (var i = 0; i < goodSupSubscripts.length; i++) {
+            expect(goodSupSubscripts[i], toParse());
+        }
+    });
 
-//     test("should parse multiple primes correctly", () {
-//         expect("x''''", toParse());
-//         expect(`x_2''`, toParse());
-//         expect(`x''_2`, toParse());
-//     });
+    test("should parse multiple primes correctly", () {
+        expect("x''''", toParse());
+        expect("x_2''", toParse());
+        expect("x''_2", toParse());
+    });
 
-//     test("should fail when sup/subscripts are interspersed with arguments", () {
-//         expect(r'\sqrt^23'.not, toParse());
-//         expect(r'\frac^234'.not, toParse());
-//         expect(r'\frac2^34'.not, toParse());
-//     });
+    test("should fail when sup/subscripts are interspersed with arguments", () {
+        expect(r'\sqrt^23', toNotParse());
+        expect(r'\frac^234', toNotParse());
+        expect(r'\frac2^34', toNotParse());
+    });
 
-//     test("should succeed when sup/subscripts come after whole functions", () {
-//         expect(r'\sqrt2^3', toParse());
-//         expect(r'\frac23^4', toParse());
-//     });
+    test("should succeed when sup/subscripts come after whole functions", () {
+        expect(r'\sqrt2^3', toParse());
+        expect(r'\frac23^4', toParse());
+    });
 
-//     test("should succeed with a sqrt around a text/frac", () {
-//         expect(r'\sqrt \frac x y', toParse());
-//         expect(r'\sqrt \text x', toParse());
-//         expect(r'x^\frac x y', toParse());
-//         expect(r'x_\text x', toParse());
-//     });
+    test("should succeed with a sqrt around a text/frac", () {
+        expect(r'\sqrt \frac x y', toParse());
+        expect(r'\sqrt \text x', toParse());
+        expect(r'x^\frac x y', toParse());
+        expect(r'x_\text x', toParse());
+    });
 
-//     test("should fail when arguments are \\left", () {
-//         final badLeftArguments = [
-//             r`([r'\frac \left( x \right) y',
-//             r`([r'\frac x \left( y \right)',
-//             r`([r'\mathllap \left( x \right)',
-//             r`([r'\sqrt \left( x \right)',
-//             r`([r'x^\left( x \right)',
-//         ];
+    test("should fail when arguments are \\left", () {
+        final badLeftArguments = [
+            r'\frac \left( x \right) y',
+            r'\frac x \left( y \right)',
+            // r'\mathllap \left( x \right)',
+            r'\sqrt \left( x \right)',
+            r'x^\left( x \right)',
+        ];
 
-//         for (var i = 0; i < badLeftArguments.length; i++) {
-//             expect(badLeftArguments[i]).not, toParse());
-//         }
-//     });
+        for (var i = 0; i < badLeftArguments.length; i++) {
+            expect(badLeftArguments[i], toNotParse());
+        }
+    });
 
-//     test("should succeed when there are braces around the \\left/\\right", () {
-//         final goodLeftArguments = [
-//             r`([r'\frac {\left( x \right)} y',
-//             r`([r'\frac x {\left( y \right)}',
-//             r`([r'\mathllap {\left( x \right)}',
-//             r`([r'\sqrt {\left( x \right)}',
-//             r`([r'x^{\left( x \right)}',
-//         ];
+    test("should succeed when there are braces around the \\left/\\right", () {
+        final goodLeftArguments = [
+            r'\frac {\left( x \right)} y',
+            r'\frac x {\left( y \right)}',
+            // r'\mathllap {\left( x \right)}',
+            r'\sqrt {\left( x \right)}',
+            r'x^{\left( x \right)}',
+        ];
 
-//         for (var i = 0; i < goodLeftArguments.length; i++) {
-//             expect(goodLeftArguments[i]), toParse());
-//         }
-//     });
-// });
+        for (var i = 0; i < goodLeftArguments.length; i++) {
+            expect(goodLeftArguments[i], toParse());
+        }
+    });
+});
 
 // group("An op symbol builder", () {
 //     test("should not fail", () {

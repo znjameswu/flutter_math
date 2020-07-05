@@ -42,8 +42,16 @@ const _delimSizingEntries = {
     '\\bigg',
     '\\Bigg',
   ]: FunctionSpec(numArgs: 1, handler: _delimSizeHandler),
-  ['\\right']: FunctionSpec(numArgs: 1, greediness: 3, handler: _rightHandler),
-  ['\\left']: FunctionSpec(numArgs: 1, greediness: 2, handler: _leftHandler),
+  ['\\right']: FunctionSpec(
+    numArgs: 1,
+    // greediness: 3,
+    handler: _rightHandler,
+  ),
+  ['\\left']: FunctionSpec(
+    numArgs: 1,
+    // greediness: 2,
+    handler: _leftHandler,
+  ),
   ['\\middle']: FunctionSpec(numArgs: 1, handler: _middleHandler),
 };
 
@@ -211,7 +219,7 @@ GreenNode _leftHandler(TexParser parser, FunctionContext context) {
   // Check the next token
   parser.expect('\\right', consume: false);
   // Use parseArgNode instead of parseFunction like KaTeX
-  final rightArg = parser.parseArgNode(mode: Mode.math, optional: false);
+  final rightArg = parser.parseFunction(null, null, null);
   final right = assertNodeType<_LeftRightRightNode>(rightArg);
 
   final splittedBody = [<GreenNode>[]];
