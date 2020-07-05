@@ -147,7 +147,7 @@ MatrixNode parseArray(
       // Arrays terminate newlines with `\crcr` which consumes a `\cr` if
       // the last line is empty.
       // NOTE: Currently, `cell` is the last item added into `row`.
-      if (row.length == 1 && cell is StyleNode && cell.children.isEmpty) {
+      if (row.length == 1 && cellBody.isEmpty) {
         body.removeLast();
       }
       if (hLinesBeforeRow.length < body.length + 1) {

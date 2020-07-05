@@ -7,6 +7,7 @@ import 'package:flutter_math/src/ast/nodes/accent.dart';
 import 'package:flutter_math/src/ast/nodes/atom.dart';
 import 'package:flutter_math/src/ast/nodes/frac.dart';
 import 'package:flutter_math/src/ast/nodes/left_right.dart';
+import 'package:flutter_math/src/ast/nodes/matrix.dart';
 import 'package:flutter_math/src/ast/nodes/multiscripts.dart';
 import 'package:flutter_math/src/ast/nodes/nary_op.dart';
 import 'package:flutter_math/src/ast/nodes/space.dart';
@@ -1311,65 +1312,67 @@ void main() {
     }
   });
 
-// group("A begin/end parser", () {
+  group("A begin/end parser", () {
+    test("should parse a simple environment", () {
+      expect(r'\begin{matrix}a&b\\c&d\end{matrix}', toParse());
+    });
 
-//     test("should parse a simple environment", () {
-//         expect(r'\begin{matrix}a&b\\c&d\end{matrix}', toParse());
-//     });
+    test("should parse an environment with argument", () {
+      expect(r'\begin{array}{cc}a&b\\c&d\end{array}', toParse());
+    });
 
-//     test("should parse an environment with argument", () {
-//         expect(r'\begin{array}{cc}a&b\\c&d\end{array}', toParse());
-//     });
+    test("should parse an environment with hlines", () {
+      expect(r'\begin{matrix}\hline a&b\\ \hline c&d\end{matrix}', toParse());
+      expect(r'\begin{matrix}\hdashline a&b\\ \hdashline c&d\end{matrix}',
+          toParse());
+    });
 
-//     test("should parse an environment with hlines", () {
-//         expect(r'\begin{matrix}\hline a&b\\ \hline c&d\end{matrix}', toParse());
-//         expect(r'\begin{matrix}\hdashline a&b\\ \hdashline c&d\end{matrix}', toParse());
-//     });
+    test("should forbid hlines outside array environment", () {
+      expect(r'\hline', toNotParse());
+    });
 
-//     test("should forbid hlines outside array environment", () => {
-//         expect(r'\hline'.not, toParse());
-//     });
+    test("should error when name is mismatched", () {
+      expect(r'\begin{matrix}a&b\\c&d\end{pmatrix}', toNotParse());
+    });
 
-//     test("should error when name is mismatched", () {
-//         expect(r'\begin{matrix}a&b\\c&d\end{pmatrix}'.not, toParse());
-//     });
+    test("should error when commands are mismatched", () {
+      expect(r'\begin{matrix}a&b\\c&d\right{pmatrix}', toNotParse());
+    });
 
-//     test("should error when commands are mismatched", () {
-//         expect(r'\begin{matrix}a&b\\c&d\right{pmatrix}'.not, toParse());
-//     });
+    test("should error when end is missing", () {
+      expect(r'\begin{matrix}a&b\\c&d', toNotParse());
+    });
 
-//     test("should error when end is missing", () {
-//         expect(r'\begin{matrix}a&b\\c&d'.not, toParse());
-//     });
+    test("should error when braces are mismatched", () {
+      expect(r'{\begin{matrix}a&b\\c&d}\end{matrix}', toNotParse());
+    });
 
-//     test("should error when braces are mismatched", () {
-//         expect(r'{\begin{matrix}a&b\\c&d}\end{matrix}'.not, toParse());
-//     });
+    test("should cooperate with infix notation", () {
+      expect(r'\begin{matrix}0&1\over2&3\\4&5&6\end{matrix}', toParse());
+    });
 
-//     test("should cooperate with infix notation", () {
-//         expect(r'\begin{matrix}0&1\over2&3\\4&5&6\end{matrix}', toParse());
-//     });
+    test("should nest", () {
+      final m1 = r'\begin{pmatrix}1&2\\3&4\end{pmatrix}';
+      final m2 = '\\begin{array}{rl}$m1&0\\\\0&$m1\\end{array}';
+      expect(m2, toParse());
+    });
 
-//     test("should nest", () {
-//         final m1 = r'\begin{pmatrix}1&2\\3&4\end{pmatrix}';
-//         final m2 = `\\begin{array}{rl}${m1}&0\\\\0&${m1}\\end{array}`;
-//         expect(m2), toParse());
-//     });
+    test("should allow \\cr as a line terminator", () {
+      expect(r'\begin{matrix}a&b\cr c&d\end{matrix}', toParse());
+    });
 
-//     test("should allow \\cr as a line terminator", () {
-//         expect(r'\begin{matrix}a&b\cr c&d\end{matrix}', toParse());
-//     });
+    test("should eat a final newline", () {
+      final m3 = getParsed(r'\begin{matrix}a&b\\ c&d \\ \end{matrix}')
+          .children[0] as MatrixNode;
+      expect(m3.body.length, 2);
+    });
 
-//     test("should eat a final newline", () {
-//         final m3 = getParsed(r'\begin{matrix}a&b\\ c&d \\ \end{matrix}').children[0];
-//         expect(m3.body.children.length, 2);
-//     });
-
-//     test("should grab \\arraystretch", () {
-//         final parse = getParsed(r'\def\arraystretch{1.5}\begin{matrix}a&b\\c&d\end{matrix}');
-//         expect(parse).toMatchSnapshot();
-//     });
-// });
+    // TODO
+    // test("should grab \\arraystretch", () {
+    //     final parse = getParsed(r'\def\arraystretch{1.5}\begin{matrix}a&b\\c&d\end{matrix}');
+    //     expect(parse).toMatchSnapshot();
+    // });
+  });
 
 // group("A sqrt parser", () {
 //     final sqrt = r'\sqrt{x}';
