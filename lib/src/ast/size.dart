@@ -96,8 +96,12 @@ class Measurement {
 
   double toPtUnder(Options options) {
     if (unit.toPt != null) {
-      // Absolute units
-      return value * unit.toPt;
+      if (unit != Unit.lp) {
+        // Absolute units
+        return value * unit.toPt;
+      } else {
+        return value * unit.toPt / options.baseSizeMultiplier;
+      }
     } else {
       switch (unit) {
         // `mu` units scale with scriptstyle/scriptscriptstyle.

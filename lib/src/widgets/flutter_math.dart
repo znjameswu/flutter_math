@@ -24,6 +24,7 @@ extension FlutterMathModeExt on FlutterMathMode {
 class FlutterMath extends StatelessWidget {
   final FlutterMathController controller;
   final dynamic error;
+  final Options options;
   // final FocusNode focusNode;
   // final TextSelectionControls selectionControls;
   // final bool autofocus;
@@ -32,6 +33,7 @@ class FlutterMath extends StatelessWidget {
     Key key,
     @required this.controller,
     this.error,
+    this.options = Options.displayOptions,
     // @required this.focusNode,
     // this.selectionControls,
     // this.autofocus = true,
@@ -54,7 +56,10 @@ class FlutterMath extends StatelessWidget {
       final ast = SyntaxTree(
         greenRoot: TexParser(expression, settings).parse(),
       );
-      return FlutterMath._(controller: FlutterMathController(ast: ast));
+      return FlutterMath._(
+        controller: FlutterMathController(ast: ast),
+        options: options,
+      );
     } on ParseError catch (e) {
       return FlutterMath._(controller: null, error: e);
     } on Object catch (e) {
@@ -83,7 +88,8 @@ class FlutterMath extends StatelessWidget {
       return ChangeNotifierProvider.value(
         value: controller,
         child: Consumer<FlutterMathController>(
-          builder: (context, controller, _) => controller.ast.buildWidget(),
+          builder: (context, controller, _) =>
+              controller.ast.buildWidget(options),
         ),
       );
     }
