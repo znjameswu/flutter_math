@@ -31,7 +31,7 @@ const _kernEntries = {
   ),
 };
 GreenNode _kernHandler(TexParser parser, FunctionContext context) {
-  final size = parser.parseArgSize(optional: false);
+  final size = parser.parseArgSize(optional: false) ?? Measurement.zero;
 
   final mathFunction = (context.funcName[1] == 'm');
   final muUnit = (size.unit == Unit.mu);

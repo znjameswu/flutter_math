@@ -6,8 +6,8 @@ const _ruleEntries = {
 };
 GreenNode _ruleHandler(TexParser parser, FunctionContext context) {
   final shift = parser.parseArgSize(optional: true) ?? Measurement.zero;
-  final width = parser.parseArgSize(optional: false);
-  final height = parser.parseArgSize(optional: false);
+  final width = parser.parseArgSize(optional: false) ?? Measurement.zero;
+  final height = parser.parseArgSize(optional: false) ?? Measurement.zero;
 
   return SpaceNode(
     height: height,

@@ -3,12 +3,15 @@
 import 'dart:ui';
 
 import 'package:flutter_math/flutter_math.dart';
+import 'package:flutter_math/src/ast/nodes/accent.dart';
 import 'package:flutter_math/src/ast/nodes/atom.dart';
 import 'package:flutter_math/src/ast/nodes/frac.dart';
 import 'package:flutter_math/src/ast/nodes/left_right.dart';
 import 'package:flutter_math/src/ast/nodes/multiscripts.dart';
 import 'package:flutter_math/src/ast/nodes/nary_op.dart';
+import 'package:flutter_math/src/ast/nodes/space.dart';
 import 'package:flutter_math/src/ast/nodes/style.dart';
+import 'package:flutter_math/src/ast/size.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helper.dart';
@@ -1021,19 +1024,19 @@ void main() {
     });
   });
 
-// group("An overline parser", () {
-//     final overline = r'\overline{x}';
+  group("An overline parser", () {
+    final overline = r'\overline{x}';
 
-//     test("should not fail", () {
-//         expect(overline), toParse());
-//     });
+    test("should not fail", () {
+      expect(overline, toParse());
+    });
 
-//     test("should produce an overline", () {
-//         final parse = getParsed(overline).children[0];
+    test("should produce an overline", () {
+      final parse = getParsed(overline).children[0];
 
-//         expect(parse.type, "overline");
-//     });
-// });
+      expect(parse, isA<AccentNode>());
+    });
+  });
 
 // group("An lap parser", () {
 //     test("should not fail on a text argument", () {
@@ -1064,60 +1067,61 @@ void main() {
 //     });
 // });
 
-// group("A rule parser", () {
-//     final emRule = r'\rule{1em}{2em}';
-//     final exRule = r'\rule{1ex}{2em}';
-//     final badUnitRule = r'\rule{1au}{2em}';
-//     final noNumberRule = r'\rule{1em}{em}';
-//     final incompleteRule = r'\rule{1em}';
-//     final hardNumberRule = r'\rule{   01.24ex}{2.450   em   }';
+  group("A rule parser", () {
+    final emRule = r'\rule{1em}{2em}';
+    final exRule = r'\rule{1ex}{2em}';
+    final badUnitRule = r'\rule{1au}{2em}';
+    final noNumberRule = r'\rule{1em}{em}';
+    final incompleteRule = r'\rule{1em}';
+    final hardNumberRule = r'\rule{   01.24ex}{2.450   em   }';
 
-//     test("should not fail", () {
-//         expect(emRule), toParse());
-//         expect(exRule), toParse());
-//     });
+    test("should not fail", () {
+      expect(emRule, toParse());
+      expect(exRule, toParse());
+    });
 
-//     test("should not parse invalid units", () {
-//         expect(badUnitRule).not, toParse());
+    test("should not parse invalid units", () {
+      expect(badUnitRule, toNotParse());
 
-//         expect(noNumberRule).not, toParse());
-//     });
+      expect(noNumberRule, toNotParse());
+    });
 
-//     test("should not parse incomplete rules", () {
-//         expect(incompleteRule).not, toParse());
-//     });
+    test("should not parse incomplete rules", () {
+      expect(incompleteRule, toNotParse());
+    });
 
-//     test("should produce a rule", () {
-//         final parse = getParsed(emRule).children[0];
+    test("should produce a rule", () {
+      final parse = getParsed(emRule).children[0];
 
-//         expect(parse.type, "rule");
-//     });
+      expect(parse, isA<SpaceNode>());
+    });
 
-//     test("should list the correct units", () {
-//         final emParse = getParsed(emRule).children[0];
-//         final exParse = getParsed(exRule).children[0];
+    test("should list the correct units", () {
+      final emParse = getParsed(emRule).children[0] as SpaceNode;
+      final exParse = getParsed(exRule).children[0] as SpaceNode;
 
-//         expect(emParse.width.unit, "em");
-//         expect(emParse.height.unit, "em");
+      expect(emParse.width.unit, Unit.em);
+      expect(emParse.height.unit, Unit.em);
 
-//         expect(exParse.width.unit, "ex");
-//         expect(exParse.height.unit, "em");
-//     });
+      expect(exParse.width.unit, Unit.ex);
+      expect(exParse.height.unit, Unit.em);
+    });
 
-//     test("should parse the number correctly", () {
-//         final hardNumberParse = getParsed(hardNumberRule).children[0];
+    test("should parse the number correctly", () {
+      final hardNumberParse =
+          getParsed(hardNumberRule).children[0] as SpaceNode;
 
-//         expect(hardNumberParse.width.number).toBeCloseTo(1.24);
-//         expect(hardNumberParse.height.number).toBeCloseTo(2.45);
-//     });
+      expect(hardNumberParse.width.value, 1.24);
+      expect(hardNumberParse.height.value, 2.45);
+    });
 
-//     test("should parse negative sizes", () {
-//         final parse = getParsed(r'\rule{-1em}{- 0.2em}').children[0];
+    test("should parse negative sizes", () {
+      final parse = getParsed(r'\rule{-1em}{- 0.2em}').children[0] as SpaceNode;
 
-//         expect(parse.width.number).toBeCloseTo(-1);
-//         expect(parse.height.number).toBeCloseTo(-0.2);
-//     });
-// });
+      expect(parse.width.value, -1);
+      expect(parse.height.value, -0.2);
+    });
+  });
 
 // group("A kern parser", () {
 //     final emKern = r'\kern{1em}';
