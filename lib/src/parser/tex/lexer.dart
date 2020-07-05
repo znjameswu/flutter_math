@@ -31,33 +31,32 @@ const controlWordRegexString = '\\\\[a-zA-Z@]+';
 const controlSymbolRegexString = '\\\\[^\uD800-\uDFFF]';
 const controlWordWhitespaceRegexString =
     '$controlWordRegexString$spaceRegexString*';
-final controlWordWhitespaceRegex = RegExp(
-    '^($controlWordRegexString)$spaceRegexString*\$');
+final controlWordWhitespaceRegex =
+    RegExp('^($controlWordRegexString)$spaceRegexString*\$');
 const combiningDiacriticalMarkString = '[\u0300-\u036f]';
-final combiningDiacriticalMarksEndRegex = RegExp(
-    '$combiningDiacriticalMarkString+\$');
-const tokenRegexString = '($spaceRegexString+)|'    // white space
-    '([!-\\[\\]-\u2027\u202A-\uD7FF\uF900-\uFFFF]'  // single codepoint
-    '$combiningDiacriticalMarkString*'              // ...plus accents
-    '|[\uD800-\uDBFF][\uDC00-\uDFFF]'               // surrogate pair
-    '$combiningDiacriticalMarkString*'              // ...plus accents
-    '|\\\\verb\\*([^]).*?\\3'                       // \verb*
-    '|\\\\verb([^*a-zA-Z]).*?\\4'                   // \verb unstarred
-    '|\\\\operatorname\\*'                          // \operatorname*
-    '|$controlWordWhitespaceRegexString'            // \macroName + spaces
-    '|$controlSymbolRegexString)';                  // \\, \', etc.
-
+final combiningDiacriticalMarksEndRegex =
+    RegExp('$combiningDiacriticalMarkString+\$');
+const tokenRegexString = '($spaceRegexString+)|' // white space
+    '([!-\\[\\]-\u2027\u202A-\uD7FF\uF900-\uFFFF]' // single codepoint
+    '$combiningDiacriticalMarkString*' // ...plus accents
+    '|[\uD800-\uDBFF][\uDC00-\uDFFF]' // surrogate pair
+    '$combiningDiacriticalMarkString*' // ...plus accents
+    '|\\\\verb\\*([^]).*?\\3' // \verb*
+    '|\\\\verb([^*a-zA-Z]).*?\\4' // \verb unstarred
+    '|\\\\operatorname\\*' // \operatorname*
+    '|$controlWordWhitespaceRegexString' // \macroName + spaces
+    '|$controlSymbolRegexString)'; // \\, \', etc.
 
 abstract class LexerInterface {
   String input;
   static final RegExp tokenRegex = RegExp(tokenRegexString, multiLine: true);
 }
 
-class Lexer implements LexerInterface{
+class Lexer implements LexerInterface {
   static final tokenRegex = RegExp(tokenRegexString, multiLine: true);
-  Lexer(this.input, this.settings){
+  Lexer(this.input, this.settings) {
     this.matches = tokenRegex.allMatches(input);
-    it=matches.iterator;
+    it = matches.iterator;
   }
   String input;
   Settings settings;
@@ -68,6 +67,7 @@ class Lexer implements LexerInterface{
 
   Token lex() {
     final input = this.input;
+    pos = (it.current?.end) ?? pos;
     if (this.pos == input.length) {
       return Token('EOF', SourceLocation(this, pos, pos));
     }
@@ -77,25 +77,27 @@ class Lexer implements LexerInterface{
 
     // Validate current match
     if (match == null || match.start != pos) {
-      throw ParseError(
-        'Unexpected character: \'${input[pos]}\'',
-        Token(input[pos], SourceLocation(this, pos, pos+1))
-      );
+      throw ParseError('Unexpected character: \'${input[pos]}\'',
+          Token(input[pos], SourceLocation(this, pos, pos + 1)));
     }
 
-    pos = match.end;
+    // pos = match.end;
     var text = match[2] ?? ' ';
-    if (this.catCodes[text] == 14) { // comment character
-      final nlIndex = input.indexOf('\n', pos);
+    if (this.catCodes[text] == 14) {
+      // comment character
+      final nlIndex = input.indexOf('\n', it.current.end);
       if (nlIndex == -1) {
-        pos = input.length; //EOF
-        while (it != null && it.current.start < pos) {
+        pos = input.length;
+        while (it != null && it.current != null) {
           it.moveNext();
         }
-//        this.settings.reportNonstrict("")
+        this.settings.reportNonstrict(
+            'commentAtEnd',
+            '% comment has no terminating newline; LaTeX would '
+                'fail because of commenting the end of math mode (e.g. \$)');
       } else {
-        pos = nlIndex + 1;
-        while (it != null && it.current.start < pos) {
+        while (
+            it != null && it.current != null && it.current.end < nlIndex + 1) {
           it.moveNext();
         }
       }
@@ -107,5 +109,4 @@ class Lexer implements LexerInterface{
     }
     return Token(text, SourceLocation(this, match.start, match.end));
   }
-
 }

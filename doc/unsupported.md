@@ -17,6 +17,7 @@
 - `gather` environment
 - `Vmatrix` environment
 - `\@char` char input by unicode
+- `\mathnormal`
 
 ## Known render differences to KaTeX
 - Math functions with limit-like subscript and superscript will not adapt to sub/sup under/over styles under different styles. This breaks TeX spec. This is due to the design of AST, and is in accordance with UnicodeMath designs.

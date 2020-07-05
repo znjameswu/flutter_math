@@ -103,8 +103,10 @@ void testTexToRenderLike(
     await tester.pumpAndSettle();
     if (Platform.isWindows) {
       // Android-specific code
-      await expectLater(find.byType(FlutterMath),
-          matchesGoldenFile('golden/${description.hashCode}.png'));
+      await expectLater(
+          find.byType(FlutterMath),
+          matchesGoldenFile(
+              'golden/${(description + expression1 + expression2).hashCode}.png'));
     }
 
     await tester.pumpWidget(
@@ -129,14 +131,16 @@ void testTexToRenderLike(
     await tester.pumpAndSettle();
     if (Platform.isWindows) {
       // Android-specific code
-      await expectLater(find.byType(FlutterMath),
-          matchesGoldenFile('golden/${description.hashCode}.png'));
+      await expectLater(
+          find.byType(FlutterMath),
+          matchesGoldenFile(
+              'golden/${(description + expression1 + expression2).hashCode}.png'));
     }
   });
 }
 
 const strictSettings = Settings(strict: Strict.error);
-const nonStrictSettings = Settings(strict: Strict.ignore);
+const nonstrictSettings = Settings(strict: Strict.ignore);
 
 GreenNode getParsed(String expr, [Settings settings = const Settings()]) {
   return TexParser(expr, settings).parse();
@@ -188,9 +192,14 @@ class _ToParse extends Matcher {
   }
 }
 
-_ToNotParse toNotParse() => _ToNotParse();
+_ToNotParse toNotParse([Settings settings = strictSettings]) =>
+    _ToNotParse(settings);
 
 class _ToNotParse extends Matcher {
+  final Settings settings;
+
+  _ToNotParse(this.settings);
+
   @override
   Description describe(Description description) =>
       description.add('a TeX string with parse errors');
@@ -200,7 +209,7 @@ class _ToNotParse extends Matcher {
       Map matchState, bool verbose) {
     try {
       if (item is String) {
-        final res = TexParser(item, const Settings()).parse();
+        final res = TexParser(item, settings).parse();
         return super
             .describeMismatch(item, mismatchDescription, matchState, verbose);
         // return mismatchDescription.add(prettyPrintJson(res.toJson()));
@@ -216,7 +225,7 @@ class _ToNotParse extends Matcher {
   bool matches(dynamic item, Map matchState) {
     try {
       if (item is String) {
-        final res = TexParser(item, const Settings()).parse();
+        final res = TexParser(item, settings).parse();
         // print(prettyPrintJson(res.toJson()));
         return false;
       }

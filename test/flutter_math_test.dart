@@ -14,6 +14,8 @@ import 'package:flutter_math/src/ast/nodes/space.dart';
 import 'package:flutter_math/src/ast/nodes/sqrt.dart';
 import 'package:flutter_math/src/ast/nodes/style.dart';
 import 'package:flutter_math/src/ast/size.dart';
+import 'package:flutter_math/src/parser/tex/colors.dart';
+import 'package:flutter_math/src/parser/tex/font.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helper.dart';
@@ -1375,320 +1377,326 @@ void main() {
     // });
   });
 
-group("A sqrt parser", () {
+  group("A sqrt parser", () {
     final sqrt = r'\sqrt{x}';
     final missingGroup = r'\sqrt';
 
     test("should parse square roots", () {
-        expect(sqrt, toParse());
+      expect(sqrt, toParse());
     });
 
     test("should error when there is no group", () {
-        expect(missingGroup, toNotParse());
+      expect(missingGroup, toNotParse());
     });
 
     test("should produce sqrts", () {
-        final parse = getParsed(sqrt).children[0];
+      final parse = getParsed(sqrt).children[0];
 
-        expect(parse, isA<SqrtNode>());
+      expect(parse, isA<SqrtNode>());
     });
 
     test("should build sized square roots", () {
-        expect("\\Large\\sqrt.children[3]{x}",toBuild);
+      expect("\\Large\\sqrt.children[3]{x}", toBuild);
     });
-});
+  });
 
-group("A TeX-compliant parser", () {
+  group("A TeX-compliant parser", () {
     test("should work", () {
-        expect(r'\frac 2 3', toParse());
+      expect(r'\frac 2 3', toParse());
     });
 
     test("should fail if there are not enough arguments", () {
-        final missingGroups = [
-            r'\frac{x}',
-            r'\textcolor{#fff}',
-            r'\rule{1em}',
-            r'\llap',
-            r'\bigl',
-            r'\text',
-        ];
+      final missingGroups = [
+        r'\frac{x}',
+        r'\textcolor{#fff}',
+        r'\rule{1em}',
+        r'\llap',
+        r'\bigl',
+        r'\text',
+      ];
 
-        for (var i = 0; i < missingGroups.length; i++) {
-            expect(missingGroups[i], toNotParse());
-        }
+      for (var i = 0; i < missingGroups.length; i++) {
+        expect(missingGroups[i], toNotParse());
+      }
     });
 
     test("should fail when there are missing sup/subscripts", () {
-        expect(r'x^', toNotParse());
-        expect(r'x_', toNotParse());
+      expect(r'x^', toNotParse());
+      expect(r'x_', toNotParse());
     });
 
     test("should fail when arguments require arguments", () {
-        final badArguments = [
-            r'\frac \frac x y z',
-            r'\frac x \frac y z',
-            r'\frac \sqrt x y',
-            r'\frac x \sqrt y',
-            r'\frac \mathllap x y',
-            r'\frac x \mathllap y',
-            // This actually doesn't work in real TeX, but it is suprisingly
-            // hard to get this to correctly work. So, we take hit of very small
-            // amounts of non-compatiblity in order for the rest of the tests to
-            // work
-            // r`([r'\llap \frac x y',
-            r'\mathllap \mathllap x',
-            r'\sqrt \mathllap x',
-        ];
+      final badArguments = [
+        r'\frac \frac x y z',
+        r'\frac x \frac y z',
+        r'\frac \sqrt x y',
+        r'\frac x \sqrt y',
+        r'\frac \mathllap x y',
+        r'\frac x \mathllap y',
+        // This actually doesn't work in real TeX, but it is suprisingly
+        // hard to get this to correctly work. So, we take hit of very small
+        // amounts of non-compatiblity in order for the rest of the tests to
+        // work
+        // r`([r'\llap \frac x y',
+        r'\mathllap \mathllap x',
+        r'\sqrt \mathllap x',
+      ];
 
-        for (var i = 0; i < badArguments.length; i++) {
-            expect(badArguments[i], toNotParse());
-        }
+      for (var i = 0; i < badArguments.length; i++) {
+        expect(badArguments[i], toNotParse());
+      }
     });
 
     test("should work when the arguments have braces", () {
-        final goodArguments = [
-            r'\frac {\frac x y} z',
-            r'\frac x {\frac y z}',
-            r'\frac {\sqrt x} y',
-            r'\frac x {\sqrt y}',
-            // r'\frac {\mathllap x} y',
-            // r'\frac x {\mathllap y}',
-            // r'\mathllap {\frac x y}',
-            // r'\mathllap {\mathllap x}',
-            // r'\sqrt {\mathllap x}',
-        ];
+      final goodArguments = [
+        r'\frac {\frac x y} z',
+        r'\frac x {\frac y z}',
+        r'\frac {\sqrt x} y',
+        r'\frac x {\sqrt y}',
+        // r'\frac {\mathllap x} y',
+        // r'\frac x {\mathllap y}',
+        // r'\mathllap {\frac x y}',
+        // r'\mathllap {\mathllap x}',
+        // r'\sqrt {\mathllap x}',
+      ];
 
-        for (var i = 0; i < goodArguments.length; i++) {
-            expect(goodArguments[i], toParse());
-        }
+      for (var i = 0; i < goodArguments.length; i++) {
+        expect(goodArguments[i], toParse());
+      }
     });
 
     test("should fail when sup/subscripts require arguments", () {
-        final badSupSubscripts = [
-            r'x^\sqrt x',
-            // r'x^\mathllap x',
-            r'x_\sqrt x',
-            // r'x_\mathllap x',
-        ];
+      final badSupSubscripts = [
+        r'x^\sqrt x',
+        // r'x^\mathllap x',
+        r'x_\sqrt x',
+        // r'x_\mathllap x',
+      ];
 
-        for (var i = 0; i < badSupSubscripts.length; i++) {
-            expect(badSupSubscripts[i], toNotParse());
-        }
+      for (var i = 0; i < badSupSubscripts.length; i++) {
+        expect(badSupSubscripts[i], toNotParse());
+      }
     });
 
     test("should work when sup/subscripts arguments have braces", () {
-        final goodSupSubscripts = [
-            r'x^{\sqrt x}',
-            // r'x^{\mathllap x}',
-            r'x_{\sqrt x}',
-            // r'x_{\mathllap x}',
-        ];
+      final goodSupSubscripts = [
+        r'x^{\sqrt x}',
+        // r'x^{\mathllap x}',
+        r'x_{\sqrt x}',
+        // r'x_{\mathllap x}',
+      ];
 
-        for (var i = 0; i < goodSupSubscripts.length; i++) {
-            expect(goodSupSubscripts[i], toParse());
-        }
+      for (var i = 0; i < goodSupSubscripts.length; i++) {
+        expect(goodSupSubscripts[i], toParse());
+      }
     });
 
     test("should parse multiple primes correctly", () {
-        expect("x''''", toParse());
-        expect("x_2''", toParse());
-        expect("x''_2", toParse());
+      expect("x''''", toParse());
+      expect("x_2''", toParse());
+      expect("x''_2", toParse());
     });
 
     test("should fail when sup/subscripts are interspersed with arguments", () {
-        expect(r'\sqrt^23', toNotParse());
-        expect(r'\frac^234', toNotParse());
-        expect(r'\frac2^34', toNotParse());
+      expect(r'\sqrt^23', toNotParse());
+      expect(r'\frac^234', toNotParse());
+      expect(r'\frac2^34', toNotParse());
     });
 
     test("should succeed when sup/subscripts come after whole functions", () {
-        expect(r'\sqrt2^3', toParse());
-        expect(r'\frac23^4', toParse());
+      expect(r'\sqrt2^3', toParse());
+      expect(r'\frac23^4', toParse());
     });
 
     test("should succeed with a sqrt around a text/frac", () {
-        expect(r'\sqrt \frac x y', toParse());
-        expect(r'\sqrt \text x', toParse());
-        expect(r'x^\frac x y', toParse());
-        expect(r'x_\text x', toParse());
+      expect(r'\sqrt \frac x y', toParse());
+      expect(r'\sqrt \text x', toParse());
+      expect(r'x^\frac x y', toParse());
+      expect(r'x_\text x', toParse());
     });
 
     test("should fail when arguments are \\left", () {
-        final badLeftArguments = [
-            r'\frac \left( x \right) y',
-            r'\frac x \left( y \right)',
-            // r'\mathllap \left( x \right)',
-            r'\sqrt \left( x \right)',
-            r'x^\left( x \right)',
-        ];
+      final badLeftArguments = [
+        r'\frac \left( x \right) y',
+        r'\frac x \left( y \right)',
+        // r'\mathllap \left( x \right)',
+        r'\sqrt \left( x \right)',
+        r'x^\left( x \right)',
+      ];
 
-        for (var i = 0; i < badLeftArguments.length; i++) {
-            expect(badLeftArguments[i], toNotParse());
-        }
+      for (var i = 0; i < badLeftArguments.length; i++) {
+        expect(badLeftArguments[i], toNotParse());
+      }
     });
 
     test("should succeed when there are braces around the \\left/\\right", () {
-        final goodLeftArguments = [
-            r'\frac {\left( x \right)} y',
-            r'\frac x {\left( y \right)}',
-            // r'\mathllap {\left( x \right)}',
-            r'\sqrt {\left( x \right)}',
-            r'x^{\left( x \right)}',
-        ];
+      final goodLeftArguments = [
+        r'\frac {\left( x \right)} y',
+        r'\frac x {\left( y \right)}',
+        // r'\mathllap {\left( x \right)}',
+        r'\sqrt {\left( x \right)}',
+        r'x^{\left( x \right)}',
+      ];
 
-        for (var i = 0; i < goodLeftArguments.length; i++) {
-            expect(goodLeftArguments[i], toParse());
-        }
+      for (var i = 0; i < goodLeftArguments.length; i++) {
+        expect(goodLeftArguments[i], toParse());
+      }
     });
-});
+  });
 
-// group("An op symbol builder", () {
-//     test("should not fail", () {
-//         expect("\\int_i^n").toBuild();
-//         expect("\\iint_i^n").toBuild();
-//         expect("\\iiint_i^n").toBuild();
-//         expect("\\int\nolimits_i^n").toBuild();
-//         expect("\\iint\nolimits_i^n").toBuild();
-//         expect("\\iiint\nolimits_i^n").toBuild();
-//         expect("\\oint_i^n").toBuild();
-//         expect("\\oiint_i^n").toBuild();
-//         expect("\\oiiint_i^n").toBuild();
-//         expect("\\oint\nolimits_i^n").toBuild();
-//         expect("\\oiint\nolimits_i^n").toBuild();
-//         expect("\\oiiint\nolimits_i^n").toBuild();
-//     });
-// });
+  group("An op symbol builder", () {
+    test("should not fail", () {
+      expect("\\int_i^n", toBuild);
+      expect("\\iint_i^n", toBuild);
+      expect("\\iiint_i^n", toBuild);
+      expect("\\int\nolimits_i^n", toBuild);
+      expect("\\iint\nolimits_i^n", toBuild);
+      expect("\\iiint\nolimits_i^n", toBuild);
+      expect("\\oint_i^n", toBuild);
+      // expect("\\oiint_i^n",toBuild); // TODO
+      // expect("\\oiiint_i^n",toBuild);
+      expect("\\oint\nolimits_i^n", toBuild);
+      // expect("\\oiint\nolimits_i^n",toBuild);
+      // expect("\\oiiint\nolimits_i^n",toBuild);
+    });
+  });
 
-// group("A style change parser", () {
-//     test("should not fail", () {
-//         expect(r'\displaystyle x', toParse());
-//         expect(r'\textstyle x', toParse());
-//         expect(r'\scriptstyle x', toParse());
-//         expect(r'\scriptscriptstyle x', toParse());
-//     });
+  group("A style change parser", () {
+    test("should not fail", () {
+      expect(r'\displaystyle x', toParse());
+      expect(r'\textstyle x', toParse());
+      expect(r'\scriptstyle x', toParse());
+      expect(r'\scriptscriptstyle x', toParse());
+    });
 
-//     test("should produce the correct style", () {
-//         final displayParse = getParsed(r'\displaystyle x').children[0];
-//         expect(displayParse.style, "display");
+    test("should produce the correct style", () {
+      final displayParse =
+          getParsed(r'\displaystyle x').children[0] as StyleNode;
+      expect(displayParse.optionsDiff.style, MathStyle.display);
 
-//         final scriptscriptParse = getParsed(r'\scriptscriptstyle x').children[0];
-//         expect(scriptscriptParse.style, "scriptscript");
-//     });
+      final scriptscriptParse =
+          getParsed(r'\scriptscriptstyle x').children[0] as StyleNode;
+      expect(scriptscriptParse.optionsDiff.style, MathStyle.scriptscript);
+    });
 
-//     test("should only change the style within its group", () {
-//         final text = r'a b { c d \displaystyle e f } g h';
-//         final parse = getParsed(text);
+    test("should only change the style within its group", () {
+      final text = r'a b { c d \displaystyle e f } g h';
+      final parse = getParsed(text);
 
-//         final displayNode = parse.children[2].body.children[2];
+      final displayNode = parse.children[2].children[2] as StyleNode;
 
-//         expect(displayNode.type, "styling");
+      // expect(displayNode.type, "styling");
 
-//         final displayBody = displayNode.body;
+      final displayBody = displayNode;
 
-//         expect(displayBody.children.length, 2);
-//         expect(displayBody.children[0].text, "e");
-//     });
-// });
+      expect(displayBody.children.length, 2);
+      expect((displayBody.children[0] as AtomNode).symbol, "e");
+    });
+  });
 
-// group("A font parser", () {
-//     test("should parse \\mathrm, \\mathbb, \\mathit, and \\mathnormal", () {
-//         expect(r'\mathrm x', toParse());
-//         expect(r'\mathbb x', toParse());
-//         expect(r'\mathit x', toParse());
-//         expect(r'\mathnormal x', toParse());
-//         expect(r'\mathrm {x + 1}', toParse());
-//         expect(r'\mathbb {x + 1}', toParse());
-//         expect(r'\mathit {x + 1}', toParse());
-//         expect(r'\mathnormal {x + 1}', toParse());
-//     });
+  group("A font parser", () {
+    test("should parse \\mathrm, \\mathbb, \\mathit, and \\mathnormal", () {
+      expect(r'\mathrm x', toParse());
+      expect(r'\mathbb x', toParse());
+      expect(r'\mathit x', toParse());
+      // expect(r'\mathnormal x', toParse()); // TODO
+      expect(r'\mathrm {x + 1}', toParse());
+      expect(r'\mathbb {x + 1}', toParse());
+      expect(r'\mathit {x + 1}', toParse());
+      // expect(r'\mathnormal {x + 1}', toParse()); // TODO
+    });
 
-//     test("should parse \\mathcal and \\mathfrak", () {
-//         expect(r'\mathcal{ABC123}', toParse());
-//         expect(r'\mathfrak{abcABC123}', toParse());
-//     });
+    test("should parse \\mathcal and \\mathfrak", () {
+      expect(r'\mathcal{ABC123}', toParse());
+      expect(r'\mathfrak{abcABC123}', toParse());
+    });
 
-//     test("should produce the correct fonts", () {
-//         final mathbbParse = getParsed(r'\mathbb x').children[0];
-//         expect(mathbbParse.font, "mathbb");
-//         expect(mathbbParse.type, "font");
+    test("should produce the correct fonts", () {
+      final mathbbParse = getParsed(r'\mathbb x').children[0] as StyleNode;
+      expect(
+          mathbbParse.optionsDiff.mathFontOptions, fontOptionsTable["mathbb"]);
 
-//         final mathrmParse = getParsed(r'\mathrm x').children[0];
-//         expect(mathrmParse.font, "mathrm");
-//         expect(mathrmParse.type, "font");
+      final mathrmParse = getParsed(r'\mathrm x').children[0] as StyleNode;
+      expect(
+          mathrmParse.optionsDiff.mathFontOptions, fontOptionsTable["mathrm"]);
 
-//         final mathitParse = getParsed(r'\mathit x').children[0];
-//         expect(mathitParse.font, "mathit");
-//         expect(mathitParse.type, "font");
+      final mathitParse = getParsed(r'\mathit x').children[0] as StyleNode;
+      expect(
+          mathitParse.optionsDiff.mathFontOptions, fontOptionsTable["mathit"]);
 
-//         final mathnormalParse = getParsed(r'\mathnormal x').children[0];
-//         expect(mathnormalParse.font, "mathnormal");
-//         expect(mathnormalParse.type, "font");
+      // final mathnormalParse =
+      //     getParsed(r'\mathnormal x').children[0] as StyleNode;
+      // expect(mathnormalParse.optionsDiff.mathFontOptions,
+      //     fontOptionsTable["mathnormal"]);
 
-//         final mathcalParse = getParsed(r'\mathcal C').children[0];
-//         expect(mathcalParse.font, "mathcal");
-//         expect(mathcalParse.type, "font");
+      final mathcalParse = getParsed(r'\mathcal C').children[0] as StyleNode;
+      expect(mathcalParse.optionsDiff.mathFontOptions,
+          fontOptionsTable["mathcal"]);
 
-//         final mathfrakParse = getParsed(r'\mathfrak C').children[0];
-//         expect(mathfrakParse.font, "mathfrak");
-//         expect(mathfrakParse.type, "font");
-//     });
+      final mathfrakParse = getParsed(r'\mathfrak C').children[0] as StyleNode;
+      expect(mathfrakParse.optionsDiff.mathFontOptions,
+          fontOptionsTable["mathfrak"]);
+    });
 
-//     test("should parse nested font commands", () {
-//         final nestedParse = getParsed(r'\mathbb{R \neq \mathrm{R}}').children[0];
-//         expect(nestedParse.font, "mathbb");
-//         expect(nestedParse.type, "font");
+    // TODO
+    // test("should parse nested font commands", () {
+    //     final nestedParse = getParsed(r'\mathbb{R \neq \mathrm{R}}').children[0];
+    //     expect(nestedParse.font, "mathbb");
+    //     expect(nestedParse.type, "font");
 
-//         final bbBody = nestedParse.body.body;
-//         expect(bbBody.children.length, 3);
-//         expect(bbBody.children[0].type, "mathord");
-//         expect(bbBody.children[2].type, "font");
-//         expect(bbBody.children[2].font, "mathrm");
-//         expect(bbBody.children[2].type, "font");
-//     });
+    //     final bbBody = nestedParse.body.body;
+    //     expect(bbBody.children.length, 3);
+    //     expect(bbBody.children[0].type, "mathord");
+    //     expect(bbBody.children[2].type, "font");
+    //     expect(bbBody.children[2].font, "mathrm");
+    //     expect(bbBody.children[2].type, "font");
+    // });
 
-//     test("should work with \\textcolor", () {
-//         final colorMathbbParse = getParsed(r'\textcolor{blue}{\mathbb R}').children[0];
-//         expect(colorMathbbParse.type, "color");
-//         expect(colorMathbbParse.color, "blue");
-//         final body = colorMathbbParse.body;
-//         expect(body.children.length, 1);
-//         expect(body.children[0].type, "font");
-//         expect(body.children[0].font, "mathbb");
-//     });
+    test("should work with \\textcolor", () {
+      final colorMathbbParse =
+          getParsed(r'\textcolor{blue}{\mathbb R}').children[0] as StyleNode;
+      expect(colorMathbbParse.optionsDiff.color, colorByName["blue"]);
+      expect(colorMathbbParse.children.length, 1);
+      final body = colorMathbbParse.children[0] as StyleNode;
+      expect(body.optionsDiff.mathFontOptions, fontOptionsTable["mathbb"]);
+    });
 
-//     test("should not parse a series of font commands", () {
-//         expect(r'\mathbb \mathrm R'.not, toParse());
-//     });
+    test("should not parse a series of font commands", () {
+      expect(r'\mathbb \mathrm R', toNotParse());
+    });
 
-//     test("should nest fonts correctly", () {
-//         final bf = getParsed(r'\mathbf{a\mathrm{b}c}').children[0];
-//         expect(bf.type, "font");
-//         expect(bf.font, "mathbf");
-//         expect(bf.body.body.children.length, 3);
-//         expect(bf.body.body.children[0].text, "a");
-//         expect(bf.body.body.children[1].type, "font");
-//         expect(bf.body.body.children[1].font, "mathrm");
-//         expect(bf.body.body.children[2].text, "c");
-//     });
+    test("should nest fonts correctly", () {
+      final bf = getParsed(r'\mathbf{a\mathrm{b}c}').children[0] as StyleNode;
+      expect(bf.optionsDiff.mathFontOptions, fontOptionsTable["mathbf"]);
+      expect(bf.children.length, 3);
+      expect((bf.children[0] as AtomNode).symbol, "a");
+      expect(bf.children[1], isA<StyleNode>());
+      expect((bf.children[1] as StyleNode).optionsDiff.mathFontOptions,
+          fontOptionsTable["mathrm"]);
+      expect((bf.children[2] as AtomNode).symbol, "c");
+    });
 
-//     test("should have the correct greediness", () {
-//         expect(r'e^\mathbf{x}', toParse());
-//     });
+    test("should have the correct greediness", () {
+      expect(r'e^\mathbf{x}', toParse());
+    });
 
-//     test("\\boldsymbol should inherit mbin/mrel from argument", () => {
-//         final built = getBuilt(r'a\boldsymbol{}b\boldsymbol{=}c\boldsymbol{+}d\boldsymbol{++}e\boldsymbol{xyz}f');
-//         expect(built).toMatchSnapshot();
-//     });
+    testTexToMatchGoldenFile(
+        "\\boldsymbol should inherit mbin/mrel from argument",
+        r'a\boldsymbol{}b\boldsymbol{=}c\boldsymbol{+}d\boldsymbol{++}e\boldsymbol{xyz}f');
 
-//     test("old-style fonts work like new-style fonts", () => {
-//         expect(r'\rm xyz'.toParseLike(r'\mathrm{xyz}');
-//         expect(r'\sf xyz'.toParseLike(r'\mathsf{xyz}');
-//         expect(r'\tt xyz'.toParseLike(r'\mathtt{xyz}');
-//         expect(r'\bf xyz'.toParseLike(r'\mathbf{xyz}');
-//         expect(r'\it xyz'.toParseLike(r'\mathit{xyz}');
-//         expect(r'\cal xyz'.toParseLike(r'\mathcal{xyz}');
-//     });
-// });
+    testTexToRenderLike("old-style fonts work like new-style fonts", r'\rm xyz',
+        r'\mathrm{xyz}');
+    testTexToRenderLike("old-style fonts work like new-style fonts", r'\sf xyz',
+        r'\mathsf{xyz}');
+    testTexToRenderLike("old-style fonts work like new-style fonts", r'\tt xyz',
+        r'\mathtt{xyz}');
+    testTexToRenderLike("old-style fonts work like new-style fonts", r'\bf xyz',
+        r'\mathbf{xyz}');
+    testTexToRenderLike("old-style fonts work like new-style fonts", r'\it xyz',
+        r'\mathit{xyz}');
+    testTexToRenderLike("old-style fonts work like new-style fonts",
+        r'\cal xyz', r'\mathcal{xyz}');
+  });
 
 // group("A \\pmb builder", () {
 //     test("should not fail", () {
@@ -1701,63 +1709,75 @@ group("A TeX-compliant parser", () {
 //     });
 // });
 
-// group("A comment parser", () {
-//     test("should parse comments at the end of a line", () => {
-//         expect("a^2 + b^2 = c^2 % Pythagoras' Theorem\n"), toParse());
-//     });
+  group("A comment parser", () {
+    test("should parse comments at the end of a line", () {
+      expect("a^2 + b^2 = c^2 % Pythagoras' Theorem\n", toParse());
+    });
 
-//     test("should parse comments at the start of a line", () => {
-//         expect("% comment\n"), toParse());
-//     });
+    test("should parse comments at the start of a line", () {
+      expect("% comment\n", toParse());
+    });
 
-//     test("should parse multiple lines of comments in a row", () => {
-//         expect("% comment 1\n% comment 2\n"), toParse());
-//     });
+    test("should parse multiple lines of comments in a row", () {
+      expect("% comment 1\n% comment 2\n", toParse());
+    });
 
-//     test("should parse comments between subscript and superscript", () => {
-//         expect("x_3 %comment\n^2").toParseLike(r'x_3^2');
-//         expect("x^ %comment\n{2}").toParseLike(r'x^{2}');
-//         expect("x^ %comment\n\\frac{1}{2}").toParseLike(r'x^\frac{1}{2}');
-//     });
+    testTexToRenderLike(
+        "should parse comments between subscript and superscript",
+        "x_3 %comment\n^2",
+        r'x_3^2');
+    testTexToRenderLike(
+        "should parse comments between subscript and superscript",
+        "x^ %comment\n{2}",
+        r'x^{2}');
+    testTexToRenderLike(
+        "should parse comments between subscript and superscript",
+        "x^ %comment\n\\frac{1}{2}",
+        r'x^\frac{1}{2}');
 
-//     test("should parse comments in size and color groups", () => {
-//         expect("\\kern{1 %kern\nem}"), toParse());
-//         expect("\\kern1 %kern\nem"), toParse());
-//         expect("\\color{#f00%red\n}"), toParse());
-//     });
+    test("should parse comments in size and color groups", () {
+      expect("\\kern{1 %kern\nem}", toParse());
+      expect("\\kern1 %kern\nem", toParse());
+      expect("\\color{#f00%red\n}", toParse());
+    });
 
-//     test("should parse comments before an expression", () => {
-//         expect("%comment\n{2}").toParseLike(r'{2}');
-//     });
+    testTexToRenderLike(
+        "should parse comments before an expression", "%comment\n{2}", r'{2}');
 
-//     test("should parse comments before and between \\hline", () => {
-//         expect("\\begin{matrix}a&b\\\\ %hline\n" +
-//             "\\hline %hline\n" +
-//             "\\hline c&d\\end{matrix}"), toParse());
-//     });
+    test("should parse comments before and between \\hline", () {
+      expect(
+          "\\begin{matrix}a&b\\\\ %hline\n"
+          "\\hline %hline\n"
+          "\\hline c&d\\end{matrix}",
+          toParse());
+    });
 
-//     test("should parse comments in the macro definition", () => {
-//         expect("\\def\\foo{1 %}\n2}\n\\foo").toParseLike(r'12');
-//     });
+    //TODO
+    // test("should parse comments in the macro definition", () {
+    //     expect("\\def\\foo{1 %}\n2}\n\\foo").toParseLike(r'12');
+    // });
 
-//     test("should not expand nor ignore spaces after a command sequence in a comment", () => {
-//         expect("\\def\\foo{1\n2}\nx %\\foo\n").toParseLike(r'x');
-//     });
+    // test("should not expand nor ignore spaces after a command sequence in a comment", () {
+    //     expect("\\def\\foo{1\n2}\nx %\\foo\n").toParseLike(r'x');
+    // });
 
-//     test("should not parse a comment without newline in strict mode", () => {
-//         expect(r'x%y'.not, toParse(strictSettings));
-//         expect(r'x%y', toParse(nonstrictSettings));
-//     });
+    test("should not parse a comment without newline in strict mode", () {
+      expect(r'x%y', toNotParse(strictSettings));
+      expect(r'x%y', toParse(nonstrictSettings));
+    });
 
-//     test("should not produce or consume space", () => {
-//         expect("\\text{hello% comment 1\nworld}").toParseLike(r'\text{helloworld}');
-//         expect("\\text{hello% comment\n\nworld}").toParseLike(r'\text{hello world}');
-//     });
+    testTexToRenderLike("should not produce or consume space",
+        "\\text{hello% comment 1\nworld}", r'\text{helloworld}');
 
-//     test("should not include comments in the output", () => {
-//         expect("5 % comment\n").toParseLike(r'5');
-//     });
-// });
+    // TODO
+    // testTexToRenderLike("should not produce or consume space",
+    //     "\\text{hello% comment\n\nworld}", r'\text{hello world}');
+
+    testTexToRenderLike(
+        "should not include comments in the output", "5 % comment\n", r'5');
+
+    
+  });
 
 // group("An HTML font tree-builder", () {
 //     test("should render \\mathbb{R} with the correct font", () {
