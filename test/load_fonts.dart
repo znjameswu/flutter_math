@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 Future<void> loadKaTeXFonts() async {
   //https://github.com/flutter/flutter/issues/20907
-  if (Directory.current.path.endsWith('/test')) {
+  if (Directory.current.path.endsWith('/test') || Directory.current.path.endsWith('\\test')) {
     Directory.current = Directory.current.parent;
   }
 

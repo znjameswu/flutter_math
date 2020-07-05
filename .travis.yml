@@ -30,7 +30,7 @@ cache:
     - $HOME/.pub-cache
 
 script:
-- ./flutter/bin/flutter test
+- ./flutter/bin/flutter test --coverage
 # - set -e
 # - dartfmt -n --set-exit-if-changed lib/
 # - dartfmt -n --set-exit-if-changed test/
