@@ -420,7 +420,7 @@ const texSymbolCommandConfigs = {
     '/': TexSymbolConfig('/'), 
     '@': TexSymbolConfig('@'), 
     '.': TexSymbolConfig('.'), 
-    '"': TexSymbolConfig('"'), 
+    '\"': TexSymbolConfig('\"'), 
     'A': TexSymbolConfig('A'), 
     'B': TexSymbolConfig('B'), 
     'C': TexSymbolConfig('C'), 
@@ -1525,7 +1525,7 @@ const texSymbolCommandConfigs = {
     '<': TexSymbolConfig('<'), 
     '>': TexSymbolConfig('>'), 
     '|': TexSymbolConfig('|'), 
-    '"': TexSymbolConfig('"'), 
+    '\"': TexSymbolConfig('\"'), 
     ';': TexSymbolConfig(';'), 
     ':': TexSymbolConfig(':'), 
     '?': TexSymbolConfig('?'), 
@@ -2172,7 +2172,7 @@ const texSymbolCommandConfigs = {
     '\\textbackslash': TexSymbolConfig('\\'), 
     '\\\'': TexSymbolConfig('\u02CA'), 
     '\\`': TexSymbolConfig('\u02CB'), 
-    '\\"': TexSymbolConfig('\u00A8'), 
+    '\\\"': TexSymbolConfig('\u00A8'), 
     '\\textasciitilde': TexSymbolConfig('~'), 
     '\\=': TexSymbolConfig('\u02C9'), 
     '\\u': TexSymbolConfig('\u02D8'), 
@@ -2189,3 +2189,10 @@ const texSymbolCommandConfigs = {
 };
 
 const extraLatin = {'Ç', 'Ð', 'Þ', 'ç', 'þ'};
+
+const ligatures = {
+  '–': '--',
+  '—': '---',
+  '“': '``',
+  '”': "''",
+};
