@@ -10,8 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void testTexToMatchGoldenFile(
   String description,
-  String expression,
-  String location, {
+  String expression, {
+  String location,
   double scale = 1,
 }) {
   testWidgets(description, (WidgetTester tester) async {
@@ -41,12 +41,13 @@ void testTexToMatchGoldenFile(
     await tester.pumpAndSettle();
     if (Platform.isWindows) {
       // Android-specific code
-      await expectLater(find.byType(FlutterMath), matchesGoldenFile(location));
+      await expectLater(find.byType(FlutterMath),
+          matchesGoldenFile(location ?? 'golden/${description.hashCode}.png'));
     }
   });
 }
 
-void testTexToWidget(
+void testTexToRender(
   String description,
   String expression,
   Future<void> Function(WidgetTester) callback,
@@ -76,12 +77,81 @@ void testTexToWidget(
   });
 }
 
+void testTexToRenderLike(
+    String description, String expression1, String expression2,
+    [Settings settings = strictSettings]) {
+  testWidgets(description, (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: RepaintBoundary(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FlutterMath.fromTexString(
+                  expression1,
+                  options: Options(
+                    style: MathStyle.display,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    if (Platform.isWindows) {
+      // Android-specific code
+      await expectLater(find.byType(FlutterMath),
+          matchesGoldenFile('golden/${description.hashCode}.png'));
+    }
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: RepaintBoundary(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FlutterMath.fromTexString(
+                  expression2,
+                  options: Options(
+                    style: MathStyle.display,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    if (Platform.isWindows) {
+      // Android-specific code
+      await expectLater(find.byType(FlutterMath),
+          matchesGoldenFile('golden/${description.hashCode}.png'));
+    }
+  });
+}
+
+const strictSettings = Settings(strict: Strict.error);
+const nonStrictSettings = Settings(strict: Strict.ignore);
+
+GreenNode getParsed(String expr, [Settings settings = const Settings()]) {
+  return TexParser(expr, settings).parse();
+}
+
 String prettyPrintJson(Map<String, Object> a) =>
     JsonEncoder.withIndent('| ').convert(a);
 
-final toParse = _ToParse();
+_ToParse toParse([Settings settings = strictSettings]) => _ToParse(settings);
 
 class _ToParse extends Matcher {
+  final Settings settings;
+
+  _ToParse(this.settings);
+
   @override
   Description describe(Description description) =>
       description.add('a TeX string can be parsed with default settings');
@@ -91,7 +161,7 @@ class _ToParse extends Matcher {
       Map matchState, bool verbose) {
     try {
       if (item is String) {
-        TexParser(item, const Settings()).parse();
+        TexParser(item, settings).parse();
         return super
             .describeMismatch(item, mismatchDescription, matchState, verbose);
       }
@@ -108,7 +178,7 @@ class _ToParse extends Matcher {
     try {
       if (item is String) {
         final res = TexParser(item, const Settings()).parse();
-        print(prettyPrintJson(res.toJson()));
+        // print(prettyPrintJson(res.toJson()));
         return true;
       }
       return false;
@@ -118,7 +188,7 @@ class _ToParse extends Matcher {
   }
 }
 
-final toNotParse = _ToNotParse();
+_ToNotParse toNotParse() => _ToNotParse();
 
 class _ToNotParse extends Matcher {
   @override
@@ -131,7 +201,9 @@ class _ToNotParse extends Matcher {
     try {
       if (item is String) {
         final res = TexParser(item, const Settings()).parse();
-        return mismatchDescription.add(prettyPrintJson(res.toJson()));
+        return super
+            .describeMismatch(item, mismatchDescription, matchState, verbose);
+        // return mismatchDescription.add(prettyPrintJson(res.toJson()));
       }
       return mismatchDescription.add('input is not a string');
     } on ParseError catch (e) {
@@ -145,7 +217,7 @@ class _ToNotParse extends Matcher {
     try {
       if (item is String) {
         final res = TexParser(item, const Settings()).parse();
-        print(prettyPrintJson(res.toJson()));
+        // print(prettyPrintJson(res.toJson()));
         return false;
       }
       return false;
@@ -190,7 +262,7 @@ class _ToBuild extends Matcher {
     try {
       if (item is String) {
         final res = TexParser(item, const Settings()).parse();
-        print(prettyPrintJson(res.toJson()));
+        // print(prettyPrintJson(res.toJson()));
         return true;
       }
       return false;

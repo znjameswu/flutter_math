@@ -14,20 +14,20 @@ import '../syntax_tree.dart';
 class FracNode extends SlotableNode {
   final Options options;
   final EquationRowNode numerator;
-  final EquationRowNode denumerator;
+  final EquationRowNode denominator;
   final Measurement barSize;
   final bool continued;
   FracNode({
     this.options,
     @required this.numerator,
-    @required this.denumerator,
+    @required this.denominator,
     this.barSize,
     this.continued = false,
   })  : assert(numerator != null),
-        assert(denumerator != null);
+        assert(denominator != null);
 
   @override
-  List<EquationRowNode> computeChildren() => [numerator, denumerator];
+  List<EquationRowNode> computeChildren() => [numerator, denominator];
 
   FracNode copyWith({
     Options options,
@@ -38,7 +38,7 @@ class FracNode extends SlotableNode {
       FracNode(
         options: options ?? this.options,
         numerator: numerator ?? this.numerator,
-        denumerator: denumerator ?? this.denumerator,
+        denominator: denumerator ?? this.denominator,
         barSize: barSize ?? this.barSize,
       );
 

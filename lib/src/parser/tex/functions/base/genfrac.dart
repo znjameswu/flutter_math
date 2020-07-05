@@ -126,7 +126,7 @@ GreenNode _internalFracHandler({
   }
   GreenNode res = FracNode(
     numerator: numer,
-    denumerator: denom,
+    denominator: denom,
     barSize: hasBarLine ? null : Measurement.zero,
     continued: funcName == '\\cfrac',
   );
@@ -202,7 +202,7 @@ GreenNode _genfracHandler(TexParser parser, FunctionContext context) {
 
   GreenNode res = FracNode(
     numerator: numer.wrapWithEquationRow(),
-    denumerator: denom.wrapWithEquationRow(),
+    denominator: denom.wrapWithEquationRow(),
     barSize: barSize,
   );
 
@@ -232,7 +232,7 @@ GreenNode _aboveHandler(TexParser parser, FunctionContext context) {
   );
   return FracNode(
     numerator: numerBody.wrapWithEquationRow(),
-    denumerator: denomBody.wrapWithEquationRow(),
+    denominator: denomBody.wrapWithEquationRow(),
     barSize: barSize,
   );
 }
@@ -244,7 +244,7 @@ GreenNode _aboveFracHandler(TexParser parser, FunctionContext context) {
 
   return FracNode(
     numerator: numer.wrapWithEquationRow(),
-    denumerator: denom.wrapWithEquationRow(),
+    denominator: denom.wrapWithEquationRow(),
     barSize: barSize,
   );
 }
