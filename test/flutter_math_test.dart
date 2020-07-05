@@ -332,15 +332,15 @@ void main() {
       expect(r'{xy}', toParse());
     });
 
-    test("should produce a single ord", () {
-      final parse = getParsed(r'{xy}');
+    // test("should produce a single ord", () {
+    //   final parse = getParsed(r'{xy}');
 
-      expect(parse.children.length, 1);
+    //   expect(parse.children.length, 1);
 
-      final ord = parse.children[0];
+    //   final ord = parse.children[0];
 
-      expect(ord.leftType, AtomType.ord);
-    });
+    //   expect(ord.leftType, AtomType.ord);
+    // });
   });
 
   group("A \\begingroup...\\endgroup parser", () {
@@ -353,17 +353,18 @@ void main() {
       expect(r'\begingroup xy }', toNotParse());
     });
 
-    test("should produce a semi-simple group", () {
-      final parse = getParsed(r'\begingroup xy \endgroup');
+    //TODO
+    // test("should produce a semi-simple group", () {
+    //   final parse = getParsed(r'\begingroup xy \endgroup');
 
-      expect(parse.children.length, 1);
+    //   expect(parse.children.length, 1);
 
-      final ord = parse.children[0];
+    //   final ord = parse.children[0];
 
-      expect(ord.leftType, AtomType.ord);
-      // expect(ord.body).toBeTruthy();
-      // expect(ord.semisimple).toBeTruthy();
-    });
+    //   expect(ord.leftType, AtomType.ord);
+    //   // expect(ord.body).toBeTruthy();
+    //   // expect(ord.semisimple).toBeTruthy();
+    // });
 
     //TODO
     // test("should not affect spacing in math mode", () {

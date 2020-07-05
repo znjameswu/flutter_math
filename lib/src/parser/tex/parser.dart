@@ -122,17 +122,17 @@ class TexParser {
             ),
           );
           body.clear();
-          body.addAll(atom.expandEquationRow());
+          body.add(atom);
         } finally {
           _leaveArgumentParsingMode(lex.text);
         }
       } else {
         // Add a normal atom
-        final atom = this.parseAtom(breakOnTokenText).expandEquationRow();
+        final atom = this.parseAtom(breakOnTokenText);
         if (atom == null) {
           break;
         }
-        body.addAll(atom);
+        body.add(atom);
       }
     }
 
@@ -444,11 +444,11 @@ class TexParser {
   }
 
   static final _parseColorRegex1 =
-      RegExp(r'#([a-f0-9])([a-f0-9])([a-f0-9])', caseSensitive: false);
+      RegExp(r'^#([a-f0-9])([a-f0-9])([a-f0-9])$', caseSensitive: false);
   static final _parseColorRegex2 = RegExp(
-      r'#?([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})',
+      r'^#?([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})$',
       caseSensitive: false);
-  static final _parseColorRegex3 = RegExp(r'([a-z]+)', caseSensitive: false);
+  static final _parseColorRegex3 = RegExp(r'^([a-z]+)$', caseSensitive: false);
   // static final _parseColorRegex =
   //     RegExp(r'^(#[a-f0-9]{3}|#?[a-f0-9]{6}|[a-z]+)$', caseSensitive: false);
   // static final _matchColorRegex =
@@ -481,9 +481,9 @@ class TexParser {
     if (match2 != null) {
       return Color.fromARGB(
         0xff,
-        int.parse(match3[0], radix: 16),
-        int.parse(match3[1], radix: 16),
-        int.parse(match3[2], radix: 16),
+        int.parse(match2[1], radix: 16),
+        int.parse(match2[2], radix: 16),
+        int.parse(match2[3], radix: 16),
       );
     }
 
@@ -491,9 +491,9 @@ class TexParser {
     if (match1 != null) {
       return Color.fromARGB(
         0xff,
-        int.parse(match3[0] * 2, radix: 16),
-        int.parse(match3[1] * 2, radix: 16),
-        int.parse(match3[2] * 2, radix: 16),
+        int.parse(match1[1] * 2, radix: 16),
+        int.parse(match1[2] * 2, radix: 16),
+        int.parse(match1[3] * 2, radix: 16),
       );
     }
     throw ParseError("Invalid color: '${res.text}'");
