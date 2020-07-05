@@ -28,7 +28,6 @@ import 'load_fonts.dart';
 // test\(("[ \S]+"), ?\(\) *\{\n *expect\(([^\)]*)\.toParseLike\(([^\)]*), ([\S]*)\);
 
 void main() {
-
   setUpAll(loadKaTeXFonts);
   group("A parser", () {
     test("should not fail on an empty string", () {
@@ -691,8 +690,7 @@ void main() {
             (parse.numerator.children[0].children[1].children[0] as AtomNode)
                 .symbol,
             "2");
-        expect(
-            (parse.denominator.children[0] as AtomNode).symbol, "3");
+        expect((parse.denominator.children[0] as AtomNode).symbol, "3");
       }
     });
 
@@ -954,75 +952,74 @@ void main() {
     // });
   });
 
-// group("A tie parser", () {
-//     final mathTie = "a~b";
-//     final textTie = r'\text{a~ b}';
+  group("A tie parser", () {
+    final mathTie = "a~b";
+    final textTie = r'\text{a~ b}';
 
-//     test("should parse ties in math mode", () {
-//         expect(mathTie), toParse());
-//     });
+    test("should parse ties in math mode", () {
+      expect(mathTie, toParse());
+    });
 
-//     test("should parse ties in text mode", () {
-//         expect(textTie), toParse());
-//     });
+    test("should parse ties in text mode", () {
+      expect(textTie, toParse());
+    });
 
-//     test("should produce spacing in math mode", () {
-//         final parse = getParsed(mathTie);
+    test("should produce spacing in math mode", () {
+      final parse = getParsed(mathTie);
 
-//         expect(parse.children[1].type, "spacing");
-//     });
+      expect(parse.children[1].leftType, AtomType.spacing);
+    });
 
-//     test("should produce spacing in text mode", () {
-//         final text = getParsed(textTie).children[0];
-//         final parse = text.body;
+    test("should produce spacing in text mode", () {
+      final text = getParsed(textTie).children[0];
 
-//         expect(parse.children[1].type, "spacing");
-//     });
+      expect(text.children[1].leftType, AtomType.spacing);
+    });
 
-//     test("should not contract with spaces in text mode", () {
-//         final text = getParsed(textTie).children[0];
-//         final parse = text.body;
+    test("should not contract with spaces in text mode", () {
+      final text = getParsed(textTie).children[0];
 
-//         expect(parse.children[2].type, "spacing");
-//     });
-// });
+      expect(text.children[2].leftType, AtomType.spacing);
+    });
+  });
 
-// group("A delimiter sizing parser", () {
-//     final normalDelim = r'\bigl |';
-//     final notDelim = r'\bigl x';
-//     final bigDelim = r'\Biggr \langle';
+  group("A delimiter sizing parser", () {
+    final normalDelim = r'\bigl |';
+    final notDelim = r'\bigl x';
+    final bigDelim = r'\Biggr \langle';
 
-//     test("should parse normal delimiters", () {
-//         expect(normalDelim), toParse());
-//         expect(bigDelim), toParse());
-//     });
+    test("should parse normal delimiters", () {
+      expect(normalDelim, toParse());
+      expect(bigDelim, toParse());
+    });
 
-//     test("should not parse not-delimiters", () {
-//         expect(notDelim).not, toParse());
-//     });
+    test("should not parse not-delimiters", () {
+      expect(notDelim, toNotParse());
+    });
 
-//     test("should produce a delimsizing", () {
-//         final parse = getParsed(normalDelim).children[0];
+    test("should produce a delimsizing", () {
+      final parse = getParsed(normalDelim).children[0];
 
-//         expect(parse.type, "delimsizing");
-//     });
+      expect(parse, isA<AtomNode>());
+      expect((parse as AtomNode).overrideFont, isNotNull);
+    });
 
-//     test("should produce the correct direction delimiter", () {
-//         final leftParse = getParsed(normalDelim).children[0];
-//         final rightParse = getParsed(bigDelim).children[0];
+    test("should produce the correct direction delimiter", () {
+      final leftParse = getParsed(normalDelim).children[0];
+      final rightParse = getParsed(bigDelim).children[0];
 
-//         expect(leftParse.mclass, "mopen");
-//         expect(rightParse.mclass, "mclose");
-//     });
+      expect(leftParse.leftType, AtomType.open);
+      expect(rightParse.leftType, AtomType.close);
+    });
 
-//     test("should parse the correct size delimiter", () {
-//         final smallParse = getParsed(normalDelim).children[0];
-//         final bigParse = getParsed(bigDelim).children[0];
+    test("should parse the correct size delimiter", () {
+      final smallParse = getParsed(normalDelim).children[0];
+      final bigParse = getParsed(bigDelim).children[0];
 
-//         expect(smallParse.size, 1);
-//         expect(bigParse.size, 4);
-//     });
-// });
+      expect((smallParse as AtomNode).overrideFont.fontFamily, 'Size1');
+      expect((bigParse as AtomNode).overrideFont.fontFamily, 'Size4');
+    });
+  });
 
 // group("An overline parser", () {
 //     final overline = r'\overline{x}';

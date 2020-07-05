@@ -164,17 +164,11 @@ AtomNode _checkDelimiter(GreenNode delim, FunctionContext context) {
 GreenNode _delimSizeHandler(TexParser parser, FunctionContext context) {
   final delimArg = parser.parseArgNode(mode: Mode.math, optional: false);
   final delim = _checkDelimiter(delimArg, context);
-  return StyleNode(
-    children: [
-      AtomNode(
-        symbol: delim.symbol,
-        atomType: _delimiterTypes[context.funcName],
-      )
-    ],
-    optionsDiff: OptionsDiff(
-      mathFontOptions:
-          FontOptions(fontFamily: 'Size${_delimiterSizes[context.funcName]}'),
-    ),
+  return AtomNode(
+    symbol: delim.symbol,
+    atomType: _delimiterTypes[context.funcName],
+    overrideFont:
+        FontOptions(fontFamily: 'Size${_delimiterSizes[context.funcName]}'),
   );
 }
 
