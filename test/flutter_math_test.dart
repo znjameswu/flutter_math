@@ -12,6 +12,7 @@ import 'package:flutter_math/src/ast/nodes/style.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helper.dart';
+import 'load_fonts.dart';
 
 // function\(\) \{   -> () {
 // describe\("  -> group("
@@ -27,6 +28,8 @@ import 'helper.dart';
 // test\(("[ \S]+"), ?\(\) *\{\n *expect\(([^\)]*)\.toParseLike\(([^\)]*), ([\S]*)\);
 
 void main() {
+
+  setUpAll(loadKaTeXFonts);
   group("A parser", () {
     test("should not fail on an empty string", () {
       expect(r'', toParse(strictSettings));
