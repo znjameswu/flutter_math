@@ -23,7 +23,7 @@ class FlutterMathController extends ChangeNotifier {
   //   _ast = null;
   // }
   // TextSelection _selection =
-  //     const TextSelection.collapsed(offset: 0, affinity: TextAffinity.upstream);
+  //  const TextSelection.collapsed(offset: 0, affinity: TextAffinity.upstream);
   // TextSelection get selection => _selection;
 
 }

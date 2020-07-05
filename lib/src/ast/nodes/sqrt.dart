@@ -11,7 +11,6 @@ import '../../render/layout/layout_builder_baseline.dart';
 import '../../render/layout/reset_baseline.dart';
 import '../../render/layout/reset_dimension.dart';
 import '../../render/svg/delimiter.dart';
-import '../../render/svg/draw_svg_root.dart';
 import '../../render/svg/svg_geomertry.dart';
 import '../../render/svg/svg_string.dart';
 import '../../render/utils/render_box_offset.dart';

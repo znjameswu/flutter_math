@@ -133,8 +133,6 @@ class _ToNotParse extends Matcher {
     } on ParseError catch (e) {
       return super
           .describeMismatch(item, mismatchDescription, matchState, verbose);
-    } catch (e) {
-      return mismatchDescription.add(e.toString());
     }
   }
 
@@ -170,6 +168,7 @@ class _ToBuild extends Matcher {
     try {
       if (item is String) {
         final node = TexParser(item, const Settings()).parse();
+        // ignore: unused_local_variable
         final widget = SyntaxTree(greenRoot: node).buildWidget(options);
         return super
             .describeMismatch(item, mismatchDescription, matchState, verbose);

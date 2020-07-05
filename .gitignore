@@ -10,6 +10,7 @@
 .svn/
 .katex_symbol_mapping/
 ._breakable/
+lib/src/render/layout/breakable/
 
 # IntelliJ related
 *.iml

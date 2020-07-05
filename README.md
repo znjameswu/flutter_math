@@ -1,6 +1,6 @@
 # Flutter Math
 
-[![Build Status](https://travis-ci.com/znjameswu/flutter_math.svg?branch=master)](https://travis-ci.com/memspace/zefyr) [![codecov](https://codecov.io/gh/znjameswu/flutter_math/branch/master/graph/badge.svg)](https://codecov.io/gh/znjameswu/flutter_math)
+[![Build Status](https://travis-ci.com/znjameswu/flutter_math.svg?branch=master)](https://travis-ci.com/znjameswu/flutter_math) [![codecov](https://codecov.io/gh/znjameswu/flutter_math/branch/master/graph/badge.svg)](https://codecov.io/gh/znjameswu/flutter_math)
 
 Math equation rendering in pure Dart & Flutter. 
 
