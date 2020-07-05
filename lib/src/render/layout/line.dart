@@ -365,6 +365,10 @@ class RenderLine extends RenderBox
             maxHeightAboveBaseline, maxDepthBelowBaseline),
         parentUsesSize: true,
       );
+      final distance = child.getDistanceToBaseline(textBaseline);
+      maxHeightAboveBaseline = math.max(maxHeightAboveBaseline, distance);
+      maxDepthBelowBaseline =
+          math.max(maxDepthBelowBaseline, child.size.height - distance);
     }
 
     // Third pass. Calculate column width separate by aligners and spacers.
@@ -414,14 +418,17 @@ class RenderLine extends RenderBox
       var index = 0;
       for (final alignerOrSpacer in alignerAndSpacers) {
         if (aligner) {
-          alignerOrSpacer.layout(BoxConstraints.tightFor(width: 0.0), parentUsesSize: true);
+          alignerOrSpacer.layout(BoxConstraints.tightFor(width: 0.0),
+              parentUsesSize: true);
         } else {
-          alignerOrSpacer.layout(BoxConstraints.tightFor(
-            width: alignColWidth[index] +
-                alignColWidth[index + 1] -
-                colWidths[index] -
-                colWidths[index + 1],
-          ), parentUsesSize: true);
+          alignerOrSpacer.layout(
+              BoxConstraints.tightFor(
+                width: alignColWidth[index] +
+                    alignColWidth[index + 1] -
+                    colWidths[index] -
+                    colWidths[index + 1],
+              ),
+              parentUsesSize: true);
         }
         aligner = !aligner;
         index++;
@@ -448,7 +455,7 @@ class RenderLine extends RenderBox
     }
   }
 
-  List<double> get alignColWidth =>  _alignColWidth;
+  List<double> get alignColWidth => _alignColWidth;
   List<double> _alignColWidth;
   set alignColWidth(List<double> value) {
     if (_alignColWidth != value) {
