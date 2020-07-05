@@ -546,7 +546,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
     final lastNonSpace = flattenedChildList.reversed.firstWhere(
         (element) => element.rightType != AtomType.spacing,
         orElse: () => null);
-    _rightType ??= overrideType ??
+    return _rightType ??= overrideType ??
         (lastNonSpace?.rightType == AtomType.bin
             ? AtomType.ord
             : lastNonSpace?.rightType) ??

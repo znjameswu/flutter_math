@@ -974,13 +974,13 @@ void main() {
     });
 
     test("should produce spacing in text mode", () {
-      final text = getParsed(textTie).children[0];
+      final text = getParsed(textTie);
 
       expect(text.children[1].leftType, AtomType.spacing);
     });
 
     test("should not contract with spaces in text mode", () {
-      final text = getParsed(textTie).children[0];
+      final text = getParsed(textTie);
 
       expect(text.children[2].leftType, AtomType.spacing);
     });
@@ -1123,188 +1123,193 @@ void main() {
     });
   });
 
-// group("A kern parser", () {
-//     final emKern = r'\kern{1em}';
-//     final exKern = r'\kern{1ex}';
-//     final muKern = r'\mkern{1mu}';
-//     final abKern = r'a\kern{1em}b';
-//     final badUnitRule = r'\kern{1au}';
-//     final noNumberRule = r'\kern{em}';
+  group("A kern parser", () {
+    final emKern = r'\kern{1em}';
+    final exKern = r'\kern{1ex}';
+    final muKern = r'\mkern{1mu}';
+    final abKern = r'a\kern{1em}b';
+    final badUnitRule = r'\kern{1au}';
+    final noNumberRule = r'\kern{em}';
 
-//     test("should list the correct units", () {
-//         final emParse = getParsed(emKern).children[0];
-//         final exParse = getParsed(exKern).children[0];
-//         final muParse = getParsed(muKern).children[0];
-//         final abParse = getParsed(abKern).children[1];
+    test("should list the correct units", () {
+      final emParse = getParsed(emKern).children[0] as SpaceNode;
+      final exParse = getParsed(exKern).children[0] as SpaceNode;
+      final muParse = getParsed(muKern).children[0] as SpaceNode;
+      final abParse = getParsed(abKern).children[1] as SpaceNode;
 
-//         expect(emParse.dimension.unit, "em");
-//         expect(exParse.dimension.unit, "ex");
-//         expect(muParse.dimension.unit, "mu");
-//         expect(abParse.dimension.unit, "em");
-//     });
+      expect(emParse.width.unit, Unit.em);
+      expect(exParse.width.unit, Unit.ex);
+      expect(muParse.width.unit, Unit.mu);
+      expect(abParse.width.unit, Unit.em);
+    });
 
-//     test("should not parse invalid units", () {
-//         expect(badUnitRule).not, toParse());
-//         expect(noNumberRule).not, toParse());
-//     });
+    test("should not parse invalid units", () {
+      expect(badUnitRule, toNotParse());
+      expect(noNumberRule, toNotParse());
+    });
 
-//     test("should parse negative sizes", () {
-//         final parse = getParsed(r'\kern{-1em}').children[0];
-//         expect(parse.dimension.number).toBeCloseTo(-1);
-//     });
+    test("should parse negative sizes", () {
+      final parse = getParsed(r'\kern{-1em}').children[0] as SpaceNode;
+      expect(parse.width.value, -1);
+    });
 
-//     test("should parse positive sizes", () {
-//         final parse = getParsed(r'\kern{+1em}').children[0];
-//         expect(parse.dimension.number).toBeCloseTo(1);
-//     });
-// });
+    test("should parse positive sizes", () {
+      final parse = getParsed(r'\kern{+1em}').children[0] as SpaceNode;
+      expect(parse.width.value, 1);
+    });
+  });
 
-// group("A non-braced kern parser", () {
-//     final emKern = r'\kern1em';
-//     final exKern = r'\kern 1 ex';
-//     final muKern = r'\mkern 1mu';
-//     final abKern1 = r'a\mkern1mub';
-//     final abKern2 = r'a\mkern-1mub';
-//     final abKern3 = r'a\mkern-1mu b';
-//     final badUnitRule = r'\kern1au';
-//     final noNumberRule = r'\kern em';
+  group("A non-braced kern parser", () {
+    final emKern = r'\kern1em';
+    final exKern = r'\kern 1 ex';
+    final muKern = r'\mkern 1mu';
+    final abKern1 = r'a\mkern1mub';
+    final abKern2 = r'a\mkern-1mub';
+    final abKern3 = r'a\mkern-1mu b';
+    final badUnitRule = r'\kern1au';
+    final noNumberRule = r'\kern em';
 
-//     test("should list the correct units", () {
-//         final emParse = getParsed(emKern).children[0];
-//         final exParse = getParsed(exKern).children[0];
-//         final muParse = getParsed(muKern).children[0];
-//         final abParse1 = getParsed(abKern1).children[1];
-//         final abParse2 = getParsed(abKern2).children[1];
-//         final abParse3 = getParsed(abKern3).children[1];
+    test("should list the correct units", () {
+      final emParse = getParsed(emKern).children[0] as SpaceNode;
+      final exParse = getParsed(exKern).children[0] as SpaceNode;
+      final muParse = getParsed(muKern).children[0] as SpaceNode;
+      final abParse1 = getParsed(abKern1).children[1] as SpaceNode;
+      final abParse2 = getParsed(abKern2).children[1] as SpaceNode;
+      final abParse3 = getParsed(abKern3).children[1] as SpaceNode;
 
-//         expect(emParse.dimension.unit, "em");
-//         expect(exParse.dimension.unit, "ex");
-//         expect(muParse.dimension.unit, "mu");
-//         expect(abParse1.dimension.unit, "mu");
-//         expect(abParse2.dimension.unit, "mu");
-//         expect(abParse3.dimension.unit, "mu");
-//     });
+      expect(emParse.width.unit, Unit.em);
+      expect(exParse.width.unit, Unit.ex);
+      expect(muParse.width.unit, Unit.mu);
+      expect(abParse1.width.unit, Unit.mu);
+      expect(abParse2.width.unit, Unit.mu);
+      expect(abParse3.width.unit, Unit.mu);
+    });
 
-//     test("should parse elements on either side of a kern", () {
-//         final abParse1 = getParsed(abKern1);
-//         final abParse2 = getParsed(abKern2);
-//         final abParse3 = getParsed(abKern3);
+    test("should parse elements on either side of a kern", () {
+      final abParse1 = getParsed(abKern1);
+      final abParse2 = getParsed(abKern2);
+      final abParse3 = getParsed(abKern3);
 
-//         expect(abParse1.children.length, 3);
-//         expect(abParse1.children[0].text, "a");
-//         expect(abParse1.children[2].text, "b");
-//         expect(abParse2.children.length, 3);
-//         expect(abParse2.children[0].text, "a");
-//         expect(abParse2.children[2].text, "b");
-//         expect(abParse3.children.length, 3);
-//         expect(abParse3.children[0].text, "a");
-//         expect(abParse3.children[2].text, "b");
-//     });
+      expect(abParse1.children.length, 3);
+      expect((abParse1.children[0] as AtomNode).symbol, "a");
+      expect((abParse1.children[2] as AtomNode).symbol, "b");
+      expect(abParse2.children.length, 3);
+      expect((abParse2.children[0] as AtomNode).symbol, "a");
+      expect((abParse2.children[2] as AtomNode).symbol, "b");
+      expect(abParse3.children.length, 3);
+      expect((abParse3.children[0] as AtomNode).symbol, "a");
+      expect((abParse3.children[2] as AtomNode).symbol, "b");
+    });
 
-//     test("should not parse invalid units", () {
-//         expect(badUnitRule).not, toParse());
-//         expect(noNumberRule).not, toParse());
-//     });
+    test("should not parse invalid units", () {
+      expect(badUnitRule, toNotParse());
+      expect(noNumberRule, toNotParse());
+    });
 
-//     test("should parse negative sizes", () {
-//         final parse = getParsed(r'\kern-1em').children[0];
-//         expect(parse.dimension.number).toBeCloseTo(-1);
-//     });
+    test("should parse negative sizes", () {
+      final parse = getParsed(r'\kern-1em').children[0] as SpaceNode;
+      expect(parse.width.value, -1);
+    });
 
-//     test("should parse positive sizes", () {
-//         final parse = getParsed(r'\kern+1em').children[0];
-//         expect(parse.dimension.number).toBeCloseTo(1);
-//     });
+    test("should parse positive sizes", () {
+      final parse = getParsed(r'\kern+1em').children[0] as SpaceNode;
+      expect(parse.width.value, 1);
+    });
 
-//     test("should handle whitespace", () {
-//         final abKern = "a\\mkern\t-\r1  \n mu\nb";
-//         final abParse = getParsed(abKern);
+    test("should handle whitespace", () {
+      final abKern = "a\\mkern\t-\r1  \n mu\nb";
+      final abParse = getParsed(abKern);
 
-//         expect(abParse.children.length, 3);
-//         expect(abParse.children[0].text, "a");
-//         expect(abParse.children[1].dimension.unit, "mu");
-//         expect(abParse.children[2].text, "b");
-//     });
-// });
+      expect(abParse.children.length, 3);
+      expect((abParse.children[0] as AtomNode).symbol, "a");
+      expect((abParse.children[1] as SpaceNode).width.unit, Unit.mu);
+      expect((abParse.children[2] as AtomNode).symbol, "b");
+    });
+  });
 
-// group("A left/right parser", () {
-//     final normalLeftRight = r'\left( \dfrac{x}{y} \right)';
-//     final emptyRight = r'\left( \dfrac{x}{y} \right.';
+  group("A left/right parser", () {
+    final normalLeftRight = r'\left( \dfrac{x}{y} \right)';
+    final emptyRight = r'\left( \dfrac{x}{y} \right.';
 
-//     test("should not fail", () {
-//         expect(normalLeftRight), toParse());
-//     });
+    test("should not fail", () {
+      expect(normalLeftRight, toParse());
+    });
 
-//     test("should produce a leftright", () {
-//         final parse = getParsed(normalLeftRight).children[0];
+    test("should produce a leftright", () {
+      final parse = getParsed(normalLeftRight).children[0];
 
-//         expect(parse.type, "leftright");
-//         expect(parse.left, "(");
-//         expect(parse.right, ")");
-//     });
+      expect(parse, isA<LeftRightNode>());
+      if (parse is LeftRightNode) {
+        expect(parse.leftDelim, "(");
+        expect(parse.rightDelim, ")");
+      }
+    });
 
-//     test("should error when it is mismatched", () {
-//         final unmatchedLeft = r'\left( \dfrac{x}{y}';
-//         final unmatchedRight = r'\dfrac{x}{y} \right)';
+    test("should error when it is mismatched", () {
+      final unmatchedLeft = r'\left( \dfrac{x}{y}';
+      final unmatchedRight = r'\dfrac{x}{y} \right)';
 
-//         expect(unmatchedLeft).not, toParse());
+      expect(unmatchedLeft, toNotParse());
 
-//         expect(unmatchedRight).not, toParse());
-//     });
+      expect(unmatchedRight, toNotParse());
+    });
 
-//     test("should error when braces are mismatched", () {
-//         final unmatched = r'{ \left( \dfrac{x}{y} } \right)';
-//         expect(unmatched).not, toParse());
-//     });
+    test("should error when braces are mismatched", () {
+      final unmatched = r'{ \left( \dfrac{x}{y} } \right)';
+      expect(unmatched, toNotParse());
+    });
 
-//     test("should error when non-delimiters are provided", () {
-//         final nonDelimiter = r`\left$ \dfrac{x}{y} \right)`;
-//         expect(nonDelimiter).not, toParse());
-//     });
+    test("should error when non-delimiters are provided", () {
+      final nonDelimiter = r'\left$ \dfrac{x}{y} \right)';
+      expect(nonDelimiter, toNotParse());
+    });
 
-//     test("should parse the empty '.' delimiter", () {
-//         expect(emptyRight), toParse());
-//     });
+    test("should parse the empty '.' delimiter", () {
+      expect(emptyRight, toParse());
+    });
 
-//     test("should parse the '.' delimiter with normal sizes", () {
-//         final normalEmpty = r'\Bigl .';
-//         expect(normalEmpty), toParse());
-//     });
+    test("should parse the '.' delimiter with normal sizes", () {
+      final normalEmpty = r'\Bigl .';
+      expect(normalEmpty, toParse());
+    });
 
-//     test("should handle \\middle", () {
-//         final normalMiddle = r'\left( \dfrac{x}{y} \middle| \dfrac{y}{z} \right)';
-//         expect(normalMiddle), toParse());
-//     });
+    test("should handle \\middle", () {
+      final normalMiddle = r'\left( \dfrac{x}{y} \middle| \dfrac{y}{z} \right)';
+      expect(normalMiddle, toParse());
+    });
 
-//     test("should handle multiple \\middles", () {
-//         final multiMiddle = r'\left( \dfrac{x}{y} \middle| \dfrac{y}{z} \middle/ \dfrac{z}{q} \right)';
-//         expect(multiMiddle), toParse());
-//     });
+    test("should handle multiple \\middles", () {
+      final multiMiddle =
+          r'\left( \dfrac{x}{y} \middle| \dfrac{y}{z} \middle/ \dfrac{z}{q} \right)';
+      expect(multiMiddle, toParse());
+    });
 
-//     test("should handle nested \\middles", () {
-//         final nestedMiddle = r'\left( a^2 \middle| \left( b \middle/ c \right) \right)';
-//         expect(nestedMiddle), toParse());
-//     });
+    test("should handle nested \\middles", () {
+      final nestedMiddle =
+          r'\left( a^2 \middle| \left( b \middle/ c \right) \right)';
+      expect(nestedMiddle, toParse());
+    });
 
-//     test("should error when \\middle is not in \\left...\\right", () {
-//         final unmatchedMiddle = r'(\middle|\dfrac{x}{y})';
-//         expect(unmatchedMiddle).not, toParse());
-//     });
-// });
+    test("should error when \\middle is not in \\left...\\right", () {
+      final unmatchedMiddle = r'(\middle|\dfrac{x}{y})';
+      expect(unmatchedMiddle, toNotParse());
+    });
+  });
 
-// group("left/right builder", () => {
-//     final cases = [
-//         [r`([r'\left\langle \right\rangle', r(r'\left< \right>')],
-//         [r`([r'\left\langle \right\rangle', '\\left\u27e8 \\right\u27e9'],
-//         [r`([r'\left\lparen \right\rparen', r(r'\left( \right)')],
-//     ];
+  group("left/right builder", () {
+    final cases = [
+      [r'\left\langle \right\rangle', r'\left< \right>'],
+      [r'\left\langle \right\rangle', '\\left\u27e8 \\right\u27e9'],
+      [r'\left\lparen \right\rparen', r'\left( \right)'],
+    ];
 
-//     for (final [actual, expected] of cases) {
-//         it(`should build "${actual}" like "${expected}"`, () => {
-//             expect(actual).toBuildLike(expected);
-//         });
-//     }
-// });
+    for (final entry in cases) {
+      final actual = entry[0];
+      final expected = entry[1];
+      testTexToRenderLike(
+          'should build "$actual" like "$expected', actual, expected);
+    }
+  });
 
 // group("A begin/end parser", () {
 
