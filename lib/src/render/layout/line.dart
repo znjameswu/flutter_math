@@ -7,9 +7,8 @@ import 'package:flutter/widgets.dart';
 
 import '../constants.dart';
 import '../utils/render_box_offset.dart';
-import 'breakable/breakable_box.dart';
 
-class LineParentData extends ContainerBreakableBoxParentData<RenderBox> {
+class LineParentData extends ContainerBoxParentData<RenderBox> {
   // The first canBreakBefore has no effect
   bool canBreakBefore = false;
 
