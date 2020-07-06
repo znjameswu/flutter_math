@@ -155,8 +155,7 @@ MatrixNode parseArray(
       }
       break;
     } else if (next == '\\cr') {
-      final cr = assertNodeType<CrNode>(
-          parser.parseFunction(null, null, null));
+      final cr = assertNodeType<CrNode>(parser.parseFunction(null, null, null));
       rowGaps.add(cr.size ?? Measurement.zero);
 
       // check for \hline(s) following the row separator
@@ -175,15 +174,14 @@ MatrixNode parseArray(
   parser.macroExpander.endGroup();
 
   return MatrixNode(
-    body: body,
-    vLines: separators,
-    columnAligns: colAligns,
-    rowSpacings: rowGaps,
-    arrayStretch: arrayStretch,
-    hLines: hLinesBeforeRow,
-    hskipBeforeAndAfter: hskipBeforeAndAfter,
-    isSmall: isSmall
-  );
+      body: body,
+      vLines: separators,
+      columnAligns: colAligns,
+      rowSpacings: rowGaps,
+      arrayStretch: arrayStretch,
+      hLines: hLinesBeforeRow,
+      hskipBeforeAndAfter: hskipBeforeAndAfter,
+      isSmall: isSmall);
 }
 
 /// Decides on a style for cells in an array according to whether the given
@@ -311,10 +309,11 @@ GreenNode _subArrayHandler(TexParser parser, EnvContext context) {
     final ca = node.symbol;
     if (ca == 'l' || ca == 'c') {
       aligns.add(ca == 'l' ? MatrixColumnAlign.left : MatrixColumnAlign.center);
+    } else {
+      throw ParseError('Unknown column alignment: $ca');
     }
-    throw ParseError('Unknown column alignment: $ca');
   }
-  if (aligns.length >= 1) {
+  if (aligns.length > 1) {
     throw ParseError('{subarray} can contain only one column');
   }
   final res = parseArray(
