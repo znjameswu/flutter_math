@@ -131,12 +131,7 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
     double extent,
     double Function(RenderBox child, double extent) childSize,
     Map<_SqrtPos, RenderBox> childrenTable,
-  }) {
-    // final base = childrenTable[_SqrtPos.base];
-    // final index = childrenTable[_SqrtPos.ind];
-    return 0;
-    throw UnimplementedError();
-  }
+  }) => 0;
 
   @override
   Size performLayout(BoxConstraints constraints,

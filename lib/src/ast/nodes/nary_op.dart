@@ -1,12 +1,12 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/font/metrics/font_metrics.dart';
-import 'package:flutter_math/src/render/layout/shift_baseline.dart';
-import 'package:flutter_math/src/render/svg/static.dart';
 
+import '../../font/metrics/font_metrics.dart';
 import '../../render/layout/line.dart';
 import '../../render/layout/multiscripts.dart';
 import '../../render/layout/reset_dimension.dart';
+import '../../render/layout/shift_baseline.dart';
 import '../../render/layout/vlist.dart';
+import '../../render/svg/static.dart';
 import '../../render/symbols/make_atom.dart';
 import '../options.dart';
 import '../size.dart';

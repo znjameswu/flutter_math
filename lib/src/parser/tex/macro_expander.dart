@@ -21,8 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:flutter_math/src/parser/tex/symbols.dart';
-
 import '../../ast/types.dart';
 import 'functions.dart';
 import 'lexer.dart';
@@ -30,6 +28,7 @@ import 'macros.dart';
 import 'namespace.dart';
 import 'parse_error.dart';
 import 'settings.dart';
+import 'symbols.dart';
 import 'token.dart';
 
 // List of commands that act like macros but aren't defined as a macro,
@@ -206,13 +205,12 @@ class MacroExpander implements MacroContext {
     }
   }
 
-  bool isDefined(String name) {
-    return this.macros.has(name) ||
-        texSymbolCommandConfigs[Mode.math].containsKey(name) ||
-        texSymbolCommandConfigs[Mode.text].containsKey(name) ||
-        functions.containsKey(name) ||
-        implicitCommands.contains(name);
-  }
+  bool isDefined(String name) =>
+      this.macros.has(name) ||
+      texSymbolCommandConfigs[Mode.math].containsKey(name) ||
+      texSymbolCommandConfigs[Mode.text].containsKey(name) ||
+      functions.containsKey(name) ||
+      implicitCommands.contains(name);
 
   bool isExpandable(String name) {
     final macro = macros.get(name);

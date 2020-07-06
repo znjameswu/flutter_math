@@ -3132,8 +3132,8 @@ void main() {
 
     test("should build Greek capital letters", () {
       expect(
-          "\u0391\u0392\u0395\u0396\u0397\u0399\u039A\u039C\u039D" +
-              "\u039F\u03A1\u03A4\u03A7\u03DD",
+          "\u0391\u0392\u0395\u0396\u0397\u0399\u039A\u039C\u039D"
+          "\u039F\u03A1\u03A4\u03A7\u03DD",
           toBuildStrict);
     });
 

@@ -142,9 +142,8 @@ void testTexToRenderLike(
 const strictSettings = Settings(strict: Strict.error);
 const nonstrictSettings = Settings(strict: Strict.ignore);
 
-GreenNode getParsed(String expr, [Settings settings = const Settings()]) {
-  return TexParser(expr, settings).parse();
-}
+GreenNode getParsed(String expr, [Settings settings = const Settings()]) =>
+    TexParser(expr, settings).parse();
 
 String prettyPrintJson(Map<String, Object> a) =>
     JsonEncoder.withIndent('| ').convert(a);
@@ -181,6 +180,7 @@ class _ToParse extends Matcher {
   bool matches(dynamic item, Map matchState) {
     try {
       if (item is String) {
+        // ignore: unused_local_variable
         final res = TexParser(item, const Settings()).parse();
         // print(prettyPrintJson(res.toJson()));
         return true;
@@ -209,13 +209,14 @@ class _ToNotParse extends Matcher {
       Map matchState, bool verbose) {
     try {
       if (item is String) {
+        // ignore: unused_local_variable
         final res = TexParser(item, settings).parse();
         return super
             .describeMismatch(item, mismatchDescription, matchState, verbose);
         // return mismatchDescription.add(prettyPrintJson(res.toJson()));
       }
       return mismatchDescription.add('input is not a string');
-    } on ParseError catch (e) {
+    } on ParseError catch (_) {
       return super
           .describeMismatch(item, mismatchDescription, matchState, verbose);
     }
@@ -225,6 +226,7 @@ class _ToNotParse extends Matcher {
   bool matches(dynamic item, Map matchState) {
     try {
       if (item is String) {
+        // ignore: unused_local_variable
         final res = TexParser(item, settings).parse();
         // print(prettyPrintJson(res.toJson()));
         return false;
@@ -278,7 +280,7 @@ class _ToBuild extends Matcher {
   bool matches(dynamic item, Map matchState) {
     try {
       if (item is String) {
-        // ignore: unused_local_variabl
+        // ignore: unused_local_variable
         final widget = FlutterMath.fromTexString(
           item,
           options: options,

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../render/constants.dart';
-import '../../render/layout/custom_layout.dart';
 import '../../render/layout/reset_dimension.dart';
 import '../../render/layout/shift_baseline.dart';
 import '../../render/layout/vlist.dart';
 import '../../render/svg/static.dart';
 import '../../render/svg/stretchy.dart';
 import '../../render/symbols/make_atom.dart';
-import '../../render/utils/render_box_offset.dart';
 import '../accents.dart';
 import '../options.dart';
 import '../size.dart';
@@ -181,69 +178,3 @@ class AccentNode extends SlotableNode {
       );
 }
 
-enum _AccentPos {
-  base,
-  accent,
-}
-
-class AccentLayoutDelegate extends CustomLayoutDelegate<_AccentPos> {
-  final double skew;
-  final Options options;
-
-  var layoutHeight = 0.0;
-
-  AccentLayoutDelegate({
-    @required this.skew,
-    @required this.options,
-  });
-  @override
-  double computeDistanceToActualBaseline(
-          TextBaseline baseline, Map<_AccentPos, RenderBox> childrenTable) =>
-      layoutHeight;
-
-  @override
-  double getIntrinsicSize({
-    Axis sizingDirection,
-    bool max,
-    double extent,
-    double Function(RenderBox child, double extent) childSize,
-    Map<_AccentPos, RenderBox> childrenTable,
-  }) {
-    // TODO: implement getIntrinsicSize
-    throw UnimplementedError();
-  }
-
-  @override
-  Size performLayout(BoxConstraints constraints,
-      Map<_AccentPos, RenderBox> childrenTable, RenderBox renderBox) {
-    final base = childrenTable[_AccentPos.base];
-    final accent = childrenTable[_AccentPos.accent];
-
-    base.layout(infiniteConstraint, parentUsesSize: true);
-    accent.layout(BoxConstraints(minWidth: base.size.width - 2 * skew),
-        parentUsesSize: true);
-
-    final baseHeight = base.layoutHeight;
-
-    final accentHorizontalShift =
-        skew + (base.size.width - accent.size.width) * 0.5;
-
-    final baseHorizontalPos =
-        accentHorizontalShift < 0 ? -accentHorizontalShift : 0.0;
-
-    final baseVerticalPos = accent.layoutHeight;
-
-    base.offset = Offset(baseHorizontalPos, baseVerticalPos);
-    accent.offset = Offset(baseHorizontalPos + accentHorizontalShift, 0.0);
-
-    layoutHeight = baseVerticalPos + baseHeight;
-
-    return Size(
-      // math.max(
-      baseHorizontalPos + base.size.width,
-      //   baseHorizontalPos + accentHorizontalShift + accent.size.width,
-      // ),
-      baseVerticalPos + base.size.height,
-    );
-  }
-}

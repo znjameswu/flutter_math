@@ -40,7 +40,7 @@ void main() {
       '\\utilde',
       '\\underline'
     };
-    for (final command in [...accents, ...accentsUnder]) {
+    for (final command in [...accents, ...accentsUnder, '\\overline', '\\underline']) {
       testTexToMatchGoldenFile(
         'render $command',
         [for (var i = 1; i <= 6; i++) '$command{${'x' * i}}'].join(),
