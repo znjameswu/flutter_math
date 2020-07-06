@@ -749,11 +749,11 @@ const supportedData = {
     r'\xlongequal{abc}',
   ],
   'Special Notation': [
-    r'\bra{\phi}$',
-    r'\ket{\psi}$',
-    r'\braket{\phi\vert\psi}$',
-    r'\Bra{\phi}$',
-    r'\Ket{\psi}$',
+    r'\bra{\phi}',
+    r'\ket{\psi}',
+    r'\braket{\phi\vert\psi}',
+    r'\Bra{\phi}',
+    r'\Ket{\psi}',
   ],
 
   // Class Assignment
