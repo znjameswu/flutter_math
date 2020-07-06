@@ -7,6 +7,9 @@ repository: https://github.com/znjameswu/flutter_math
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.17.0 <1.18.0"
+  # Flutter has a breaking change in ParentDataWidget in 1.17.0 ()[https://flutter.dev/docs/release/breaking-changes/parent-data-widget-generic-type]
+  # FLutter has a breaking change in LayoutBuilder in 1.18.0 
 
 dependencies:
   flutter:
