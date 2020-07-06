@@ -21,6 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import 'package:flutter_math/src/parser/tex/symbols.dart';
+
 import '../../ast/types.dart';
 import 'functions.dart';
 import 'lexer.dart';
@@ -61,7 +63,7 @@ class MacroExpander implements MacroContext {
   Token expandNextToken() {
     while (true) {
       final expanded = this.expandOnce();
-      if (expanded!= null) {
+      if (expanded != null) {
         if (expanded.text == r'\relax') {
           this.stack.removeLast();
         } else {
@@ -205,8 +207,11 @@ class MacroExpander implements MacroContext {
   }
 
   bool isDefined(String name) {
-    // TODO: implement isDefined
-    throw Error();
+    return this.macros.has(name) ||
+        texSymbolCommandConfigs[Mode.math].containsKey(name) ||
+        texSymbolCommandConfigs[Mode.text].containsKey(name) ||
+        functions.containsKey(name) ||
+        implicitCommands.contains(name);
   }
 
   bool isExpandable(String name) {

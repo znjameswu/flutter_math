@@ -24,7 +24,8 @@
 import 'parse_error.dart';
 
 class Namespace<T> {
-  Namespace(this.builtins, Map<String, T> current): current = Map.from(current);
+  Namespace(this.builtins, Map<String, T> current)
+      : current = Map.from(current);
   final Map<String, T> current;
   final Map<String, T> builtins;
   final undefStack = <Map<String, T>>[];
@@ -53,6 +54,9 @@ class Namespace<T> {
     this.current[name] = value;
   }
 
+  bool has(String name) =>
+      this.current.containsKey(name) || this.builtins.containsKey(name);
+
   void beginGroup() {
     this.undefStack.add({});
   }
@@ -60,7 +64,7 @@ class Namespace<T> {
   void endGroup() {
     if (this.undefStack.isEmpty) {
       throw ParseError('Unbalanced namespace destruction: attempt '
-      'to pop global namespace; please report this as a bug');
+          'to pop global namespace; please report this as a bug');
     }
     final undefs = this.undefStack.removeLast();
     undefs.forEach((key, value) {
