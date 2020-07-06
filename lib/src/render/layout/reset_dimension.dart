@@ -14,7 +14,7 @@ class ResetDimension extends StatelessWidget {
   final double width;
   final double minTopPadding;
   final double minBottomPadding;
-  final CrossAxisAlignment alignment;
+  final CrossAxisAlignment horizontalAlignment;
   final Widget child;
   const ResetDimension({
     Key key,
@@ -23,7 +23,7 @@ class ResetDimension extends StatelessWidget {
     this.width,
     this.minTopPadding,
     this.minBottomPadding,
-    this.alignment = CrossAxisAlignment.center,
+    this.horizontalAlignment = CrossAxisAlignment.center,
     @required this.child,
   }) : super();
 
@@ -35,7 +35,7 @@ class ResetDimension extends StatelessWidget {
           width: width,
           minTopPadding: minTopPadding,
           minBottomPadding: minBottomPadding,
-          alignment: alignment,
+          alignment: horizontalAlignment,
         ),
         children: <Widget>[
           CustomLayoutId(id: 0, child: child),

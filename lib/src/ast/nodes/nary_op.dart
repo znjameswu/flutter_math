@@ -1,4 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/font/metrics/font_metrics.dart';
+import 'package:flutter_math/src/render/layout/shift_baseline.dart';
+import 'package:flutter_math/src/render/svg/static.dart';
 
 import '../../render/layout/line.dart';
 import '../../render/layout/multiscripts.dart';
@@ -46,11 +49,42 @@ class NaryOperatorNode extends SlotableNode {
     final font = large
         ? FontOptions(fontFamily: 'Size2')
         : FontOptions(fontFamily: 'Size1');
-    final symbolMetrics = lookupChar(operator, font, Mode.math);
-    final symbolWidget =
-        makeChar(operator, font, symbolMetrics, options, needItalic: true);
+    Widget operatorWidget;
+    CharacterMetrics symbolMetrics;
+    if (!stashedOvalNaryOperator.containsKey(operator)) {
+      symbolMetrics = lookupChar(operator, font, Mode.math);
+      final symbolWidget =
+          makeChar(operator, font, symbolMetrics, options, needItalic: true);
+      operatorWidget = symbolWidget;
+    } else {
+      final baseSymbol = stashedOvalNaryOperator[operator];
+      symbolMetrics = lookupChar(baseSymbol, font, Mode.math);
+      final baseSymbolWidget =
+          makeChar(baseSymbol, font, symbolMetrics, options, needItalic: true);
 
-    var operatorWidget = symbolWidget;
+      final oval = staticSvg(
+          '${operator == '\u222F' ? 'oiint' : 'oiiint'}'
+          'Size${large ? '2' : '1'}',
+          options);
+
+      operatorWidget = Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ResetDimension(
+            horizontalAlignment: CrossAxisAlignment.start,
+            width: 0.0,
+            child: ShiftBaseline(
+              offset: large ? 0.08.cssEm.toLpUnder(options) : 0.0,
+              child: oval,
+            ),
+          ),
+          baseSymbolWidget,
+        ],
+      );
+    }
 
     // Attach limits to the base symbol
     if (lowerLimit != null || upperLimit != null) {
@@ -64,7 +98,7 @@ class NaryOperatorNode extends SlotableNode {
           italic: italic,
           isBaseCharacterBox: false,
           baseOptions: options,
-          base: symbolWidget,
+          base: operatorWidget,
           sub: childBuildResults[0]?.widget,
           subOptions: childBuildResults[0]?.options,
           sup: childBuildResults[1]?.widget,
@@ -92,7 +126,7 @@ class NaryOperatorNode extends SlotableNode {
                     child: childBuildResults[1].widget,
                   ),
                 ),
-              symbolWidget,
+              operatorWidget,
               if (lowerLimit != null)
                 VListElement(
                   hShift: -0.5 * italic,
@@ -174,4 +208,9 @@ const _naryDefaultLimit = {
   '\u2a02',
   '\u2a04',
   '\u2a06',
+};
+
+const stashedOvalNaryOperator = {
+  '\u222F': '\u222C',
+  '\u2230': '\u222D',
 };
