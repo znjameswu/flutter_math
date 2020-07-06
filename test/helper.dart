@@ -259,12 +259,10 @@ class _ToBuild extends Matcher {
       Map matchState, bool verbose) {
     try {
       if (item is String) {
-        // ignore: unused_local_variable
-        final widget = FlutterMath.fromTexString(
-          item,
-          options: options,
-          settings: settings,
+        final ast = SyntaxTree(
+          greenRoot: TexParser(item, settings).parse(),
         );
+        ast.buildWidget();
         return super
             .describeMismatch(item, mismatchDescription, matchState, verbose);
       }
@@ -280,12 +278,10 @@ class _ToBuild extends Matcher {
   bool matches(dynamic item, Map matchState) {
     try {
       if (item is String) {
-        // ignore: unused_local_variable
-        final widget = FlutterMath.fromTexString(
-          item,
-          options: options,
-          settings: settings,
+        final ast = SyntaxTree(
+          greenRoot: TexParser(item, settings).parse(),
         );
+        ast.buildWidget();
         return true;
       }
       return false;
