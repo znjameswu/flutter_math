@@ -44,9 +44,10 @@ class EnclosureNode extends SlotableNode {
     Widget widget = Stack(
       children: <Widget>[
         Container(
-          color: backgroundcolor,
+          // color: backgroundcolor,
           decoration: hasBorder
               ? BoxDecoration(
+                  color: backgroundcolor,
                   border: Border.all(
                     // TODO minRuleThickness
                     width:
