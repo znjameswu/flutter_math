@@ -85,7 +85,7 @@ class MatrixNode extends SlotableNode {
     @required List<List<EquationRowNode>> body,
   }) {
     final cols = [
-      body.map((row) => row.length).max(),
+      body.map((row) => row.length).max() ?? 0,
       columnAligns.length,
       vLines.length - 1,
     ].max();

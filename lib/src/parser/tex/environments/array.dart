@@ -237,12 +237,12 @@ GreenNode _arrayHandler(TexParser parser, EnvContext context) {
         break;
       case '|':
       case ':':
-        separators.add(const {
-          '|': MatrixSeparatorStyle.solid,
-          ':': MatrixSeparatorStyle.dashed,
-        }[ca]);
-        if (!alignSpecified) {
-          aligns.add(MatrixColumnAlign.center);
+        if (alignSpecified) {
+          separators.add(const {
+            '|': MatrixSeparatorStyle.solid,
+            ':': MatrixSeparatorStyle.dashed,
+          }[ca]);
+          // aligns.add(MatrixColumnAlign.center);
         }
         alignSpecified = false;
         lastIsSeparator = true;
