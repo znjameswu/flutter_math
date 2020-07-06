@@ -29,8 +29,8 @@ class EnclosureNode extends SlotableNode {
     @required this.base,
     @required this.hasBorder,
     this.bordercolor,
-    this.backgroundcolor = Colors.transparent,
-    this.notation,
+    this.backgroundcolor,
+    this.notation = const [],
     this.horizontalPadding = Measurement.zero,
     this.verticalPadding = Measurement.zero,
   }) : assert(base != null);

@@ -198,7 +198,7 @@ class TexParser {
             base is EquationRowNode && base.overrideType == AtomType.op);
 
     if (!scriptsResult.empty) {
-      if (!scriptsResult.limits) {
+      if (scriptsResult.limits != true) {
         return MultiscriptsNode(
           base: base?.wrapWithEquationRow() ?? EquationRowNode.empty(),
           sub: scriptsResult.subscript,
@@ -771,7 +771,7 @@ class TexParser {
         this.settings.reportNonstrict('unicodeTextInMathMode',
             'Unicode text character "${text[0]} used in math mode"', nucleus);
       }
-      symbol = AtomNode(symbol: text);
+      symbol = AtomNode(symbol: text, atomType: AtomType.ord);
     } else {
       return null;
     }

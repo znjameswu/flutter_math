@@ -36,7 +36,7 @@ GreenNode _operatorNameHandler(TexParser parser, FunctionContext context) {
       EquationRowNode(children: []);
 
   if (!scripts.empty) {
-    if (scripts.limits) {
+    if (scripts.limits == true) {
       name = scripts.superscript != null
           ? OverNode(
               base: name.wrapWithEquationRow(),
