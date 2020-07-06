@@ -48,7 +48,7 @@ class Namespace<T> {
       }
     } else {
       if (this.undefStack.isNotEmpty) {
-        this.undefStack.last.putIfAbsent(name, () => value);
+        this.undefStack.last[name] = this.current[name];
       }
     }
     this.current[name] = value;

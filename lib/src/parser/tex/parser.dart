@@ -370,6 +370,7 @@ class TexParser {
       // final lastToken = this.fetch();
       // Check that we got a matching closing brace
       this.expect(groupEnd);
+      this.macroExpander.endGroup();
       result = expression.wrapWithEquationRow();
     } else if (optional) {
       // Return nothing for an optional group
