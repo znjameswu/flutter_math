@@ -98,27 +98,31 @@ class StretchyOpNode extends SlotableNode {
 const stretchyOpMapping = {
   '\u2190': 'xleftarrow',
   '\u2192': 'xrightarrow',
-};
+  '\u2194': 'xleftrightarrow',
 
-const katexStretchyOpExtension = {
-  'xLeftarrow',
-  'xRightarrow',
-  'xleftrightarrow',
-  'xLeftrightarrow',
-  'xhookleftarrow',
-  'xhookrightarrow',
-  'xmapsto',
-  'xrightharpoondown',
-  'xrightharpoonup',
-  'xleftharpoondown',
-  'xleftharpoonup',
-  'xrightleftharpoons',
-  'xleftrightharpoons',
-  'xlongequal',
-  'xtwoheadrightarrow',
-  'xtwoheadleftarrow',
-  'xtofrom',
-  'xrightleftarrows',
-  'xrightequilibrium',
-  'xleftequilibrium',
+  '\u21d0': 'xLeftarrow',
+  '\u21d2': 'xRightarrow',
+  '\u21d4': 'xLeftrightarrow',
+
+  '\u21a9': 'xhookleftarrow',
+  '\u21aa': 'xhookrightarrow',
+
+  '\u21a6': 'xmapsto',
+
+  '\u21c1': 'xrightharpoondown',
+  '\u21c0': 'xrightharpoonup',
+  '\u21bd': 'xleftharpoondown',
+  '\u21bc': 'xleftharpoonup',
+  '\u21cc': 'xrightleftharpoons',
+  '\u21cb': 'xleftrightharpoons',
+
+  '=': 'xlongequal',
+
+  '\u219e': 'xtwoheadleftarrow',
+  '\u21a0': 'xtwoheadrightarrow',
+
+  // '\u21c4': '\\xtofrom',
+  '\u21c4': 'xrightleftarrows',
+  // '\\xrightequilibrium': '\u21cc', // Not a perfect match.
+  // '\\xleftequilibrium': '\u21cb', // None better available.
 };
