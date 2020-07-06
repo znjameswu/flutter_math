@@ -527,31 +527,34 @@ class EquationRowNode extends ParentableNode<GreenNode>
   //
   // If a node's left type is AtomType.bin/AtomTpye.spacing, then it right
   // node must be the same, vice versa.
-  AtomType _leftType;
+  // AtomType _leftType;
   @override
-  AtomType get leftType {
-    final firstNonSpace = flattenedChildList.firstWhere(
-        (element) => element.leftType != AtomType.spacing,
-        orElse: () => null);
-    return _leftType ??= overrideType ??
-        (firstNonSpace?.leftType == AtomType.bin
-            ? AtomType.ord
-            : firstNonSpace?.leftType) ??
-        AtomType.ord;
-  }
+  AtomType get leftType => AtomType.ord;
+  // {
+  //   final firstNonSpace = flattenedChildList.firstWhere(
+  //       (element) => element.leftType != AtomType.spacing,
+  //       orElse: () => null);
+  //   return _leftType ??= overrideType ??
+  //       (firstNonSpace?.leftType == AtomType.bin
+  //           ? AtomType.ord
+  //           : firstNonSpace?.leftType) ??
+  //       AtomType.ord;
+  // }
 
-  AtomType _rightType;
+  // AtomType _rightType;
   @override
-  AtomType get rightType {
-    final lastNonSpace = flattenedChildList.reversed.firstWhere(
-        (element) => element.rightType != AtomType.spacing,
-        orElse: () => null);
-    return _rightType ??= overrideType ??
-        (lastNonSpace?.rightType == AtomType.bin
-            ? AtomType.ord
-            : lastNonSpace?.rightType) ??
-        AtomType.ord;
-  }
+  AtomType get rightType => AtomType.ord;
+  // {
+  //   final lastNonSpace = flattenedChildList.reversed.firstWhere(
+  //       (element) => element.rightType != AtomType.spacing,
+  //       orElse: () => null);
+  //   return _rightType ??= overrideType ??
+  //       (lastNonSpace?.rightType == AtomType.bin
+  //           ? AtomType.ord
+  //           : lastNonSpace?.rightType) ??
+  //       AtomType.ord;
+  // }
+
 }
 
 extension GreenNodeWrappingExt on GreenNode {

@@ -238,10 +238,15 @@ class _ToNotParse extends Matcher {
 
 final toBuild = _ToBuild();
 
+final toBuildStrict = _ToBuild(settings: strictSettings);
+
 class _ToBuild extends Matcher {
   final Options options;
+  final Settings settings;
 
-  _ToBuild([this.options = Options.displayOptions]);
+  _ToBuild(
+      {this.options = Options.displayOptions,
+      this.settings = nonstrictSettings});
 
   @override
   Description describe(Description description) =>
@@ -252,9 +257,12 @@ class _ToBuild extends Matcher {
       Map matchState, bool verbose) {
     try {
       if (item is String) {
-        final node = TexParser(item, const Settings()).parse();
         // ignore: unused_local_variable
-        final widget = SyntaxTree(greenRoot: node).buildWidget(options);
+        final widget = FlutterMath.fromTexString(
+          item,
+          options: options,
+          settings: settings,
+        );
         return super
             .describeMismatch(item, mismatchDescription, matchState, verbose);
       }
@@ -270,8 +278,12 @@ class _ToBuild extends Matcher {
   bool matches(dynamic item, Map matchState) {
     try {
       if (item is String) {
-        final res = TexParser(item, const Settings()).parse();
-        // print(prettyPrintJson(res.toJson()));
+        // ignore: unused_local_variabl
+        final widget = FlutterMath.fromTexString(
+          item,
+          options: options,
+          settings: settings,
+        );
         return true;
       }
       return false;

@@ -1,17 +1,23 @@
 // ignore_for_file: prefer_single_quotes
+// ignore_for_file: lines_longer_than_80_chars
 // Import the test package and Counter class
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_math/flutter_math.dart';
 import 'package:flutter_math/src/ast/nodes/accent.dart';
+import 'package:flutter_math/src/ast/nodes/accent_under.dart';
 import 'package:flutter_math/src/ast/nodes/atom.dart';
+import 'package:flutter_math/src/ast/nodes/enclosure.dart';
 import 'package:flutter_math/src/ast/nodes/frac.dart';
 import 'package:flutter_math/src/ast/nodes/left_right.dart';
 import 'package:flutter_math/src/ast/nodes/matrix.dart';
 import 'package:flutter_math/src/ast/nodes/multiscripts.dart';
 import 'package:flutter_math/src/ast/nodes/nary_op.dart';
+import 'package:flutter_math/src/ast/nodes/phantom.dart';
 import 'package:flutter_math/src/ast/nodes/space.dart';
 import 'package:flutter_math/src/ast/nodes/sqrt.dart';
+import 'package:flutter_math/src/ast/nodes/stretchy_op.dart';
 import 'package:flutter_math/src/ast/nodes/style.dart';
 import 'package:flutter_math/src/ast/size.dart';
 import 'package:flutter_math/src/parser/tex/colors.dart';
@@ -1775,369 +1781,40 @@ void main() {
 
     testTexToRenderLike(
         "should not include comments in the output", "5 % comment\n", r'5');
-
-    
   });
 
-// group("An HTML font tree-builder", () {
-//     test("should render \\mathbb{R} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\mathbb{R}'));
-//         expect(markup).toContain("<span class=\"mord mathbb\">R</span>");
-//     });
-
-//     test("should render \\mathrm{R} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\mathrm{R}'));
-//         expect(markup).toContain("<span class=\"mord mathrm\">R</span>");
-//     });
-
-//     test("should render \\mathcal{R} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\mathcal{R}'));
-//         expect(markup).toContain("<span class=\"mord mathcal\">R</span>");
-//     });
-
-//     test("should render \\mathfrak{R} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\mathfrak{R}'));
-//         expect(markup).toContain("<span class=\"mord mathfrak\">R</span>");
-//     });
-
-//     test("should render \\text{R} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\text{R}'));
-//         expect(markup).toContain("<span class=\"mord\">R</span>");
-//     });
-
-//     test("should render \\textit{R} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\textit{R}'));
-//         expect(markup).toContain("<span class=\"mord textit\">R</span>");
-//     });
-
-//     test("should render \\text{\\textit{R}} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\text{\textit{R}}'));
-//         expect(markup).toContain("<span class=\"mord textit\">R</span>");
-//     });
-
-//     test("should render \\textup{R} with the correct font", () {
-//         final markup1 = katex.renderToString(r(r'\textup{R}'));
-//         expect(markup1).toContain("<span class=\"mord textup\">R</span>");
-//         final markup2 = katex.renderToString(r(r'\textit{\textup{R}}'));
-//         expect(markup2).toContain("<span class=\"mord textup\">R</span>");
-//         final markup3 = katex.renderToString(r(r'\textup{\textit{R}}'));
-//         expect(markup3).toContain("<span class=\"mord textit\">R</span>");
-//     });
-
-//     test("should render \\text{R\\textit{S}T} with the correct fonts", () {
-//         final markup = katex.renderToString(r(r'\text{R\textit{S}T}'));
-//         expect(markup).toContain("<span class=\"mord\">R</span>");
-//         expect(markup).toContain("<span class=\"mord textit\">S</span>");
-//         expect(markup).toContain("<span class=\"mord\">T</span>");
-//     });
-
-//     test("should render \\textbf{R} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\textbf{R}'));
-//         expect(markup).toContain("<span class=\"mord textbf\">R</span>");
-//     });
-
-//     test("should render \\textmd{R} with the correct font", () {
-//         final markup1 = katex.renderToString(r(r'\textmd{R}'));
-//         expect(markup1).toContain("<span class=\"mord textmd\">R</span>");
-//         final markup2 = katex.renderToString(r(r'\textbf{\textmd{R}}'));
-//         expect(markup2).toContain("<span class=\"mord textmd\">R</span>");
-//         final markup3 = katex.renderToString(r(r'\textmd{\textbf{R}}'));
-//         expect(markup3).toContain("<span class=\"mord textbf\">R</span>");
-//     });
-
-//     test("should render \\textsf{R} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\textsf{R}'));
-//         expect(markup).toContain("<span class=\"mord textsf\">R</span>");
-//     });
-
-//     test("should render \\textsf{\\textit{R}G\\textbf{B}} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\textsf{\textit{R}G\textbf{B}}'));
-//         expect(markup).toContain("<span class=\"mord textsf textit\">R</span>");
-//         expect(markup).toContain("<span class=\"mord textsf\">G</span>");
-//         expect(markup).toContain("<span class=\"mord textsf textbf\">B</span>");
-//     });
-
-//     test("should render \\textsf{\\textbf{$\\mathrm{A}$}} with the correct font", () {
-//         final markup = katex.renderToString(r`\textsf{\textbf{$\mathrm{A}$}}`);
-//         expect(markup).toContain("<span class=\"mord mathrm\">A</span>");
-//     });
-
-//     test("should render \\textsf{\\textbf{$\\mathrm{\\textsf{A}}$}} with the correct font", () {
-//         final markup = katex.renderToString(r`\textsf{\textbf{$\mathrm{\textsf{A}}$}}`);
-//         expect(markup).toContain("<span class=\"mord textsf textbf\">A</span>");
-//     });
-
-//     test("should render \\texttt{R} with the correct font", () {
-//         final markup = katex.renderToString(r(r'\texttt{R}'));
-//         expect(markup).toContain("<span class=\"mord texttt\">R</span>");
-//     });
-
-//     test("should render a combination of font and color changes", () {
-//         var markup = katex.renderToString(r(r'\textcolor{blue}{\mathbb R}'));
-//         var span = "<span class=\"mord mathbb\" style=\"color:blue;\">R</span>";
-//         expect(markup).toContain(span);
-
-//         markup = katex.renderToString(r(r'\mathbb{\textcolor{blue}{R}}'));
-//         span = "<span class=\"mord mathbb\" style=\"color:blue;\">R</span>";
-//         expect(markup).toContain(span);
-//     });
-
-//     test("should render wide characters with mord and with the correct font", () {
-//         final markup = katex.renderToString(String.fromCharCode(0xD835, 0xDC00));
-//         expect(markup).toContain("<span class=\"mord mathbf\">A</span>");
-
-//         expect(String.fromCharCode(0xD835, 0xDC00) +
-//                 " = " + String.fromCharCode(0xD835, 0xDC1A))
-//             .toBuildLike(r'\mathbf A = \mathbf a');
-//     });
-
-//     test("should throw TypeError when the expression is of the wrong type", () {
-//         expect(() {
-//             katex.renderToString({badInputType: "yes"});
-//         }).toThrowError(TypeError);
-//         expect(() {
-//             katex.renderToString([1, 2]);
-//         }).toThrowError(TypeError);
-//         expect(() {
-//             katex.renderToString(undefined);
-//         }).toThrowError(TypeError);
-//         expect(() {
-//             katex.renderToString(null);
-//         }).toThrowError(TypeError);
-//         expect(() {
-//             katex.renderToString(1.234);
-//         }).toThrowError(TypeError);
-//     });
-
-//     test("should not throw TypeError when the expression is a supported type", () {
-//         expect(() {
-//             katex.renderToString(r(r'\sqrt{123}'));
-//         }).not.toThrowError(TypeError);
-//         expect(() {
-//             katex.renderToString(new String(r(r'\sqrt{123}')));
-//         }).not.toThrowError(TypeError);
-//     });
-// });
-
-// group("A MathML font tree-builder", () {
-//     final contents = r'Ax2k\omega\Omega\imath+';
-
-//     test("should render " + contents + " with the correct mathvariants", () {
-//         final tree = getParsed(contents);
-//         final markup = buildMathML(tree, contents, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mi>A</mi>");
-//         expect(markup).toContain("<mi>x</mi>");
-//         expect(markup).toContain("<mn>2</mn>");
-//         expect(markup).toContain("<mi>\u03c9</mi>");   // \omega
-//         expect(markup).toContain("<mi mathvariant=\"normal\">\u03A9</mi>");   // \Omega
-//         expect(markup).toContain("<mi>\u0131</mi>");   // \imath
-//         expect(markup).toContain("<mo>+</mo>");
-//     });
-
-//     test("should render \\mathbb{" + contents + "} with the correct mathvariants", () {
-//         final tex = `\\mathbb{${contents}}`;
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mi mathvariant=\"double-struck\">A</mi>");
-//         expect(markup).toContain("<mi mathvariant=\"double-struck\">x</mi>");
-//         expect(markup).toContain("<mn mathvariant=\"double-struck\">2</mn>");
-//         expect(markup).toContain("<mi mathvariant=\"double-struck\">\u03c9</mi>");  // \omega
-//         expect(markup).toContain("<mi mathvariant=\"double-struck\">\u03A9</mi>"); // \Omega
-//         expect(markup).toContain("<mi mathvariant=\"double-struck\">\u0131</mi>");  // \imath
-//         expect(markup).toContain("<mo>+</mo>");
-//     });
-
-//     test("should render \\mathrm{" + contents + "} with the correct mathvariants", () {
-//         final tex = `\\mathrm{${contents}}`;
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mi mathvariant=\"normal\">A</mi>");
-//         expect(markup).toContain("<mi mathvariant=\"normal\">x</mi>");
-//         expect(markup).toContain("<mn>2</mn>");
-//         expect(markup).toContain("<mi>\u03c9</mi>");   // \omega
-//         expect(markup).toContain("<mi mathvariant=\"normal\">\u03A9</mi>");   // \Omega
-//         expect(markup).toContain("<mi>\u0131</mi>");   // \imath
-//         expect(markup).toContain("<mo>+</mo>");
-//     });
-
-//     test("should render \\mathit{" + contents + "} with the correct mathvariants", () {
-//         final tex = `\\mathit{${contents}}`;
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mi>A</mi>");
-//         expect(markup).toContain("<mi>x</mi>");
-//         expect(markup).toContain("<mn mathvariant=\"italic\">2</mn>");
-//         expect(markup).toContain("<mi>\u03c9</mi>");   // \omega
-//         expect(markup).toContain("<mi>\u03A9</mi>");   // \Omega
-//         expect(markup).toContain("<mi>\u0131</mi>");   // \imath
-//         expect(markup).toContain("<mo>+</mo>");
-//     });
-
-//     test("should render \\mathnormal{" + contents + "} with the correct mathvariants", () {
-//         final tex = `\\mathnormal{${contents}}`;
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mi>A</mi>");
-//         expect(markup).toContain("<mi>x</mi>");
-//         expect(markup).toContain("<mn>2</mn>");
-//         expect(markup).toContain("<mi>\u03c9</mi>");   // \omega
-//         expect(markup).toContain("<mi mathvariant=\"normal\">\u03A9</mi>");   // \Omega
-//         expect(markup).toContain("<mi>\u0131</mi>");   // \imath
-//         expect(markup).toContain("<mo>+</mo>");
-//     });
-
-//     test("should render \\mathbf{" + contents + "} with the correct mathvariants", () {
-//         final tex = `\\mathbf{${contents}}`;
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mi mathvariant=\"bold\">A</mi>");
-//         expect(markup).toContain("<mi mathvariant=\"bold\">x</mi>");
-//         expect(markup).toContain("<mn mathvariant=\"bold\">2</mn>");
-//         expect(markup).toContain("<mi mathvariant=\"bold\">\u03c9</mi>");   // \omega
-//         expect(markup).toContain("<mi mathvariant=\"bold\">\u03A9</mi>");   // \Omega
-//         expect(markup).toContain("<mi mathvariant=\"bold\">\u0131</mi>");   // \imath
-//         expect(markup).toContain("<mo>+</mo>");
-//     });
-
-//     test("should render \\mathcal{" + contents + "} with the correct mathvariants", () {
-//         final tex = `\\mathcal{${contents}}`;
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mi mathvariant=\"script\">A</mi>");
-//         expect(markup).toContain("<mi mathvariant=\"script\">x</mi>");
-//         expect(markup).toContain("<mn mathvariant=\"script\">2</mn>");
-//         expect(markup).toContain("<mi mathvariant=\"script\">\u03c9</mi>"); // \omega
-//         expect(markup).toContain("<mi mathvariant=\"script\">\u03A9</mi>"); // \Omega
-//         expect(markup).toContain("<mi mathvariant=\"script\">\u0131</mi>"); // \imath
-//         expect(markup).toContain("<mo>+</mo>");
-//     });
-
-//     test("should render \\mathfrak{" + contents + "} with the correct mathvariants", () {
-//         final tex = `\\mathfrak{${contents}}`;
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mi mathvariant=\"fraktur\">A</mi>");
-//         expect(markup).toContain("<mi mathvariant=\"fraktur\">x</mi>");
-//         expect(markup).toContain("<mn mathvariant=\"fraktur\">2</mn>");
-//         expect(markup).toContain("<mi mathvariant=\"fraktur\">\u03c9</mi>"); // \omega
-//         expect(markup).toContain("<mi mathvariant=\"fraktur\">\u03A9</mi>"); // \Omega
-//         expect(markup).toContain("<mi mathvariant=\"fraktur\">\u0131</mi>"); // \imath
-//         expect(markup).toContain("<mo>+</mo>");
-//     });
-
-//     test("should render \\mathscr{" + contents + "} with the correct mathvariants", () {
-//         final tex = `\\mathscr{${contents}}`;
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mi mathvariant=\"script\">A</mi>");
-//         expect(markup).toContain("<mi mathvariant=\"script\">x</mi>");
-//         expect(markup).toContain("<mn mathvariant=\"script\">2</mn>");
-//         expect(markup).toContain("<mi mathvariant=\"script\">\u03c9</mi>"); // \omega
-//         expect(markup).toContain("<mi mathvariant=\"script\">\u03A9</mi>"); // \Omega
-//         expect(markup).toContain("<mi mathvariant=\"script\">\u0131</mi>"); // \imath
-//         expect(markup).toContain("<mo>+</mo>");
-//     });
-
-//     test("should render \\mathsf{" + contents + "} with the correct mathvariants", () {
-//         final tex = `\\mathsf{${contents}}`;
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mi mathvariant=\"sans-serif\">A</mi>");
-//         expect(markup).toContain("<mi mathvariant=\"sans-serif\">x</mi>");
-//         expect(markup).toContain("<mn mathvariant=\"sans-serif\">2</mn>");
-//         expect(markup).toContain("<mi mathvariant=\"sans-serif\">\u03c9</mi>"); // \omega
-//         expect(markup).toContain("<mi mathvariant=\"sans-serif\">\u03A9</mi>"); // \Omega
-//         expect(markup).toContain("<mi mathvariant=\"sans-serif\">\u0131</mi>"); // \imath
-//         expect(markup).toContain("<mo>+</mo>");
-//     });
-
-//     test("should render a combination of font and color changes", () {
-//         var tex = r'\textcolor{blue}{\mathbb R}';
-//         var tree = getParsed(tex);
-//         var markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         var node = "<mstyle mathcolor=\"blue\">" +
-//             "<mi mathvariant=\"double-struck\">R</mi>" +
-//             "</mstyle>";
-//         expect(markup).toContain(node);
-
-//         // reverse the order of the commands
-//         tex = r'\mathbb{\textcolor{blue}{R}}';
-//         tree = getParsed(tex);
-//         markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         node = "<mstyle mathcolor=\"blue\">" +
-//             "<mi mathvariant=\"double-struck\">R</mi>" +
-//             "</mstyle>";
-//         expect(markup).toContain(node);
-//     });
-
-//     test("should render text as <mtext>", () {
-//         final tex = r'\text{for }';
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mtext>for\u00a0</mtext>");
-//     });
-
-//     test("should render math within text as side-by-side children", () {
-//         final tex = r`\text{graph: $y = mx + b$}`;
-//         final tree = getParsed(tex);
-//         final markup = buildMathML(tree, tex, defaultOptions).toMarkup();
-//         expect(markup).toContain("<mrow><mtext>graph:\u00a0</mtext>");
-//         expect(markup).toContain(
-//             "<mi>y</mi><mo>=</mo><mi>m</mi><mi>x</mi><mo>+</mo><mi>b</mi>");
-//     });
-// });
-
-// group("An includegraphics builder", () {
-//     final img = "\\includegraphics[height=0.9em, totalheight=0.9em, width=0.9em, alt=KA logo]{https://cdn.kastatic.org/images/apple-touch-icon-57x57-precomposed.new.png}";
-//     test("should not fail", () {
-//         expect(img).toBuild(trustSettings);
-//     });
-
-//     test("should produce mords", () {
-//         expect(getBuilt(img, trustSettings).children[0].classes).toContain("mord");
-//     });
-
-//     test("should not render without trust setting", () {
-//         final built = getBuilt(img);
-//         expect(built).toMatchSnapshot();
-//     });
-
-//     test("should render with trust setting", () {
-//         final built = getBuilt(img, trustSettings);
-//         expect(built).toMatchSnapshot();
-//     });
-// });
-
+// TODO
 // group("A bin builder", () {
 //     test("should create mbins normally", () {
-//         final built = getBuilt(r'x + y');
+//         final built = getParsed(r'x + y');
 
 //         // we add glue elements around the '+'
-//         expect(built.children[2].classes).toContain("mbin");
+//         expect(built.children[2].leftType, AtomType.bin);
 //     });
 
 //     test("should create ords when at the beginning of lists", () {
-//         final built = getBuilt(r'+ x');
+//         final built = getParsed(r'+ x');
 
-//         expect(built.children[0].classes).toContain("mord");
-//         expect(built.children[0].classes).not.toContain("mbin");
+//         expect(built.children[0].leftType, AtomType.ord);
+//         expect(built.children[0].leftType,isNot( AtomType.bin));
 //     });
 
 //     test("should create ords after some other objects", () {
-//         expect(getBuilt(r'x + + 2').children[4].classes).toContain("mord");
-//         expect(getBuilt(r'( + 2').children[2].classes).toContain("mord");
-//         expect(getBuilt(r'= + 2').children[2].classes).toContain("mord");
-//         expect(getBuilt(r'\sin + 2').children[2].classes).toContain("mord");
-//         expect(getBuilt(r', + 2').children[2].classes).toContain("mord");
+//         expect(getParsed(r'x + + 2').children[4].leftType, AtomType.ord);
+//         expect(getParsed(r'( + 2').children[2].leftType, AtomType.ord);
+//         expect(getParsed(r'= + 2').children[2].leftType, AtomType.ord);
+//         expect(getParsed(r'\sin + 2').children[2].leftType, AtomType.ord);
+//         expect(getParsed(r', + 2').children[2].leftType, AtomType.ord);
 //     });
 
 //     test("should correctly interact with color objects", () {
-//         expect(getBuilt(r'\blue{x}+y').children[2].classes).toContain("mbin");
-//         expect(getBuilt(r'\blue{x+}+y').children[2].classes).toContain("mbin");
-//         expect(getBuilt(r'\blue{x+}+y').children[4].classes).toContain("mord");
+//         expect(getParsed(r'\blue{x}+y').children[2].leftType, AtomType.bin);
+//         expect(getParsed(r'\blue{x+}+y').children[2].leftType, AtomType.bin);
+//         expect(getParsed(r'\blue{x+}+y').children[4].leftType, AtomType.ord);
 //     });
 // });
 
+// TODO
 // group("A \\phantom builder and \\smash builder", () {
 //     test("should both build a mord", () {
 //         expect(getBuilt(r'\hphantom{a}').children[0].classes).toContain("mord");
@@ -2174,407 +1851,407 @@ void main() {
 //     });
 // });
 
-// group("An accent parser", () {
-//     test("should not fail", () {
-//         expect(r'\vec{x}', toParse());
-//         expect(r'\vec{x^2}', toParse());
-//         expect(r'\vec{x}^2', toParse());
-//         expect(r'\vec x', toParse());
-//     });
-
-//     test("should produce accents", () {
-//         final parse = getParsed(r'\vec x').children[0];
-
-//         expect(parse.type, "accent");
-//     });
-
-//     test("should be grouped more tightly than supsubs", () {
-//         final parse = getParsed(r'\vec x^2').children[0];
-
-//         expect(parse.type, "supsub");
-//     });
-
-//     test("should parse stretchy, shifty accents", () {
-//         expect(r'\widehat{x}', toParse());
-//         expect(r'\widecheck{x}', toParse());
-//     });
-
-//     test("should parse stretchy, non-shifty accents", () {
-//         expect(r'\overrightarrow{x}', toParse());
-//     });
-// });
-
-// group("An accent builder", () {
-//     test("should not fail", () {
-//         expect(r'\vec{x}'.toBuild();
-//         expect(r'\vec{x}^2'.toBuild();
-//         expect(r'\vec{x}_2'.toBuild();
-//         expect(r'\vec{x}_2^2'.toBuild();
-//     });
-
-//     test("should produce mords", () {
-//         expect(getBuilt(r'\vec x').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\vec +').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\vec +').children[0].classes).not.toContain("mbin");
-//         expect(getBuilt(r'\vec )^2').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\vec )^2').children[0].classes).not.toContain("mclose");
-//     });
-// });
-
-// group("A stretchy and shifty accent builder", () {
-//     test("should not fail", () {
-//         expect(r'\widehat{AB}'.toBuild();
-//         expect(r'\widecheck{AB}'.toBuild();
-//         expect(r'\widehat{AB}^2'.toBuild();
-//         expect(r'\widehat{AB}_2'.toBuild();
-//         expect(r'\widehat{AB}_2^2'.toBuild();
-//     });
-
-//     test("should produce mords", () {
-//         expect(getBuilt(r'\widehat{AB}').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\widehat +').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\widehat +').children[0].classes).not.toContain("mbin");
-//         expect(getBuilt(r'\widehat )^2').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\widehat )^2').children[0].classes).not.toContain("mclose");
-//     });
-// });
-
-// group("A stretchy and non-shifty accent builder", () {
-//     test("should not fail", () {
-//         expect(r'\overrightarrow{AB}'.toBuild();
-//         expect(r'\overrightarrow{AB}^2'.toBuild();
-//         expect(r'\overrightarrow{AB}_2'.toBuild();
-//         expect(r'\overrightarrow{AB}_2^2'.toBuild();
-//     });
-
-//     test("should produce mords", () {
-//         expect(getBuilt(r'\overrightarrow{AB}').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\overrightarrow +').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\overrightarrow +').children[0].classes).not.toContain("mbin");
-//         expect(getBuilt(r'\overrightarrow )^2').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\overrightarrow )^2').children[0].classes).not.toContain("mclose");
-//     });
-// });
-
-// group("An under-accent parser", () {
-//     test("should not fail", () {
-//         expect("\\underrightarrow{x}"), toParse());
-//         expect("\\underrightarrow{x^2}"), toParse());
-//         expect("\\underrightarrow{x}^2"), toParse());
-//         expect("\\underrightarrow x"), toParse());
-//     });
-
-//     test("should produce accentUnder", () {
-//         final parse = getParsed("\\underrightarrow x").children[0];
-
-//         expect(parse.type, "accentUnder");
-//     });
-
-//     test("should be grouped more tightly than supsubs", () {
-//         final parse = getParsed("\\underrightarrow x^2").children[0];
-
-//         expect(parse.type, "supsub");
-//     });
-// });
-
-// group("An under-accent builder", () {
-//     test("should not fail", () {
-//         expect("\\underrightarrow{x}").toBuild();
-//         expect("\\underrightarrow{x}^2").toBuild();
-//         expect("\\underrightarrow{x}_2").toBuild();
-//         expect("\\underrightarrow{x}_2^2").toBuild();
-//     });
-
-//     test("should produce mords", () {
-//         expect(getBuilt("\\underrightarrow x").children[0].classes).toContain("mord");
-//         expect(getBuilt("\\underrightarrow +").children[0].classes).toContain("mord");
-//         expect(getBuilt("\\underrightarrow +").children[0].classes).not.toContain("mbin");
-//         expect(getBuilt("\\underrightarrow )^2").children[0].classes).toContain("mord");
-//         expect(getBuilt("\\underrightarrow )^2").children[0].classes).not.toContain("mclose");
-//     });
-// });
-
-// group("An extensible arrow parser", () {
-//     test("should not fail", () {
-//         expect("\\xrightarrow{x}"), toParse());
-//         expect("\\xrightarrow{x^2}"), toParse());
-//         expect("\\xrightarrow{x}^2"), toParse());
-//         expect("\\xrightarrow x"), toParse());
-//         expect("\\xrightarrow[under]{over}"), toParse());
-//     });
-
-//     test("should produce xArrow", () {
-//         final parse = getParsed("\\xrightarrow x").children[0];
-
-//         expect(parse.type, "xArrow");
-//     });
-
-//     test("should be grouped more tightly than supsubs", () {
-//         final parse = getParsed("\\xrightarrow x^2").children[0];
-
-//         expect(parse.type, "supsub");
-//     });
-// });
-
-// group("An extensible arrow builder", () {
-//     test("should not fail", () {
-//         expect("\\xrightarrow{x}").toBuild();
-//         expect("\\xrightarrow{x}^2").toBuild();
-//         expect("\\xrightarrow{x}_2").toBuild();
-//         expect("\\xrightarrow{x}_2^2").toBuild();
-//         expect("\\xrightarrow[under]{over}").toBuild();
-//     });
-
-//     test("should produce mrell", () {
-//         expect(getBuilt("\\xrightarrow x").children[0].classes).toContain("mrel");
-//         expect(getBuilt("\\xrightarrow [under]{over}").children[0].classes).toContain("mrel");
-//         expect(getBuilt("\\xrightarrow +").children[0].classes).toContain("mrel");
-//         expect(getBuilt("\\xrightarrow +").children[0].classes).not.toContain("mbin");
-//         expect(getBuilt("\\xrightarrow )^2").children[0].classes).toContain("mrel");
-//         expect(getBuilt("\\xrightarrow )^2").children[0].classes).not.toContain("mclose");
-//     });
-// });
-
-// group("A horizontal brace parser", () {
-//     test("should not fail", () {
-//         expect(r'\overbrace{x}', toParse());
-//         expect(r'\overbrace{x^2}', toParse());
-//         expect(r'\overbrace{x}^2', toParse());
-//         expect(r'\overbrace x', toParse());
-//         expect("\\underbrace{x}_2"), toParse());
-//         expect("\\underbrace{x}_2^2"), toParse());
-//     });
-
-//     test("should produce horizBrace", () {
-//         final parse = getParsed(r'\overbrace x').children[0];
-
-//         expect(parse.type, "horizBrace");
-//     });
-
-//     test("should be grouped more tightly than supsubs", () {
-//         final parse = getParsed(r'\overbrace x^2').children[0];
-
-//         expect(parse.type, "supsub");
-//     });
-// });
-
-// group("A horizontal brace builder", () {
-//     test("should not fail", () {
-//         expect(r'\overbrace{x}'.toBuild();
-//         expect(r'\overbrace{x}^2'.toBuild();
-//         expect("\\underbrace{x}_2").toBuild();
-//         expect("\\underbrace{x}_2^2").toBuild();
-//     });
-
-//     test("should produce mords", () {
-//         expect(getBuilt(r'\overbrace x').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\overbrace{x}^2').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\overbrace +').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\overbrace +').children[0].classes).not.toContain("mbin");
-//         expect(getBuilt(r'\overbrace )^2').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\overbrace )^2').children[0].classes).not.toContain("mclose");
-//     });
-// });
-
-// group("A boxed parser", () {
-//     test("should not fail", () {
-//         expect(r'\boxed{x}', toParse());
-//         expect(r'\boxed{x^2}', toParse());
-//         expect(r'\boxed{x}^2', toParse());
-//         expect(r'\boxed x', toParse());
-//     });
-
-//     test("should produce enclose", () {
-//         final parse = getParsed(r'\boxed x').children[0];
-
-//         expect(parse.type, "enclose");
-//     });
-// });
-
-// group("A boxed builder", () {
-//     test("should not fail", () {
-//         expect(r'\boxed{x}'.toBuild();
-//         expect(r'\boxed{x}^2'.toBuild();
-//         expect(r'\boxed{x}_2'.toBuild();
-//         expect(r'\boxed{x}_2^2'.toBuild();
-//     });
-
-//     test("should produce mords", () {
-//         expect(getBuilt(r'\boxed x').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\boxed +').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\boxed +').children[0].classes).not.toContain("mbin");
-//         expect(getBuilt(r'\boxed )^2').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\boxed )^2').children[0].classes).not.toContain("mclose");
-//     });
-// });
-
-// group("An fbox parser, unlike a boxed parser,", () {
-//     test("should fail when given math", () {
-//         expect(r'\fbox{\frac a b}'.not, toParse());
-//     });
-// });
-
-// group("A colorbox parser", () {
-//     test("should not fail, given a text argument", () {
-//         expect(r'\colorbox{red}{a b}', toParse());
-//         expect(r'\colorbox{red}{x}^2', toParse());
-//         expect(r'\colorbox{red} x', toParse());
-//     });
-
-//     test("should fail, given a math argument", () {
-//         expect(r'\colorbox{red}{\alpha}'.not, toParse());
-//         expect(r'\colorbox{red}{\frac{a}{b}}'.not, toParse());
-//     });
-
-//     test("should parse a color", () {
-//         expect(r'\colorbox{red}{a b}', toParse());
-//         expect(r'\colorbox{#197}{a b}', toParse());
-//         expect(r'\colorbox{#1a9b7c}{a b}', toParse());
-//     });
-
-//     test("should produce enclose", () {
-//         final parse = getParsed(r'\colorbox{red} x').children[0];
-//         expect(parse.type, "enclose");
-//     });
-// });
-
-// group("A colorbox builder", () {
-//     test("should not fail", () {
-//         expect(r'\colorbox{red}{a b}'.toBuild();
-//         expect(r'\colorbox{red}{a b}^2'.toBuild();
-//         expect(r'\colorbox{red} x'.toBuild();
-//     });
-
-//     test("should produce mords", () {
-//         expect(getBuilt(r'\colorbox{red}{a b}').children[0].classes).toContain("mord");
-//     });
-// });
-
-// group("An fcolorbox parser", () {
-//     test("should not fail, given a text argument", () {
-//         expect(r'\fcolorbox{blue}{yellow}{a b}', toParse());
-//         expect(r'\fcolorbox{blue}{yellow}{x}^2', toParse());
-//         expect(r'\fcolorbox{blue}{yellow} x', toParse());
-//     });
-
-//     test("should fail, given a math argument", () {
-//         expect(r'\fcolorbox{blue}{yellow}{\alpha}'.not, toParse());
-//         expect(r'\fcolorbox{blue}{yellow}{\frac{a}{b}}'.not, toParse());
-//     });
-
-//     test("should parse a color", () {
-//         expect(r'\fcolorbox{blue}{yellow}{a b}', toParse());
-//         expect(r'\fcolorbox{blue}{#197}{a b}', toParse());
-//         expect(r'\fcolorbox{blue}{#1a9b7c}{a b}', toParse());
-//     });
-
-//     test("should produce enclose", () {
-//         final parse = getParsed(r'\fcolorbox{blue}{yellow} x').children[0];
-//         expect(parse.type, "enclose");
-//     });
-// });
-
-// group("A fcolorbox builder", () {
-//     test("should not fail", () {
-//         expect(r'\fcolorbox{blue}{yellow}{a b}'.toBuild();
-//         expect(r'\fcolorbox{blue}{yellow}{a b}^2'.toBuild();
-//         expect(r'\fcolorbox{blue}{yellow} x'.toBuild();
-//     });
-
-//     test("should produce mords", () {
-//         expect(getBuilt(r'\colorbox{red}{a b}').children[0].classes).toContain("mord");
-//     });
-// });
-
-// group("A strike-through parser", () {
-//     test("should not fail", () {
-//         expect(r'\cancel{x}', toParse());
-//         expect(r'\cancel{x^2}', toParse());
-//         expect(r'\cancel{x}^2', toParse());
-//         expect(r'\cancel x', toParse());
-//     });
-
-//     test("should produce enclose", () {
-//         final parse = getParsed(r'\cancel x').children[0];
-
-//         expect(parse.type, "enclose");
-//     });
-
-//     test("should be grouped more tightly than supsubs", () {
-//         final parse = getParsed(r'\cancel x^2').children[0];
-
-//         expect(parse.type, "supsub");
-//     });
-// });
-
-// group("A strike-through builder", () {
-//     test("should not fail", () {
-//         expect(r'\cancel{x}'.toBuild();
-//         expect(r'\cancel{x}^2'.toBuild();
-//         expect(r'\cancel{x}_2'.toBuild();
-//         expect(r'\cancel{x}_2^2'.toBuild();
-//         expect(r'\sout{x}'.toBuild();
-//         expect(r'\sout{x}^2'.toBuild();
-//         expect(r'\sout{x}_2'.toBuild();
-//         expect(r'\sout{x}_2^2'.toBuild();
-//     });
-
-//     test("should produce mords", () {
-//         expect(getBuilt(r'\cancel x').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\cancel +').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\cancel +').children[0].classes).not.toContain("mbin");
-//         expect(getBuilt(r'\cancel )^2').children[0].classes).toContain("mord");
-//         expect(getBuilt(r'\cancel )^2').children[0].classes).not.toContain("mclose");
-//     });
-// });
-
-// group("A phantom parser", () {
-//     test("should not fail", () {
-//         expect(r'\phantom{x}', toParse());
-//         expect(r'\phantom{x^2}', toParse());
-//         expect(r'\phantom{x}^2', toParse());
-//         expect(r'\phantom x', toParse());
-//         expect(r'\hphantom{x}', toParse());
-//         expect(r'\hphantom{x^2}', toParse());
-//         expect(r'\hphantom{x}^2', toParse());
-//         expect(r'\hphantom x', toParse());
-//     });
-
-//     test("should build a phantom node", () {
-//         final parse = getParsed(r'\phantom{x}').children[0];
-
-//         expect(parse.type, "phantom");
-//         expect(parse.body).toBeDefined();
-//     });
-// });
-
-// group("A phantom builder", () {
-//     test("should not fail", () {
-//         expect(r'\phantom{x}'.toBuild();
-//         expect(r'\phantom{x^2}'.toBuild();
-//         expect(r'\phantom{x}^2'.toBuild();
-//         expect(r'\phantom x'.toBuild();
-
-//         expect(r'\hphantom{x}'.toBuild();
-//         expect(r'\hphantom{x^2}'.toBuild();
-//         expect(r'\hphantom{x}^2'.toBuild();
-//         expect(r'\hphantom x'.toBuild();
-//     });
-
-//     test("should make the children transparent", () {
-//         final children = getBuilt(r'\phantom{x+1}');
-//         expect(children.children[0].style.color).toBe("transparent");
-//         expect(children.children[2].style.color).toBe("transparent");
-//         expect(children.children[4].style.color).toBe("transparent");
-//     });
-
-//     test("should make all descendants transparent", () {
-//         final children = getBuilt(r'\phantom{x+\blue{1}}');
-//         expect(children.children[0].style.color).toBe("transparent");
-//         expect(children.children[2].style.color).toBe("transparent");
-//         expect(children.children[4].style.color).toBe("transparent");
-//     });
-// });
+  group("An accent parser", () {
+    test("should not fail", () {
+      expect(r'\vec{x}', toParse());
+      expect(r'\vec{x^2}', toParse());
+      expect(r'\vec{x}^2', toParse());
+      expect(r'\vec x', toParse());
+    });
+
+    test("should produce accents", () {
+      final parse = getParsed(r'\vec x').children[0];
+
+      expect(parse, isA<AccentNode>());
+    });
+
+    test("should be grouped more tightly than supsubs", () {
+      final parse = getParsed(r'\vec x^2').children[0];
+
+      expect(parse, isA<MultiscriptsNode>());
+    });
+
+    test("should parse stretchy, shifty accents", () {
+      expect(r'\widehat{x}', toParse());
+      expect(r'\widecheck{x}', toParse());
+    });
+
+    test("should parse stretchy, non-shifty accents", () {
+      expect(r'\overrightarrow{x}', toParse());
+    });
+  });
+
+  group("An accent builder", () {
+    test("should not fail", () {
+      expect(r'\vec{x}', toBuild);
+      expect(r'\vec{x}^2', toBuild);
+      expect(r'\vec{x}_2', toBuild);
+      expect(r'\vec{x}_2^2', toBuild);
+    });
+    // TODO
+    // test("should produce mords", () {
+    //     expect(getBuilt(r'\vec x').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\vec +').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\vec +').children[0].classes).not.toContain("mbin");
+    //     expect(getBuilt(r'\vec )^2').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\vec )^2').children[0].classes).not.toContain("mclose");
+    // });
+  });
+
+  group("A stretchy and shifty accent builder", () {
+    test("should not fail", () {
+      expect(r'\widehat{AB}', toBuild);
+      expect(r'\widecheck{AB}', toBuild);
+      expect(r'\widehat{AB}^2', toBuild);
+      expect(r'\widehat{AB}_2', toBuild);
+      expect(r'\widehat{AB}_2^2', toBuild);
+    });
+
+    // test("should produce mords", () {
+    //     expect(getBuilt(r'\widehat{AB}').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\widehat +').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\widehat +').children[0].classes).not.toContain("mbin");
+    //     expect(getBuilt(r'\widehat )^2').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\widehat )^2').children[0].classes).not.toContain("mclose");
+    // });
+  });
+
+  group("A stretchy and non-shifty accent builder", () {
+    test("should not fail", () {
+      expect(r'\overrightarrow{AB}', toBuild);
+      expect(r'\overrightarrow{AB}^2', toBuild);
+      expect(r'\overrightarrow{AB}_2', toBuild);
+      expect(r'\overrightarrow{AB}_2^2', toBuild);
+    });
+
+    // test("should produce mords", () {
+    //     expect(getBuilt(r'\overrightarrow{AB}').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\overrightarrow +').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\overrightarrow +').children[0].classes).not.toContain("mbin");
+    //     expect(getBuilt(r'\overrightarrow )^2').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\overrightarrow )^2').children[0].classes).not.toContain("mclose");
+    // });
+  });
+
+  group("An under-accent parser", () {
+    test("should not fail", () {
+      expect("\\underrightarrow{x}", toParse());
+      expect("\\underrightarrow{x^2}", toParse());
+      expect("\\underrightarrow{x}^2", toParse());
+      expect("\\underrightarrow x", toParse());
+    });
+
+    test("should produce accentUnder", () {
+      final parse = getParsed("\\underrightarrow x").children[0];
+
+      expect(parse, isA<AccentUnderNode>());
+    });
+
+    test("should be grouped more tightly than supsubs", () {
+      final parse = getParsed("\\underrightarrow x^2").children[0];
+
+      expect(parse, isA<MultiscriptsNode>());
+    });
+  });
+
+  group("An under-accent builder", () {
+    test("should not fail", () {
+      expect("\\underrightarrow{x}", toBuild);
+      expect("\\underrightarrow{x}^2", toBuild);
+      expect("\\underrightarrow{x}_2", toBuild);
+      expect("\\underrightarrow{x}_2^2", toBuild);
+    });
+
+    // test("should produce mords", () {
+    //     expect(getBuilt("\\underrightarrow x").children[0].classes).toContain("mord");
+    //     expect(getBuilt("\\underrightarrow +").children[0].classes).toContain("mord");
+    //     expect(getBuilt("\\underrightarrow +").children[0].classes).not.toContain("mbin");
+    //     expect(getBuilt("\\underrightarrow )^2").children[0].classes).toContain("mord");
+    //     expect(getBuilt("\\underrightarrow )^2").children[0].classes).not.toContain("mclose");
+    // });
+  });
+
+  group("An extensible arrow parser", () {
+    test("should not fail", () {
+      expect("\\xrightarrow{x}", toParse());
+      expect("\\xrightarrow{x^2}", toParse());
+      expect("\\xrightarrow{x}^2", toParse());
+      expect("\\xrightarrow x", toParse());
+      expect("\\xrightarrow[under]{over}", toParse());
+    });
+
+    test("should produce xArrow", () {
+      final parse = getParsed("\\xrightarrow x").children[0];
+
+      expect(parse, isA<StretchyOpNode>());
+    });
+
+    test("should be grouped more tightly than supsubs", () {
+      final parse = getParsed("\\xrightarrow x^2").children[0];
+
+      expect(parse, isA<MultiscriptsNode>());
+    });
+  });
+
+  group("An extensible arrow builder", () {
+    test("should not fail", () {
+      expect("\\xrightarrow{x}", toBuild);
+      expect("\\xrightarrow{x}^2", toBuild);
+      expect("\\xrightarrow{x}_2", toBuild);
+      expect("\\xrightarrow{x}_2^2", toBuild);
+      expect("\\xrightarrow[under]{over}", toBuild);
+    });
+
+    // test("should produce mrell", () {
+    //     expect(getBuilt("\\xrightarrow x").children[0].classes).toContain("mrel");
+    //     expect(getBuilt("\\xrightarrow [under]{over}").children[0].classes).toContain("mrel");
+    //     expect(getBuilt("\\xrightarrow +").children[0].classes).toContain("mrel");
+    //     expect(getBuilt("\\xrightarrow +").children[0].classes).not.toContain("mbin");
+    //     expect(getBuilt("\\xrightarrow )^2").children[0].classes).toContain("mrel");
+    //     expect(getBuilt("\\xrightarrow )^2").children[0].classes).not.toContain("mclose");
+    // });
+  });
+
+  group("A horizontal brace parser", () {
+    test("should not fail", () {
+      expect(r'\overbrace{x}', toParse());
+      expect(r'\overbrace{x^2}', toParse());
+      expect(r'\overbrace{x}^2', toParse());
+      expect(r'\overbrace x', toParse());
+      expect("\\underbrace{x}_2", toParse());
+      expect("\\underbrace{x}_2^2", toParse());
+    });
+
+    test("should produce horizBrace", () {
+      final parse = getParsed(r'\overbrace x').children[0];
+
+      expect(parse, isA<AccentNode>());
+    });
+
+    test("should be grouped more tightly than supsubs", () {
+      final parse = getParsed(r'\overbrace x^2').children[0];
+
+      expect(parse, isA<MultiscriptsNode>());
+    });
+  });
+
+  group("A horizontal brace builder", () {
+    test("should not fail", () {
+      expect(r'\overbrace{x}', toBuild);
+      expect(r'\overbrace{x}^2', toBuild);
+      expect("\\underbrace{x}_2", toBuild);
+      expect("\\underbrace{x}_2^2", toBuild);
+    });
+
+    // test("should produce mords", () {
+    //     expect(getBuilt(r'\overbrace x').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\overbrace{x}^2').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\overbrace +').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\overbrace +').children[0].classes).not.toContain("mbin");
+    //     expect(getBuilt(r'\overbrace )^2').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\overbrace )^2').children[0].classes).not.toContain("mclose");
+    // });
+  });
+
+  group("A boxed parser", () {
+    test("should not fail", () {
+      expect(r'\boxed{x}', toParse());
+      expect(r'\boxed{x^2}', toParse());
+      expect(r'\boxed{x}^2', toParse());
+      expect(r'\boxed x', toParse());
+    });
+
+    test("should produce enclose", () {
+      final parse = getParsed(r'\boxed x').children[0];
+
+      expect(parse, isA<EnclosureNode>());
+    });
+  });
+
+  group("A boxed builder", () {
+    test("should not fail", () {
+      expect(r'\boxed{x}', toBuild);
+      expect(r'\boxed{x}^2', toBuild);
+      expect(r'\boxed{x}_2', toBuild);
+      expect(r'\boxed{x}_2^2', toBuild);
+    });
+
+    // test("should produce mords", () {
+    //     expect(getBuilt(r'\boxed x').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\boxed +').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\boxed +').children[0].classes).not.toContain("mbin");
+    //     expect(getBuilt(r'\boxed )^2').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\boxed )^2').children[0].classes).not.toContain("mclose");
+    // });
+  });
+
+  group("An fbox parser, unlike a boxed parser,", () {
+    test("should fail when given math", () {
+      expect(r'\fbox{\frac a b}', toNotParse());
+    });
+  });
+
+  group("A colorbox parser", () {
+    test("should not fail, given a text argument", () {
+      expect(r'\colorbox{red}{a b}', toParse());
+      expect(r'\colorbox{red}{x}^2', toParse());
+      expect(r'\colorbox{red} x', toParse());
+    });
+
+    test("should fail, given a math argument", () {
+      expect(r'\colorbox{red}{\alpha}', toNotParse());
+      expect(r'\colorbox{red}{\frac{a}{b}}', toNotParse());
+    });
+
+    test("should parse a color", () {
+      expect(r'\colorbox{red}{a b}', toParse());
+      expect(r'\colorbox{#197}{a b}', toParse());
+      expect(r'\colorbox{#1a9b7c}{a b}', toParse());
+    });
+
+    test("should produce enclose", () {
+      final parse = getParsed(r'\colorbox{red} x').children[0];
+      expect(parse, isA<EnclosureNode>());
+    });
+  });
+
+  group("A colorbox builder", () {
+    test("should not fail", () {
+      expect(r'\colorbox{red}{a b}', toBuild);
+      expect(r'\colorbox{red}{a b}^2', toBuild);
+      expect(r'\colorbox{red} x', toBuild);
+    });
+
+    // test("should produce mords", () {
+    //     expect(getBuilt(r'\colorbox{red}{a b}').children[0].classes).toContain("mord");
+    // });
+  });
+
+  group("An fcolorbox parser", () {
+    test("should not fail, given a text argument", () {
+      expect(r'\fcolorbox{blue}{yellow}{a b}', toParse());
+      expect(r'\fcolorbox{blue}{yellow}{x}^2', toParse());
+      expect(r'\fcolorbox{blue}{yellow} x', toParse());
+    });
+
+    test("should fail, given a math argument", () {
+      expect(r'\fcolorbox{blue}{yellow}{\alpha}', toNotParse());
+      expect(r'\fcolorbox{blue}{yellow}{\frac{a}{b}}', toNotParse());
+    });
+
+    test("should parse a color", () {
+      expect(r'\fcolorbox{blue}{yellow}{a b}', toParse());
+      expect(r'\fcolorbox{blue}{#197}{a b}', toParse());
+      expect(r'\fcolorbox{blue}{#1a9b7c}{a b}', toParse());
+    });
+
+    test("should produce enclose", () {
+      final parse = getParsed(r'\fcolorbox{blue}{yellow} x').children[0];
+      expect(parse, isA<EnclosureNode>());
+    });
+  });
+
+  group("A fcolorbox builder", () {
+    test("should not fail", () {
+      expect(r'\fcolorbox{blue}{yellow}{a b}', toBuild);
+      expect(r'\fcolorbox{blue}{yellow}{a b}^2', toBuild);
+      expect(r'\fcolorbox{blue}{yellow} x', toBuild);
+    });
+
+    // test("should produce mords", () {
+    //     expect(getBuilt(r'\colorbox{red}{a b}').children[0].classes).toContain("mord");
+    // });
+  });
+
+  group("A strike-through parser", () {
+    test("should not fail", () {
+      expect(r'\cancel{x}', toParse());
+      expect(r'\cancel{x^2}', toParse());
+      expect(r'\cancel{x}^2', toParse());
+      expect(r'\cancel x', toParse());
+    });
+
+    test("should produce enclose", () {
+      final parse = getParsed(r'\cancel x').children[0];
+
+      expect(parse, isA<EnclosureNode>());
+    });
+
+    test("should be grouped more tightly than supsubs", () {
+      final parse = getParsed(r'\cancel x^2').children[0];
+
+      expect(parse, isA<MultiscriptsNode>());
+    });
+  });
+
+  group("A strike-through builder", () {
+    test("should not fail", () {
+      expect(r'\cancel{x}', toBuild);
+      expect(r'\cancel{x}^2', toBuild);
+      expect(r'\cancel{x}_2', toBuild);
+      expect(r'\cancel{x}_2^2', toBuild);
+      expect(r'\sout{x}', toBuild);
+      expect(r'\sout{x}^2', toBuild);
+      expect(r'\sout{x}_2', toBuild);
+      expect(r'\sout{x}_2^2', toBuild);
+    });
+
+    // test("should produce mords", () {
+    //     expect(getBuilt(r'\cancel x').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\cancel +').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\cancel +').children[0].classes).not.toContain("mbin");
+    //     expect(getBuilt(r'\cancel )^2').children[0].classes).toContain("mord");
+    //     expect(getBuilt(r'\cancel )^2').children[0].classes).not.toContain("mclose");
+    // });
+  });
+
+  group("A phantom parser", () {
+    test("should not fail", () {
+      expect(r'\phantom{x}', toParse());
+      expect(r'\phantom{x^2}', toParse());
+      expect(r'\phantom{x}^2', toParse());
+      expect(r'\phantom x', toParse());
+      expect(r'\hphantom{x}', toParse());
+      expect(r'\hphantom{x^2}', toParse());
+      expect(r'\hphantom{x}^2', toParse());
+      expect(r'\hphantom x', toParse());
+    });
+
+    test("should build a phantom node", () {
+      final parse = getParsed(r'\phantom{x}').children[0];
+
+      expect(parse, isA<PhantomNode>());
+      // expect(parse.body).toBeDefined();
+    });
+  });
+
+  group("A phantom builder", () {
+    test("should not fail", () {
+      expect(r'\phantom{x}', toBuild);
+      expect(r'\phantom{x^2}', toBuild);
+      expect(r'\phantom{x}^2', toBuild);
+      expect(r'\phantom x', toBuild);
+
+      expect(r'\hphantom{x}', toBuild);
+      expect(r'\hphantom{x^2}', toBuild);
+      expect(r'\hphantom{x}^2', toBuild);
+      expect(r'\hphantom x', toBuild);
+    });
+
+    // test("should make the children transparent", () {
+    //     final children = getBuilt(r'\phantom{x+1}');
+    //     expect(children.children[0].style.color).toBe("transparent");
+    //     expect(children.children[2].style.color).toBe("transparent");
+    //     expect(children.children[4].style.color).toBe("transparent");
+    // });
+
+    // test("should make all descendants transparent", () {
+    //     final children = getBuilt(r'\phantom{x+\blue{1}}');
+    //     expect(children.children[0].style.color).toBe("transparent");
+    //     expect(children.children[2].style.color).toBe("transparent");
+    //     expect(children.children[4].style.color).toBe("transparent");
+    // });
+  });
 
 // group("A smash parser", () {
 //     test("should not fail", () {
@@ -2615,6 +2292,7 @@ void main() {
 //     });
 // });
 
+// TODO
 // group("A document fragment", () {
 //     test("should have paddings applied inside an extensible arrow", () {
 //         final markup = katex.renderToString("\\tiny\\xrightarrow\\textcolor{red}{x}");
@@ -2632,6 +2310,7 @@ void main() {
 //     });
 // });
 
+// TODO
 // group("A parser error", () {
 //     test("should report the position of an error", () {
 //         try {
@@ -2642,255 +2321,159 @@ void main() {
 //     });
 // });
 
-// group("An optional argument parser", () {
-//     test("should not fail", () {
-//         // Note this doesn't actually make an optional argument, but still
-//         // should work
-//         expect(r'\frac.children[1]{2}{3}', toParse());
+  group("An optional argument parser", () {
+    test("should not fail", () {
+      // Note this doesn't actually make an optional argument, but still
+      // should work
+      expect(r'\frac.children[1]{2}{3}', toParse());
 
-//         expect(r'\rule[0.2em]{1em}{1em}', toParse());
-//     });
+      expect(r'\rule[0.2em]{1em}{1em}', toParse());
+    });
 
-//     test("should work with sqrts with optional arguments", () {
-//         expect(r'\sqrt.children[3]{2}', toParse());
-//     });
+    test("should work with sqrts with optional arguments", () {
+      expect(r'\sqrt.children[3]{2}', toParse());
+    });
 
-//     test("should work when the optional argument is missing", () {
-//         expect(r'\sqrt{2}', toParse());
-//         expect(r'\rule{1em}{2em}', toParse());
-//     });
+    test("should work when the optional argument is missing", () {
+      expect(r'\sqrt{2}', toParse());
+      expect(r'\rule{1em}{2em}', toParse());
+    });
 
-//     test("should fail when the optional argument is malformed", () {
-//         expect(r'\rule.children[1]{2em}{3em}'.not, toParse());
-//     });
+    test("should fail when the optional argument is malformed", () {
+      expect(r'\rule.children[1]{2em}{3em}', toNotParse());
+    });
 
-//     test("should not work if the optional argument isn't closed", () {
-//         expect(r'\sqrt['.not, toParse());
-//     });
-// });
+    test("should not work if the optional argument isn't closed", () {
+      expect(r'\sqrt[', toNotParse());
+    });
+  });
 
-// group("An array environment", () {
+  group("An array environment", () {
+    test("should accept a single alignment character", () {
+      final parse = getParsed(r'\begin{array}r1\\20\end{array}');
+      expect(parse.children[0], isA<MatrixNode>());
+      expect((parse.children[0] as MatrixNode).cols, 1);
+      expect((parse.children[0] as MatrixNode).columnAligns.first,
+          MatrixColumnAlign.right);
+    });
 
-//     test("should accept a single alignment character", () {
-//         final parse = getParsed(r'\begin{array}r1\\20\end{array}');
-//         expect(parse.children[0].type).toBe("array");
-//         expect(parse.children[0].cols).toEqual([
-//             {type: "align", align: "r"},
-//         ]);
-//     });
+    // We deviate from KaTeX here
+    test("should accept vertical separators", () {
+      final parse = getParsed(r'\begin{array}{|l||c:r::}\end{array}');
+      expect(parse.children[0], isA<MatrixNode>());
+      expect(
+        listEquals((parse.children[0] as MatrixNode).columnAligns, [
+          MatrixColumnAlign.left,
+          MatrixColumnAlign.center,
+          MatrixColumnAlign.right
+        ]),
+        isTrue,
+      );
+      expect(
+        listEquals((parse.children[0] as MatrixNode).vLines, [
+          MatrixSeparatorStyle.solid,
+          MatrixSeparatorStyle.solid,
+          MatrixSeparatorStyle.dashed,
+          MatrixSeparatorStyle.dashed,
+        ]),
+        isTrue,
+      );
+    });
+  });
 
-//     test("should accept vertical separators", () {
-//         final parse = getParsed(r'\begin{array}{|l||c:r::}\end{array}');
-//         expect(parse.children[0].type).toBe("array");
-//         expect(parse.children[0].cols).toEqual([
-//             {type: "separator", separator: "|"},
-//             {type: "align", align: "l"},
-//             {type: "separator", separator: "|"},
-//             {type: "separator", separator: "|"},
-//             {type: "align", align: "c"},
-//             {type: "separator", separator: ":"},
-//             {type: "align", align: "r"},
-//             {type: "separator", separator: ":"},
-//             {type: "separator", separator: ":"},
-//         ]);
-//     });
+  group("A subarray environment", () {
+    test("should accept only a single alignment character", () {
+      final parse = getParsed(r'\begin{subarray}{c}a \\ b\end{subarray}');
+      expect(parse.children[0], isA<MatrixNode>());
+      expect(
+        listEquals((parse.children[0] as MatrixNode).columnAligns, [
+          MatrixColumnAlign.center,
+        ]),
+        isTrue,
+      );
+      expect(r'\begin{subarray}{cc}a \\ b\end{subarray}', toNotParse());
+      expect(r'\begin{subarray}{c}a & b \\ c & d\end{subarray}', toNotParse());
+      expect(r'\begin{subarray}{c}a \\ b\end{subarray}', toBuild);
+    });
+  });
 
-// });
+  group("A substack function", () {
+    test("should build", () {
+      expect(r'\sum_{\substack{ 0<i<m \\ 0<j<n }}  P(i,j)', toBuild);
+    });
+    test("should accommodate spaces in the argument", () {
+      expect(r'\sum_{\substack{ 0<i<m \\ 0<j<n }}  P(i,j)', toBuild);
+    });
+    test("should accommodate macros in the argument", () {
+      expect(r'\sum_{\substack{ 0<i<\varPi \\ 0<j<\pi }}  P(i,j)', toBuild);
+    });
+  });
 
-// group("A subarray environment", () {
+  group("A smallmatrix environment", () {
+    test("should build", () {
+      expect(r'\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}', toBuild);
+    });
+  });
 
-//     test("should accept only a single alignment character", () {
-//         final parse = getParsed(r'\begin{subarray}{c}a \\ b\end{subarray}');
-//         expect(parse.children[0].type).toBe("array");
-//         expect(parse.children[0].cols).toEqual([
-//             {type: "align", align: "c"},
-//         ]);
-//         expect(r'\begin{subarray}{cc}a \\ b\end{subarray}'.not, toParse());
-//         expect(r'\begin{subarray}{c}a & b \\ c & d\end{subarray}'.not, toParse());
-//         expect(r'\begin{subarray}{c}a \\ b\end{subarray}'.toBuild();
-//     });
+  group("A cases environment", () {
+    test("should parse its input", () {
+      expect(
+          r'f(a,b)=\begin{cases}a+1&\text{if }b\text{ is odd}\\a&\text{if }b=0\\a-1&\text{otherwise}\end{cases}',
+          toParse());
+    });
+  });
 
-// });
+  group("An rcases environment", () {
+    test("should build", () {
+      expect(
+          r'\begin{rcases} a &\text{if } b \\ c &\text{if } d \end{rcases}⇒…',
+          toBuild);
+    });
+  });
 
-// group("A substack function", () {
+  group("An aligned environment", () {
+    test("should parse its input", () {
+      expect(r'\begin{aligned}a&=b&c&=d\\e&=f\end{aligned}', toParse());
+    });
 
-//     test("should build", () {
-//         expect(r'\sum_{\substack{ 0<i<m \\ 0<j<n }}  P(i,j)'.toBuild();
-//     });
-//     test("should accommodate spaces in the argument", () {
-//         expect(r'\sum_{\substack{ 0<i<m \\ 0<j<n }}  P(i,j)'.toBuild();
-//     });
-//     test("should accommodate macros in the argument", () {
-//         expect(r'\sum_{\substack{ 0<i<\varPi \\ 0<j<\pi }}  P(i,j)'.toBuild();
-//     });
+    test("should allow cells in brackets", () {
+      expect(r'\begin{aligned}[a]&[b]\\ [c]&[d]\end{aligned}', toParse());
+    });
 
-// });
+    test("should forbid cells in brackets without space", () {
+      expect(r'\begin{aligned}[a]&[b]\\[c]&[d]\end{aligned}', toNotParse());
+    });
 
-// group("A smallmatrix environment", () {
+    // test("should not eat the last row when its first cell is empty", () {
+    //     final ae = getParsed(r'\begin{aligned}&E_1 & (1)\\&E_2 & (2)\\&E_3 & (3)\end{aligned}').children[0];
+    //     expect(ae.body.children.length, 3);
+    // });
+  });
 
-//     test("should build", () {
-//         expect(r'\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}'.toBuild();
-//     });
+  group("operatorname support", () {
+    test("should not fail", () {
+      expect("\\operatorname{x*Π∑\\Pi\\sum\\frac a b}", toBuild);
+      expect("\\operatorname*{x*Π∑\\Pi\\sum\\frac a b}", toBuild);
+      expect("\\operatorname*{x*Π∑\\Pi\\sum\\frac a b}_y x", toBuild);
+      expect("\\operatorname*{x*Π∑\\Pi\\sum\\frac a b}\\limits_y x", toBuild);
+    });
+  });
 
-// });
+  group("A raw text parser", () {
+    test("should not not parse a mal-formed string", () {
+      // In the next line, the first character passed to \includegraphics is a
+      // Unicode combining character. So this is a test that the parser will catch a bad string.
+      expect(
+          "\\includegraphics[\u030aheight=0.8em, totalheight=0.9em, width=0.9em]{"
+          "https://cdn.kastatic.org/images/apple-touch-icon-57x57-precomposed.new.png}",
+          toNotParse());
+    });
+    // test("should return null for a omitted optional string", () {
+    //     expect("\\includegraphics{https://cdn.kastatic.org/images/apple-touch-icon-57x57-precomposed.new.png}"), toParse());
+    // });
+  });
 
-// group("A cases environment", () {
-
-//     test("should parse its input", () {
-//         expect(`f(a,b)=\begin{cases}a+1&\text{if }b\text{ is odd}\\a&\text{if }b=0\\a-1&\text{otherwise}\end{cases}`
-//             , toParse());
-//     });
-
-// });
-
-// group("An rcases environment", () {
-
-//     test("should build", () {
-//         expect(`\begin{rcases} a &\text{if } b \\ c &\text{if } d \end{rcases}⇒…`
-//             .toBuild();
-//     });
-
-// });
-
-// group("An aligned environment", () {
-
-//     test("should parse its input", () {
-//         expect(r'\begin{aligned}a&=b&c&=d\\e&=f\end{aligned}', toParse());
-//     });
-
-//     test("should allow cells in brackets", () {
-//         expect(r'\begin{aligned}[a]&[b]\\ [c]&[d]\end{aligned}', toParse());
-//     });
-
-//     test("should forbid cells in brackets without space", () {
-//         expect(r'\begin{aligned}[a]&[b]\\[c]&[d]\end{aligned}'.not, toParse());
-//     });
-
-//     test("should not eat the last row when its first cell is empty", () {
-//         final ae = getParsed(r'\begin{aligned}&E_1 & (1)\\&E_2 & (2)\\&E_3 & (3)\end{aligned}').children[0];
-//         expect(ae.body.children.length, 3);
-//     });
-// });
-
-// group("operatorname support", () {
-//     test("should not fail", () {
-//         expect("\\operatorname{x*Π∑\\Pi\\sum\\frac a b}").toBuild();
-//         expect("\\operatorname*{x*Π∑\\Pi\\sum\\frac a b}").toBuild();
-//         expect("\\operatorname*{x*Π∑\\Pi\\sum\\frac a b}_y x").toBuild();
-//         expect("\\operatorname*{x*Π∑\\Pi\\sum\\frac a b}\\limits_y x").toBuild();
-//     });
-// });
-
-// group("href and url commands", () {
-//     // We can't use raw strings for \url because \u is for Unicode escapes.
-
-//     test("should parse its input", () {
-//         expect(r'\href{http://example.com/}{\sin}'.toBuild(trustSettings);
-//         expect("\\url{http://example.com/}").toBuild(trustSettings);
-//     });
-
-//     test("should allow empty URLs", () {
-//         expect(r'\href{}{example here}'.toBuild(trustSettings);
-//         expect("\\url{}").toBuild(trustSettings);
-//     });
-
-//     test("should allow single-character URLs", () => {
-//         expect(r'\href%end'.toParseLike("\\href{%}end", trustSettings);
-//         expect("\\url%end").toParseLike("\\url{%}end", trustSettings);
-//         expect("\\url%%end\n").toParseLike("\\url{%}", trustSettings);
-//         expect("\\url end").toParseLike("\\url{e}nd", trustSettings);
-//         expect("\\url%end").toParseLike("\\url {%}end", trustSettings);
-//     });
-
-//     test("should allow spaces single-character URLs", () => {
-//         expect(r'\href %end'.toParseLike("\\href{%}end", trustSettings);
-//         expect("\\url %end").toParseLike("\\url{%}end", trustSettings);
-//     });
-
-//     test("should allow letters [#$%&~_^] without escaping", () {
-//         final url = "http://example.org/~bar/#top?foo=$foo&bar=ba^r_boo%20baz";
-//         final parsed1 = getParsed(`\\href{${url}}{\\alpha}`, trustSettings).children[0];
-//         expect(parsed1.href).toBe(url);
-//         final parsed2 = getParsed(`\\url{${url}}`, trustSettings).children[0];
-//         expect(parsed2.href).toBe(url);
-//     });
-
-//     test("should allow balanced braces in url", () {
-//         final url = "http://example.org/{{}t{oo}}";
-//         final parsed1 = getParsed(`\\href{${url}}{\\alpha}`, trustSettings).children[0];
-//         expect(parsed1.href).toBe(url);
-//         final parsed2 = getParsed(`\\url{${url}}`, trustSettings).children[0];
-//         expect(parsed2.href).toBe(url);
-//     });
-
-//     test("should not allow unbalanced brace(s) in url", () {
-//         expect(r'\href{http://example.com/{a}{bar}'.not, toParse());
-//         expect(r'\href{http://example.com/}a}{bar}'.not, toParse());
-//         expect(r'\\url{http://example.com/{a}'.not, toParse());
-//         expect(r'\\url{http://example.com/}a}'.not, toParse());
-//     });
-
-//     test("should allow escape for letters [#$%&~_^{}]", () {
-//         final url = "http://example.org/~bar/#top?foo=$}foo{&bar=bar^r_boo%20baz";
-//         final input = url.replace(/([#$%&~_^{}])/g, '\\$1');
-//         final parsed1 = getParsed(`\\href{${input}}{\\alpha}`, trustSettings).children[0];
-//         expect(parsed1.href).toBe(url);
-//         final parsed2 = getParsed(`\\url{${input}}`, trustSettings).children[0];
-//         expect(parsed2.href).toBe(url);
-//     });
-
-//     test("should allow comments after URLs", () {
-//         expect("\\url{http://example.com/}%comment\n").toBuild();
-//     });
-
-//     test("should be marked up correctly", () {
-//         final markup = katex.renderToString(r`([r'\href{http://example.com/}{example here}', {trust: true});
-//         expect(markup).toContain("<a href=\"http://example.com/\">");
-//     });
-
-//     test("should not affect spacing around", () {
-//         final built = getBuilt("a\\href{http://example.com/}{+b}", trustSettings);
-//         expect(built).toMatchSnapshot();
-//     });
-
-//     test("should forbid relative URLs when trust option is false", () => {
-//         final parsed = getParsed("\\href{relative}{foo}");
-//         expect(parsed).toMatchSnapshot();
-//     });
-
-//     test("should allow explicitly allowed protocols", () => {
-//         final parsed = getParsed(
-//             "\\href{ftp://x}{foo}",
-//             new Settings({trust: (context) => context.protocol === "ftp"}),
-//         );
-//         expect(parsed).toMatchSnapshot();
-//     });
-
-//     test("should allow all protocols when trust option is true", () => {
-//         final parsed = getParsed("\\href{ftp://x}{foo}", trustSettings);
-//         expect(parsed).toMatchSnapshot();
-//     });
-
-//     test("should not allow explicitly disallow protocols", () => {
-//         final parsed = getParsed(
-//             "\\href{javascript:alert('x')}{foo}",
-//             new Settings({trust: context => context.protocol !== "javascript"}),
-//         );
-//         expect(parsed).toMatchSnapshot();
-//     });
-// });
-
-// group("A raw text parser", () {
-//     test("should not not parse a mal-formed string", () {
-//         // In the next line, the first character passed to \includegraphics is a
-//         // Unicode combining character. So this is a test that the parser will catch a bad string.
-//         expect("\\includegraphics[\u030aheight=0.8em, totalheight=0.9em, width=0.9em]{" + "https://cdn.kastatic.org/images/apple-touch-icon-57x57-precomposed.new.png}").not, toParse());
-//     });
-//     test("should return null for a omitted optional string", () {
-//         expect("\\includegraphics{https://cdn.kastatic.org/images/apple-touch-icon-57x57-precomposed.new.png}"), toParse());
-//     });
-// });
-
+// TODO
 // group("A parser that does not throw on unsupported commands", () {
 //     // The parser breaks on unsupported commands unless it is explicitly
 //     // told not to
@@ -2951,431 +2534,425 @@ void main() {
 //     });
 // });
 
-// group("Symbols", () {
-//     test("should support AMS symbols in both text and math mode", () {
-//         // These text+math symbols are from Section 6 of
-//         // http://mirrors.ctan.org/fonts/amsfonts/doc/amsfonts.pdf
-//         final symbols = r'\yen\checkmark\circledR\maltese';
-//         expect(symbols).toBuild();
-//         expect(`\\text{${symbols}}`).toBuild(strictSettings);
-//     });
-// });
-
-// group("A macro expander", () {
-//     test("should produce individual tokens", () {
-//         expect(r'e^\foo'.toParseLike("e^1 23",
-//             new Settings({macros: {"\\foo": "123"}}));
-//     });
-
-//     test("should preserve leading spaces inside macro definition", () {
-//         expect(r'\text{\foo}'.toParseLike(r`([r'\text{ x}',
-//             new Settings({macros: {"\\foo": " x"}}));
-//     });
-
-//     test("should preserve leading spaces inside macro argument", () {
-//         expect(r'\text{\foo{ x}}'.toParseLike(r`([r'\text{ x}',
-//             new Settings({macros: {"\\foo": "#1"}}));
-//     });
-
-//     test("should ignore expanded spaces in math mode", () {
-//         expect(r'\foo'.toParseLike("x", new Settings({macros: {"\\foo": " x"}}));
-//     });
-
-//     test("should consume spaces after control-word macro", () {
-//         expect(r'\text{\foo }'.toParseLike(r`([r'\text{x}',
-//             new Settings({macros: {"\\foo": "x"}}));
-//     });
-
-//     test("should consume spaces after macro with \\relax", () {
-//         expect(r'\text{\foo }'.toParseLike(r`([r'\text{}',
-//             new Settings({macros: {"\\foo": "\\relax"}}));
-//     });
-
-//     test("should not consume spaces after control-word expansion", () {
-//         expect(r'\text{\\ }'.toParseLike(r`([r'\text{ }',
-//             new Settings({macros: {"\\\\": "\\relax"}}));
-//     });
-
-//     test("should consume spaces after \\relax", () {
-//         expect(r'\text{\relax }'.toParseLike(r'\text{}');
-//     });
-
-//     test("should consume spaces after control-word function", () {
-//         expect(r'\text{\KaTeX }'.toParseLike(r'\text{\KaTeX}');
-//     });
-
-//     test("should preserve spaces after control-symbol macro", () {
-//         expect(r'\text{\% y}'.toParseLike(r`([r'\text{x y}',
-//             new Settings({macros: {"\\%": "x"}}));
-//     });
-
-//     test("should preserve spaces after control-symbol function", () {
-//         expect("\text{\' }", toParse());
-//     });
-
-//     test("should consume spaces between arguments", () {
-//         expect(r'\text{\foo 1 2}'.toParseLike(r`([r'\text{12end}',
-//             new Settings({macros: {"\\foo": "#1#2end"}}));
-//         expect(r'\text{\foo {1} {2}}'.toParseLike(r`([r'\text{12end}',
-//             new Settings({macros: {"\\foo": "#1#2end"}}));
-//     });
-
-//     test("should allow for multiple expansion", () {
-//         expect(r'1\foo2'.toParseLike("1aa2", new Settings({macros: {
-//             "\\foo": "\\bar\\bar",
-//             "\\bar": "a",
-//         }}));
-//     });
-
-//     test("should allow for multiple expansion with argument", () {
-//         expect(r'1\foo2'.toParseLike("12222", new Settings({macros: {
-//             "\\foo": "\\bar{#1}\\bar{#1}",
-//             "\\bar": "#1#1",
-//         }}));
-//     });
-
-//     test("should allow for macro argument", () {
-//         expect(r'\foo\bar'.toParseLike("(x)", new Settings({macros: {
-//             "\\foo": "(#1)",
-//             "\\bar": "x",
-//         }}));
-//     });
-
-//     test("should allow for space macro argument (text version)", () {
-//         expect(r'\text{\foo\bar}'.toParseLike(r`([r'\text{( )}', new Settings({macros: {
-//             "\\foo": "(#1)",
-//             "\\bar": " ",
-//         }}));
-//     });
-
-//     test("should allow for space macro argument (math version)", () {
-//         expect(r'\foo\bar'.toParseLike("()", new Settings({macros: {
-//             "\\foo": "(#1)",
-//             "\\bar": " ",
-//         }}));
-//     });
-
-//     test("should allow for space second argument (text version)", () {
-//         expect(r'\text{\foo\bar\bar}'.toParseLike(r`([r'\text{( , )}', new Settings({macros: {
-//             "\\foo": "(#1,#2)",
-//             "\\bar": " ",
-//         }}));
-//     });
-
-//     test("should allow for space second argument (math version)", () {
-//         expect(r'\foo\bar\bar'.toParseLike("(,)", new Settings({macros: {
-//             "\\foo": "(#1,#2)",
-//             "\\bar": " ",
-//         }}));
-//     });
-
-//     test("should allow for empty macro argument", () {
-//         expect(r'\foo\bar'.toParseLike("()", new Settings({macros: {
-//             "\\foo": "(#1)",
-//             "\\bar": "",
-//         }}));
-//     });
-
-//     // TODO: The following is not currently possible to get working, given that
-//     // functions and macros are dealt with separately.
-// /*
-//     test("should allow for space function arguments", () {
-//         expect(r'\frac\bar\bar'.toParseLike(r`([r'\frac{}{}', new Settings({macros: {
-//             "\\bar": " ",
-//         }}));
-//     });
-// */
-
-//     test("should build \\overset and \\underset", () {
-//         expect(r'\overset{f}{\rightarrow} Y'.toBuild();
-//         expect("\\underset{f}{\\rightarrow} Y").toBuild();
-//     });
-
-//     test("should build \\iff, \\implies, \\impliedby", () {
-//         expect(r'X \iff Y'.toBuild();
-//         expect(r'X \implies Y'.toBuild();
-//         expect(r'X \impliedby Y'.toBuild();
-//     });
-
-//     test("should allow aliasing characters", () {
-//         expect(r'x’=c'.toParseLike("x'=c", new Settings({macros: {
-//             "’": "'",
-//         }}));
-//     });
-
-//     test("\\@firstoftwo should consume both, and avoid errors", () {
-//         expect(r'\@firstoftwo{yes}{no}'.toParseLike(r'yes');
-//         expect(`\@firstoftwo{yes}{1'_2^3}`.toParseLike(r'yes');
-//     });
-
-//     test("\\@ifstar should consume star but nothing else", () {
-//         expect(r'\@ifstar{yes}{no}*!'.toParseLike(r'yes!');
-//         expect(r'\@ifstar{yes}{no}?!'.toParseLike(r'no?!');
-//     });
-
-//     test("\\@ifnextchar should not consume nonspaces", () {
-//         expect(r'\@ifnextchar!{yes}{no}!!'.toParseLike(r'yes!!');
-//         expect(r'\@ifnextchar!{yes}{no}?!'.toParseLike(r'no?!');
-//     });
-
-//     test("\\@ifnextchar should consume spaces", () {
-//         expect(`\def\x#1{\@ifnextchar x{yes}{no}}\x{}x\x{} x`
-//             .toParseLike(r'yesxyesx');
-//     });
-
-//     test("\\@ifstar should consume star but nothing else", () {
-//         expect(r'\@ifstar{yes}{no}*!'.toParseLike(r'yes!');
-//         expect(r'\@ifstar{yes}{no}?!'.toParseLike(r'no?!');
-//     });
-
-//     test("\\TextOrMath should work immediately", () {
-//         expect(r'\TextOrMath{text}{math}'.toParseLike(r'math');
-//     });
-
-//     test("\\TextOrMath should work after other math", () {
-//         expect(r'x+\TextOrMath{text}{math}'.toParseLike(r'x+math');
-//     });
-
-//     test("\\TextOrMath should work immediately after \\text", () {
-//         expect(r'\text{\TextOrMath{text}{math}}'.toParseLike(r'\text{text}');
-//     });
-
-//     test("\\TextOrMath should work later after \\text", () {
-//         expect(r'\text{hello \TextOrMath{text}{math}}'.toParseLike(r'\text{hello text}');
-//     });
-
-//     test("\\TextOrMath should work immediately after \\text ends", () {
-//         expect(`\text{\TextOrMath{text}{math}}\TextOrMath{text}{math}`
-//             .toParseLike(r'\text{text}math');
-//     });
-
-//     test("\\TextOrMath should work immediately after $", () {
-//         expect(`\text{$\TextOrMath{text}{math}$}`.toParseLike`\text{$math$}`;
-//     });
-
-//     test("\\TextOrMath should work later after $", () {
-//         expect(`\text{$x+\TextOrMath{text}{math}$}`.toParseLike`\text{$x+math$}`;
-//     });
-
-//     test("\\TextOrMath should work immediately after $ ends", () {
-//         expect(`\text{$\TextOrMath{text}{math}$\TextOrMath{text}{math}}`
-//             .toParseLike`\text{$math$text}`;
-//     });
-
-//     test("\\TextOrMath should work in a macro", () {
-//         expect(`\mode\text{\mode$\mode$\mode}\mode`
-//             .toParseLike(r`math\text{text$math$text}math`, new Settings({macros: {
-//                 "\\mode": "\\TextOrMath{text}{math}",
-//             }}));
-//     });
-
-//     test("\\TextOrMath should work in a macro passed to \\text", () {
-//         expect(r'\text\mode'.toParseLike(r`([r'\text t', new Settings({macros:
-//             {"\\mode": "\\TextOrMath{t}{m}"}}));
-//     });
-
-//     test("\\char produces literal characters", () => {
-//         expect("\\char(r'a").toParseLike("\\char')\\a");
-//         expect("\\char`\\%").toParseLike("\\char37");
-//         expect("\\char`\\%").toParseLike("\\char'45");
-//         expect("\\char`\\%").toParseLike('\\char"25');
-//         expect("\\char").not, toParse());
-//         expect("\\char`").not, toParse());
-//         expect("\\char'").not, toParse());
-//         expect('\\char"').not, toParse());
-//         expect("\\char'a").not, toParse());
-//         expect('\\char"g').not, toParse());
-//         expect('\\char"g').not, toParse());
-//     });
-
-//     test("should build Unicode private area characters", () {
-//         expect(r'\gvertneqq\lvertneqq\ngeqq\ngeqslant\nleqq'.toBuild();
-//         expect(r'\nleqslant\nshortmid\nshortparallel\varsubsetneq'.toBuild();
-//         expect(r'\varsubsetneqq\varsupsetneq\varsupsetneqq'.toBuild();
-//     });
-
-//     // TODO(edemaine): This doesn't work yet.  Parses like `\text text`,
-//     // which doesn't treat all four letters as an argument.
-//     //test("\\TextOrMath should work in a macro passed to \\text", () {
-//     //    expect(r'\text\mode'.toParseLike(r`([r'\text{text}', new Settings({macros:
-//     //        {"\\mode": "\\TextOrMath{text}{math}"}});
-//     //});
-
-//     test("\\gdef defines macros", () {
-//         expect(r'\gdef\foo{x^2}\foo+\foo'.toParseLike(r'x^2+x^2');
-//         expect(r'\gdef{\foo}{x^2}\foo+\foo'.toParseLike(r'x^2+x^2');
-//         expect(r'\gdef\foo{hi}\foo+\text{\foo}'.toParseLike(r'hi+\text{hi}');
-//         expect(`\gdef\foo#1{hi #1}\text{\foo{Alice}, \foo{Bob}}`
-//             .toParseLike(r'\text{hi Alice, hi Bob}');
-//         expect(r'\gdef\foo#1#2{(#1,#2)}\foo 1 2+\foo 3 4'.toParseLike(r'(1,2)+(3,4)');
-//         expect(r'\gdef\foo#2{}'.not, toParse());
-//         expect(r'\gdef\foo#1#3{}'.not, toParse());
-//         expect(r'\gdef\foo#1#2#3#4#5#6#7#8#9{}', toParse());
-//         expect(r'\gdef\foo#1#2#3#4#5#6#7#8#9#10{}'.not, toParse());
-//         expect(r'\gdef\foo#{}'.not, toParse());
-//         expect(r'\gdef\foo\bar', toParse());
-//         expect(r'\gdef{\foo\bar}{}'.not, toParse());
-//         expect(r'\gdef{}{}'.not, toParse());
-//         // TODO: These shouldn't work, but `1` and `{1}` are currently treated
-//         // the same, as are `\foo(r' and '){\foo}`.
-//         //expect(r'\gdef\foo1'.not, toParse());
-//         //expect(r'\gdef{\foo}{}'.not, toParse());
-//     });
-
-//     test("\\def works locally", () => {
-//         expect("\\def\\x{1}\\x{\\def\\x{2}\\x{\\def\\x{3}\\x}\\x}\\x")
-//             .toParseLike(r'1{2{3}2}1');
-//         expect("\\def\\x{1}\\x\\def\\x{2}\\x{\\def\\x{3}\\x\\def\\x{4}\\x}\\x")
-//             .toParseLike(r'12{34}2');
-//     });
-
-//     test("\\gdef overrides at all levels", () => {
-//         expect("\\def\\x{1}\\x{\\def\\x{2}\\x{\\gdef\\x{3}\\x}\\x}\\x")
-//             .toParseLike(r'1{2{3}3}3');
-//         expect("\\def\\x{1}\\x{\\def\\x{2}\\x{\\global\\def\\x{3}\\x}\\x}\\x")
-//             .toParseLike(r'1{2{3}3}3');
-//         expect("\\def\\x{1}\\x{\\def\\x{2}\\x{\\gdef\\x{3}\\x\\def\\x{4}\\x}" +
-//             "\\x\\def\\x{5}\\x}\\x").toParseLike(r'1{2{34}35}3');
-//     });
-
-//     test("\\global needs to followed by \\def", () => {
-//         expect(r'\global\def\foo{}\foo'.toParseLike(r'');
-//         // TODO: This doesn't work yet; \global needs to expand argument.
-//         //expect(r'\def\DEF{\def}\global\DEF\foo{}\foo'.toParseLike(r'');
-//         expect(r'\global\foo'.not, toParse());
-//         expect(r'\global\bar x'.not, toParse());
-//     });
-
-//     test("Macro arguments do not generate groups", () => {
-//         expect("\\def\\x{1}\\x\\def\\foo#1{#1}\\foo{\\x\\def\\x{2}\\x}\\x")
-//             .toParseLike(r'1122');
-//     });
-
-//     test("\\textbf arguments do generate groups", () => {
-//         expect("\\def\\x{1}\\x\\textbf{\\x\\def\\x{2}\\x}\\x")
-//             .toParseLike(r'1\textbf{12}1');
-//     });
-
-//     test("\\sqrt optional arguments generate groups", () => {
-//         expect("\\def\\x{1}\\def\\y{1}\\x\\y" +
-//             "\\sqrt[\\def\\x{2}\\x]{\\def\\y{2}\\y}\\x\\y")
-//             .toParseLike(r'11\sqrt.children[2]{2}11');
-//     });
-
-//     test("array cells generate groups", () => {
-//         expect(`\def\x{1}\begin{matrix}\x&\def\x{2}\x&\x\end{matrix}\x`
-//             .toParseLike(r'\begin{matrix}1&2&1\end{matrix}1');
-//         expect(`\def\x{1}\begin{matrix}\def\x{2}\x&\x\end{matrix}\x`
-//             .toParseLike(r'\begin{matrix}2&1\end{matrix}1');
-//     });
-
-//     test("\\gdef changes settings.macros", () => {
-//         final macros = {};
-//         expect(r'\gdef\foo{1}', toParse(new Settings({macros})));
-//         expect(macros["\\foo"]).toBeTruthy();
-//     });
-
-//     test("\\def doesn't change settings.macros", () => {
-//         final macros = {};
-//         expect(r'\def\foo{1}', toParse(new Settings({macros})));
-//         expect(macros["\\foo"]).toBeFalsy();
-//     });
-
-//     test("\\def changes settings.macros with globalGroup", () => {
-//         final macros = {};
-//         expect(r'\gdef\foo{1}', toParse(new Settings({macros, globalGroup: true})));
-//         expect(macros["\\foo"]).toBeTruthy();
-//     });
-
-//     test("\\newcommand doesn't change settings.macros", () => {
-//         final macros = {};
-//         expect(r'\newcommand\foo{x^2}\foo+\foo', toParse(new Settings({macros})));
-//         expect(macros["\\foo"]).toBeFalsy();
-//     });
-
-//     test("\\newcommand changes settings.macros with globalGroup", () => {
-//         final macros = {};
-//         expect(r'\newcommand\foo{x^2}\foo+\foo'.toParse(
-//             new Settings({macros, globalGroup: true}));
-//         expect(macros["\\foo"]).toBeTruthy();
-//     });
-
-//     test("\\newcommand defines new macros", () => {
-//         expect(r'\newcommand\foo{x^2}\foo+\foo'.toParseLike(r'x^2+x^2');
-//         expect(r'\newcommand{\foo}{x^2}\foo+\foo'.toParseLike(r'x^2+x^2');
-//         // Function detection
-//         expect(r'\newcommand\bar{x^2}\bar+\bar'.not, toParse());
-//         expect(r'\newcommand{\bar}{x^2}\bar+\bar'.not, toParse());
-//         // Symbol detection
-//         expect(r'\newcommand\lambda{x^2}\lambda'.not, toParse());
-//         expect(r'\newcommand\textdollar{x^2}\textdollar'.not, toParse());
-//         // Macro detection
-//         expect(r'\newcommand{\foo}{1}\foo\newcommand{\foo}{2}\foo'.not, toParse());
-//         // Implicit detection
-//         expect(r'\newcommand\limits{}'.not, toParse());
-//     });
-
-//     test("\\renewcommand redefines macros", () => {
-//         expect(r'\renewcommand\foo{x^2}\foo+\foo'.not, toParse());
-//         expect(r'\renewcommand{\foo}{x^2}\foo+\foo'.not, toParse());
-//         expect(r'\renewcommand\bar{x^2}\bar+\bar'.toParseLike(r'x^2+x^2');
-//         expect(r'\renewcommand{\bar}{x^2}\bar+\bar'.toParseLike(r'x^2+x^2');
-//         expect(r'\newcommand{\foo}{1}\foo\renewcommand{\foo}{2}\foo'.toParseLike(r'12');
-//     });
-
-//     test("\\providecommand (re)defines macros", () => {
-//         expect(r'\providecommand\foo{x^2}\foo+\foo'.toParseLike(r'x^2+x^2');
-//         expect(r'\providecommand{\foo}{x^2}\foo+\foo'.toParseLike(r'x^2+x^2');
-//         expect(r'\providecommand\bar{x^2}\bar+\bar'.toParseLike(r'x^2+x^2');
-//         expect(r'\providecommand{\bar}{x^2}\bar+\bar'.toParseLike(r'x^2+x^2');
-//         expect(`\newcommand{\foo}{1}\foo\providecommand{\foo}{2}\foo`
-//             .toParseLike(r'12');
-//         expect(`\providecommand{\foo}{1}\foo\renewcommand{\foo}{2}\foo`
-//             .toParseLike(r'12');
-//         expect(`\providecommand{\foo}{1}\foo\providecommand{\foo}{2}\foo`
-//             .toParseLike(r'12');
-//     });
-
-//     test("\\newcommand is local", () => {
-//         expect(`\newcommand\foo{1}\foo{\renewcommand\foo{2}\foo}\foo`
-//             .toParseLike(r'1{2}1');
-//     });
-
-//     test("\\newcommand accepts number of arguments", () => {
-//         expect(r'\newcommand\foo.children[1]{#1^2}\foo x+\foo{y}'.toParseLike(r'x^2+y^2');
-//         expect(r'\newcommand\foo.children[10]{#1^2}\foo 0123456789'.toParseLike(r'0^2');
-//         expect(r'\newcommand\foo[x]{}'.not, toParse());
-//         expect(r'\newcommand\foo[1.5]{}'.not, toParse());
-//     });
-
-//     // This may change in the future, if we support the extra features of
-//     // \hspace.
-//     test("should treat \\hspace, \\hskip like \\kern", () {
-//         expect(r'\hspace{1em}'.toParseLike(r'\kern1em');
-//         expect(r'\hskip{1em}'.toParseLike(r'\kern1em');
-//     });
-
-//     test("should expand \\limsup as expected", () => {
-//         expect(r'\limsup'.toParseLike(r'\operatorname*{lim\,sup}');
-//     });
-
-//     test("should expand \\liminf as expected", () => {
-//         expect(r'\liminf'.toParseLike(r'\operatorname*{lim\,inf}');
-//     });
-
-//     test("should expand \\plim as expected", () => {
-//         expect(r'\plim'.toParseLike(r'\mathop{\operatorname{plim}}\limits');
-//     });
-
-//     test("should expand \\argmin as expected", () => {
-//         expect(r'\argmin'.toParseLike(r'\operatorname*{arg\,min}');
-//     });
-
-//     test("should expand \\argmax as expected", () => {
-//         expect(r'\argmax'.toParseLike(r'\operatorname*{arg\,max}');
-//     });
-// });
-
+  group("Symbols", () {
+    test("should support AMS symbols in both text and math mode", () {
+      // These text+math symbols are from Section 6 of
+      // http://mirrors.ctan.org/fonts/amsfonts/doc/amsfonts.pdf
+      final symbols = r'\yen\checkmark\circledR\maltese';
+      expect(symbols, toBuild);
+      expect(r'\\text{${symbols}}', toBuildStrict);
+    });
+  });
+
+  group("A macro expander", () {
+    // TODO
+    // test("should produce individual tokens", () {
+    //     expect(r'e^\foo'.toParseLike("e^1 23",
+    //         new Settings({macros: {"\\foo": "123"}}));
+    // });
+
+    // test("should preserve leading spaces inside macro definition", () {
+    //     expect(r'\text{\foo}'.toParseLike(r`([r'\text{ x}',
+    //         new Settings({macros: {"\\foo": " x"}}));
+    // });
+
+    // test("should preserve leading spaces inside macro argument", () {
+    //     expect(r'\text{\foo{ x}}'.toParseLike(r`([r'\text{ x}',
+    //         new Settings({macros: {"\\foo": "#1"}}));
+    // });
+
+    // test("should ignore expanded spaces in math mode", () {
+    //     expect(r'\foo'.toParseLike("x", new Settings({macros: {"\\foo": " x"}}));
+    // });
+
+    // test("should consume spaces after control-word macro", () {
+    //     expect(r'\text{\foo }'.toParseLike(r`([r'\text{x}',
+    //         new Settings({macros: {"\\foo": "x"}}));
+    // });
+
+    // test("should consume spaces after macro with \\relax", () {
+    //     expect(r'\text{\foo }'.toParseLike(r`([r'\text{}',
+    //         new Settings({macros: {"\\foo": "\\relax"}}));
+    // });
+
+    // test("should not consume spaces after control-word expansion", () {
+    //     expect(r'\text{\\ }'.toParseLike(r`([r'\text{ }',
+    //         new Settings({macros: {"\\\\": "\\relax"}}));
+    // });
+    testTexToRenderLike(
+        "should consume spaces after \\relax", r'\text{\relax }', r'\text{}');
+
+    testTexToRenderLike("should consume spaces after control-word function",
+        r'\text{\KaTeX }', r'\text{\KaTeX}');
+
+    // test("should preserve spaces after control-symbol macro", () {
+    //     expect(r'\text{\% y}'.toParseLike(r`([r'\text{x y}',
+    //         new Settings({macros: {"\\%": "x"}}));
+    // });
+
+    test("should preserve spaces after control-symbol function", () {
+      expect("\text{\' }", toParse());
+    });
+
+    // test("should consume spaces between arguments", () {
+    //     expect(r'\text{\foo 1 2}'.toParseLike(r`([r'\text{12end}',
+    //         new Settings({macros: {"\\foo": "#1#2end"}}));
+    //     expect(r'\text{\foo {1} {2}}'.toParseLike(r`([r'\text{12end}',
+    //         new Settings({macros: {"\\foo": "#1#2end"}}));
+    // });
+
+    // test("should allow for multiple expansion", () {
+    //     expect(r'1\foo2'.toParseLike("1aa2", new Settings({macros: {
+    //         "\\foo": "\\bar\\bar",
+    //         "\\bar": "a",
+    //     }}));
+    // });
+
+    // test("should allow for multiple expansion with argument", () {
+    //     expect(r'1\foo2'.toParseLike("12222", new Settings({macros: {
+    //         "\\foo": "\\bar{#1}\\bar{#1}",
+    //         "\\bar": "#1#1",
+    //     }}));
+    // });
+
+    // test("should allow for macro argument", () {
+    //     expect(r'\foo\bar'.toParseLike("(x)", new Settings({macros: {
+    //         "\\foo": "(#1)",
+    //         "\\bar": "x",
+    //     }}));
+    // });
+
+    // test("should allow for space macro argument (text version)", () {
+    //     expect(r'\text{\foo\bar}'.toParseLike(r`([r'\text{( )}', new Settings({macros: {
+    //         "\\foo": "(#1)",
+    //         "\\bar": " ",
+    //     }}));
+    // });
+
+    // test("should allow for space macro argument (math version)", () {
+    //     expect(r'\foo\bar'.toParseLike("()", new Settings({macros: {
+    //         "\\foo": "(#1)",
+    //         "\\bar": " ",
+    //     }}));
+    // });
+
+    // test("should allow for space second argument (text version)", () {
+    //     expect(r'\text{\foo\bar\bar}'.toParseLike(r`([r'\text{( , )}', new Settings({macros: {
+    //         "\\foo": "(#1,#2)",
+    //         "\\bar": " ",
+    //     }}));
+    // });
+
+    // test("should allow for space second argument (math version)", () {
+    //     expect(r'\foo\bar\bar'.toParseLike("(,)", new Settings({macros: {
+    //         "\\foo": "(#1,#2)",
+    //         "\\bar": " ",
+    //     }}));
+    // });
+
+    // test("should allow for empty macro argument", () {
+    //     expect(r'\foo\bar'.toParseLike("()", new Settings({macros: {
+    //         "\\foo": "(#1)",
+    //         "\\bar": "",
+    //     }}));
+    // });
+
+    // TODO: The following is not currently possible to get working, given that
+    // functions and macros are dealt with separately.
+/*
+    test("should allow for space function arguments", () {
+        expect(r'\frac\bar\bar'.toParseLike(r`([r'\frac{}{}', new Settings({macros: {
+            "\\bar": " ",
+        }}));
+    });
+*/
+
+    test("should build \\overset and \\underset", () {
+      expect(r'\overset{f}{\rightarrow} Y', toBuild);
+      expect("\\underset{f}{\\rightarrow} Y", toBuild);
+    });
+
+    test("should build \\iff, \\implies, \\impliedby", () {
+      expect(r'X \iff Y', toBuild);
+      expect(r'X \implies Y', toBuild);
+      expect(r'X \impliedby Y', toBuild);
+    });
+
+    // test("should allow aliasing characters", () {
+    //     expect(r'x’=c'.toParseLike("x'=c", new Settings({macros: {
+    //         "’": "'",
+    //     }}));
+    // });
+
+    testTexToRenderLike("\\@firstoftwo should consume both, and avoid errors",
+        r'\@firstoftwo{yes}{no}', r'yes');
+    testTexToRenderLike("\\@firstoftwo should consume both, and avoid errors",
+        r"\@firstoftwo{yes}{1'_2^3", r'yes');
+
+    testTexToRenderLike("\\@ifstar should consume star but nothing else",
+        r'\@ifstar{yes}{no}*!', r'yes!');
+    testTexToRenderLike("\\@ifstar should consume star but nothing else",
+        r'\@ifstar{yes}{no}?!', r'no?!');
+
+    testTexToRenderLike("\\@ifnextchar should not consume nonspaces",
+        r'\@ifnextchar!{yes}{no}!!', r'yes!!');
+    testTexToRenderLike("\\@ifnextchar should not consume nonspaces",
+        r'\@ifnextchar!{yes}{no}?!', r'no?!');
+
+    testTexToRenderLike("\\@ifnextchar should consume spaces",
+        r'\def\x#1{\@ifnextchar x{yes}{no}}\x{}x\x{} x', r'yesxyesx');
+
+    testTexToRenderLike("\\@ifstar should consume star but nothing else",
+        r'\@ifstar{yes}{no}*!', r'yes!');
+    testTexToRenderLike("\\@ifstar should consume star but nothing else",
+        r'\@ifstar{yes}{no}?!', r'no?!');
+
+    testTexToRenderLike("\\TextOrMath should work immediately",
+        r'\TextOrMath{text}{math}', r'math');
+
+    testTexToRenderLike("\\TextOrMath should work after other math",
+        r'x+\TextOrMath{text}{math}', r'x+math');
+
+    testTexToRenderLike("\\TextOrMath should work immediately after \\text",
+        r'\text{\TextOrMath{text}{math}}', r'\text{text}');
+
+    testTexToRenderLike("\\TextOrMath should work later after \\text",
+        r'\text{hello \TextOrMath{text}{math}}', r'\text{hello text}');
+
+    testTexToRenderLike(
+        "\\TextOrMath should work immediately after \\text ends",
+        r'\text{\TextOrMath{text}{math}}\TextOrMath{text}{math}',
+        r'\text{text}math');
+
+    testTexToRenderLike("\\TextOrMath should work immediately after \$",
+        r'\text{$\TextOrMath{text}{math}$}', r'\text{$math$}');
+
+    testTexToRenderLike("\\TextOrMath should work later after \$",
+        r'\text{$x+\TextOrMath{text}{math}$}', r'\text{$x+math$}');
+
+    testTexToRenderLike(
+        "\\TextOrMath should work immediately after \$ ends",
+        r'\text{$\TextOrMath{text}{math}$\TextOrMath{text}{math}}',
+        r'\text{$math$text}');
+
+    // test("\\TextOrMath should work in a macro", () {
+    //     expect(`\mode\text{\mode$\mode$\mode}\mode`
+    //         .toParseLike(r`math\text{text$math$text}math`, new Settings({macros: {
+    //             "\\mode": "\\TextOrMath{text}{math}",
+    //         }}));
+    // });
+
+    // test("\\TextOrMath should work in a macro passed to \\text", () {
+    //     expect(r'\text\mode'.toParseLike(r`([r'\text t', new Settings({macros:
+    //         {"\\mode": "\\TextOrMath{t}{m}"}}));
+    // });
+
+    // test("\\char produces literal characters", () => {
+    //     expect("\\char(r'a").toParseLike("\\char')\\a");
+    //     expect("\\char`\\%").toParseLike("\\char37");
+    //     expect("\\char`\\%").toParseLike("\\char'45");
+    //     expect("\\char`\\%").toParseLike('\\char"25');
+    //     expect("\\char").not, toParse());
+    //     expect("\\char`").not, toParse());
+    //     expect("\\char'").not, toParse());
+    //     expect('\\char"').not, toParse());
+    //     expect("\\char'a").not, toParse());
+    //     expect('\\char"g').not, toParse());
+    //     expect('\\char"g').not, toParse());
+    // });
+
+    test("should build Unicode private area characters", () {
+      expect(r'\gvertneqq\lvertneqq\ngeqq\ngeqslant\nleqq', toBuild);
+      expect(r'\nleqslant\nshortmid\nshortparallel\varsubsetneq', toBuild);
+      expect(r'\varsubsetneqq\varsupsetneq\varsupsetneqq', toBuild);
+    });
+
+    // TODO(edemaine): This doesn't work yet.  Parses like `\text text`,
+    // which doesn't treat all four letters as an argument.
+    //test("\\TextOrMath should work in a macro passed to \\text", () {
+    //    expect(r'\text\mode'.toParseLike(r`([r'\text{text}', new Settings({macros:
+    //        {"\\mode": "\\TextOrMath{text}{math}"}});
+    //});
+
+    // test("\\gdef defines macros", () {
+    //     expect(r'\gdef\foo{x^2}\foo+\foo'.toParseLike(r'x^2+x^2');
+    //     expect(r'\gdef{\foo}{x^2}\foo+\foo'.toParseLike(r'x^2+x^2');
+    //     expect(r'\gdef\foo{hi}\foo+\text{\foo}'.toParseLike(r'hi+\text{hi}');
+    //     expect(`\gdef\foo#1{hi #1}\text{\foo{Alice}, \foo{Bob}}`
+    //         .toParseLike(r'\text{hi Alice, hi Bob}');
+    //     expect(r'\gdef\foo#1#2{(#1,#2)}\foo 1 2+\foo 3 4'.toParseLike(r'(1,2)+(3,4)');
+    //     expect(r'\gdef\foo#2{}'.not, toParse());
+    //     expect(r'\gdef\foo#1#3{}'.not, toParse());
+    //     expect(r'\gdef\foo#1#2#3#4#5#6#7#8#9{}', toParse());
+    //     expect(r'\gdef\foo#1#2#3#4#5#6#7#8#9#10{}'.not, toParse());
+    //     expect(r'\gdef\foo#{}'.not, toParse());
+    //     expect(r'\gdef\foo\bar', toParse());
+    //     expect(r'\gdef{\foo\bar}{}'.not, toParse());
+    //     expect(r'\gdef{}{}'.not, toParse());
+    //     // TODO: These shouldn't work, but `1` and `{1}` are currently treated
+    //     // the same, as are `\foo(r' and '){\foo}`.
+    //     //expect(r'\gdef\foo1'.not, toParse());
+    //     //expect(r'\gdef{\foo}{}'.not, toParse());
+    // });
+
+    // test("\\def works locally", () => {
+    //     expect("\\def\\x{1}\\x{\\def\\x{2}\\x{\\def\\x{3}\\x}\\x}\\x")
+    //         .toParseLike(r'1{2{3}2}1');
+    //     expect("\\def\\x{1}\\x\\def\\x{2}\\x{\\def\\x{3}\\x\\def\\x{4}\\x}\\x")
+    //         .toParseLike(r'12{34}2');
+    // });
+
+    // test("\\gdef overrides at all levels", () => {
+    //     expect("\\def\\x{1}\\x{\\def\\x{2}\\x{\\gdef\\x{3}\\x}\\x}\\x")
+    //         .toParseLike(r'1{2{3}3}3');
+    //     expect("\\def\\x{1}\\x{\\def\\x{2}\\x{\\global\\def\\x{3}\\x}\\x}\\x")
+    //         .toParseLike(r'1{2{3}3}3');
+    //     expect("\\def\\x{1}\\x{\\def\\x{2}\\x{\\gdef\\x{3}\\x\\def\\x{4}\\x}" +
+    //         "\\x\\def\\x{5}\\x}\\x").toParseLike(r'1{2{34}35}3');
+    // });
+
+    // test("\\global needs to followed by \\def", () => {
+    //     expect(r'\global\def\foo{}\foo'.toParseLike(r'');
+    //     // TODO: This doesn't work yet; \global needs to expand argument.
+    //     //expect(r'\def\DEF{\def}\global\DEF\foo{}\foo'.toParseLike(r'');
+    //     expect(r'\global\foo'.not, toParse());
+    //     expect(r'\global\bar x'.not, toParse());
+    // });
+
+    // test("Macro arguments do not generate groups", () => {
+    //     expect("\\def\\x{1}\\x\\def\\foo#1{#1}\\foo{\\x\\def\\x{2}\\x}\\x")
+    //         .toParseLike(r'1122');
+    // });
+
+    // test("\\textbf arguments do generate groups", () => {
+    //     expect("\\def\\x{1}\\x\\textbf{\\x\\def\\x{2}\\x}\\x")
+    //         .toParseLike(r'1\textbf{12}1');
+    // });
+
+    // test("\\sqrt optional arguments generate groups", () => {
+    //     expect("\\def\\x{1}\\def\\y{1}\\x\\y" +
+    //         "\\sqrt[\\def\\x{2}\\x]{\\def\\y{2}\\y}\\x\\y")
+    //         .toParseLike(r'11\sqrt.children[2]{2}11');
+    // });
+
+    // test("array cells generate groups", () => {
+    //     expect(`\def\x{1}\begin{matrix}\x&\def\x{2}\x&\x\end{matrix}\x`
+    //         .toParseLike(r'\begin{matrix}1&2&1\end{matrix}1');
+    //     expect(`\def\x{1}\begin{matrix}\def\x{2}\x&\x\end{matrix}\x`
+    //         .toParseLike(r'\begin{matrix}2&1\end{matrix}1');
+    // });
+
+    // test("\\gdef changes settings.macros", () => {
+    //     final macros = {};
+    //     expect(r'\gdef\foo{1}', toParse(new Settings({macros})));
+    //     expect(macros["\\foo"]).toBeTruthy();
+    // });
+
+    // test("\\def doesn't change settings.macros", () => {
+    //     final macros = {};
+    //     expect(r'\def\foo{1}', toParse(new Settings({macros})));
+    //     expect(macros["\\foo"]).toBeFalsy();
+    // });
+
+    // test("\\def changes settings.macros with globalGroup", () => {
+    //     final macros = {};
+    //     expect(r'\gdef\foo{1}', toParse(new Settings({macros, globalGroup: true})));
+    //     expect(macros["\\foo"]).toBeTruthy();
+    // });
+
+    // test("\\newcommand doesn't change settings.macros", () => {
+    //     final macros = {};
+    //     expect(r'\newcommand\foo{x^2}\foo+\foo', toParse(new Settings({macros})));
+    //     expect(macros["\\foo"]).toBeFalsy();
+    // });
+
+    // test("\\newcommand changes settings.macros with globalGroup", () => {
+    //     final macros = {};
+    //     expect(r'\newcommand\foo{x^2}\foo+\foo'.toParse(
+    //         new Settings({macros, globalGroup: true}));
+    //     expect(macros["\\foo"]).toBeTruthy();
+    // });
+
+    testTexToRenderLike("\\newcommand defines new macros",
+        r'\newcommand\foo{x^2}\foo+\foo', r'x^2+x^2');
+    testTexToRenderLike("\\newcommand defines new macros",
+        r'\newcommand{\foo}{x^2}\foo+\foo', r'x^2+x^2');
+    test("\\newcommand defines new macros", () {
+      // Function detection
+      expect(r'\newcommand\bar{x^2}\bar+\bar', toNotParse());
+      expect(r'\newcommand{\bar}{x^2}\bar+\bar', toNotParse());
+      // Symbol detection
+      expect(r'\newcommand\lambda{x^2}\lambda', toNotParse());
+      expect(r'\newcommand\textdollar{x^2}\textdollar', toNotParse());
+      // Macro detection
+      expect(r'\newcommand{\foo}{1}\foo\newcommand{\foo}{2}\foo', toNotParse());
+      // Implicit detection
+      expect(r'\newcommand\limits{}', toNotParse());
+    });
+
+    test("\\renewcommand redefines macros", () {
+      expect(r'\renewcommand\foo{x^2}\foo+\foo', toNotParse());
+      expect(r'\renewcommand{\foo}{x^2}\foo+\foo', toNotParse());
+    });
+    testTexToRenderLike("\\renewcommand redefines macros",
+        r'\renewcommand\bar{x^2}\bar+\bar', r'x^2+x^2');
+    testTexToRenderLike("\\renewcommand redefines macros",
+        r'\renewcommand{\bar}{x^2}\bar+\bar', r'x^2+x^2');
+    testTexToRenderLike("\\renewcommand redefines macros",
+        r'\newcommand{\foo}{1}\foo\renewcommand{\foo}{2}\foo', r'12');
+
+    testTexToRenderLike("\\providecommand (re)defines macros",
+        r'\providecommand\foo{x^2}\foo+\foo', r'x^2+x^2');
+    testTexToRenderLike("\\providecommand (re)defines macros",
+        r'\providecommand{\foo}{x^2}\foo+\foo', r'x^2+x^2');
+    testTexToRenderLike("\\providecommand (re)defines macros",
+        r'\providecommand\bar{x^2}\bar+\bar', r'x^2+x^2');
+    testTexToRenderLike("\\providecommand (re)defines macros",
+        r'\providecommand{\bar}{x^2}\bar+\bar', r'x^2+x^2');
+    testTexToRenderLike("\\providecommand (re)defines macros",
+        r'\newcommand{\foo}{1}\foo\providecommand{\foo}{2}\foo', r'12');
+    testTexToRenderLike("\\providecommand (re)defines macros",
+        r'\providecommand{\foo}{1}\foo\renewcommand{\foo}{2}\foo', r'12');
+    testTexToRenderLike("\\providecommand (re)defines macros",
+        r'\providecommand{\foo}{1}\foo\providecommand{\foo}{2}\foo', r'12');
+
+    testTexToRenderLike("\\newcommand is local",
+        r'\newcommand\foo{1}\foo{\renewcommand\foo{2}\foo}\foo', r'1{2}1');
+
+    testTexToRenderLike("\\newcommand accepts number of arguments",
+        r'\newcommand\foo.children[1]{#1^2}\foo x+\foo{y}', r'x^2+y^2');
+    testTexToRenderLike("\\newcommand accepts number of arguments",
+        r'\newcommand\foo.children[10]{#1^2}\foo 0123456789', r'0^2');
+    test("\\newcommand accepts number of arguments", () {
+      expect(r'\newcommand\foo[x]{}', toNotParse());
+      expect(r'\newcommand\foo[1.5]{}', toNotParse());
+    });
+
+    // This may change in the future, if we support the extra features of
+    // \hspace.
+    testTexToRenderLike("should treat \\hspace, \\hskip like \\kern",
+        r'\hspace{1em}', r'\kern1em');
+
+    testTexToRenderLike("should treat \\hspace, \\hskip like \\kern",
+        r'\hskip{1em}', r'\kern1em');
+
+    testTexToRenderLike("should expand \\limsup as expected", r'\limsup',
+        r'\operatorname*{lim\,sup}');
+
+    testTexToRenderLike("should expand \\liminf as expected", r'\liminf',
+        r'\operatorname*{lim\,inf}');
+
+    testTexToRenderLike("should expand \\plim as expected", r'\plim',
+        r'\mathop{\operatorname{plim}}\limits');
+
+    testTexToRenderLike("should expand \\argmin as expected", r'\argmin',
+        r'\operatorname*{arg\,min}');
+
+    testTexToRenderLike("should expand \\argmax as expected", r'\argmax',
+        r'\operatorname*{arg\,max}');
+  });
+
+// TODO
 // group("\\tag support", () {
 //     final displayMode = new Settings({displayMode: true});
 
@@ -3440,18 +3017,7 @@ void main() {
 //     });
 // });
 
-// group("A parser taking String objects", () {
-//     test("should not fail on an empty String object", () {
-//         expect(new String("")), toParse());
-//     });
-
-//     test("should parse the same as a regular string", () {
-//         expect(new String("xy")).toParseLike(r'xy');
-//         expect(new String(r(r'\div'))).toParseLike(r'\div');
-//         expect(new String(r(r'\frac 1 2'))).toParseLike(r'\frac 1 2');
-//     });
-// });
-
+// TODO
 // group("Unicode accents", () {
 //     test("should parse Latin-1 letters in math mode", () {
 //         // TODO(edemaine): Unsupported Latin-1 letters in math: ÇÐÞçðþ
@@ -3516,93 +3082,97 @@ void main() {
 //     });
 // });
 
-// group("Unicode", () {
-//     test("should parse negated relations", () {
-//         expect(r'∉∤∦≁≆≠≨≩≮≯≰≱⊀⊁⊈⊉⊊⊋⊬⊭⊮⊯⋠⋡⋦⋧⋨⋩⋬⋭⪇⪈⪉⪊⪵⪶⪹⪺⫋⫌', toParse(strictSettings));
-//     });
+  group("Unicode", () {
+    // TODO
+    // test("should parse negated relations", () {
+    //   expect(r'∉∤∦≁≆≠≨≩≮≯≰≱⊀⊁⊈⊉⊊⊋⊬⊭⊮⊯⋠⋡⋦⋧⋨⋩⋬⋭⪇⪈⪉⪊⪵⪶⪹⪺⫋⫌', toParse());
+    // });
 
-//     test("should build relations", () {
-//         expect(r'∈∋∝∼∽≂≃≅≈≊≍≎≏≐≑≒≓≖≗≜≡≤≥≦≧≪≫≬≳≷≺≻≼≽≾≿∴∵∣≔≕⩴⋘⋙⟂⊨∌'.toBuild(strictSettings);
-//     });
+    test("should build relations", () {
+      expect(r'∈∋∝∼∽≂≃≅≈≊≍≎≏≐≑≒≓≖≗≜≡≤≥≦≧≪≫≬≳≷≺≻≼≽≾≿∴∵∣≔≕⩴⋘⋙⟂⊨∌', toBuildStrict);
+    });
 
-//     test("should build big operators", () {
-//         expect(r'∏∐∑∫∬∭∮⋀⋁⋂⋃⨀⨁⨂⨄⨆'.toBuild(strictSettings);
-//     });
+    test("should build big operators", () {
+      expect(r'∏∐∑∫∬∭∮⋀⋁⋂⋃⨀⨁⨂⨄⨆', toBuildStrict);
+    });
 
-//     test("should build more relations", () {
-//         expect(r'⊂⊃⊆⊇⊏⊐⊑⊒⊢⊣⊩⊪⊸⋈⋍⋐⋑⋔⋛⋞⋟⌢⌣⩾⪆⪌⪕⪖⪯⪰⪷⪸⫅⫆≘≙≚≛≝≞≟≲⩽⪅≶⋚⪋'.toBuild(strictSettings);
-//     });
+    test("should build more relations", () {
+      expect(r'⊂⊃⊆⊇⊏⊐⊑⊒⊢⊣⊩⊪⊸⋈⋍⋐⋑⋔⋛⋞⋟⌢⌣⩾⪆⪌⪕⪖⪯⪰⪷⪸⫅⫆≘≙≚≛≝≞≟≲⩽⪅≶⋚⪋', toBuildStrict);
+    });
 
-//     test("should parse symbols", () {
-//         expect("£¥ℂℍℑℎℓℕ℘ℙℚℜℝℤℲℵðℶℷℸ⅁∀∁∂∃∇∞∠∡∢♠♡♢♣♭♮♯✓°¬‼⋮\u00B7\u00A9").toBuild(strictSettings);
-//         expect("\\text{£¥ℂℍℎ\u00A9\u00AE\uFE0F}").toBuild(strictSettings);
-//     });
+    test("should parse symbols", () {
+      expect("£¥ℂℍℑℎℓℕ℘ℙℚℜℝℤℲℵðℶℷℸ⅁∀∁∂∃∇∞∠∡∢♠♡♢♣♭♮♯✓°¬‼⋮\u00B7\u00A9",
+          toBuildStrict);
+      expect("\\text{£¥ℂℍℎ\u00A9\u00AE\uFE0F}", toBuildStrict);
+    });
 
-//     test("should build Greek capital letters", () {
-//         expect("\u0391\u0392\u0395\u0396\u0397\u0399\u039A\u039C\u039D" +
-//                 "\u039F\u03A1\u03A4\u03A7\u03DD").toBuild(strictSettings);
-//     });
+    test("should build Greek capital letters", () {
+      expect(
+          "\u0391\u0392\u0395\u0396\u0397\u0399\u039A\u039C\u039D" +
+              "\u039F\u03A1\u03A4\u03A7\u03DD",
+          toBuildStrict);
+    });
 
-//     test("should build arrows", () {
-//         expect(r'←↑→↓↔↕↖↗↘↙↚↛↞↠↢↣↦↩↪↫↬↭↮↰↱↶↷↼↽↾↾↿⇀⇁⇂⇃⇄⇆⇇⇈⇉'.toBuild(strictSettings);
-//     });
+    test("should build arrows", () {
+      expect(r'←↑→↓↔↕↖↗↘↙↚↛↞↠↢↣↦↩↪↫↬↭↮↰↱↶↷↼↽↾↾↿⇀⇁⇂⇃⇄⇆⇇⇈⇉', toBuildStrict);
+    });
 
-//     test("should build more arrows", () {
-//         expect(r'⇊⇋⇌⇍⇎⇏⇐⇑⇒⇓⇔⇕⇚⇛⇝⟵⟶⟷⟸⟹⟺⟼'.toBuild(strictSettings);
-//     });
+    test("should build more arrows", () {
+      expect(r'⇊⇋⇌⇍⇎⇏⇐⇑⇒⇓⇔⇕⇚⇛⇝⟵⟶⟷⟸⟹⟺⟼', toBuildStrict);
+    });
 
-//     test("should build binary operators", () {
-//         expect("±×÷∓∔∧∨∩∪≀⊎⊓⊔⊕⊖⊗⊘⊙⊚⊛⊝⊞⊟⊠⊡⊺⊻⊼⋇⋉⋊⋋⋌⋎⋏⋒⋓⩞\u22C5").toBuild(strictSettings);
-//     });
+    test("should build binary operators", () {
+      expect("±×÷∓∔∧∨∩∪≀⊎⊓⊔⊕⊖⊗⊘⊙⊚⊛⊝⊞⊟⊠⊡⊺⊻⊼⋇⋉⋊⋋⋌⋎⋏⋒⋓⩞\u22C5", toBuildStrict);
+    });
 
-//     test("should build delimiters", () {
-//         expect("\\left\u230A\\frac{a}{b}\\right\u230B").toBuild();
-//         expect("\\left\u2308\\frac{a}{b}\\right\u2308").toBuild();
-//         expect("\\left\u27ee\\frac{a}{b}\\right\u27ef").toBuild();
-//         expect("\\left\u27e8\\frac{a}{b}\\right\u27e9").toBuild();
-//         expect("\\left\u23b0\\frac{a}{b}\\right\u23b1").toBuild();
-//         expect(r'┌x┐ └x┘'.toBuild();
-//         expect("\u231Cx\u231D \u231Ex\u231F").toBuild();
-//         expect("\u27E6x\u27E7").toBuild();
-//         expect("\\llbracket \\rrbracket").toBuild();
-//         expect("\\lBrace \\rBrace").toBuild();
-//     });
+    test("should build delimiters", () {
+      expect("\\left\u230A\\frac{a}{b}\\right\u230B", toBuild);
+      expect("\\left\u2308\\frac{a}{b}\\right\u2308", toBuild);
+      expect("\\left\u27ee\\frac{a}{b}\\right\u27ef", toBuild);
+      expect("\\left\u27e8\\frac{a}{b}\\right\u27e9", toBuild);
+      expect("\\left\u23b0\\frac{a}{b}\\right\u23b1", toBuild);
+      expect(r'┌x┐ └x┘', toBuild);
+      expect("\u231Cx\u231D \u231Ex\u231F", toBuild);
+      expect("\u27E6x\u27E7", toBuild);
+      expect("\\llbracket \\rrbracket", toBuild);
+      expect("\\lBrace \\rBrace", toBuild);
+    });
 
-//     test("should build some surrogate pairs", () {
-//         var wideCharStr = "";
-//         wideCharStr += String.fromCharCode(0xD835, 0xDC00);   // bold A
-//         wideCharStr += String.fromCharCode(0xD835, 0xDC68);   // bold italic A
-//         wideCharStr += String.fromCharCode(0xD835, 0xDD04);   // Fraktur A
-//         wideCharStr += String.fromCharCode(0xD835, 0xDD38);   // double-struck
-//         wideCharStr += String.fromCharCode(0xD835, 0xDC9C);   // script A
-//         wideCharStr += String.fromCharCode(0xD835, 0xDDA0);   // sans serif A
-//         wideCharStr += String.fromCharCode(0xD835, 0xDDD4);   // bold sans A
-//         wideCharStr += String.fromCharCode(0xD835, 0xDE08);   // italic sans A
-//         wideCharStr += String.fromCharCode(0xD835, 0xDE70);   // monospace A
-//         wideCharStr += String.fromCharCode(0xD835, 0xDFCE);   // bold zero
-//         wideCharStr += String.fromCharCode(0xD835, 0xDFE2);   // sans serif zero
-//         wideCharStr += String.fromCharCode(0xD835, 0xDFEC);   // bold sans zero
-//         wideCharStr += String.fromCharCode(0xD835, 0xDFF6);   // monospace zero
-//         expect(wideCharStr).toBuild(strictSettings);
+    test("should build some surrogate pairs", () {
+      var wideCharStr = "";
+      wideCharStr += String.fromCharCodes([0xD835, 0xDC00]); // bold A
+      wideCharStr += String.fromCharCodes([0xD835, 0xDC68]); // bold italic A
+      wideCharStr += String.fromCharCodes([0xD835, 0xDD04]); // Fraktur A
+      wideCharStr += String.fromCharCodes([0xD835, 0xDD38]); // double-struck
+      wideCharStr += String.fromCharCodes([0xD835, 0xDC9C]); // script A
+      wideCharStr += String.fromCharCodes([0xD835, 0xDDA0]); // sans serif A
+      wideCharStr += String.fromCharCodes([0xD835, 0xDDD4]); // bold sans A
+      wideCharStr += String.fromCharCodes([0xD835, 0xDE08]); // italic sans A
+      wideCharStr += String.fromCharCodes([0xD835, 0xDE70]); // monospace A
+      wideCharStr += String.fromCharCodes([0xD835, 0xDFCE]); // bold zero
+      wideCharStr += String.fromCharCodes([0xD835, 0xDFE2]); // sans serif zero
+      wideCharStr += String.fromCharCodes([0xD835, 0xDFEC]); // bold sans zero
+      wideCharStr += String.fromCharCodes([0xD835, 0xDFF6]); // monospace zero
+      expect(wideCharStr, toBuildStrict);
 
-//         var wideCharText = "\text{";
-//         wideCharText += String.fromCharCode(0xD835, 0xDC00);   // bold A
-//         wideCharText += String.fromCharCode(0xD835, 0xDC68);   // bold italic A
-//         wideCharText += String.fromCharCode(0xD835, 0xDD04);   // Fraktur A
-//         wideCharText += String.fromCharCode(0xD835, 0xDD38);   // double-struck
-//         wideCharText += String.fromCharCode(0xD835, 0xDC9C);   // script A
-//         wideCharText += String.fromCharCode(0xD835, 0xDDA0);   // sans serif A
-//         wideCharText += String.fromCharCode(0xD835, 0xDDD4);   // bold sans A
-//         wideCharText += String.fromCharCode(0xD835, 0xDE08);   // italic sans A
-//         wideCharText += String.fromCharCode(0xD835, 0xDE70);   // monospace A
-//         wideCharText += String.fromCharCode(0xD835, 0xDFCE);   // bold zero
-//         wideCharText += String.fromCharCode(0xD835, 0xDFE2);   // sans serif zero
-//         wideCharText += String.fromCharCode(0xD835, 0xDFEC);   // bold sans zero
-//         wideCharText += String.fromCharCode(0xD835, 0xDFF6);   // monospace zero
-//         wideCharText += "}";
-//         expect(wideCharText).toBuild(strictSettings);
-//     });
-// });
+      var wideCharText = "\text{";
+      wideCharText += String.fromCharCodes([0xD835, 0xDC00]); // bold A
+      wideCharText += String.fromCharCodes([0xD835, 0xDC68]); // bold italic A
+      wideCharText += String.fromCharCodes([0xD835, 0xDD04]); // Fraktur A
+      wideCharText += String.fromCharCodes([0xD835, 0xDD38]); // double-struck
+      wideCharText += String.fromCharCodes([0xD835, 0xDC9C]); // script A
+      wideCharText += String.fromCharCodes([0xD835, 0xDDA0]); // sans serif A
+      wideCharText += String.fromCharCodes([0xD835, 0xDDD4]); // bold sans A
+      wideCharText += String.fromCharCodes([0xD835, 0xDE08]); // italic sans A
+      wideCharText += String.fromCharCodes([0xD835, 0xDE70]); // monospace A
+      wideCharText += String.fromCharCodes([0xD835, 0xDFCE]); // bold zero
+      wideCharText += String.fromCharCodes([0xD835, 0xDFE2]); // sans serif zero
+      wideCharText += String.fromCharCodes([0xD835, 0xDFEC]); // bold sans zero
+      wideCharText += String.fromCharCodes([0xD835, 0xDFF6]); // monospace zero
+      wideCharText += "}";
+      expect(wideCharText, toBuildStrict);
+    });
+  });
 
 // group("The maxSize setting", () {
 //     final rule = r'\rule{999em}{999em}';
@@ -3626,12 +3196,12 @@ void main() {
 //     });
 // });
 
-// group("The maxExpand setting", () => {
-//     test("should prevent expansion", () => {
+// group("The maxExpand setting", ()  {
+//     test("should prevent expansion", ()  {
 //         expect(r'\gdef\foo{1}\foo', toParse());
-//         expect(r'\gdef\foo{1}\foo', toParse(new Settings({maxExpand: 2})));
-//         expect(r'\gdef\foo{1}\foo'.not, toParse(new Settings({maxExpand: 1})));
-//         expect(r'\gdef\foo{1}\foo'.not, toParse(new Settings({maxExpand: 0})));
+//         expect(r'\gdef\foo{1}\foo', toParse(Settings({maxExpand: 2})));
+//         expect(r'\gdef\foo{1}\foo', toNotParse(Settings({maxExpand: 1})));
+//         expect(r'\gdef\foo{1}\foo', toNotParse(Settings({maxExpand: 0})));
 //     });
 
 //     test("should prevent infinite loops", () => {
@@ -3662,22 +3232,22 @@ void main() {
 // });
 
 // group("Newlines via \\\\ and \\newline", () {
-//     test("should build \\\\ and \\newline the same", () => {
+//     test("should build \\\\ and \\newline the same", ()  {
 //         expect(r'hello \\ world'.toBuildLike(r'hello \newline world');
 //         expect(r'hello \\[1ex] world'.toBuildLike(
 //             "hello \\newline[1ex] world");
 //     });
 
-//     test("should not allow \\cr at top level", () => {
-//         expect(r'hello \cr world'.not.toBuild();
+//     test("should not allow \\cr at top level", ()  {
+//         expect(r'hello \cr world',toNotParse());
 //     });
 
-//     test("array redefines and resets \\\\", () => {
-//         expect(`a\\b\begin{matrix}x&y\\z&w\end{matrix}\\c`
+//     test("array redefines and resets \\\\", ()  {
+//         expect(r'a\\b\begin{matrix}x&y\\z&w\end{matrix}\\c'
 //             .toParseLike(r'a\newline b\begin{matrix}x&y\cr z&w\end{matrix}\newline c');
 //     });
 
-//     test("\\\\ causes newline, even after mrel and mop", () => {
+//     test("\\\\ causes newline, even after mrel and mop", ()  {
 //         final markup = katex.renderToString(r(r'M = \\ a + \\ b \\ c'));
 //         // Ensure newlines appear outside base spans (because, in this regexp,
 //         // base span occurs immediately after each newline span).
@@ -3687,81 +3257,66 @@ void main() {
 //     });
 // });
 
-// group("Symbols", () {
-//     test("should parse \\text{\\i\\j}", () => {
-//         expect(r'\text{\i\j}'.toBuild(strictSettings);
-//     });
+  group("Symbols", () {
+    test("should parse \\text{\\i\\j}", () {
+      expect(r'\text{\i\j}', toBuildStrict);
+    });
 
-//     test("should parse spacing functions in math or text mode", () => {
-//         expect(r'A\;B\,C\nobreakspace \text{A\;B\,C\nobreakspace}'.toBuild(strictSettings);
-//     });
+    test("should parse spacing functions in math or text mode", () {
+      expect(
+          r'A\;B\,C\nobreakspace \text{A\;B\,C\nobreakspace}', toBuildStrict);
+    });
 
-//     test("should render ligature commands like their unicode characters", () => {
-//         expect(r'\text{\ae\AE\oe\OE\o\O\ss}'.toBuildLike(r`([r'\text{æÆœŒøØß}', strictSettings);
-//     });
-// });
+    testTexToRenderLike(
+        "should render ligature commands like their unicode characters",
+        r'\text{\ae\AE\oe\OE\o\O\ss}',
+        r'\text{æÆœŒøØß}',
+        strictSettings);
+  });
 
-// group("strict setting", () {
-//     test("should allow unicode text when not strict", () => {
-//         expect(r'é', toParse(new Settings(nonstrictSettings)));
-//         expect(r'試', toParse(new Settings(nonstrictSettings)));
-//         expect(r'é', toParse(new Settings({strict: "ignore"})));
-//         expect(r'試', toParse(new Settings({strict: "ignore"})));
-//         expect(r'é', toParse(new Settings({strict: ()) => false}));
-//         expect(r'試', toParse(new Settings({strict: ()) => false}));
-//         expect(r'é', toParse(new Settings({strict: ()) => "ignore"}));
-//         expect(r'試', toParse(new Settings({strict: ()) => "ignore"}));
-//     });
+  group("strict setting", () {
+    test("should allow unicode text when not strict", () {
+      expect(r'é', toParse(nonstrictSettings));
+      expect(r'試', toParse(nonstrictSettings));
+      expect(r'é', toParse(Settings(strict: Strict.ignore)));
+      expect(r'試', toParse(Settings(strict: Strict.ignore)));
+      expect(r'é', toParse(Settings(strictFun: (_, __, ___) => Strict.ignore)));
+      expect(r'試', toParse(Settings(strictFun: (_, __, ___) => Strict.ignore)));
+      expect(r'é', toParse(Settings(strictFun: (_, __, ___) => Strict.ignore)));
+      expect(r'試', toParse(Settings(strictFun: (_, __, ___) => Strict.ignore)));
+    });
 
-//     test("should forbid unicode text when strict", () => {
-//         expect(r'é'.not, toParse(new Settings({strict: true})));
-//         expect(r'試'.not, toParse(new Settings({strict: true})));
-//         expect(r'é'.not, toParse(new Settings({strict: "error"})));
-//         expect(r'試'.not, toParse(new Settings({strict: "error"})));
-//         expect(r'é'.not, toParse(new Settings({strict: ()) => true}));
-//         expect(r'試'.not, toParse(new Settings({strict: ()) => true}));
-//         expect(r'é'.not, toParse(new Settings({strict: ()) => "error"}));
-//         expect(r'試'.not, toParse(new Settings({strict: ()) => "error"}));
-//     });
+    test("should forbid unicode text when strict", () {
+      expect(r'é', toNotParse(Settings(strict: Strict.error)));
+      expect(r'試', toNotParse(Settings(strict: Strict.error)));
+      expect(r'é', toNotParse(Settings(strict: Strict.error)));
+      expect(r'試', toNotParse(Settings(strict: Strict.error)));
+      expect(
+          r'é', toNotParse(Settings(strictFun: (_, __, ___) => Strict.error)));
+      expect(
+          r'試', toNotParse(Settings(strictFun: (_, __, ___) => Strict.error)));
+      expect(
+          r'é', toNotParse(Settings(strictFun: (_, __, ___) => Strict.error)));
+      expect(
+          r'試', toNotParse(Settings(strictFun: (_, __, ___) => Strict.error)));
+    });
 
-//     test("should warn about unicode text when default", () => {
-//         expect(r'é'.toWarn(new Settings());
-//         expect(r'試'.toWarn(new Settings());
-//     });
+    // test("should warn about unicode text when default", () {
+    //     expect(r'é'.toWarn(new Settings());
+    //     expect(r'試'.toWarn(new Settings());
+    // });
 
-//     test("should always allow unicode text in text mode", () => {
-//         expect(r'\text{é試}', toParse(nonstrictSettings));
-//         expect(r'\text{é試}', toParse(strictSettings));
-//         expect(r'\text{é試}', toParse());
-//     });
+    test("should always allow unicode text in text mode", () {
+      expect(r'\text{é試}', toParse(nonstrictSettings));
+      expect(r'\text{é試}', toParse(strictSettings));
+      expect(r'\text{é試}', toParse());
+    });
 
-//     test("should warn about top-level \\newline in display mode", () => {
-//         expect(r'x\\y'.toWarn(new Settings({displayMode: true}));
-//         expect(r'x\\y', toParse(new Settings({displayMode: false})));
-//     });
-// });
-
-// group("Internal __* interface", () {
-//     final latex = r'\sum_{k = 0}^{\infty} x^k';
-//     final rendered = katex.renderToString(latex);
-
-//     test("__parse renders same as renderToString", () => {
-//         final parsed = katex.__parse(latex);
-//         expect(buildTree(parsed, latex, new Settings()).toMarkup(), rendered);
-//     });
-
-//     test("__renderToDomTree renders same as renderToString", () => {
-//         final tree = katex.__renderToDomTree(latex);
-//         expect(tree.toMarkup(), rendered);
-//     });
-
-//     test("__renderToHTMLTree renders same as renderToString sans MathML", () => {
-//         final tree = katex.__renderToHTMLTree(latex);
-//         final renderedSansMathML = rendered.replace(
-//             /<span class="katex-mathml">.*?<\/span>/, '');
-//         expect(tree.toMarkup(), renderedSansMathML);
-//     });
-// });
+    // test("should warn about top-level \\newline in display mode", () {
+    //     expect(r'x\\y'.toWarn(new Settings({displayMode: true}));
+    //     expect(r'x\\y', toParse(new Settings({displayMode: false})));
+    // });
+  });
 
 // group("Extending katex by new fonts and symbols", () {
 //     beforeAll(() => {
