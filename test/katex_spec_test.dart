@@ -2944,9 +2944,9 @@ void main() {
         r'\newcommand\foo{1}\foo{\renewcommand\foo{2}\foo}\foo', r'1{2}1');
 
     testTexToRenderLike("\\newcommand accepts number of arguments",
-        r'\newcommand\foo.children[1]{#1^2}\foo x+\foo{y}', r'x^2+y^2');
+        r'\newcommand\foo[1]{#1^2}\foo x+\foo{y}', r'x^2+y^2');
     testTexToRenderLike("\\newcommand accepts number of arguments",
-        r'\newcommand\foo.children[10]{#1^2}\foo 0123456789', r'0^2');
+        r'\newcommand\foo[10]{#1^2}\foo 0123456789', r'0^2');
     test("\\newcommand accepts number of arguments", () {
       expect(r'\newcommand\foo[x]{}', toNotParse());
       expect(r'\newcommand\foo[1.5]{}', toNotParse());
