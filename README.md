@@ -9,9 +9,8 @@ This project aims to achieve maximum compatibility and fidelity with regard to t
 
 The TeX parser is a completely rewritten Dart port of the KaTeX parser, with almost full features. There are only a few differences. List of some unsupported features can be found [here](doc/unsupported.md).
 
-This work 
 
-## Rendering Samples
+## Render Samples
 
 `x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}`
 
