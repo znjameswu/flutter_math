@@ -29,36 +29,9 @@ class DisplayMath extends StatelessWidget {
                 thickness: 1.0,
                 height: 1.0,
               ),
-              Table(
-                border: TableBorder(
-                  horizontalInside: BorderSide(
-                      width: 1.0, color: Theme.of(context).dividerColor),
-                  verticalInside: BorderSide(
-                      width: 1.0, color: Theme.of(context).dividerColor),
-                ),
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: [
-                  TableRow(
-                    children: [
-                      Center(child: Text('Flutter Math')),
-                      // Center(child: Text('flutter_tex')),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      Center(child: FlutterMath.fromTexString(expression)),
-                      // Center(
-                      //   child: TeXView(
-                      //  renderingEngine: const TeXViewRenderingEngine.katex(),
-                      //     child: TeXViewDocument(
-                      //       '\$\$$expression\$\$',
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ],
-              ),
+              Expanded(
+                child: Center(child: FlutterMath.fromTexString(expression)),
+              )
             ],
           ),
         ),

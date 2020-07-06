@@ -59,6 +59,7 @@ part 'base/sizing.dart';
 part 'base/sqrt.dart';
 part 'base/styling.dart';
 part 'base/text.dart';
+part 'base/underover.dart';
 
 const baseFunctionEntries = {
   ..._accentEntries,
