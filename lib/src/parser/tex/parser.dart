@@ -714,7 +714,7 @@ class TexParser {
             .split('')
             .map((char) => AtomNode(
                   symbol: char,
-                  overrideFont: const FontOptions(fontFamily: 'Typewritter'),
+                  overrideFont: const FontOptions(fontFamily: 'Typewriter'),
                   mode: Mode.text,
                 ))
             .toList(growable: false),
