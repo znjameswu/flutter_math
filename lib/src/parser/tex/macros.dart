@@ -625,11 +625,10 @@ final Map<String, MacroDefinition> builtinMacros = {
       "\\mskip5mu"),
 // TODO what should we do about \pod ?
   '\\pod': MacroDefinition.fromString("\\allowbreak"
-      "\\mathchoice{\\mkern18mu}{\\mkern8mu}{\\mkern8mu}{\\mkern8mu}(#1)"),
+      "\\mkern8mu(#1)"),
   '\\pmod': MacroDefinition.fromString("\\pod{{\\rm mod}\\mkern6mu#1}"),
   '\\mod': MacroDefinition.fromString("\\allowbreak"
-      "\\mathchoice{\\mkern18mu}{\\mkern12mu}{\\mkern12mu}{\\mkern12mu}"
-      "{\\rm mod}\\,\\,#1"),
+      "\\mkern18mu{\\rm mod}\\,\\,#1"),
 
 //////////////////////////////////////////////////////////////////////
 // LaTeX source2e
@@ -797,9 +796,8 @@ final Map<String, MacroDefinition> builtinMacros = {
 
   '\\argmin': MacroDefinition.fromString("\\DOTSB\\operatorname*{arg\\,min}"),
   '\\argmax': MacroDefinition.fromString("\\DOTSB\\operatorname*{arg\\,max}"),
-  '\\plim': MacroDefinition.fromString(
-    "\\DOTSB\\operatorname*{plim}\\limits"),
-      // "\\DOTSB\\mathop{\\operatorname{plim}}\\limits"),
+  '\\plim': MacroDefinition.fromString("\\DOTSB\\operatorname*{plim}\\limits"),
+  // "\\DOTSB\\mathop{\\operatorname{plim}}\\limits"),
 
 //////////////////////////////////////////////////////////////////////
 // braket.sty
