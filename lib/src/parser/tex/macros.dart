@@ -798,7 +798,8 @@ final Map<String, MacroDefinition> builtinMacros = {
   '\\argmin': MacroDefinition.fromString("\\DOTSB\\operatorname*{arg\\,min}"),
   '\\argmax': MacroDefinition.fromString("\\DOTSB\\operatorname*{arg\\,max}"),
   '\\plim': MacroDefinition.fromString(
-      "\\DOTSB\\mathop{\\operatorname{plim}}\\limits"),
+    "\\DOTSB\\operatorname*{plim}\\limits"),
+      // "\\DOTSB\\mathop{\\operatorname{plim}}\\limits"),
 
 //////////////////////////////////////////////////////////////////////
 // braket.sty

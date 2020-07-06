@@ -529,7 +529,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
   // node must be the same, vice versa.
   // AtomType _leftType;
   @override
-  AtomType get leftType => AtomType.ord;
+  AtomType get leftType => overrideType ?? AtomType.ord;
   // {
   //   final firstNonSpace = flattenedChildList.firstWhere(
   //       (element) => element.leftType != AtomType.spacing,
@@ -543,7 +543,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
 
   // AtomType _rightType;
   @override
-  AtomType get rightType => AtomType.ord;
+  AtomType get rightType => overrideType ?? AtomType.ord;
   // {
   //   final lastNonSpace = flattenedChildList.reversed.firstWhere(
   //       (element) => element.rightType != AtomType.spacing,

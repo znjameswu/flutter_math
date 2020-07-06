@@ -41,20 +41,20 @@ class DisplayMath extends StatelessWidget {
                   TableRow(
                     children: [
                       Center(child: Text('Flutter Math')),
-                      Center(child: Text('flutter_tex')),
+                      // Center(child: Text('flutter_tex')),
                     ],
                   ),
                   TableRow(
                     children: [
                       Center(child: FlutterMath.fromTexString(expression)),
-                      Center(
-                        child: TeXView(
-                          renderingEngine: const TeXViewRenderingEngine.katex(),
-                          child: TeXViewDocument(
-                            '\$\$$expression\$\$',
-                          ),
-                        ),
-                      ),
+                      // Center(
+                      //   child: TeXView(
+                      //     renderingEngine: const TeXViewRenderingEngine.katex(),
+                      //     child: TeXViewDocument(
+                      //       '\$\$$expression\$\$',
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],

@@ -53,11 +53,6 @@ class MyHomePage extends StatelessWidget {
             FeaturePage(),
             DocsPage(),
           ]),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
-          ),
         ),
       );
 }

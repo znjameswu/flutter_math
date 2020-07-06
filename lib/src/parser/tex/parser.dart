@@ -29,7 +29,9 @@ import 'package:flutter/foundation.dart';
 import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/atom.dart';
 import '../../ast/nodes/multiscripts.dart';
+import '../../ast/nodes/over.dart';
 import '../../ast/nodes/style.dart';
+import '../../ast/nodes/under.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/style.dart';
@@ -191,14 +193,29 @@ class TexParser {
       return base;
     }
 
-    final scriptsResult = parseScripts(allowLimits: false);
+    final scriptsResult = parseScripts(
+        allowLimits:
+            base is EquationRowNode && base.overrideType == AtomType.op);
 
     if (!scriptsResult.empty) {
-      return MultiscriptsNode(
-        base: base?.wrapWithEquationRow() ?? EquationRowNode.empty(),
-        sub: scriptsResult.subscript,
-        sup: scriptsResult.superscript,
-      );
+      if (!scriptsResult.limits) {
+        return MultiscriptsNode(
+          base: base?.wrapWithEquationRow() ?? EquationRowNode.empty(),
+          sub: scriptsResult.subscript,
+          sup: scriptsResult.superscript,
+        );
+      } else {
+        var res = scriptsResult.superscript != null
+            ? OverNode(
+                base: base.wrapWithEquationRow(),
+                above: scriptsResult.superscript)
+            : base;
+        res = scriptsResult.subscript != null
+            ? UnderNode(
+                base: res.wrapWithEquationRow(), below: scriptsResult.subscript)
+            : res;
+        return res;
+      }
     } else {
       return base;
     }
