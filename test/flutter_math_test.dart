@@ -14,6 +14,7 @@ import 'package:flutter_math/src/ast/nodes/left_right.dart';
 import 'package:flutter_math/src/ast/nodes/matrix.dart';
 import 'package:flutter_math/src/ast/nodes/multiscripts.dart';
 import 'package:flutter_math/src/ast/nodes/nary_op.dart';
+import 'package:flutter_math/src/ast/nodes/over.dart';
 import 'package:flutter_math/src/ast/nodes/phantom.dart';
 import 'package:flutter_math/src/ast/nodes/space.dart';
 import 'package:flutter_math/src/ast/nodes/sqrt.dart';
@@ -2031,7 +2032,7 @@ void main() {
     test("should be grouped more tightly than supsubs", () {
       final parse = getParsed(r'\overbrace x^2').children[0];
 
-      expect(parse, isA<MultiscriptsNode>());
+      expect(parse, isA<OverNode>());
     });
   });
 
