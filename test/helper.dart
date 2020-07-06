@@ -106,7 +106,7 @@ void testTexToRenderLike(
       await expectLater(
           find.byType(FlutterMath),
           matchesGoldenFile(
-              'golden/${(description + expression1 + expression2).hashCode}.png'));
+              'golden/temp/${(description + expression1 + expression2).hashCode}.png'));
     }
 
     await tester.pumpWidget(
@@ -134,7 +134,7 @@ void testTexToRenderLike(
       await expectLater(
           find.byType(FlutterMath),
           matchesGoldenFile(
-              'golden/${(description + expression1 + expression2).hashCode}.png'));
+              'golden/temp/${(description + expression1 + expression2).hashCode}.png'));
     }
   });
 }

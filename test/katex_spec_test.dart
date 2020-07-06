@@ -2688,7 +2688,7 @@ void main() {
     testTexToRenderLike("\\@firstoftwo should consume both, and avoid errors",
         r'\@firstoftwo{yes}{no}', r'yes');
     testTexToRenderLike("\\@firstoftwo should consume both, and avoid errors",
-        r"\@firstoftwo{yes}{1'_2^3", r'yes');
+        r"\@firstoftwo{yes}{1'_2^3}", r'yes');
 
     testTexToRenderLike("\\@ifstar should consume star but nothing else",
         r'\@ifstar{yes}{no}*!', r'yes!');
