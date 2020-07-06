@@ -347,7 +347,7 @@ class TexParser {
     // Save current mode and restore after completion
     final outerMode = this.mode;
     if (mode != null) {
-      this._switchMode(mode);
+      this.switchMode(mode);
     }
     // Consume spaces if requested, crucially *after* we switch modes,
     // so that the next non-space token is parsed in the correct mode.
@@ -391,7 +391,7 @@ class TexParser {
       }
     }
     if (mode != null) {
-      this._switchMode(outerMode);
+      this.switchMode(outerMode);
     }
     return result;
   }
@@ -800,7 +800,7 @@ class TexParser {
     return symbol;
   }
 
-  void _switchMode(Mode newMode) {
+  void switchMode(Mode newMode) {
     this.mode = newMode;
     this.macroExpander.mode = newMode;
   }

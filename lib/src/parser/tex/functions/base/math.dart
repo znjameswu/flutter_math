@@ -38,13 +38,13 @@ const _mathEntries = {
 };
 GreenNode _mathLeftHandler(TexParser parser, FunctionContext context) {
   final outerMode = parser.mode;
-  parser.mode = Mode.math;
+  parser.switchMode(Mode.math);
   final close = context.funcName == '\\(' ? '\\)' : '\$';
   final body =
       parser.parseExpression(breakOnInfix: false, breakOnTokenText: close);
 
   parser.expect(close);
-  parser.mode = outerMode;
+  parser.switchMode(outerMode);
 
   return StyleNode(
     optionsDiff: OptionsDiff(style: MathStyle.text),
