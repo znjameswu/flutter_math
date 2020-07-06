@@ -30,8 +30,8 @@ const _underOverEntries = {
   )
 };
 GreenNode _underOverHandler(TexParser parser, FunctionContext context) {
-  final baseArg = parser.parseArgNode(mode: null, optional: false);
   final shiftedArg = parser.parseArgNode(mode: null, optional: false);
+  final baseArg = parser.parseArgNode(mode: null, optional: false);
   if (context.funcName == '\\underset') {
     return UnderNode(
       base: baseArg.wrapWithEquationRow(), //TODO We need to preserve binrel!

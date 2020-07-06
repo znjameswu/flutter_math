@@ -87,4 +87,5 @@ const baseFunctionEntries = {
   ..._sqrtEntries,
   ..._stylingEntries,
   ..._textEntries,
+  ..._underOverEntries,
 };

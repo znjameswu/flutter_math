@@ -769,7 +769,7 @@ const supportedData = {
     r'\mathrm{Ab0}',
     r'\mathbf{Ab0}',
     r'\mathit{Ab0}',
-    r'\mathnormal{Ab0}',
+    // r'\mathnormal{Ab0}',
     r'\textbf{Ab0}',
     r'\textit{Ab0}',
     r'\textrm{Ab0}',
