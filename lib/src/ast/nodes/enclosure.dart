@@ -64,8 +64,12 @@ class EnclosureNode extends SlotableNode {
             child: childBuildResults[0].widget,
           ),
         ),
-        if (notation.contains('updiagnoalstrike'))
+        if (notation.contains('updiagonalstrike'))
           Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
             child: LayoutBuilder(
               builder: (context, constraints) => CustomPaint(
                 size: constraints.biggest,
@@ -82,6 +86,10 @@ class EnclosureNode extends SlotableNode {
           ),
         if (notation.contains('downdiagnoalstrike'))
           Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
             child: LayoutBuilder(
               builder: (context, constraints) => CustomPaint(
                 size: constraints.biggest,
