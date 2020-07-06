@@ -5,13 +5,11 @@ import 'package:flutter/widgets.dart';
 
 import '../../font/metrics/font_metrics.dart';
 import '../../render/constants.dart';
-import '../../render/layout/custom_layout.dart';
 import '../../render/layout/layout_builder_baseline.dart';
 import '../../render/layout/line.dart';
 import '../../render/layout/shift_baseline.dart';
 import '../../render/svg/delimiter.dart';
 import '../../render/symbols/make_atom.dart';
-import '../../render/utils/render_box_offset.dart';
 import '../../utils/iterable_extensions.dart';
 import '../options.dart';
 import '../size.dart';
@@ -116,148 +114,10 @@ class LeftRightNode extends SlotableNode {
       );
 }
 
-class _LeftRightId {
-  final bool isDelimiter;
-  final int number;
-  const _LeftRightId({
-    @required this.isDelimiter,
-    @required this.number,
-  });
-
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is _LeftRightId &&
-        o.isDelimiter == isDelimiter &&
-        o.number == number;
-  }
-
-  @override
-  int get hashCode => isDelimiter.hashCode ^ number.hashCode;
-}
-
 // TexBook Appendix B
 const delimiterFactor = 901;
 const delimiterShorfall = Measurement(value: 5.0, unit: Unit.pt);
 
-// Delimiter layout is specified in TexBook Rule 19
-class LeftRightLayoutDelegate extends CustomLayoutDelegate<_LeftRightId> {
-  final Options options;
-  // final bool fracLeftDelim;
-  // final bool fracRightDelim;
-  LeftRightLayoutDelegate({
-    @required this.options,
-    // this.fracLeftDelim = false,
-    // this.fracRightDelim = false,
-  });
-
-  double height;
-
-  @override
-  double computeDistanceToActualBaseline(
-          TextBaseline baseline, Map<_LeftRightId, RenderBox> childrenTable) =>
-      height;
-
-  @override
-  double getIntrinsicSize({
-    Axis sizingDirection,
-    bool max,
-    double extent,
-    double Function(RenderBox child, double extent) childSize,
-    Map<_LeftRightId, RenderBox> childrenTable,
-  }) =>
-      0.0;
-
-  @override
-  Size performLayout(BoxConstraints constraints,
-      Map<_LeftRightId, RenderBox> childrenTable, RenderBox renderBox) {
-    final bodyChildren = (childrenTable.entries
-            .where((entry) => !entry.key.isDelimiter)
-            .toList(growable: false)
-              ..sortBy<num>((e) => e.key.number))
-        .map((e) => e.value)
-        .toList(growable: false);
-    final delimiterChildren = (childrenTable.entries
-            .where((entry) => entry.key.isDelimiter)
-            .toList(growable: false)
-              ..sortBy<num>((e) => e.key.number))
-        .map((e) => e.value)
-        .toList(growable: false);
-
-    for (final bodyChild in bodyChildren) {
-      bodyChild.layout(infiniteConstraint, parentUsesSize: true);
-    }
-
-    final a = options.fontMetrics.axisHeight.cssEm.toLpUnder(options);
-    final deltas = bodyChildren.map((element) =>
-        math.max(element.layoutHeight - a, element.layoutDepth + a));
-    final delta = deltas.max();
-
-    final delimiterFullHeight = math.max(delta / 500 * delimiterFactor,
-        2 * delta - delimiterShorfall.toLpUnder(options));
-
-    for (final delimiter in delimiterChildren) {
-      delimiter.layout(BoxConstraints(minHeight: delimiterFullHeight),
-          parentUsesSize: true);
-    }
-
-    final spacingLeft =
-        getSpacingSize(AtomType.open, AtomType.ord, options.style)
-            .toLpUnder(options);
-
-    final spacingMidLeft =
-        getSpacingSize(AtomType.ord, AtomType.rel, options.style)
-            .toLpUnder(options);
-
-    final spacingMidRight =
-        getSpacingSize(AtomType.rel, AtomType.ord, options.style)
-            .toLpUnder(options);
-
-    final spacingRight =
-        getSpacingSize(AtomType.ord, AtomType.close, options.style)
-            .toLpUnder(options);
-
-    final childHeights = childrenTable.entries
-        .map((entry) => entry.key.isDelimiter
-            ? entry.value.size.height / 2 + a
-            : entry.value.layoutHeight)
-        .toList(growable: false);
-
-    // final bodyHeights = bodyChildren.map((e) => e.layoutHeight);
-
-    // final delimiterHeights =
-    //     delimiterChildren.map((e) => e.size.height / 2 + a);
-
-    height = childHeights.max();
-
-    final bodyDepth = bodyChildren.map((e) => e.layoutDepth);
-
-    final delimiterDepths = delimiterChildren.map((e) => e.size.height / 2 - a);
-
-    final depth = [...bodyDepth, ...delimiterDepths].max();
-
-    var index = 0;
-    var currPos = 0.0;
-    for (final entry in childrenTable.entries) {
-      final child = entry.value;
-      if (index == childrenTable.length - 1) {
-        currPos += spacingRight;
-      } else if (index != 0 && entry.key.isDelimiter) {
-        currPos += spacingMidLeft;
-      }
-      child.offset = Offset(currPos, height - childHeights[index]);
-      currPos += child.size.width;
-      if (index == 0) {
-        currPos += spacingLeft;
-      } else if (index != childrenTable.length - 1 && entry.key.isDelimiter) {
-        currPos += spacingMidRight;
-      }
-      index++;
-    }
-    return Size(currPos, height + depth);
-  }
-}
 
 const stackLargeDelimiters = {
   '(', ')',
