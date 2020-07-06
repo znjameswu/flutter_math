@@ -27,11 +27,11 @@ class ParseError extends Error {
   /// Nullable
   int position;
   String message;
+
   /// Nullable
   Token token;
 
-  ParseError(String message, [this.token])
-      : message = 'parser error $message' {
+  ParseError(String message, [this.token]) : message = 'parser error $message' {
     final loc = token?.loc;
     if (loc != null && loc.start <= loc.end) {
       final input = loc.lexer.input;
@@ -42,20 +42,19 @@ class ParseError extends Error {
       if (start == input.length) {
         message = '$message at end of input: ';
       } else {
-        message = '$message at position ${start+1}: ';
+        message = '$message at position ${start + 1}: ';
       }
-      
-      final underlined = input.substring(start, end).replaceAllMapped(
-          RegExp(r'[^]'),
-          (match) => '${match[0]}\u0332'
-      );
+
+      final underlined = input
+          .substring(start, end)
+          .replaceAllMapped(RegExp(r'[^]'), (match) => '${match[0]}\u0332');
       if (start > 15) {
-        message = '$message…${input.substring(start-15, start)}$underlined';
+        message = '$message…${input.substring(start - 15, start)}$underlined';
       } else {
         message = '$message${input.substring(0, start)}$underlined';
       }
       if (end + 15 < input.length) {
-        message = '$message${input.substring(end, end+15)}…';
+        message = '$message${input.substring(end, end + 15)}…';
       } else {
         message = '$message${input.substring(end)}';
       }

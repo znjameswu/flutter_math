@@ -23,7 +23,6 @@
 
 import 'package:meta/meta.dart';
 
-
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import 'environments/array.dart';
@@ -57,7 +56,7 @@ class EnvSpec {
 }
 
 final Map<String, EnvSpec> _environments = {};
-Map<String, EnvSpec> get environments{
+Map<String, EnvSpec> get environments {
   if (_environments.isEmpty) {
     _environmentsEntries.forEach((key, value) {
       for (final name in key) {
@@ -67,9 +66,6 @@ Map<String, EnvSpec> get environments{
   }
   return _environments;
 }
-
-
-
 
 final _environmentsEntries = {
   ...arrayEntries,

@@ -126,7 +126,6 @@ const _opEntries = {
     numArgs: 0,
     handler: _integralHandler,
   ),
-
 };
 
 NaryOperatorNode _parseNaryOperator(

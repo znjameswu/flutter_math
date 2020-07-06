@@ -1,6 +1,5 @@
 // In all paths below, the viewBox-to-em scale is 1000:1.
 
-
 const hLinePad =
     80.0; // padding above a sqrt viniculum. Prevents image cropping.
 
@@ -438,5 +437,3 @@ c4.7,-4.7,7,-9.3,7,-14c0,-9.3,-3.7,-15.3,-11,-18c-92.7,-56.7,-159,-133.7,-199,
 c-2,2.7,-1,9.7,3,21c15.3,42,36.7,81.8,64,119.5c27.3,37.7,58,69.2,92,94.5z
 M500 241 v40 H399408 v-40z M500 435 v40 H400000 v-40z''',
 };
-
-

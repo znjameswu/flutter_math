@@ -526,7 +526,9 @@ final Map<String, MacroDefinition> builtinMacros = {
     final next = context.expandAfterFuture().text;
     if (dotsByToken.containsKey(next)) {
       thedots = dotsByToken[next];
-    } else if (next!= null && next.length >=4 && next.substring(0, 4) == '\\not') {
+    } else if (next != null &&
+        next.length >= 4 &&
+        next.substring(0, 4) == '\\not') {
       thedots = '\\dotsb';
     } else if (texSymbolCommandConfigs[Mode.math].containsKey(next)) {
       if (texSymbolCommandConfigs[Mode.math][next].type == AtomType.bin ||

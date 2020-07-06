@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
-
 import '../../../ast/nodes/accent.dart';
 import '../../../ast/nodes/accent_under.dart';
 import '../../../ast/nodes/atom.dart';

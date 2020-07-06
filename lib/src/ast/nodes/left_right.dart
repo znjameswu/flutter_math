@@ -118,7 +118,6 @@ class LeftRightNode extends SlotableNode {
 const delimiterFactor = 901;
 const delimiterShorfall = Measurement(value: 5.0, unit: Unit.pt);
 
-
 const stackLargeDelimiters = {
   '(', ')',
   '[', ']',

@@ -131,7 +131,8 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
     double extent,
     double Function(RenderBox child, double extent) childSize,
     Map<_SqrtPos, RenderBox> childrenTable,
-  }) => 0;
+  }) =>
+      0;
 
   @override
   Size performLayout(BoxConstraints constraints,
@@ -212,8 +213,6 @@ const sqrtDelimieterSequence = [
 const vbPad = 80;
 const emPad = vbPad / 1000;
 
-
-
 // We use a different strategy of picking \\surd font than KaTeX
 // KaTeX chooses the style and font of the \\surd to cover inner at *normalsize*
 // We will use a highly similar strategy while sticking to the strict meaning
@@ -293,7 +292,7 @@ Widget sqrtSvg({double minDelimiterHeight, double baseWidth, Options options}) {
       final viewBoxWidth = viewPortWidth.lp.toCssEmUnder(delimOptions) * 1000;
       final svgPath = sqrtPath('sqrtMain', extraViniculum, viewBoxHeight);
       return ResetBaseline(
-        height: (options.fontMetrics.sqrtRuleThickness + extraViniculum )
+        height: (options.fontMetrics.sqrtRuleThickness + extraViniculum)
             .cssEm
             .toLpUnder(delimOptions),
         child: ResetDimension(

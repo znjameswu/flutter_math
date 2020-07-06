@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +6,7 @@ import 'cursor_timer.dart';
 import 'flutter_math.dart';
 
 class FlutterMathScope extends ChangeNotifier {
-
-  FlutterMathMode get mode =>  _mode;
+  FlutterMathMode get mode => _mode;
   FlutterMathMode _mode;
   set mode(FlutterMathMode value) {
     if (_mode != value) {
@@ -17,7 +15,7 @@ class FlutterMathScope extends ChangeNotifier {
     }
   }
 
-  FlutterMathController get controller =>  _controller;
+  FlutterMathController get controller => _controller;
   FlutterMathController _controller;
   set controller(FlutterMathController value) {
     if (_controller != value) {

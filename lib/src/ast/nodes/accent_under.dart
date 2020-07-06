@@ -46,8 +46,7 @@ class AccentUnderNode extends SlotableNode {
                           .fontMetrics.defaultRuleThickness.cssEm
                           .toLpUnder(options);
                       return Padding(
-                        padding:
-                            EdgeInsets.only(top: 3 * defaultRuleThickness),
+                        padding: EdgeInsets.only(top: 3 * defaultRuleThickness),
                         child: Container(
                           width: constraints.minWidth,
                           height: defaultRuleThickness, // TODO minRuleThickness

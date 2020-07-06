@@ -167,13 +167,12 @@ Widget strechySvgSpan(String name, double width, Options options) {
       children: <Widget>[
         for (var i = 0; i < numSvgChildren; i++)
           svgWidgetFromPath(
-            svgPaths[data.paths[i]],
-            Size(widths[i], height),
-            Rect.fromLTWH(0, 0, viewBoxWidth, data.viewBoxHeight),
-            options.color,
-            aligns[i],
-            BoxFit.fitHeight
-          )
+              svgPaths[data.paths[i]],
+              Size(widths[i], height),
+              Rect.fromLTWH(0, 0, viewBoxWidth, data.viewBoxHeight),
+              options.color,
+              aligns[i],
+              BoxFit.fitHeight)
       ],
     );
   }

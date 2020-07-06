@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class ValueListenableBuilder2<A, B> extends StatelessWidget {
   ValueListenableBuilder2({
     this.valueListenable1,
-    this.valueListenable2, 
+    this.valueListenable2,
     Key key,
     this.builder,
     this.child,

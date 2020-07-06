@@ -177,4 +177,3 @@ class AccentNode extends SlotableNode {
         isShifty: isShifty,
       );
 }
-

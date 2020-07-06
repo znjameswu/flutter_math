@@ -66,7 +66,7 @@ const _arrowCommandMapping = {
 
   '\\xtwoheadleftarrow': '\u219e',
   '\\xtwoheadrightarrow': '\u21a0',
-  
+
   '\\xtofrom': '\u21c4',
   '\\xrightleftarrows': '\u21c4',
   '\\xrightequilibrium': '\u21cc', // Not a perfect match.

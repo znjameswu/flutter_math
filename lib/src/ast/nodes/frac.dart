@@ -138,7 +138,7 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
         this.barLength = barLength;
         this.width = width;
       }
-      
+
       return AxisConfiguration(
         size: width,
         offsetTable: {

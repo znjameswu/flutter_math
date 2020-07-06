@@ -1,5 +1,3 @@
-
-
 class AccentRenderConfig {
   final String overChar;
   final String overImageName;
@@ -87,26 +85,29 @@ const accentRenderConfigs = {
     overImageName: 'overbrace',
     underImageName: 'underbrace',
   ),
-  
+
   ...katexCompatibleAccents,
 };
 
 const katexCompatibleAccents = {
-  '\u21d2': AccentRenderConfig( // '\u21d2'
+  '\u21d2': AccentRenderConfig(
+    // '\u21d2'
     overImageName: 'Overrightarrow',
   ),
-  '\u23e0': AccentRenderConfig( // '\u0311'
-    overImageName: 'overgroup',
-    underImageName: 'undergroup'
-  ),
+  '\u23e0': AccentRenderConfig(
+      // '\u0311'
+      overImageName: 'overgroup',
+      underImageName: 'undergroup'),
   // '\u': AccentRenderConfig(
   //   overImageName: 'overlinesegment',
   //   underImageName: 'underlinesegment',
   // ),
-  '\u21bc': AccentRenderConfig( // '\u20d0'
+  '\u21bc': AccentRenderConfig(
+    // '\u20d0'
     overImageName: 'overleftharpoon',
   ),
-  '\u21c0': AccentRenderConfig( // '\u20d1'
+  '\u21c0': AccentRenderConfig(
+    // '\u20d1'
     overImageName: 'overrightharpoon',
   ),
 };

@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 import '../../../ast/nodes/atom.dart';
 import '../../../ast/nodes/equation_array.dart';
 import '../../../ast/nodes/left_right.dart';
@@ -202,8 +201,7 @@ EquationArrayNode parseEqnArray(
       }
       break;
     } else if (next == '\\cr') {
-      final cr = assertNodeType<CrNode>(
-          parser.parseFunction(null, null, null));
+      final cr = assertNodeType<CrNode>(parser.parseFunction(null, null, null));
       rowGaps.add(cr.size ?? Measurement.zero);
 
       // check for \hline(s) following the row separator

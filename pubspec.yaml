@@ -1,6 +1,6 @@
 name: flutter_math
 description: Math equation rendering with pure Flutter.
-version: 0.0.1
+version: 0.0.1+1
 author: znjameswu <znjameswu@gmail.com>
 homepage: https://github.com/znjameswu/flutter_math
 repository: https://github.com/znjameswu/flutter_math

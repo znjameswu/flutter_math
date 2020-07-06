@@ -31,7 +31,7 @@ class MultiscriptsNode extends SlotableNode {
 
   @override
   List<BuildResult> buildSlotableWidget(
-      Options options, List<BuildResult> childBuildResults)  =>
+          Options options, List<BuildResult> childBuildResults) =>
       [
         BuildResult(
           options: options,

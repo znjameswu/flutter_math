@@ -1,4 +1,3 @@
-
 const supportedData = {
   'Accents': [
     r"a'",

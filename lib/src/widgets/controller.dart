@@ -4,8 +4,8 @@ import '../ast/syntax_tree.dart';
 
 class FlutterMathController extends ChangeNotifier {
   FlutterMathController({SyntaxTree ast, String error})
-      : 
-      // _error = error,
+      :
+        // _error = error,
         _ast = ast;
 
   SyntaxTree _ast;
