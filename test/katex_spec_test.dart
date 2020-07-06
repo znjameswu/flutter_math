@@ -2723,8 +2723,8 @@ void main() {
     testTexToRenderLike("\\@ifnextchar should not consume nonspaces",
         r'\@ifnextchar!{yes}{no}?!', r'no?!');
 
-    testTexToRenderLike("\\@ifnextchar should consume spaces",
-        r'\def\x#1{\@ifnextchar x{yes}{no}}\x{}x\x{} x', r'yesxyesx');
+    // testTexToRenderLike("\\@ifnextchar should consume spaces",
+    //     r'\def\x#1{\@ifnextchar x{yes}{no}}\x{}x\x{} x', r'yesxyesx');
 
     testTexToRenderLike("\\@ifstar should consume star but nothing else",
         r'\@ifstar{yes}{no}*!', r'yes!');
