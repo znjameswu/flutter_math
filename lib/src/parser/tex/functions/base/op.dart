@@ -241,7 +241,7 @@ GreenNode _mathLimitsHandler(TexParser parser, FunctionContext context) =>
       defaultLimits: true,
     );
 
-const singleCharIntegrals = {
+const _singleCharIntegrals = {
   '\u222b': '\\int',
   '\u222c': '\\iint',
   '\u222d': '\\iiint',
@@ -251,7 +251,7 @@ const singleCharIntegrals = {
 };
 GreenNode _integralHandler(TexParser parser, FunctionContext context) {
   final fName = context.funcName.length == 1
-      ? _singleCharBigOps[context.funcName]
+      ? _singleCharIntegrals[context.funcName]
       : context.funcName;
   return _parseNaryOperator(fName, parser, context);
 }
