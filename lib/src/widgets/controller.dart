@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import '../ast/syntax_tree.dart';
 
 class FlutterMathController extends ChangeNotifier {
-  FlutterMathController({SyntaxTree ast, String error})
+  FlutterMathController({SyntaxTree ast, dynamic error})
       :
-        // _error = error,
+        _error = error,
         _ast = ast;
 
   SyntaxTree _ast;
@@ -16,12 +16,12 @@ class FlutterMathController extends ChangeNotifier {
     // _error = null;
   }
 
-  // String get error =>  _error;
-  // String _error;
-  // set error(String value) {
-  //   _error = value;
-  //   _ast = null;
-  // }
+  dynamic get error =>  _error;
+  dynamic _error;
+  set error(dynamic value) {
+    _error = value;
+    _ast = null;
+  }
   // TextSelection _selection =
   //  const TextSelection.collapsed(offset: 0, affinity: TextAffinity.upstream);
   // TextSelection get selection => _selection;
