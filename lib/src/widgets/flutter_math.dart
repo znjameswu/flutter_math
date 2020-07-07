@@ -92,4 +92,3 @@ class FlutterMath extends StatelessWidget {
         ),
       );
 }
-

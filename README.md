@@ -125,7 +125,7 @@ If you would like to display custom styled error message or handle them differen
 ```dart
 FlutterMath.fromTexString(
   r'\garbled $tring', 
-  onErrorFallback: (errMsg) => Text(errMsg), // You can also throw error here
+  onErrorFallback: (errMsg) => Text(errMsg), // You can also invoke your handler here
 )
 ```
 
