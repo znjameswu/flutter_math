@@ -28,12 +28,19 @@ const _operatorNameEntries = {
       FunctionSpec(numArgs: 1, handler: _operatorNameHandler),
 };
 GreenNode _operatorNameHandler(TexParser parser, FunctionContext context) {
-  var name = parser.parseArgNode(mode: Mode.text, optional: false);
+  var name = parser.parseArgNode(mode: null, optional: false);
   final scripts =
       parser.parseScripts(allowLimits: context.funcName == '\\operatorname*');
   final body = parser.parseGroup(context.funcName,
           optional: false, greediness: 1, mode: null, consumeSpaces: true) ??
-      EquationRowNode(children: []);
+      EquationRowNode.empty();
+
+  name = StyleNode(
+    children: name.expandEquationRow(),
+    optionsDiff: OptionsDiff(
+      mathFontOptions: fontOptionsTable['mathrm'],
+    ),
+  );
 
   if (!scripts.empty) {
     if (scripts.limits == true) {
@@ -46,7 +53,7 @@ GreenNode _operatorNameHandler(TexParser parser, FunctionContext context) {
       name = scripts.subscript != null
           ? UnderNode(
               base: name.wrapWithEquationRow(),
-              below: scripts.superscript,
+              below: scripts.subscript,
             )
           : name;
     } else {

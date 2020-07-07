@@ -22,8 +22,9 @@ List<BuildResult> makeAtom({
   if (variantForm) {
     symbolRenderConfig = symbolRenderConfig?.variantForm;
   }
-  final renderConfig =
-      mode == Mode.math ? symbolRenderConfig?.math : symbolRenderConfig?.text;
+  final renderConfig = mode == Mode.math
+      ? (symbolRenderConfig?.math ?? symbolRenderConfig?.text)
+      : (symbolRenderConfig?.text ?? symbolRenderConfig?.math);
   final char = renderConfig?.replaceChar ?? symbol;
 
   // Only mathord and textord will be affected by user-specified fonts
