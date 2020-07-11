@@ -75,18 +75,21 @@ class FlutterMath extends StatelessWidget {
         value: controller,
         child: Consumer<FlutterMathController>(
           builder: (context, controller, _) {
-            if (controller.error == null) {
-              return controller.ast.buildWidget(options);
-            } else {
-              dynamic error = controller.error;
-              final errorMsg = error is ParseError
-                  ? error.message
-                  : 'Internal error: $error. Please report.';
-              if (onErrorFallback != null) {
-                return onErrorFallback(errorMsg);
-              } else {
-                return Text(errorMsg);
+            dynamic error = controller.error;
+            if (error == null) {
+              try {
+                return controller.ast.buildWidget(options);
+              } on Object catch (e) {
+                error = e;
               }
+            }
+            final errorMsg = error is ParseError
+                ? error.message
+                : 'Internal error: $error. Please report.';
+            if (onErrorFallback != null) {
+              return onErrorFallback(errorMsg);
+            } else {
+              return Text(errorMsg);
             }
           },
         ),
