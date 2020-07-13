@@ -97,7 +97,6 @@ class Options {
     if (font == this.mathFontOptions) return this;
     return this.copyWith(mathFontOptions: font);
   }
-  // TODO()
 
   Color getColor() =>
       // this.phantom ? Color(0x00000000) :

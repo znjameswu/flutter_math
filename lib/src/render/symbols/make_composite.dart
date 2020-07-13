@@ -1,16 +1,16 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/ast/nodes/atom.dart';
-import 'package:flutter_math/src/ast/nodes/over.dart';
-import 'package:flutter_math/src/ast/nodes/style.dart';
-import 'package:flutter_math/src/ast/size.dart';
-import 'package:flutter_math/src/parser/tex/font.dart';
-import 'package:flutter_math/src/render/layout/line.dart';
-import 'package:flutter_math/src/render/layout/reset_baseline.dart';
-import 'package:flutter_math/src/render/layout/shift_baseline.dart';
 
 import '../../../flutter_math.dart';
+import '../../ast/nodes/atom.dart';
+import '../../ast/nodes/over.dart';
+import '../../ast/nodes/style.dart';
+import '../../ast/size.dart';
 import '../../ast/types.dart';
+import '../../parser/tex/font.dart';
+import '../layout/line.dart';
 import '../layout/reset_dimension.dart';
+import '../layout/shift_baseline.dart';
+
 import 'make_atom.dart';
 
 BuildResult makeRlapCompositeSymbol(

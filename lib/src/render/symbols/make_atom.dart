@@ -1,15 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/ast/symbols_extra.dart';
-import 'package:flutter_math/src/render/symbols/make_composite.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/symbols.dart';
+import '../../ast/symbols_extra.dart';
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../font/metrics/font_metrics.dart';
 import '../layout/reset_dimension.dart';
+import 'make_composite.dart';
 
 BuildResult makeAtom({
   @required String symbol,

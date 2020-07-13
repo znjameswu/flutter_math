@@ -34,12 +34,12 @@ GreenNode _underOverHandler(TexParser parser, FunctionContext context) {
   final baseArg = parser.parseArgNode(mode: null, optional: false);
   if (context.funcName == '\\underset') {
     return UnderNode(
-      base: baseArg.wrapWithEquationRow(), //TODO We need to preserve binrel!
+      base: baseArg.wrapWithEquationRow(),
       below: shiftedArg.wrapWithEquationRow(),
     );
   } else {
     return OverNode(
-      base: baseArg.wrapWithEquationRow(), //TODO We need to preserve binrel!
+      base: baseArg.wrapWithEquationRow(),
       above: shiftedArg.wrapWithEquationRow(),
       stackRel: context.funcName == '\\stackrel',
     );

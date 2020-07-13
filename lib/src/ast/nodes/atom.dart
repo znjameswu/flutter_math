@@ -65,15 +65,14 @@ class AtomNode extends LeafNode {
     AtomType atomType,
     FontOptions overrideFont,
     Mode mode,
-  }) {
-    return AtomNode(
-      symbol: symbol ?? this.symbol,
-      variantForm: variantForm ?? this.variantForm,
-      atomType: atomType ?? this._atomType,
-      overrideFont: overrideFont ?? this.overrideFont,
-      mode: mode ?? this.mode,
-    );
-  }
+  }) =>
+      AtomNode(
+        symbol: symbol ?? this.symbol,
+        variantForm: variantForm ?? this.variantForm,
+        atomType: atomType ?? this._atomType,
+        overrideFont: overrideFont ?? this.overrideFont,
+        mode: mode ?? this.mode,
+      );
 }
 
 EquationRowNode stringToNode(String string, [Mode mode = Mode.text]) =>

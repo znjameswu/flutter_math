@@ -21,11 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:flutter_math/src/parser/tex/functions/katex_ext.dart';
 import 'package:meta/meta.dart';
 
 import '../../ast/syntax_tree.dart';
 import 'functions/katex_base.dart';
+import 'functions/katex_ext.dart';
 import 'parser.dart';
 import 'token.dart';
 
