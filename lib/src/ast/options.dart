@@ -22,6 +22,8 @@ class Options {
   // final bool isBlank;
 
   FontMetrics get fontMetrics => getGlobalMetrics(size);
+  double get fontSize => 1.0.cssEm.toLpUnder(this);
+
   const Options({
     this.baseSizeMultiplier = 1,
     @required this.style,

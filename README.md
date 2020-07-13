@@ -108,7 +108,7 @@ In-line equations
 FlutterMath.fromTexString(r'\frac a b', options: Options.textOptions)
 ```
 
-You can also resize the output by providing `baseSizeMultiplier` parameter
+You can also resize the output by providing `baseSizeMultiplier` parameter. (This parameter will also affect the size of absolute unit used in the equation. You can obtain the approximate font size for normal-sized letters by Options.fontSize.)
 
 ```dart
 FlutterMath.fromTexString(
