@@ -2764,17 +2764,17 @@ void main() {
     // });
 
     test("\\char produces literal characters", () {
-        // expect("\\char(r'a").toParseLike("\\char')\\a");
-        // expect("\\char`\\%").toParseLike("\\char37");
-        // expect("\\char`\\%").toParseLike("\\char'45");
-        // expect("\\char`\\%").toParseLike('\\char"25');
-        expect("\\char", toNotParse());
-        expect("\\char`", toNotParse());
-        expect("\\char'", toNotParse());
-        expect('\\char"', toNotParse());
-        expect("\\char'a", toNotParse());
-        expect('\\char"g', toNotParse());
-        expect('\\char"g', toNotParse());
+      // expect("\\char(r'a").toParseLike("\\char')\\a");
+      // expect("\\char`\\%").toParseLike("\\char37");
+      // expect("\\char`\\%").toParseLike("\\char'45");
+      // expect("\\char`\\%").toParseLike('\\char"25');
+      expect("\\char", toNotParse());
+      expect("\\char`", toNotParse());
+      expect("\\char'", toNotParse());
+      expect('\\char"', toNotParse());
+      expect("\\char'a", toNotParse());
+      expect('\\char"g', toNotParse());
+      expect('\\char"g', toNotParse());
     });
 
     test("should build Unicode private area characters", () {
