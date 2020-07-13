@@ -31,7 +31,7 @@ import '../../../ast/style.dart';
 import '../../../ast/syntax_tree.dart';
 import '../../../utils/iterable_extensions.dart';
 import '../define_environment.dart';
-import '../functions/base.dart';
+import '../functions/katex_base.dart';
 import '../macros.dart';
 import '../parse_error.dart';
 

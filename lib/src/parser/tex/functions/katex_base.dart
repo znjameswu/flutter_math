@@ -1,6 +1,5 @@
-library latex_base;
+library katex_base;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
@@ -33,39 +32,41 @@ import '../parse_error.dart';
 import '../parser.dart';
 import '../symbols.dart';
 
-part 'base/accent.dart';
-part 'base/accent_under.dart';
-part 'base/arrow.dart';
-part 'base/array.dart';
-part 'base/break.dart';
-part 'base/color.dart';
-part 'base/cr.dart';
-part 'base/delimsizing.dart';
-part 'base/enclose.dart';
-part 'base/environment.dart';
-part 'base/font.dart';
-part 'base/genfrac.dart';
-part 'base/horiz_brace.dart';
-part 'base/kern.dart';
-part 'base/math.dart';
-part 'base/mclass.dart';
-part 'base/op.dart';
-part 'base/operator_name.dart';
-part 'base/phantom.dart';
-part 'base/raise_box.dart';
-part 'base/rule.dart';
-part 'base/sizing.dart';
-part 'base/sqrt.dart';
-part 'base/styling.dart';
-part 'base/text.dart';
-part 'base/underover.dart';
+part 'katex_base/accent.dart';
+part 'katex_base/accent_under.dart';
+part 'katex_base/arrow.dart';
+part 'katex_base/array.dart';
+part 'katex_base/break.dart';
+part 'katex_base/char.dart';
+part 'katex_base/color.dart';
+part 'katex_base/cr.dart';
+part 'katex_base/delimsizing.dart';
+part 'katex_base/enclose.dart';
+part 'katex_base/environment.dart';
+part 'katex_base/font.dart';
+part 'katex_base/genfrac.dart';
+part 'katex_base/horiz_brace.dart';
+part 'katex_base/kern.dart';
+part 'katex_base/math.dart';
+part 'katex_base/mclass.dart';
+part 'katex_base/op.dart';
+part 'katex_base/operator_name.dart';
+part 'katex_base/phantom.dart';
+part 'katex_base/raise_box.dart';
+part 'katex_base/rule.dart';
+part 'katex_base/sizing.dart';
+part 'katex_base/sqrt.dart';
+part 'katex_base/styling.dart';
+part 'katex_base/text.dart';
+part 'katex_base/underover.dart';
 
-const baseFunctionEntries = {
+const katexBaseFunctionEntries = {
   ..._accentEntries,
   ..._accentUnderEntries,
   ..._arrowEntries,
   ..._arrayEntries,
   ..._breakEntries,
+  ..._charEntries,
   ..._colorEntries,
   ..._crEntries,
   ..._delimSizingEntries,

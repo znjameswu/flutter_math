@@ -21,37 +21,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _mathEntries = {
-  ['\\(', '\$']: FunctionSpec(
-    numArgs: 0,
-    allowedInMath: false,
-    allowedInText: true,
-    handler: _mathLeftHandler,
-  ),
-  ['\\)', '\\]']: FunctionSpec(
-      numArgs: 0,
-      allowedInMath: false,
-      allowedInText: true,
-      handler: _mathRightHandler),
+const _accentUnderEntries = {
+  [
+    '\\underleftarrow',
+    '\\underrightarrow',
+    '\\underleftrightarrow',
+    '\\undergroup',
+    // '\\underlinesegment': ,
+    '\\utilde',
+
+    '\\underline'
+  ]: FunctionSpec(numArgs: 1, handler: _accentUnderHandler),
 };
-GreenNode _mathLeftHandler(TexParser parser, FunctionContext context) {
-  final outerMode = parser.mode;
-  parser.switchMode(Mode.math);
-  final close = context.funcName == '\\(' ? '\\)' : '\$';
-  final body =
-      parser.parseExpression(breakOnInfix: false, breakOnTokenText: close);
 
-  parser.expect(close);
-  parser.switchMode(outerMode);
+const _accentUnderMapping = {
+  '\\underleftarrow': '\u2190',
+  '\\underrightarrow': '\u2192',
+  '\\underleftrightarrow': '\u2194',
+  '\\undergroup': '\u23e0',
+  // '\\underlinesegment',
+  '\\utilde': '\u007e',
 
-  return StyleNode(
-    optionsDiff: OptionsDiff(style: MathStyle.text),
-    children: body,
+  '\\underline': '\u00af'
+};
+GreenNode _accentUnderHandler(TexParser parser, FunctionContext context) {
+  final base = parser.parseArgNode(mode: null, optional: false);
+  return AccentUnderNode(
+    base: base.wrapWithEquationRow(),
+    label: _accentUnderMapping[context.funcName],
   );
-}
-
-GreenNode _mathRightHandler(TexParser parser, FunctionContext context) {
-  throw ParseError('Mismatched ${context.funcName}');
 }

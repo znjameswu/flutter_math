@@ -21,10 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import 'package:flutter_math/src/parser/tex/functions/katex_ext.dart';
 import 'package:meta/meta.dart';
 
 import '../../ast/syntax_tree.dart';
-import 'functions/base.dart';
+import 'functions/katex_base.dart';
 import 'parser.dart';
 import 'token.dart';
 
@@ -41,49 +42,8 @@ class FunctionContext {
   });
 }
 
-// enum ArgType {
-//   color,
-//   size,
-//   url,
-//   raw,
-//   original,
-//   hBox,
-//   math,
-//   text
-// }
-
-// class ParseNode {
-//   final ArgType argType;
-
-//   final dynamic value;
-
-//   const ParseNode({
-//     @required this.argType,
-//     @required this.value,
-//   });
-// }
-
 typedef FunctionHandler<T extends GreenNode> = T Function(
     TexParser parser, FunctionContext context);
-
-// class FunctionPropSpec {
-//   final int numArgs;
-//   final List<ArgType> argTypes;
-//   final int greediness;
-//   final bool allowedInText;
-//   final bool allowedInMath;
-//   final int numOptionalArgs;
-//   final bool infix;
-//   const FunctionPropSpec({
-//     @required this.numArgs,
-//     @required this.argTypes,
-//     this.greediness = 1,
-//     this.allowedInText = false,
-//     this.allowedInMath = true,
-//     this.numOptionalArgs = 0,
-//     this.infix = false,
-//   });
-// }
 
 class FunctionSpec<T extends GreenNode> {
   final int numArgs;
@@ -108,17 +68,6 @@ class FunctionSpec<T extends GreenNode> {
   int get totalArgs => numArgs + numOptionalArgs;
 }
 
-// class FunctionEntry<T extends GreenNode> {
-//   // Infix has already been implied in FunctionSpec
-//   // final String type;
-//   final List<String> names;
-//   final FunctionSpec<T> spec;
-//   const FunctionEntry({
-//     @required this.names,
-//     @required this.spec,
-//   });
-// }
-
 extension RegisterFunctionExt on Map<String, FunctionSpec> {
   void registerFunctions(Map<List<String>, FunctionSpec> entries) {
     entries.forEach((key, value) {
@@ -130,5 +79,7 @@ extension RegisterFunctionExt on Map<String, FunctionSpec> {
 }
 
 Map<String, FunctionSpec> _functions;
-Map<String, FunctionSpec> get functions => _functions ??=
-    <String, FunctionSpec>{}..registerFunctions(baseFunctionEntries);
+Map<String, FunctionSpec> get functions =>
+    _functions ??= <String, FunctionSpec>{}
+      ..registerFunctions(katexBaseFunctionEntries)
+      ..registerFunctions(katexExtFunctionEntries);

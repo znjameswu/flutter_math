@@ -21,33 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _mclassEntries = {
-  [
-    '\\mathop',
-    '\\mathord',
-    '\\mathbin',
-    '\\mathrel',
-    '\\mathopen',
-    '\\mathclose',
-    '\\mathpunct',
-    '\\mathinner',
-  ]: FunctionSpec(numArgs: 1, handler: _mclassHandler),
+const _phantomEntries = {
+  ['\\phantom', '\\hphantom', '\\vphantom']:
+      FunctionSpec(numArgs: 1, allowedInText: true, handler: _phantomHandler),
 };
 
-GreenNode _mclassHandler(TexParser parser, FunctionContext context) {
+GreenNode _phantomHandler(TexParser parser, FunctionContext context) {
   final body = parser.parseArgNode(mode: null, optional: false);
-  return EquationRowNode(
-      children: body.expandEquationRow(),
-      overrideType: const {
-        '\\mathop': AtomType.op,
-        '\\mathord': AtomType.ord,
-        '\\mathbin': AtomType.bin,
-        '\\mathrel': AtomType.rel,
-        '\\mathopen': AtomType.open,
-        '\\mathclose': AtomType.close,
-        '\\mathpunct': AtomType.punct,
-        '\\mathinner': AtomType.inner,
-      }[context.funcName]);
+  return PhantomNode(
+    phantomChild: body.wrapWithEquationRow(),
+    zeroHeight: context.funcName == '\\hphantom',
+    zeroWidth: context.funcName == '\\vphantom',
+  );
 }

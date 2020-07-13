@@ -21,17 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _arrayEntries = {
-  ['\\hline', '\\hdashline']: FunctionSpec(
-    numArgs: 0,
-    allowedInText: true,
-    allowedInMath: true,
-    handler: _throwExceptionHandler,
-  )
+const _breakEntries = {
+  ['\\nobreak', '\\allowbreak']:
+      FunctionSpec(numArgs: 0, handler: _breakHandler)
 };
 
-GreenNode _throwExceptionHandler(TexParser parser, FunctionContext context) {
-  throw ParseError('${context.funcName} valid only within array environment');
-}
+GreenNode _breakHandler(TexParser parser, FunctionContext context) => SpaceNode(
+      height: Measurement.zero,
+      width: Measurement.zero,
+      noBreak: context.funcName == '\\nobreak',
+      mode: parser.mode,
+    );

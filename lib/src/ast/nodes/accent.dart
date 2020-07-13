@@ -52,8 +52,7 @@ class AccentNode extends SlotableNode {
           atomType: AtomType.ord,
           mode: Mode.text,
           options: options,
-        )[0]
-            .widget;
+        ).widget;
       }
 
       // Non stretchy accent can not contribute to overall width, thus they must

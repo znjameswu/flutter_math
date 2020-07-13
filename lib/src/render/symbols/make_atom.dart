@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/ast/symbols_extra.dart';
+import 'package:flutter_math/src/render/symbols/make_composite.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/symbols.dart';
@@ -9,7 +11,7 @@ import '../../ast/types.dart';
 import '../../font/metrics/font_metrics.dart';
 import '../layout/reset_dimension.dart';
 
-List<BuildResult> makeAtom({
+BuildResult makeAtom({
   @required String symbol,
   bool variantForm = false,
   @required AtomType atomType,
@@ -19,37 +21,37 @@ List<BuildResult> makeAtom({
 }) {
   // First lookup the render config table. We need the information
   var symbolRenderConfig = symbolRenderConfigs[symbol];
-  if (variantForm) {
-    symbolRenderConfig = symbolRenderConfig?.variantForm;
-  }
-  final renderConfig = mode == Mode.math
-      ? (symbolRenderConfig?.math ?? symbolRenderConfig?.text)
-      : (symbolRenderConfig?.text ?? symbolRenderConfig?.math);
-  final char = renderConfig?.replaceChar ?? symbol;
+  if (symbolRenderConfig != null) {
+    if (variantForm) {
+      symbolRenderConfig = symbolRenderConfig?.variantForm;
+    }
+    final renderConfig = mode == Mode.math
+        ? (symbolRenderConfig?.math ?? symbolRenderConfig?.text)
+        : (symbolRenderConfig?.text ?? symbolRenderConfig?.math);
+    final char = renderConfig?.replaceChar ?? symbol;
 
-  // Only mathord and textord will be affected by user-specified fonts
-  // Also, surrogate pairs will ignore any user-specified font.
-  if (atomType == AtomType.ord && symbol.codeUnitAt(0) != 0xD835) {
-    final useMathFont = mode == Mode.math ||
-        (mode == Mode.text && options.mathFontOptions != null);
-    var font = overrideFont ??
-        (useMathFont ? options.mathFontOptions : options.textFontOptions);
+    // Only mathord and textord will be affected by user-specified fonts
+    // Also, surrogate pairs will ignore any user-specified font.
+    if (atomType == AtomType.ord && symbol.codeUnitAt(0) != 0xD835) {
+      final useMathFont = mode == Mode.math ||
+          (mode == Mode.text && options.mathFontOptions != null);
+      var font = overrideFont ??
+          (useMathFont ? options.mathFontOptions : options.textFontOptions);
 
-    if (font != null) {
-      var charMetrics = lookupChar(char, font, mode);
+      if (font != null) {
+        var charMetrics = lookupChar(char, font, mode);
 
-      // Some font (such as boldsymbol) has fallback options
-      if (charMetrics == null) {
-        font = font.fallback.firstWhere((fallback) {
-          charMetrics = lookupChar(char, font, mode);
-          return charMetrics != null;
-        }, orElse: () => null);
-      }
+        // Some font (such as boldsymbol) has fallback options
+        if (charMetrics == null) {
+          font = font.fallback.firstWhere((fallback) {
+            charMetrics = lookupChar(char, font, mode);
+            return charMetrics != null;
+          }, orElse: () => const FontOptions());
+        }
 
-      if (charMetrics != null) {
-        final italic = charMetrics.italic.cssEm.toLpUnder(options);
-        return [
-          BuildResult(
+        if (charMetrics != null) {
+          final italic = charMetrics.italic.cssEm.toLpUnder(options);
+          return BuildResult(
             options: options,
             italic: italic,
             skew: charMetrics.skew.cssEm.toLpUnder(options),
@@ -57,14 +59,12 @@ List<BuildResult> makeAtom({
               padding: EdgeInsets.only(right: mode == Mode.math ? italic : 0.0),
               child: makeChar(symbol, font, charMetrics, options),
             ),
-          )
-        ];
-      } else if (ligatures.containsKey(symbol) &&
-          font.fontFamily == 'Typewriter') {
-        // Make a special case for ligatures under Typewriter font
-        final expandedText = ligatures[symbol].split('');
-        return [
-          BuildResult(
+          );
+        } else if (ligatures.containsKey(symbol) &&
+            font.fontFamily == 'Typewriter') {
+          // Make a special case for ligatures under Typewriter font
+          final expandedText = ligatures[symbol].split('');
+          return BuildResult(
             options: options,
             widget: Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -76,30 +76,52 @@ List<BuildResult> makeAtom({
             ),
             italic: 0.0,
             skew: 0.0,
-          )
-        ];
+          );
+        }
       }
     }
-  }
 
-  // If the code reaches here, it means we failed to find any appliable
-  // user-specified font. We will use default render configs.
-  final defaultFont = renderConfig?.defaultFont ?? const FontOptions();
-  final characterMetrics = getCharacterMetrics(
-    character: renderConfig?.replaceChar ?? symbol,
-    fontName: defaultFont.fontName,
-    mode: Mode.math,
+    // If the code reaches here, it means we failed to find any appliable
+    // user-specified font. We will use default render configs.
+    final defaultFont = renderConfig?.defaultFont ?? const FontOptions();
+    final characterMetrics = getCharacterMetrics(
+      character: renderConfig?.replaceChar ?? symbol,
+      fontName: defaultFont.fontName,
+      mode: Mode.math,
+    );
+    final italic = characterMetrics?.italic?.cssEm?.toLpUnder(options) ?? 0.0;
+    // fontMetricsData[defaultFont.fontName][replaceChar.codeUnitAt(0)];
+    return BuildResult(
+      options: options,
+      widget: makeChar(char, defaultFont, characterMetrics, options,
+          needItalic: mode == Mode.math),
+      italic: italic,
+      skew: characterMetrics?.skew?.cssEm?.toLpUnder(options) ?? 0.0,
+    );
+
+    // Check if it is a special symbol
+  } else if (mode == Mode.math && variantForm == false) {
+    if (negatedOperatorSymbols.containsKey(symbol)) {
+      final chars = negatedOperatorSymbols[symbol];
+      return makeRlapCompositeSymbol(
+          chars[0], chars[1], atomType, mode, options);
+    } else if (compactedCompositeSymbols.containsKey(symbol)) {
+      final chars = compactedCompositeSymbols[symbol];
+      final spacing = compactedCompositeSymbolSpacings[symbol];
+      // final type = compactedCompositeSymbolTypes[symbol];
+      return makeCompactedCompositeSymbol(
+          chars[0], chars[1], spacing, atomType, mode, options);
+    } else if (decoratedEqualSymbols.contains(symbol)) {
+      return makeDecoratedEqualSymbol(symbol, atomType, mode, options);
+    }
+  }
+  return BuildResult(
+    options: options,
+    italic: 0.0,
+    skew: 0.0,
+    widget: makeChar(symbol, const FontOptions(), null, options,
+        needItalic: mode == Mode.math),
   );
-  final italic = characterMetrics?.italic?.cssEm?.toLpUnder(options) ?? 0.0;
-  // fontMetricsData[defaultFont.fontName][replaceChar.codeUnitAt(0)];
-  return [
-    BuildResult(
-        options: options,
-        widget: makeChar(char, defaultFont, characterMetrics, options,
-            needItalic: mode == Mode.math),
-        italic: italic,
-        skew: characterMetrics?.skew?.cssEm?.toLpUnder(options) ?? 0.0)
-  ];
 }
 
 Widget makeChar(String character, FontOptions font,

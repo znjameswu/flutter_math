@@ -31,6 +31,7 @@ import 'dart:ui';
 import '../../ast/options.dart';
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
+import 'symbols_extra.dart';
 
 class TexSymbolConfig {
   final String symbol;
@@ -1069,7 +1070,7 @@ const texSymbolCommandConfigs = {
     '\\nwarrow': TexSymbolConfig('\u2196'),
     '\\rightleftharpoons': TexSymbolConfig('\u21CC'),
     '\\nless': TexSymbolConfig('\u226E'),
-    '\\nleqslant': TexSymbolConfig('\u2270', variantForm: true),
+    '\\nleqslant': TexSymbolConfig('\u2A87', variantForm: true),
     '\\nleqq': TexSymbolConfig('\u2270', variantForm: true),
     '\\lneq': TexSymbolConfig('\u2A87'),
     '\\lneqq': TexSymbolConfig('\u2268'),
@@ -1091,7 +1092,7 @@ const texSymbolCommandConfigs = {
     '\\subsetneqq': TexSymbolConfig('\u2ACB'),
     '\\varsubsetneqq': TexSymbolConfig('\u2ACB', variantForm: true),
     '\\ngtr': TexSymbolConfig('\u226F'),
-    '\\ngeqslant': TexSymbolConfig('\u2271', variantForm: true),
+    '\\ngeqslant': TexSymbolConfig('\u2A88', variantForm: true),
     '\\ngeqq': TexSymbolConfig('\u2271', variantForm: true),
     '\\gneq': TexSymbolConfig('\u2A88'),
     '\\gneqq': TexSymbolConfig('\u2269'),
@@ -1479,6 +1480,7 @@ const texSymbolCommandConfigs = {
     '\\dot': TexSymbolConfig('\u02D9'),
     '\\mathring': TexSymbolConfig('\u02DA'),
     '\\maltese': TexSymbolConfig('\u2720'),
+    ...extraTexMathSymbolCommandConfigs
   },
   Mode.text: {
     '0': TexSymbolConfig('0'),
@@ -2182,6 +2184,7 @@ const texSymbolCommandConfigs = {
     '\\^': TexSymbolConfig('\u02C6'),
     '\\~': TexSymbolConfig('\u02DC'),
     '\\H': TexSymbolConfig('\u02DD'),
+    ...extraTexTextSymbolCommandConfigs
   },
 };
 

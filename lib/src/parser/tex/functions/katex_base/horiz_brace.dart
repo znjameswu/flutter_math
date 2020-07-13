@@ -21,35 +21,54 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _accentUnderEntries = {
-  [
-    '\\underleftarrow',
-    '\\underrightarrow',
-    '\\underleftrightarrow',
-    '\\undergroup',
-    // '\\underlinesegment': ,
-    '\\utilde',
-
-    '\\underline'
-  ]: FunctionSpec(numArgs: 1, handler: _accentUnderHandler),
+const _horizBraceEntries = {
+  ['\\overbrace', '\\underbrace']:
+      FunctionSpec(numArgs: 1, handler: _horizBraceHandler),
 };
 
-const _accentUnderMapping = {
-  '\\underleftarrow': '\u2190',
-  '\\underrightarrow': '\u2192',
-  '\\underleftrightarrow': '\u2194',
-  '\\undergroup': '\u23e0',
-  // '\\underlinesegment',
-  '\\utilde': '\u007e',
-
-  '\\underline': '\u00af'
-};
-GreenNode _accentUnderHandler(TexParser parser, FunctionContext context) {
+GreenNode _horizBraceHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: null, optional: false);
-  return AccentUnderNode(
-    base: base.wrapWithEquationRow(),
-    label: _accentUnderMapping[context.funcName],
-  );
+  final scripts = parser.parseScripts();
+  var res = base;
+  if (context.funcName == '\\overbrace') {
+    res = AccentNode(
+      base: res.wrapWithEquationRow(),
+      label: '\u23de',
+      isStretchy: true,
+      isShifty: false,
+    );
+    if (scripts.superscript != null) {
+      res = OverNode(
+        base: res.wrapWithEquationRow(),
+        above: scripts.superscript,
+      );
+    }
+    if (scripts.subscript != null) {
+      res = UnderNode(
+        base: res.wrapWithEquationRow(),
+        below: scripts.subscript,
+      );
+    }
+    return res;
+  } else {
+    res = AccentUnderNode(
+      base: res.wrapWithEquationRow(),
+      label: '\u23de',
+    );
+    if (scripts.subscript != null) {
+      res = UnderNode(
+        base: res.wrapWithEquationRow(),
+        below: scripts.subscript,
+      );
+    }
+    if (scripts.superscript != null) {
+      res = OverNode(
+        base: res.wrapWithEquationRow(),
+        above: scripts.superscript,
+      );
+    }
+    return res;
+  }
 }

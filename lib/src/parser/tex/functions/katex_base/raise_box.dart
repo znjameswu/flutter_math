@@ -21,38 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _colorEntries = {
-  ['\\textcolor']: FunctionSpec(
-    numArgs: 2,
-    allowedInText: true,
-    greediness: 3,
-    handler: _textcolorHandler,
-  ),
-  ['\\color']: FunctionSpec(
-    numArgs: 1,
-    allowedInText: true,
-    greediness: 3,
-    handler: _colorHandler,
-  ),
+const _raiseBoxEntries = {
+  ['\\raisebox']:
+      FunctionSpec(numArgs: 2, allowedInText: true, handler: _raiseBoxHandler),
 };
-GreenNode _textcolorHandler(TexParser parser, FunctionContext context) {
-  final color = parser.parseArgColor(optional: false);
-  final body = parser.parseArgNode(mode: null, optional: false);
-  return StyleNode(
-    optionsDiff: OptionsDiff(color: color),
-    children: body.expandEquationRow(),
-  );
-}
-
-GreenNode _colorHandler(TexParser parser, FunctionContext context) {
-  final color = parser.parseArgColor(optional: false);
-
-  final body = parser.parseExpression(
-      breakOnInfix: true, breakOnTokenText: context.breakOnTokenText);
-  return StyleNode(
-    optionsDiff: OptionsDiff(color: color),
-    children: body,
+GreenNode _raiseBoxHandler(TexParser parser, FunctionContext context) {
+  final dy = parser.parseArgSize(optional: false) ?? Measurement.zero;
+  final body = parser.parseArgHbox(optional: false);
+  return RaiseBoxNode(
+    body: body.wrapWithEquationRow(),
+    dy: dy,
   );
 }

@@ -9,24 +9,28 @@
 - `\pmb`
 - `\hspace*`
 - Exotic composite symbols: `\Coloneqq, \coloneq, \Coloneq, \Eqqcolon, \Eqcolon, \colonapprox, \Colonapprox, \colonsim, \Colonsim, \simcolon, \simcoloncolon, \approxcolon, \approxcoloncolon`, and also their equivalent `\coloncolonequals` ...
+- `\vcentcolon`
+- `\textcircle` and related `\copyright`, `\registered`, etc.
 
 ## Functionalities that will be supported later
 - **Text-mode accent**
-- Composite operators (e.g. negated operators, \not)
-- Composite symbols drawn by macros using horizontal lapping
 - `gather` environment
 - `Vmatrix` environment
-- `\@char` char input by unicode
 - `\mathnormal`
 
-## Known render differences to KaTeX
+## Knowm parsing differences to KaTeX
+- `\not` can only accept selected characters following it, because it is no longer backed by `\rlap`. (This will probably be revisited).
+- The parsing behavior of `\overbrace` and `\underbase` with sub-sup pairs will be in line with MathJax rather than KaTeX. (Possibly KaTeX bug?)
+- `\u2258` will be investigated later
+
+## Known rendering differences to KaTeX
 - Math functions with limit-like subscript and superscript will not adapt to sub/sup under/over styles under different styles. This breaks TeX spec. This is due to the design of AST, and is in accordance with UnicodeMath designs.
 - Multiple `\hlines` and `||` column separators for matrices will not be supported, just as MathJax won't either.
 - `aligned` and `alignedat` will have column spacings more similar to an ordinary equation. This should be an improvement to KaTeX and MathJax.
 - `\genfrac`'s delimiters will have a larger spacing with inner node. (This might be fixed in future)
 - `\color` commands inside a block will NOT be applied to right delimiters. This is in line with MathJax rather than KaTeX. 
-- The parsing behavior of `\overbrace` and `\underbase` with sub-sup pairs will be in line with MathJax rather than KaTeX. (Possibly KaTeX bug?)
 - `\colon`'s behavior will be in line with MathJax rather than KaTeX.
+- `\mathop` will no longer vertically center single characaters. This is MathJax's behavior.
 - `\cancel`, `\xcancel`, `\bcancel` will render differently compared to KaTeX. The vertical padding will be more similar to MathJaX.
 - Due to the lack of `\mathchoice`, `\pod`, `\pmod`, `\mod` will have fixed spacing.
 - `\dfrac`, `\tfrac` ... will have slight size deviation from KaTeX and will be in line with MathJax's rendering behavior. 

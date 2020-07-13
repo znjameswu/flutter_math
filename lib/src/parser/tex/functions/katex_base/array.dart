@@ -4,7 +4,7 @@
 // Copyright (c) 2020 znjameswu <znjameswu@gmail.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the 'Software'), to deal
+// of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
@@ -13,7 +13,7 @@
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
 //
-// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -21,28 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _stylingEntries = {
-  [
-    '\\displaystyle',
-    '\\textstyle',
-    '\\scriptstyle',
-    '\\scriptscriptstyle',
-  ]: FunctionSpec(
+const _arrayEntries = {
+  ['\\hline', '\\hdashline']: FunctionSpec(
     numArgs: 0,
     allowedInText: true,
-    handler: _stylingHandler,
-  ),
+    allowedInMath: true,
+    handler: _throwExceptionHandler,
+  )
 };
 
-GreenNode _stylingHandler(TexParser parser, FunctionContext context) {
-  final body = parser.parseExpression(
-      breakOnInfix: true, breakOnTokenText: context.breakOnTokenText);
-  final style = parseMathStyle(
-      context.funcName.substring(1, context.funcName.length - 5));
-  return StyleNode(
-    children: body,
-    optionsDiff: OptionsDiff(style: style),
-  );
+GreenNode _throwExceptionHandler(TexParser parser, FunctionContext context) {
+  throw ParseError('${context.funcName} valid only within array environment');
 }

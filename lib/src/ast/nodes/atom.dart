@@ -17,10 +17,8 @@ class AtomNode extends LeafNode {
   final String symbol;
   final bool variantForm;
   AtomType _atomType;
-  AtomType get atomType => _atomType ??= (mode == Mode.math
-          ? symbolRenderConfigs[symbol].math.defaultType
-          : symbolRenderConfigs[symbol].text.defaultType) ??
-      AtomType.ord;
+  AtomType get atomType => _atomType ??=
+      getDefaultAtomTypeForSymbol(symbol, variantForm: variantForm, mode: mode);
   final FontOptions overrideFont;
 
   final Mode mode;
@@ -38,14 +36,16 @@ class AtomNode extends LeafNode {
   @override
   List<BuildResult> buildWidget(
           Options options, List<List<BuildResult>> childBuildResults) =>
-      makeAtom(
-        symbol: symbol,
-        variantForm: variantForm,
-        atomType: atomType,
-        overrideFont: overrideFont,
-        mode: mode,
-        options: options,
-      );
+      [
+        makeAtom(
+          symbol: symbol,
+          variantForm: variantForm,
+          atomType: atomType,
+          overrideFont: overrideFont,
+          mode: mode,
+          options: options,
+        )
+      ];
 
   @override
   bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
@@ -58,6 +58,22 @@ class AtomNode extends LeafNode {
 
   @override
   AtomType get rightType => atomType;
+
+  AtomNode copyWith({
+    String symbol,
+    bool variantForm,
+    AtomType atomType,
+    FontOptions overrideFont,
+    Mode mode,
+  }) {
+    return AtomNode(
+      symbol: symbol ?? this.symbol,
+      variantForm: variantForm ?? this.variantForm,
+      atomType: atomType ?? this._atomType,
+      overrideFont: overrideFont ?? this.overrideFont,
+      mode: mode ?? this.mode,
+    );
+  }
 }
 
 EquationRowNode stringToNode(String string, [Mode mode = Mode.text]) =>

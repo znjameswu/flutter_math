@@ -12,9 +12,12 @@ class OverNode extends SlotableNode {
   final EquationRowNode base;
   final EquationRowNode above;
 
+  final bool stackRel;
+
   OverNode({
     @required this.base,
     this.above,
+    this.stackRel = false,
   })  : assert(base != null),
         assert(above != null);
 
@@ -58,10 +61,14 @@ class OverNode extends SlotableNode {
   List<EquationRowNode> computeChildren() => [base, above];
 
   @override
-  AtomType get leftType => AtomType.ord;
+  AtomType get leftType => stackRel
+      ? AtomType.rel
+      : AtomType.ord; // TODO: they should align with binrelclass with base
 
   @override
-  AtomType get rightType => AtomType.ord;
+  AtomType get rightType => stackRel
+      ? AtomType.rel
+      : AtomType.ord; // TODO: they should align with binrelclass with base
 
   @override
   bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;

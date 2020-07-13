@@ -120,33 +120,25 @@ void main() {
     });
   });
 
-// group("A rel parser", () {
-//     final expression = r'=<>\leq\geq\neq\nleq\ngeq\cong';
-//     final notExpression = r'\not=\not<\not>\not\leq\not\geq\not\in';
+  group("A rel parser", () {
+    final expression = r'=<>\leq\geq\neq\nleq\ngeq\cong';
+    final notExpression = r'\not=\not<\not>\not\leq\not\geq\not\in';
 
-//     test("should not fail", () {
-//         expect(expression, toParse());
-//         expect(notExpression, toParse());
-//     });
+    test("should not fail", () {
+      expect(expression, toParse());
+      expect(notExpression, toParse());
+    });
 
-//     test("should build a list of rels", () {
-//         final parse = getParsed(expression);
+    test("should build a list of rels", () {
+      final parse = getParsed(expression).children;
 
-//         for (var i = 0; i < parse.length; i++) {
-//             var group = parse[i];
-//             if (group.type === "htmlmathml") {
-//                 expect(group.html.children.length, 1);
-//                 group = group.html.children[0];
-//             }
-//             if (group.type === "mclass") {
-//                 expect(group.mclass, "mrel");
-//             } else {
-//                 expect(group.type, "atom");
-//                 expect(group.family, "rel");
-//             }
-//         }
-//     });
-// });
+      for (var i = 0; i < parse.length; i++) {
+        var group = parse[i];
+        expect(group, isA<AtomNode>());
+        expect((group as AtomNode).atomType, AtomType.rel);
+      }
+    });
+  });
 
   group("A punct parser", () {
     final expression = ",;";
@@ -2771,19 +2763,19 @@ void main() {
     //         {"\\mode": "\\TextOrMath{t}{m}"}}));
     // });
 
-    // test("\\char produces literal characters", () => {
-    //     expect("\\char(r'a").toParseLike("\\char')\\a");
-    //     expect("\\char`\\%").toParseLike("\\char37");
-    //     expect("\\char`\\%").toParseLike("\\char'45");
-    //     expect("\\char`\\%").toParseLike('\\char"25');
-    //     expect("\\char").not, toParse());
-    //     expect("\\char`").not, toParse());
-    //     expect("\\char'").not, toParse());
-    //     expect('\\char"').not, toParse());
-    //     expect("\\char'a").not, toParse());
-    //     expect('\\char"g').not, toParse());
-    //     expect('\\char"g').not, toParse());
-    // });
+    test("\\char produces literal characters", () {
+        // expect("\\char(r'a").toParseLike("\\char')\\a");
+        // expect("\\char`\\%").toParseLike("\\char37");
+        // expect("\\char`\\%").toParseLike("\\char'45");
+        // expect("\\char`\\%").toParseLike('\\char"25');
+        expect("\\char", toNotParse());
+        expect("\\char`", toNotParse());
+        expect("\\char'", toNotParse());
+        expect('\\char"', toNotParse());
+        expect("\\char'a", toNotParse());
+        expect('\\char"g', toNotParse());
+        expect('\\char"g', toNotParse());
+    });
 
     test("should build Unicode private area characters", () {
       expect(r'\gvertneqq\lvertneqq\ngeqq\ngeqslant\nleqq', toBuild);
@@ -3166,8 +3158,8 @@ void main() {
       expect(r'┌x┐ └x┘', toBuild);
       expect("\u231Cx\u231D \u231Ex\u231F", toBuild);
       expect("\u27E6x\u27E7", toBuild);
-      // expect("\\llbracket \\rrbracket", toBuild);
-      // expect("\\lBrace \\rBrace", toBuild);
+      expect("\\llbracket \\rrbracket", toBuild);
+      expect("\\lBrace \\rBrace", toBuild);
     });
 
     test("should build some surrogate pairs", () {

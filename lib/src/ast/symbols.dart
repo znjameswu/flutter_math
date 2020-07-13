@@ -27,9 +27,12 @@
 // This file is transfromed from KaTeX/src/symbols.js
 
 import 'dart:ui';
+import 'package:meta/meta.dart';
 
 import 'options.dart';
+import 'symbols_extra.dart';
 import 'syntax_tree.dart';
+import 'types.dart';
 
 class SymbolId {
   final String symbol;
@@ -80,4924 +83,3877 @@ const mainit = FontOptions(fontShape: FontStyle.italic);
 // Hence here's the ugly solution.
 const symbolRenderConfigs = {
   '0': SymbolRenderConfig(
-    // 0
-    math: RenderConfig(AtomType.ord, mainrm), // 0,
-    text: RenderConfig(AtomType.ord, mainrm), // 0,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // 0
+    text: RenderConfig(AtomType.ord, mainrm), // 0
+  ), // 0
   '1': SymbolRenderConfig(
-    // 1
-    math: RenderConfig(AtomType.ord, mainrm), // 1,
-    text: RenderConfig(AtomType.ord, mainrm), // 1,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // 1
+    text: RenderConfig(AtomType.ord, mainrm), // 1
+  ), // 1
   '2': SymbolRenderConfig(
-    // 2
-    math: RenderConfig(AtomType.ord, mainrm), // 2,
-    text: RenderConfig(AtomType.ord, mainrm), // 2,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // 2
+    text: RenderConfig(AtomType.ord, mainrm), // 2
+  ), // 2
   '3': SymbolRenderConfig(
-    // 3
-    math: RenderConfig(AtomType.ord, mainrm), // 3,
-    text: RenderConfig(AtomType.ord, mainrm), // 3,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // 3
+    text: RenderConfig(AtomType.ord, mainrm), // 3
+  ), // 3
   '4': SymbolRenderConfig(
-    // 4
-    math: RenderConfig(AtomType.ord, mainrm), // 4,
-    text: RenderConfig(AtomType.ord, mainrm), // 4,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // 4
+    text: RenderConfig(AtomType.ord, mainrm), // 4
+  ), // 4
   '5': SymbolRenderConfig(
-    // 5
-    math: RenderConfig(AtomType.ord, mainrm), // 5,
-    text: RenderConfig(AtomType.ord, mainrm), // 5,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // 5
+    text: RenderConfig(AtomType.ord, mainrm), // 5
+  ), // 5
   '6': SymbolRenderConfig(
-    // 6
-    math: RenderConfig(AtomType.ord, mainrm), // 6,
-    text: RenderConfig(AtomType.ord, mainrm), // 6,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // 6
+    text: RenderConfig(AtomType.ord, mainrm), // 6
+  ), // 6
   '7': SymbolRenderConfig(
-    // 7
-    math: RenderConfig(AtomType.ord, mainrm), // 7,
-    text: RenderConfig(AtomType.ord, mainrm), // 7,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // 7
+    text: RenderConfig(AtomType.ord, mainrm), // 7
+  ), // 7
   '8': SymbolRenderConfig(
-    // 8
-    math: RenderConfig(AtomType.ord, mainrm), // 8,
-    text: RenderConfig(AtomType.ord, mainrm), // 8,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // 8
+    text: RenderConfig(AtomType.ord, mainrm), // 8
+  ), // 8
   '9': SymbolRenderConfig(
-    // 9
-    math: RenderConfig(AtomType.ord, mainrm), // 9,
-    text: RenderConfig(AtomType.ord, mainrm), // 9,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // 9
+    text: RenderConfig(AtomType.ord, mainrm), // 9
+  ), // 9
   '\u2261': SymbolRenderConfig(
-    // ≡
-    math: RenderConfig(AtomType.rel, mainrm), // \u2261, \equiv,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2261 \equiv
+  ), // ≡
   '\u227A': SymbolRenderConfig(
-    // ≺
-    math: RenderConfig(AtomType.rel, mainrm), // \u227A, \prec,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u227A \prec
+  ), // ≺
   '\u227B': SymbolRenderConfig(
-    // ≻
-    math: RenderConfig(AtomType.rel, mainrm), // \u227B, \succ,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u227B \succ
+  ), // ≻
   '\u223C': SymbolRenderConfig(
-    // ∼
-    math: RenderConfig(AtomType.rel, mainrm), // \u223C, \sim,
+    math: RenderConfig(AtomType.rel, mainrm), // \u223C \sim
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm), // \thicksim,
+      math: RenderConfig(AtomType.rel, amsrm), // \thicksim
     ),
-  ),
+  ), // ∼
   '\u2AAF': SymbolRenderConfig(
-    // ⪯
-    math: RenderConfig(AtomType.rel, mainrm), // \u2AAF, \preceq,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2AAF \preceq
+  ), // ⪯
   '\u2AB0': SymbolRenderConfig(
-    // ⪰
-    math: RenderConfig(AtomType.rel, mainrm), // \u2AB0, \succeq,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2AB0 \succeq
+  ), // ⪰
   '\u2243': SymbolRenderConfig(
-    // ≃
-    math: RenderConfig(AtomType.rel, mainrm), // \u2243, \simeq,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2243 \simeq
+  ), // ≃
   '\u2223': SymbolRenderConfig(
-    // ∣
-    math: RenderConfig(
-        AtomType.rel, mainrm), // \u2223, \mid, \lvert, \rvert, \vert,
+    math: RenderConfig(AtomType.rel, mainrm), // \u2223 \mid \lvert \rvert \vert
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm), // \shortmid,
+      math: RenderConfig(AtomType.rel, amsrm), // \shortmid
     ),
-  ),
+  ), // ∣
   '\u226A': SymbolRenderConfig(
-    // ≪
-    math: RenderConfig(AtomType.rel, mainrm), // \u226A, \ll,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u226A \ll
+  ), // ≪
   '\u226B': SymbolRenderConfig(
-    // ≫
-    math: RenderConfig(AtomType.rel, mainrm), // \u226B, \gg,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u226B \gg
+  ), // ≫
   '\u224D': SymbolRenderConfig(
-    // ≍
-    math: RenderConfig(AtomType.rel, mainrm), // \u224D, \asymp,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u224D \asymp
+  ), // ≍
   '\u22C8': SymbolRenderConfig(
-    // ⋈
-    math: RenderConfig(AtomType.rel, mainrm), // \u22C8, \bowtie, \Join,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u22C8 \bowtie \Join
+  ), // ⋈
   '\u2323': SymbolRenderConfig(
-    // ⌣
-    math: RenderConfig(AtomType.rel, mainrm), // \u2323, \smile,
+    math: RenderConfig(AtomType.rel, mainrm), // \u2323 \smile
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm), // \smallsmile,
+      math: RenderConfig(AtomType.rel, amsrm), // \smallsmile
     ),
-  ),
+  ), // ⌣
   '\u2291': SymbolRenderConfig(
-    // ⊑
-    math: RenderConfig(AtomType.rel, mainrm), // \u2291, \sqsubseteq,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2291 \sqsubseteq
+  ), // ⊑
   '\u2292': SymbolRenderConfig(
-    // ⊒
-    math: RenderConfig(AtomType.rel, mainrm), // \u2292, \sqsupseteq,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2292 \sqsupseteq
+  ), // ⊒
   '\u2250': SymbolRenderConfig(
-    // ≐
-    math: RenderConfig(AtomType.rel, mainrm), // \u2250, \doteq,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2250 \doteq
+  ), // ≐
   '\u2322': SymbolRenderConfig(
-    // ⌢
-    math: RenderConfig(AtomType.rel, mainrm), // \u2322, \frown,
+    math: RenderConfig(AtomType.rel, mainrm), // \u2322 \frown
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm), // \smallfrown,
+      math: RenderConfig(AtomType.rel, amsrm), // \smallfrown
     ),
-  ),
+  ), // ⌢
   '\u220B': SymbolRenderConfig(
-    // ∋
-    math: RenderConfig(AtomType.rel, mainrm), // \u220B, \ni, \owns,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u220B \ni \owns
+  ), // ∋
   '\u221D': SymbolRenderConfig(
-    // ∝
-    math: RenderConfig(AtomType.rel, mainrm), // \u221D, \propto,
+    math: RenderConfig(AtomType.rel, mainrm), // \u221D \propto
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm), // \varpropto,
+      math: RenderConfig(AtomType.rel, amsrm), // \varpropto
     ),
-  ),
+  ), // ∝
   '\u22A2': SymbolRenderConfig(
-    // ⊢
-    math: RenderConfig(AtomType.rel, mainrm), // \u22A2, \vdash,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u22A2 \vdash
+  ), // ⊢
   '\u22A3': SymbolRenderConfig(
-    // ⊣
-    math: RenderConfig(AtomType.rel, mainrm), // \u22A3, \dashv,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u22A3 \dashv
+  ), // ⊣
   '\u2135': SymbolRenderConfig(
-    // ℵ
-    math: RenderConfig(AtomType.ord, mainrm), // \u2135, \aleph,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2135 \aleph
+  ), // ℵ
   '\u2200': SymbolRenderConfig(
-    // ∀
-    math: RenderConfig(AtomType.ord, mainrm), // \u2200, \forall,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2200 \forall
+  ), // ∀
   '\u210F': SymbolRenderConfig(
-    // ℏ
-    math: RenderConfig(AtomType.ord, mainrm), // \u210F, \hbar,
+    math: RenderConfig(AtomType.ord, mainrm), // \u210F \hbar
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.ord, amsrm), // \hslash,
+      math: RenderConfig(AtomType.ord, amsrm), // \hslash
     ),
-  ),
+  ), // ℏ
   '\u2203': SymbolRenderConfig(
-    // ∃
-    math: RenderConfig(AtomType.ord, mainrm), // \u2203, \exists,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2203 \exists
+  ), // ∃
   '\u2207': SymbolRenderConfig(
-    // ∇
-    math: RenderConfig(AtomType.ord, mainrm), // \u2207, \nabla,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2207 \nabla
+  ), // ∇
   '\u266D': SymbolRenderConfig(
-    // ♭
-    math: RenderConfig(AtomType.ord, mainrm), // \u266D, \flat,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u266D \flat
+  ), // ♭
   '\u2113': SymbolRenderConfig(
-    // ℓ
-    math: RenderConfig(AtomType.ord, mainrm), // \u2113, \ell,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2113 \ell
+  ), // ℓ
   '\u266E': SymbolRenderConfig(
-    // ♮
-    math: RenderConfig(AtomType.ord, mainrm), // \u266E, \natural,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u266E \natural
+  ), // ♮
   '\u2663': SymbolRenderConfig(
-    // ♣
-    math: RenderConfig(AtomType.ord, mainrm), // \u2663, \clubsuit,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2663 \clubsuit
+  ), // ♣
   '\u2118': SymbolRenderConfig(
-    // ℘
-    math: RenderConfig(AtomType.ord, mainrm), // \u2118, \wp,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2118 \wp
+  ), // ℘
   '\u266F': SymbolRenderConfig(
-    // ♯
-    math: RenderConfig(AtomType.ord, mainrm), // \u266F, \sharp,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u266F \sharp
+  ), // ♯
   '\u2662': SymbolRenderConfig(
-    // ♢
-    math: RenderConfig(AtomType.ord, mainrm), // \u2662, \diamondsuit,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2662 \diamondsuit
+  ), // ♢
   '\u211C': SymbolRenderConfig(
-    // ℜ
-    math: RenderConfig(AtomType.ord, mainrm), // \u211C, \Re,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u211C \Re
+  ), // ℜ
   '\u2661': SymbolRenderConfig(
-    // ♡
-    math: RenderConfig(AtomType.ord, mainrm), // \u2661, \heartsuit,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2661 \heartsuit
+  ), // ♡
   '\u2111': SymbolRenderConfig(
-    // ℑ
-    math: RenderConfig(AtomType.ord, mainrm), // \u2111, \Im,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2111 \Im
+  ), // ℑ
   '\u2660': SymbolRenderConfig(
-    // ♠
-    math: RenderConfig(AtomType.ord, mainrm), // \u2660, \spadesuit,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2660 \spadesuit
+  ), // ♠
   '\u23B1': SymbolRenderConfig(
-    // ⎱
-    math: RenderConfig(AtomType.close, mainrm), // \u23B1, \rmoustache,
-  ),
+    math: RenderConfig(AtomType.close, mainrm), // \u23B1 \rmoustache
+  ), // ⎱
   '\u23B0': SymbolRenderConfig(
-    // ⎰
-    math: RenderConfig(AtomType.open, mainrm), // \u23B0, \lmoustache,
-  ),
+    math: RenderConfig(AtomType.open, mainrm), // \u23B0 \lmoustache
+  ), // ⎰
   '\u27EF': SymbolRenderConfig(
-    // ⟯
-    math: RenderConfig(AtomType.close, mainrm), // \u27EF, \rgroup,
-  ),
+    math: RenderConfig(AtomType.close, mainrm), // \u27EF \rgroup
+  ), // ⟯
   '\u27EE': SymbolRenderConfig(
-    // ⟮
-    math: RenderConfig(AtomType.open, mainrm), // \u27EE, \lgroup,
-  ),
+    math: RenderConfig(AtomType.open, mainrm), // \u27EE \lgroup
+  ), // ⟮
   '\u2213': SymbolRenderConfig(
-    // ∓
-    math: RenderConfig(AtomType.bin, mainrm), // \u2213, \mp,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2213 \mp
+  ), // ∓
   '\u2296': SymbolRenderConfig(
-    // ⊖
-    math: RenderConfig(AtomType.bin, mainrm), // \u2296, \ominus,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2296 \ominus
+  ), // ⊖
   '\u228E': SymbolRenderConfig(
-    // ⊎
-    math: RenderConfig(AtomType.bin, mainrm), // \u228E, \uplus,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u228E \uplus
+  ), // ⊎
   '\u2293': SymbolRenderConfig(
-    // ⊓
-    math: RenderConfig(AtomType.bin, mainrm), // \u2293, \sqcap,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2293 \sqcap
+  ), // ⊓
   '\u2294': SymbolRenderConfig(
-    // ⊔
-    math: RenderConfig(AtomType.bin, mainrm), // \u2294, \sqcup,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2294 \sqcup
+  ), // ⊔
   '\u2240': SymbolRenderConfig(
-    // ≀
-    math: RenderConfig(AtomType.bin, mainrm), // \u2240, \wr,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2240 \wr
+  ), // ≀
   '\u27F5': SymbolRenderConfig(
-    // ⟵
-    math: RenderConfig(AtomType.rel, mainrm), // \u27F5, \longleftarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u27F5 \longleftarrow
+  ), // ⟵
   '\u21D0': SymbolRenderConfig(
-    // ⇐
-    math: RenderConfig(AtomType.rel, mainrm), // \u21D0, \Leftarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21D0 \Leftarrow
+  ), // ⇐
   '\u27F8': SymbolRenderConfig(
-    // ⟸
-    math: RenderConfig(AtomType.rel, mainrm), // \u27F8, \Longleftarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u27F8 \Longleftarrow
+  ), // ⟸
   '\u27F6': SymbolRenderConfig(
-    // ⟶
-    math: RenderConfig(AtomType.rel, mainrm), // \u27F6, \longrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u27F6 \longrightarrow
+  ), // ⟶
   '\u21D2': SymbolRenderConfig(
-    // ⇒
-    math: RenderConfig(AtomType.rel, mainrm), // \u21D2, \Rightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21D2 \Rightarrow
+  ), // ⇒
   '\u27F9': SymbolRenderConfig(
-    // ⟹
-    math: RenderConfig(AtomType.rel, mainrm), // \u27F9, \Longrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u27F9 \Longrightarrow
+  ), // ⟹
   '\u2194': SymbolRenderConfig(
-    // ↔
-    math: RenderConfig(AtomType.rel, mainrm), // \u2194, \leftrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2194 \leftrightarrow
+  ), // ↔
   '\u27F7': SymbolRenderConfig(
-    // ⟷
-    math: RenderConfig(AtomType.rel, mainrm), // \u27F7, \longleftrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u27F7 \longleftrightarrow
+  ), // ⟷
   '\u21D4': SymbolRenderConfig(
-    // ⇔
-    math: RenderConfig(AtomType.rel, mainrm), // \u21D4, \Leftrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21D4 \Leftrightarrow
+  ), // ⇔
   '\u27FA': SymbolRenderConfig(
-    // ⟺
-    math: RenderConfig(AtomType.rel, mainrm), // \u27FA, \Longleftrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u27FA \Longleftrightarrow
+  ), // ⟺
   '\u21A6': SymbolRenderConfig(
-    // ↦
-    math: RenderConfig(AtomType.rel, mainrm), // \u21A6, \mapsto,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21A6 \mapsto
+  ), // ↦
   '\u27FC': SymbolRenderConfig(
-    // ⟼
-    math: RenderConfig(AtomType.rel, mainrm), // \u27FC, \longmapsto,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u27FC \longmapsto
+  ), // ⟼
   '\u2197': SymbolRenderConfig(
-    // ↗
-    math: RenderConfig(AtomType.rel, mainrm), // \u2197, \nearrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2197 \nearrow
+  ), // ↗
   '\u21A9': SymbolRenderConfig(
-    // ↩
-    math: RenderConfig(AtomType.rel, mainrm), // \u21A9, \hookleftarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21A9 \hookleftarrow
+  ), // ↩
   '\u21AA': SymbolRenderConfig(
-    // ↪
-    math: RenderConfig(AtomType.rel, mainrm), // \u21AA, \hookrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21AA \hookrightarrow
+  ), // ↪
   '\u2198': SymbolRenderConfig(
-    // ↘
-    math: RenderConfig(AtomType.rel, mainrm), // \u2198, \searrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2198 \searrow
+  ), // ↘
   '\u21BC': SymbolRenderConfig(
-    // ↼
-    math: RenderConfig(AtomType.rel, mainrm), // \u21BC, \leftharpoonup,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21BC \leftharpoonup
+  ), // ↼
   '\u21C0': SymbolRenderConfig(
-    // ⇀
-    math: RenderConfig(AtomType.rel, mainrm), // \u21C0, \rightharpoonup,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21C0 \rightharpoonup
+  ), // ⇀
   '\u2199': SymbolRenderConfig(
-    // ↙
-    math: RenderConfig(AtomType.rel, mainrm), // \u2199, \swarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2199 \swarrow
+  ), // ↙
   '\u21BD': SymbolRenderConfig(
-    // ↽
-    math: RenderConfig(AtomType.rel, mainrm), // \u21BD, \leftharpoondown,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21BD \leftharpoondown
+  ), // ↽
   '\u21C1': SymbolRenderConfig(
-    // ⇁
-    math: RenderConfig(AtomType.rel, mainrm), // \u21C1, \rightharpoondown,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21C1 \rightharpoondown
+  ), // ⇁
   '\u2196': SymbolRenderConfig(
-    // ↖
-    math: RenderConfig(AtomType.rel, mainrm), // \u2196, \nwarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2196 \nwarrow
+  ), // ↖
   '\u21CC': SymbolRenderConfig(
-    // ⇌
-    math: RenderConfig(AtomType.rel, mainrm), // \u21CC, \rightleftharpoons,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21CC \rightleftharpoons
+  ), // ⇌
   '\u226E': SymbolRenderConfig(
-    // ≮
-    math: RenderConfig(AtomType.rel, amsrm), // \u226E, \nless,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u226E \nless
+  ), // ≮
   '\u2A87': SymbolRenderConfig(
-    // ⪇
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A87, \lneq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A87 \lneq
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE010'), // \nleqslant
+    ),
+  ), // ⪇
   '\u2268': SymbolRenderConfig(
-    // ≨
-    math: RenderConfig(AtomType.rel, amsrm), // \u2268, \lneqq,
+    math: RenderConfig(AtomType.rel, amsrm), // \u2268 \lneqq
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE00C'), // \lvertneqq,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE00C'), // \lvertneqq
     ),
-  ),
+  ), // ≨
   '\u22E6': SymbolRenderConfig(
-    // ⋦
-    math: RenderConfig(AtomType.rel, amsrm), // \u22E6, \lnsim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22E6 \lnsim
+  ), // ⋦
   '\u2A89': SymbolRenderConfig(
-    // ⪉
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A89, \lnapprox,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A89 \lnapprox
+  ), // ⪉
   '\u2280': SymbolRenderConfig(
-    // ⊀
-    math: RenderConfig(AtomType.rel, amsrm), // \u2280, \nprec,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2280 \nprec
+  ), // ⊀
   '\u22E0': SymbolRenderConfig(
-    // ⋠
-    math: RenderConfig(AtomType.rel, amsrm), // \u22E0, \npreceq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22E0 \npreceq
+  ), // ⋠
   '\u22E8': SymbolRenderConfig(
-    // ⋨
-    math: RenderConfig(AtomType.rel, amsrm), // \u22E8, \precnsim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22E8 \precnsim
+  ), // ⋨
   '\u2AB9': SymbolRenderConfig(
-    // ⪹
-    math: RenderConfig(AtomType.rel, amsrm), // \u2AB9, \precnapprox,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2AB9 \precnapprox
+  ), // ⪹
   '\u2241': SymbolRenderConfig(
-    // ≁
-    math: RenderConfig(AtomType.rel, amsrm), // \u2241, \nsim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2241 \nsim
+  ), // ≁
   '\u2224': SymbolRenderConfig(
-    // ∤
-    math: RenderConfig(AtomType.rel, amsrm), // \u2224, \nmid,
+    math: RenderConfig(AtomType.rel, amsrm), // \u2224 \nmid
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE006'), // \nshortmid,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE006'), // \nshortmid
     ),
-  ),
+  ), // ∤
   '\u22AC': SymbolRenderConfig(
-    // ⊬
-    math: RenderConfig(AtomType.rel, amsrm), // \u22AC, \nvdash,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22AC \nvdash
+  ), // ⊬
   '\u22AD': SymbolRenderConfig(
-    // ⊭
-    math: RenderConfig(AtomType.rel, amsrm), // \u22AD, \nvDash,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22AD \nvDash
+  ), // ⊭
   '\u22EC': SymbolRenderConfig(
-    // ⋬
-    math: RenderConfig(AtomType.rel, amsrm), // \u22EC, \ntrianglelefteq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22EC \ntrianglelefteq
+  ), // ⋬
   '\u228A': SymbolRenderConfig(
-    // ⊊
-    math: RenderConfig(AtomType.rel, amsrm), // \u228A, \subsetneq,
+    math: RenderConfig(AtomType.rel, amsrm), // \u228A \subsetneq
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE01A'), // \varsubsetneq,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE01A'), // \varsubsetneq
     ),
-  ),
+  ), // ⊊
   '\u2ACB': SymbolRenderConfig(
-    // ⫋
-    math: RenderConfig(AtomType.rel, amsrm), // \u2ACB, \subsetneqq,
+    math: RenderConfig(AtomType.rel, amsrm), // \u2ACB \subsetneqq
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE017'), // \varsubsetneqq,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE017'), // \varsubsetneqq
     ),
-  ),
+  ), // ⫋
   '\u226F': SymbolRenderConfig(
-    // ≯
-    math: RenderConfig(AtomType.rel, amsrm), // \u226F, \ngtr,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u226F \ngtr
+  ), // ≯
   '\u2A88': SymbolRenderConfig(
-    // ⪈
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A88, \gneq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A88 \gneq
+    variantForm: SymbolRenderConfig(
+      math: RenderConfig(AtomType.rel, amsrm, '\uE00F'), // \ngeqslant
+    ),
+  ), // ⪈
   '\u2269': SymbolRenderConfig(
-    // ≩
-    math: RenderConfig(AtomType.rel, amsrm), // \u2269, \gneqq,
+    math: RenderConfig(AtomType.rel, amsrm), // \u2269 \gneqq
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE00D'), // \gvertneqq,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE00D'), // \gvertneqq
     ),
-  ),
+  ), // ≩
   '\u22E7': SymbolRenderConfig(
-    // ⋧
-    math: RenderConfig(AtomType.rel, amsrm), // \u22E7, \gnsim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22E7 \gnsim
+  ), // ⋧
   '\u2A8A': SymbolRenderConfig(
-    // ⪊
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A8A, \gnapprox,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A8A \gnapprox
+  ), // ⪊
   '\u2281': SymbolRenderConfig(
-    // ⊁
-    math: RenderConfig(AtomType.rel, amsrm), // \u2281, \nsucc,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2281 \nsucc
+  ), // ⊁
   '\u22E1': SymbolRenderConfig(
-    // ⋡
-    math: RenderConfig(AtomType.rel, amsrm), // \u22E1, \nsucceq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22E1 \nsucceq
+  ), // ⋡
   '\u22E9': SymbolRenderConfig(
-    // ⋩
-    math: RenderConfig(AtomType.rel, amsrm), // \u22E9, \succnsim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22E9 \succnsim
+  ), // ⋩
   '\u2ABA': SymbolRenderConfig(
-    // ⪺
-    math: RenderConfig(AtomType.rel, amsrm), // \u2ABA, \succnapprox,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2ABA \succnapprox
+  ), // ⪺
   '\u2246': SymbolRenderConfig(
-    // ≆
-    math: RenderConfig(AtomType.rel, amsrm), // \u2246, \ncong,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2246 \ncong
+  ), // ≆
   '\u2226': SymbolRenderConfig(
-    // ∦
-    math: RenderConfig(AtomType.rel, amsrm), // \u2226, \nparallel,
+    math: RenderConfig(AtomType.rel, amsrm), // \u2226 \nparallel
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE007'), // \nshortparallel,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE007'), // \nshortparallel
     ),
-  ),
+  ), // ∦
   '\u22AF': SymbolRenderConfig(
-    // ⊯
-    math: RenderConfig(AtomType.rel, amsrm), // \u22AF, \nVDash,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22AF \nVDash
+  ), // ⊯
   '\u22ED': SymbolRenderConfig(
-    // ⋭
-    math: RenderConfig(AtomType.rel, amsrm), // \u22ED, \ntrianglerighteq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22ED \ntrianglerighteq
+  ), // ⋭
   '\u228B': SymbolRenderConfig(
-    // ⊋
-    math: RenderConfig(AtomType.rel, amsrm), // \u228B, \supsetneq,
+    math: RenderConfig(AtomType.rel, amsrm), // \u228B \supsetneq
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE01B'), // \varsupsetneq,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE01B'), // \varsupsetneq
     ),
-  ),
+  ), // ⊋
   '\u2ACC': SymbolRenderConfig(
-    // ⫌
-    math: RenderConfig(AtomType.rel, amsrm), // \u2ACC, \supsetneqq,
+    math: RenderConfig(AtomType.rel, amsrm), // \u2ACC \supsetneqq
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE019'), // \varsupsetneqq,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE019'), // \varsupsetneqq
     ),
-  ),
+  ), // ⫌
   '\u22AE': SymbolRenderConfig(
-    // ⊮
-    math: RenderConfig(AtomType.rel, amsrm), // \u22AE, \nVdash,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22AE \nVdash
+  ), // ⊮
   '\u2AB5': SymbolRenderConfig(
-    // ⪵
-    math: RenderConfig(AtomType.rel, amsrm), // \u2AB5, \precneqq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2AB5 \precneqq
+  ), // ⪵
   '\u2AB6': SymbolRenderConfig(
-    // ⪶
-    math: RenderConfig(AtomType.rel, amsrm), // \u2AB6, \succneqq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2AB6 \succneqq
+  ), // ⪶
   '\u219A': SymbolRenderConfig(
-    // ↚
-    math: RenderConfig(AtomType.rel, amsrm), // \u219A, \nleftarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u219A \nleftarrow
+  ), // ↚
   '\u219B': SymbolRenderConfig(
-    // ↛
-    math: RenderConfig(AtomType.rel, amsrm), // \u219B, \nrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u219B \nrightarrow
+  ), // ↛
   '\u21CD': SymbolRenderConfig(
-    // ⇍
-    math: RenderConfig(AtomType.rel, amsrm), // \u21CD, \nLeftarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21CD \nLeftarrow
+  ), // ⇍
   '\u21CF': SymbolRenderConfig(
-    // ⇏
-    math: RenderConfig(AtomType.rel, amsrm), // \u21CF, \nRightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21CF \nRightarrow
+  ), // ⇏
   '\u21AE': SymbolRenderConfig(
-    // ↮
-    math: RenderConfig(AtomType.rel, amsrm), // \u21AE, \nleftrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21AE \nleftrightarrow
+  ), // ↮
   '\u21CE': SymbolRenderConfig(
-    // ⇎
-    math: RenderConfig(AtomType.rel, amsrm), // \u21CE, \nLeftrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21CE \nLeftrightarrow
+  ), // ⇎
   '\u2221': SymbolRenderConfig(
-    // ∡
-    math: RenderConfig(AtomType.ord, amsrm), // \u2221, \measuredangle,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u2221 \measuredangle
+  ), // ∡
   '\u2132': SymbolRenderConfig(
-    // Ⅎ
-    math: RenderConfig(AtomType.ord, amsrm), // \u2132, \Finv,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u2132 \Finv
+  ), // Ⅎ
   '\u2141': SymbolRenderConfig(
-    // ⅁
-    math: RenderConfig(AtomType.ord, amsrm), // \u2141, \Game,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u2141 \Game
+  ), // ⅁
   '\u2222': SymbolRenderConfig(
-    // ∢
-    math: RenderConfig(AtomType.ord, amsrm), // \u2222, \sphericalangle,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u2222 \sphericalangle
+  ), // ∢
   '\u2201': SymbolRenderConfig(
-    // ∁
-    math: RenderConfig(AtomType.ord, amsrm), // \u2201, \complement,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u2201 \complement
+  ), // ∁
   '\u00F0': SymbolRenderConfig(
-    // ð
-    math: RenderConfig(AtomType.ord, amsrm), // \u00F0, \eth,
-    text: RenderConfig(AtomType.ord, mainrm), // \u00F0,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u00F0 \eth
+    text: RenderConfig(AtomType.ord, mainrm), // \u00F0
+  ), // ð
   '\u00A5': SymbolRenderConfig(
-    // ¥
-    math: RenderConfig(AtomType.ord, amsrm), // \u00A5, \yen,
-    text: RenderConfig(AtomType.ord, amsrm), // \u00A5, \yen,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u00A5 \yen
+    text: RenderConfig(AtomType.ord, amsrm), // \u00A5 \yen
+  ), // ¥
   '\u2713': SymbolRenderConfig(
-    // ✓
-    math: RenderConfig(AtomType.ord, amsrm), // \u2713, \checkmark,
-    text: RenderConfig(AtomType.ord, amsrm), // \checkmark,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u2713 \checkmark
+    text: RenderConfig(AtomType.ord, amsrm), // \checkmark
+  ), // ✓
   '\u2136': SymbolRenderConfig(
-    // ℶ
-    math: RenderConfig(AtomType.ord, amsrm), // \u2136, \beth,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u2136 \beth
+  ), // ℶ
   '\u2138': SymbolRenderConfig(
-    // ℸ
-    math: RenderConfig(AtomType.ord, amsrm), // \u2138, \daleth,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u2138 \daleth
+  ), // ℸ
   '\u2137': SymbolRenderConfig(
-    // ℷ
-    math: RenderConfig(AtomType.ord, amsrm), // \u2137, \gimel,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u2137 \gimel
+  ), // ℷ
   '\u03DD': SymbolRenderConfig(
-    // ϝ
-    math: RenderConfig(AtomType.ord, amsrm), // \u03DD, \digamma,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \u03DD \digamma
+  ), // ϝ
   '\u250C': SymbolRenderConfig(
-    // ┌
-    math: RenderConfig(AtomType.open, amsrm), // \u250C, \@ulcorner,
-  ),
+    math: RenderConfig(AtomType.open, amsrm), // \u250C \@ulcorner
+  ), // ┌
   '\u2510': SymbolRenderConfig(
-    // ┐
-    math: RenderConfig(AtomType.close, amsrm), // \u2510, \@urcorner,
-  ),
+    math: RenderConfig(AtomType.close, amsrm), // \u2510 \@urcorner
+  ), // ┐
   '\u2514': SymbolRenderConfig(
-    // └
-    math: RenderConfig(AtomType.open, amsrm), // \u2514, \@llcorner,
-  ),
+    math: RenderConfig(AtomType.open, amsrm), // \u2514 \@llcorner
+  ), // └
   '\u2518': SymbolRenderConfig(
-    // ┘
-    math: RenderConfig(AtomType.close, amsrm), // \u2518, \@lrcorner,
-  ),
+    math: RenderConfig(AtomType.close, amsrm), // \u2518 \@lrcorner
+  ), // ┘
   '\u2266': SymbolRenderConfig(
-    // ≦
-    math: RenderConfig(AtomType.rel, amsrm), // \u2266, \leqq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2266 \leqq
+  ), // ≦
   '\u2A7D': SymbolRenderConfig(
-    // ⩽
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A7D, \leqslant,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A7D \leqslant
+  ), // ⩽
   '\u2A95': SymbolRenderConfig(
-    // ⪕
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A95, \eqslantless,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A95 \eqslantless
+  ), // ⪕
   '\u2272': SymbolRenderConfig(
-    // ≲
-    math: RenderConfig(AtomType.rel, amsrm), // \u2272, \lesssim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2272 \lesssim
+  ), // ≲
   '\u2A85': SymbolRenderConfig(
-    // ⪅
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A85, \lessapprox,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A85 \lessapprox
+  ), // ⪅
   '\u224A': SymbolRenderConfig(
-    // ≊
-    math: RenderConfig(AtomType.rel, amsrm), // \u224A, \approxeq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u224A \approxeq
+  ), // ≊
   '\u22D8': SymbolRenderConfig(
-    // ⋘
-    math: RenderConfig(AtomType.rel, amsrm), // \u22D8, \lll, \llless,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22D8 \lll \llless
+  ), // ⋘
   '\u2276': SymbolRenderConfig(
-    // ≶
-    math: RenderConfig(AtomType.rel, amsrm), // \u2276, \lessgtr,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2276 \lessgtr
+  ), // ≶
   '\u22DA': SymbolRenderConfig(
-    // ⋚
-    math: RenderConfig(AtomType.rel, amsrm), // \u22DA, \lesseqgtr,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22DA \lesseqgtr
+  ), // ⋚
   '\u2A8B': SymbolRenderConfig(
-    // ⪋
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A8B, \lesseqqgtr,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A8B \lesseqqgtr
+  ), // ⪋
   '\u2253': SymbolRenderConfig(
-    // ≓
-    math: RenderConfig(AtomType.rel, amsrm), // \u2253, \risingdotseq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2253 \risingdotseq
+  ), // ≓
   '\u2252': SymbolRenderConfig(
-    // ≒
-    math: RenderConfig(AtomType.rel, amsrm), // \u2252, \fallingdotseq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2252 \fallingdotseq
+  ), // ≒
   '\u223D': SymbolRenderConfig(
-    // ∽
-    math: RenderConfig(AtomType.rel, amsrm), // \u223D, \backsim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u223D \backsim
+  ), // ∽
   '\u22CD': SymbolRenderConfig(
-    // ⋍
-    math: RenderConfig(AtomType.rel, amsrm), // \u22CD, \backsimeq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22CD \backsimeq
+  ), // ⋍
   '\u2AC5': SymbolRenderConfig(
-    // ⫅
-    math: RenderConfig(AtomType.rel, amsrm), // \u2AC5, \subseteqq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2AC5 \subseteqq
+  ), // ⫅
   '\u22D0': SymbolRenderConfig(
-    // ⋐
-    math: RenderConfig(AtomType.rel, amsrm), // \u22D0, \Subset,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22D0 \Subset
+  ), // ⋐
   '\u228F': SymbolRenderConfig(
-    // ⊏
-    math: RenderConfig(AtomType.rel, amsrm), // \u228F, \sqsubset,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u228F \sqsubset
+  ), // ⊏
   '\u227C': SymbolRenderConfig(
-    // ≼
-    math: RenderConfig(AtomType.rel, amsrm), // \u227C, \preccurlyeq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u227C \preccurlyeq
+  ), // ≼
   '\u22DE': SymbolRenderConfig(
-    // ⋞
-    math: RenderConfig(AtomType.rel, amsrm), // \u22DE, \curlyeqprec,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22DE \curlyeqprec
+  ), // ⋞
   '\u227E': SymbolRenderConfig(
-    // ≾
-    math: RenderConfig(AtomType.rel, amsrm), // \u227E, \precsim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u227E \precsim
+  ), // ≾
   '\u2AB7': SymbolRenderConfig(
-    // ⪷
-    math: RenderConfig(AtomType.rel, amsrm), // \u2AB7, \precapprox,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2AB7 \precapprox
+  ), // ⪷
   '\u22A8': SymbolRenderConfig(
-    // ⊨
-    math: RenderConfig(AtomType.rel, amsrm), // \u22A8, \vDash,
+    math: RenderConfig(AtomType.rel, amsrm), // \u22A8 \vDash
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, mainrm), // \models,
+      math: RenderConfig(AtomType.rel, mainrm), // \models
     ),
-  ),
+  ), // ⊨
   '\u22AA': SymbolRenderConfig(
-    // ⊪
-    math: RenderConfig(AtomType.rel, amsrm), // \u22AA, \Vvdash,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22AA \Vvdash
+  ), // ⊪
   '\u224F': SymbolRenderConfig(
-    // ≏
-    math: RenderConfig(AtomType.rel, amsrm), // \u224F, \bumpeq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u224F \bumpeq
+  ), // ≏
   '\u224E': SymbolRenderConfig(
-    // ≎
-    math: RenderConfig(AtomType.rel, amsrm), // \u224E, \Bumpeq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u224E \Bumpeq
+  ), // ≎
   '\u2267': SymbolRenderConfig(
-    // ≧
-    math: RenderConfig(AtomType.rel, amsrm), // \u2267, \geqq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2267 \geqq
+  ), // ≧
   '\u2A7E': SymbolRenderConfig(
-    // ⩾
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A7E, \geqslant,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A7E \geqslant
+  ), // ⩾
   '\u2A96': SymbolRenderConfig(
-    // ⪖
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A96, \eqslantgtr,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A96 \eqslantgtr
+  ), // ⪖
   '\u2273': SymbolRenderConfig(
-    // ≳
-    math: RenderConfig(AtomType.rel, amsrm), // \u2273, \gtrsim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2273 \gtrsim
+  ), // ≳
   '\u2A86': SymbolRenderConfig(
-    // ⪆
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A86, \gtrapprox,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A86 \gtrapprox
+  ), // ⪆
   '\u22D9': SymbolRenderConfig(
-    // ⋙
-    math: RenderConfig(AtomType.rel, amsrm), // \u22D9, \ggg, \gggtr,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22D9 \ggg \gggtr
+  ), // ⋙
   '\u2277': SymbolRenderConfig(
-    // ≷
-    math: RenderConfig(AtomType.rel, amsrm), // \u2277, \gtrless,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2277 \gtrless
+  ), // ≷
   '\u22DB': SymbolRenderConfig(
-    // ⋛
-    math: RenderConfig(AtomType.rel, amsrm), // \u22DB, \gtreqless,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22DB \gtreqless
+  ), // ⋛
   '\u2A8C': SymbolRenderConfig(
-    // ⪌
-    math: RenderConfig(AtomType.rel, amsrm), // \u2A8C, \gtreqqless,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2A8C \gtreqqless
+  ), // ⪌
   '\u2256': SymbolRenderConfig(
-    // ≖
-    math: RenderConfig(AtomType.rel, amsrm), // \u2256, \eqcirc,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2256 \eqcirc
+  ), // ≖
   '\u2257': SymbolRenderConfig(
-    // ≗
-    math: RenderConfig(AtomType.rel, amsrm), // \u2257, \circeq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2257 \circeq
+  ), // ≗
   '\u225C': SymbolRenderConfig(
-    // ≜
-    math: RenderConfig(AtomType.rel, amsrm), // \u225C, \triangleq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u225C \triangleq
+  ), // ≜
   '\u2AC6': SymbolRenderConfig(
-    // ⫆
-    math: RenderConfig(AtomType.rel, amsrm), // \u2AC6, \supseteqq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2AC6 \supseteqq
+  ), // ⫆
   '\u22D1': SymbolRenderConfig(
-    // ⋑
-    math: RenderConfig(AtomType.rel, amsrm), // \u22D1, \Supset,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22D1 \Supset
+  ), // ⋑
   '\u2290': SymbolRenderConfig(
-    // ⊐
-    math: RenderConfig(AtomType.rel, amsrm), // \u2290, \sqsupset,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2290 \sqsupset
+  ), // ⊐
   '\u227D': SymbolRenderConfig(
-    // ≽
-    math: RenderConfig(AtomType.rel, amsrm), // \u227D, \succcurlyeq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u227D \succcurlyeq
+  ), // ≽
   '\u22DF': SymbolRenderConfig(
-    // ⋟
-    math: RenderConfig(AtomType.rel, amsrm), // \u22DF, \curlyeqsucc,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22DF \curlyeqsucc
+  ), // ⋟
   '\u227F': SymbolRenderConfig(
-    // ≿
-    math: RenderConfig(AtomType.rel, amsrm), // \u227F, \succsim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u227F \succsim
+  ), // ≿
   '\u2AB8': SymbolRenderConfig(
-    // ⪸
-    math: RenderConfig(AtomType.rel, amsrm), // \u2AB8, \succapprox,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2AB8 \succapprox
+  ), // ⪸
   '\u22A9': SymbolRenderConfig(
-    // ⊩
-    math: RenderConfig(AtomType.rel, amsrm), // \u22A9, \Vdash,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22A9 \Vdash
+  ), // ⊩
   '\u226C': SymbolRenderConfig(
-    // ≬
-    math: RenderConfig(AtomType.rel, amsrm), // \u226C, \between,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u226C \between
+  ), // ≬
   '\u22D4': SymbolRenderConfig(
-    // ⋔
-    math: RenderConfig(AtomType.rel, amsrm), // \u22D4, \pitchfork,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22D4 \pitchfork
+  ), // ⋔
   '\u2234': SymbolRenderConfig(
-    // ∴
-    math: RenderConfig(AtomType.rel, amsrm), // \u2234, \therefore,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2234 \therefore
+  ), // ∴
   '\u2235': SymbolRenderConfig(
-    // ∵
-    math: RenderConfig(AtomType.rel, amsrm), // \u2235, \because,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2235 \because
+  ), // ∵
   '\u2242': SymbolRenderConfig(
-    // ≂
-    math: RenderConfig(AtomType.rel, amsrm), // \u2242, \eqsim,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2242 \eqsim
+  ), // ≂
   '\u2251': SymbolRenderConfig(
-    // ≑
-    math: RenderConfig(AtomType.rel, amsrm), // \u2251, \doteqdot, \Doteq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u2251 \doteqdot \Doteq
+  ), // ≑
   '\u2214': SymbolRenderConfig(
-    // ∔
-    math: RenderConfig(AtomType.bin, amsrm), // \u2214, \dotplus,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u2214 \dotplus
+  ), // ∔
   '\u22D2': SymbolRenderConfig(
-    // ⋒
-    math: RenderConfig(AtomType.bin, amsrm), // \u22D2, \Cap, \doublecap,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22D2 \Cap \doublecap
+  ), // ⋒
   '\u22D3': SymbolRenderConfig(
-    // ⋓
-    math: RenderConfig(AtomType.bin, amsrm), // \u22D3, \Cup, \doublecup,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22D3 \Cup \doublecup
+  ), // ⋓
   '\u2A5E': SymbolRenderConfig(
-    // ⩞
-    math: RenderConfig(AtomType.bin, amsrm), // \u2A5E, \doublebarwedge,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u2A5E \doublebarwedge
+  ), // ⩞
   '\u229F': SymbolRenderConfig(
-    // ⊟
-    math: RenderConfig(AtomType.bin, amsrm), // \u229F, \boxminus,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u229F \boxminus
+  ), // ⊟
   '\u229E': SymbolRenderConfig(
-    // ⊞
-    math: RenderConfig(AtomType.bin, amsrm), // \u229E, \boxplus,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u229E \boxplus
+  ), // ⊞
   '\u22C7': SymbolRenderConfig(
-    // ⋇
-    math: RenderConfig(AtomType.bin, amsrm), // \u22C7, \divideontimes,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22C7 \divideontimes
+  ), // ⋇
   '\u22C9': SymbolRenderConfig(
-    // ⋉
-    math: RenderConfig(AtomType.bin, amsrm), // \u22C9, \ltimes,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22C9 \ltimes
+  ), // ⋉
   '\u22CA': SymbolRenderConfig(
-    // ⋊
-    math: RenderConfig(AtomType.bin, amsrm), // \u22CA, \rtimes,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22CA \rtimes
+  ), // ⋊
   '\u22CB': SymbolRenderConfig(
-    // ⋋
-    math: RenderConfig(AtomType.bin, amsrm), // \u22CB, \leftthreetimes,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22CB \leftthreetimes
+  ), // ⋋
   '\u22CC': SymbolRenderConfig(
-    // ⋌
-    math: RenderConfig(AtomType.bin, amsrm), // \u22CC, \rightthreetimes,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22CC \rightthreetimes
+  ), // ⋌
   '\u22CF': SymbolRenderConfig(
-    // ⋏
-    math: RenderConfig(AtomType.bin, amsrm), // \u22CF, \curlywedge,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22CF \curlywedge
+  ), // ⋏
   '\u22CE': SymbolRenderConfig(
-    // ⋎
-    math: RenderConfig(AtomType.bin, amsrm), // \u22CE, \curlyvee,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22CE \curlyvee
+  ), // ⋎
   '\u229D': SymbolRenderConfig(
-    // ⊝
-    math: RenderConfig(AtomType.bin, amsrm), // \u229D, \circleddash,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u229D \circleddash
+  ), // ⊝
   '\u229B': SymbolRenderConfig(
-    // ⊛
-    math: RenderConfig(AtomType.bin, amsrm), // \u229B, \circledast,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u229B \circledast
+  ), // ⊛
   '\u22BA': SymbolRenderConfig(
-    // ⊺
-    math: RenderConfig(AtomType.bin, amsrm), // \u22BA, \intercal,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22BA \intercal
+  ), // ⊺
   '\u22A0': SymbolRenderConfig(
-    // ⊠
-    math: RenderConfig(AtomType.bin, amsrm), // \u22A0, \boxtimes,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22A0 \boxtimes
+  ), // ⊠
   '\u21E2': SymbolRenderConfig(
-    // ⇢
-    math: RenderConfig(AtomType.rel, amsrm), // \u21E2, \dashrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21E2 \dashrightarrow
+  ), // ⇢
   '\u21E0': SymbolRenderConfig(
-    // ⇠
-    math: RenderConfig(AtomType.rel, amsrm), // \u21E0, \dashleftarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21E0 \dashleftarrow
+  ), // ⇠
   '\u21C7': SymbolRenderConfig(
-    // ⇇
-    math: RenderConfig(AtomType.rel, amsrm), // \u21C7, \leftleftarrows,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21C7 \leftleftarrows
+  ), // ⇇
   '\u21C6': SymbolRenderConfig(
-    // ⇆
-    math: RenderConfig(AtomType.rel, amsrm), // \u21C6, \leftrightarrows,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21C6 \leftrightarrows
+  ), // ⇆
   '\u21DA': SymbolRenderConfig(
-    // ⇚
-    math: RenderConfig(AtomType.rel, amsrm), // \u21DA, \Lleftarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21DA \Lleftarrow
+  ), // ⇚
   '\u219E': SymbolRenderConfig(
-    // ↞
-    math: RenderConfig(AtomType.rel, amsrm), // \u219E, \twoheadleftarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u219E \twoheadleftarrow
+  ), // ↞
   '\u21A2': SymbolRenderConfig(
-    // ↢
-    math: RenderConfig(AtomType.rel, amsrm), // \u21A2, \leftarrowtail,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21A2 \leftarrowtail
+  ), // ↢
   '\u21AB': SymbolRenderConfig(
-    // ↫
-    math: RenderConfig(AtomType.rel, amsrm), // \u21AB, \looparrowleft,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21AB \looparrowleft
+  ), // ↫
   '\u21CB': SymbolRenderConfig(
-    // ⇋
-    math: RenderConfig(AtomType.rel, amsrm), // \u21CB, \leftrightharpoons,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21CB \leftrightharpoons
+  ), // ⇋
   '\u21B6': SymbolRenderConfig(
-    // ↶
-    math: RenderConfig(AtomType.rel, amsrm), // \u21B6, \curvearrowleft,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21B6 \curvearrowleft
+  ), // ↶
   '\u21BA': SymbolRenderConfig(
-    // ↺
-    math: RenderConfig(AtomType.rel, amsrm), // \u21BA, \circlearrowleft,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21BA \circlearrowleft
+  ), // ↺
   '\u21B0': SymbolRenderConfig(
-    // ↰
-    math: RenderConfig(AtomType.rel, amsrm), // \u21B0, \Lsh,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21B0 \Lsh
+  ), // ↰
   '\u21C8': SymbolRenderConfig(
-    // ⇈
-    math: RenderConfig(AtomType.rel, amsrm), // \u21C8, \upuparrows,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21C8 \upuparrows
+  ), // ⇈
   '\u21BF': SymbolRenderConfig(
-    // ↿
-    math: RenderConfig(AtomType.rel, amsrm), // \u21BF, \upharpoonleft,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21BF \upharpoonleft
+  ), // ↿
   '\u21C3': SymbolRenderConfig(
-    // ⇃
-    math: RenderConfig(AtomType.rel, amsrm), // \u21C3, \downharpoonleft,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21C3 \downharpoonleft
+  ), // ⇃
   '\u22B8': SymbolRenderConfig(
-    // ⊸
-    math: RenderConfig(AtomType.rel, amsrm), // \u22B8, \multimap,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u22B8 \multimap
+  ), // ⊸
   '\u21AD': SymbolRenderConfig(
-    // ↭
-    math: RenderConfig(AtomType.rel, amsrm), // \u21AD, \leftrightsquigarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21AD \leftrightsquigarrow
+  ), // ↭
   '\u21C9': SymbolRenderConfig(
-    // ⇉
-    math: RenderConfig(AtomType.rel, amsrm), // \u21C9, \rightrightarrows,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21C9 \rightrightarrows
+  ), // ⇉
   '\u21C4': SymbolRenderConfig(
-    // ⇄
-    math: RenderConfig(AtomType.rel, amsrm), // \u21C4, \rightleftarrows,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21C4 \rightleftarrows
+  ), // ⇄
   '\u21A0': SymbolRenderConfig(
-    // ↠
-    math: RenderConfig(AtomType.rel, amsrm), // \u21A0, \twoheadrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21A0 \twoheadrightarrow
+  ), // ↠
   '\u21A3': SymbolRenderConfig(
-    // ↣
-    math: RenderConfig(AtomType.rel, amsrm), // \u21A3, \rightarrowtail,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21A3 \rightarrowtail
+  ), // ↣
   '\u21AC': SymbolRenderConfig(
-    // ↬
-    math: RenderConfig(AtomType.rel, amsrm), // \u21AC, \looparrowright,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21AC \looparrowright
+  ), // ↬
   '\u21B7': SymbolRenderConfig(
-    // ↷
-    math: RenderConfig(AtomType.rel, amsrm), // \u21B7, \curvearrowright,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21B7 \curvearrowright
+  ), // ↷
   '\u21BB': SymbolRenderConfig(
-    // ↻
-    math: RenderConfig(AtomType.rel, amsrm), // \u21BB, \circlearrowright,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21BB \circlearrowright
+  ), // ↻
   '\u21B1': SymbolRenderConfig(
-    // ↱
-    math: RenderConfig(AtomType.rel, amsrm), // \u21B1, \Rsh,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21B1 \Rsh
+  ), // ↱
   '\u21CA': SymbolRenderConfig(
-    // ⇊
-    math: RenderConfig(AtomType.rel, amsrm), // \u21CA, \downdownarrows,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21CA \downdownarrows
+  ), // ⇊
   '\u21BE': SymbolRenderConfig(
-    // ↾
     math: RenderConfig(
-        AtomType.rel, amsrm), // \u21BE, \upharpoonright, \restriction,
-  ),
+        AtomType.rel, amsrm), // \u21BE \upharpoonright \restriction
+  ), // ↾
   '\u21C2': SymbolRenderConfig(
-    // ⇂
-    math: RenderConfig(AtomType.rel, amsrm), // \u21C2, \downharpoonright,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21C2 \downharpoonright
+  ), // ⇂
   '\u21DD': SymbolRenderConfig(
-    // ⇝
-    math: RenderConfig(
-        AtomType.rel, amsrm), // \u21DD, \rightsquigarrow, \leadsto,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21DD \rightsquigarrow \leadsto
+  ), // ⇝
   '\u21DB': SymbolRenderConfig(
-    // ⇛
-    math: RenderConfig(AtomType.rel, amsrm), // \u21DB, \Rrightarrow,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \u21DB \Rrightarrow
+  ), // ⇛
   '`': SymbolRenderConfig(
-    // `
-    math: RenderConfig(AtomType.ord, mainrm, '\u2018'), // `,
-    text: RenderConfig(AtomType.ord, mainrm, '\u2018'), // `,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, '\u2018'), // `
+    text: RenderConfig(AtomType.ord, mainrm, '\u2018'), // `
+  ), // `
   '\u2220': SymbolRenderConfig(
-    // ∠
-    math: RenderConfig(AtomType.ord, mainrm), // \u2220, \angle,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2220 \angle
+  ), // ∠
   '\u221E': SymbolRenderConfig(
-    // ∞
-    math: RenderConfig(AtomType.ord, mainrm), // \u221E, \infty,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u221E \infty
+  ), // ∞
   '\u0393': SymbolRenderConfig(
-    // Γ
-    math: RenderConfig(AtomType.ord, mainrm), // \u0393, \Gamma,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u0393 \Gamma
+  ), // Γ
   '\u0394': SymbolRenderConfig(
-    // Δ
-    math: RenderConfig(AtomType.ord, mainrm), // \u0394, \Delta,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u0394 \Delta
+  ), // Δ
   '\u0398': SymbolRenderConfig(
-    // Θ
-    math: RenderConfig(AtomType.ord, mainrm), // \u0398, \Theta,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u0398 \Theta
+  ), // Θ
   '\u039B': SymbolRenderConfig(
-    // Λ
-    math: RenderConfig(AtomType.ord, mainrm), // \u039B, \Lambda,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u039B \Lambda
+  ), // Λ
   '\u039E': SymbolRenderConfig(
-    // Ξ
-    math: RenderConfig(AtomType.ord, mainrm), // \u039E, \Xi,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u039E \Xi
+  ), // Ξ
   '\u03A0': SymbolRenderConfig(
-    // Π
-    math: RenderConfig(AtomType.ord, mainrm), // \u03A0, \Pi,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u03A0 \Pi
+  ), // Π
   '\u03A3': SymbolRenderConfig(
-    // Σ
-    math: RenderConfig(AtomType.ord, mainrm), // \u03A3, \Sigma,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u03A3 \Sigma
+  ), // Σ
   '\u03A5': SymbolRenderConfig(
-    // Υ
-    math: RenderConfig(AtomType.ord, mainrm), // \u03A5, \Upsilon,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u03A5 \Upsilon
+  ), // Υ
   '\u03A6': SymbolRenderConfig(
-    // Φ
-    math: RenderConfig(AtomType.ord, mainrm), // \u03A6, \Phi,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u03A6 \Phi
+  ), // Φ
   '\u03A8': SymbolRenderConfig(
-    // Ψ
-    math: RenderConfig(AtomType.ord, mainrm), // \u03A8, \Psi,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u03A8 \Psi
+  ), // Ψ
   '\u03A9': SymbolRenderConfig(
-    // Ω
-    math: RenderConfig(AtomType.ord, mainrm), // \u03A9, \Omega,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u03A9 \Omega
+  ), // Ω
   '\u0391': SymbolRenderConfig(
-    // Α
-    math: RenderConfig(AtomType.ord, mainrm, 'A'), // \u0391,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'A'), // \u0391
+  ), // Α
   '\u0392': SymbolRenderConfig(
-    // Β
-    math: RenderConfig(AtomType.ord, mainrm, 'B'), // \u0392,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'B'), // \u0392
+  ), // Β
   '\u0395': SymbolRenderConfig(
-    // Ε
-    math: RenderConfig(AtomType.ord, mainrm, 'E'), // \u0395,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'E'), // \u0395
+  ), // Ε
   '\u0396': SymbolRenderConfig(
-    // Ζ
-    math: RenderConfig(AtomType.ord, mainrm, 'Z'), // \u0396,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'Z'), // \u0396
+  ), // Ζ
   '\u0397': SymbolRenderConfig(
-    // Η
-    math: RenderConfig(AtomType.ord, mainrm, 'H'), // \u0397,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'H'), // \u0397
+  ), // Η
   '\u0399': SymbolRenderConfig(
-    // Ι
-    math: RenderConfig(AtomType.ord, mainrm, 'I'), // \u0399,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'I'), // \u0399
+  ), // Ι
   '\u039A': SymbolRenderConfig(
-    // Κ
-    math: RenderConfig(AtomType.ord, mainrm, 'K'), // \u039A,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'K'), // \u039A
+  ), // Κ
   '\u039C': SymbolRenderConfig(
-    // Μ
-    math: RenderConfig(AtomType.ord, mainrm, 'M'), // \u039C,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'M'), // \u039C
+  ), // Μ
   '\u039D': SymbolRenderConfig(
-    // Ν
-    math: RenderConfig(AtomType.ord, mainrm, 'N'), // \u039D,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'N'), // \u039D
+  ), // Ν
   '\u039F': SymbolRenderConfig(
-    // Ο
-    math: RenderConfig(AtomType.ord, mainrm, 'O'), // \u039F,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'O'), // \u039F
+  ), // Ο
   '\u03A1': SymbolRenderConfig(
-    // Ρ
-    math: RenderConfig(AtomType.ord, mainrm, 'P'), // \u03A1,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'P'), // \u03A1
+  ), // Ρ
   '\u03A4': SymbolRenderConfig(
-    // Τ
-    math: RenderConfig(AtomType.ord, mainrm, 'T'), // \u03A4,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'T'), // \u03A4
+  ), // Τ
   '\u03A7': SymbolRenderConfig(
-    // Χ
-    math: RenderConfig(AtomType.ord, mainrm, 'X'), // \u03A7,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, 'X'), // \u03A7
+  ), // Χ
   '\u00AC': SymbolRenderConfig(
-    // ¬
-    math: RenderConfig(AtomType.ord, mainrm), // \u00AC, \neg, \lnot,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u00AC \neg \lnot
+  ), // ¬
   '\u03B1': SymbolRenderConfig(
-    // α
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03B1, \alpha,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03B1 \alpha
+  ), // α
   '\u03B2': SymbolRenderConfig(
-    // β
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03B2, \beta,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03B2 \beta
+  ), // β
   '\u03B3': SymbolRenderConfig(
-    // γ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03B3, \gamma,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03B3 \gamma
+  ), // γ
   '\u03B4': SymbolRenderConfig(
-    // δ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03B4, \delta,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03B4 \delta
+  ), // δ
   '\u03F5': SymbolRenderConfig(
-    // ϵ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03F5, \epsilon,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03F5 \epsilon
+  ), // ϵ
   '\u03B6': SymbolRenderConfig(
-    // ζ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03B6, \zeta,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03B6 \zeta
+  ), // ζ
   '\u03B7': SymbolRenderConfig(
-    // η
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03B7, \eta,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03B7 \eta
+  ), // η
   '\u03B8': SymbolRenderConfig(
-    // θ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03B8, \theta,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03B8 \theta
+  ), // θ
   '\u03B9': SymbolRenderConfig(
-    // ι
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03B9, \iota,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03B9 \iota
+  ), // ι
   '\u03BA': SymbolRenderConfig(
-    // κ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03BA, \kappa,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03BA \kappa
+  ), // κ
   '\u03BB': SymbolRenderConfig(
-    // λ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03BB, \lambda,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03BB \lambda
+  ), // λ
   '\u03BC': SymbolRenderConfig(
-    // μ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03BC, \mu,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03BC \mu
+  ), // μ
   '\u03BD': SymbolRenderConfig(
-    // ν
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03BD, \nu,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03BD \nu
+  ), // ν
   '\u03BE': SymbolRenderConfig(
-    // ξ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03BE, \xi,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03BE \xi
+  ), // ξ
   '\u03BF': SymbolRenderConfig(
-    // ο
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03BF, \omicron,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03BF \omicron
+  ), // ο
   '\u03C0': SymbolRenderConfig(
-    // π
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03C0, \pi,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03C0 \pi
+  ), // π
   '\u03C1': SymbolRenderConfig(
-    // ρ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03C1, \rho,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03C1 \rho
+  ), // ρ
   '\u03C3': SymbolRenderConfig(
-    // σ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03C3, \sigma,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03C3 \sigma
+  ), // σ
   '\u03C4': SymbolRenderConfig(
-    // τ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03C4, \tau,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03C4 \tau
+  ), // τ
   '\u03C5': SymbolRenderConfig(
-    // υ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03C5, \upsilon,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03C5 \upsilon
+  ), // υ
   '\u03D5': SymbolRenderConfig(
-    // ϕ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03D5, \phi,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03D5 \phi
+  ), // ϕ
   '\u03C7': SymbolRenderConfig(
-    // χ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03C7, \chi,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03C7 \chi
+  ), // χ
   '\u03C8': SymbolRenderConfig(
-    // ψ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03C8, \psi,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03C8 \psi
+  ), // ψ
   '\u03C9': SymbolRenderConfig(
-    // ω
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03C9, \omega,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03C9 \omega
+  ), // ω
   '\u03B5': SymbolRenderConfig(
-    // ε
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03B5, \varepsilon,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03B5 \varepsilon
+  ), // ε
   '\u03D1': SymbolRenderConfig(
-    // ϑ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03D1, \vartheta,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03D1 \vartheta
+  ), // ϑ
   '\u03D6': SymbolRenderConfig(
-    // ϖ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03D6, \varpi,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03D6 \varpi
+  ), // ϖ
   '\u03F1': SymbolRenderConfig(
-    // ϱ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03F1, \varrho,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03F1 \varrho
+  ), // ϱ
   '\u03C2': SymbolRenderConfig(
-    // ς
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03C2, \varsigma,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03C2 \varsigma
+  ), // ς
   '\u03C6': SymbolRenderConfig(
-    // φ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u03C6, \varphi,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u03C6 \varphi
+  ), // φ
   '*': SymbolRenderConfig(
-    // *
-    math: RenderConfig(AtomType.bin, mainrm, '\u2217'), // *,
-    text: RenderConfig(AtomType.ord, mainrm), // *,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm, '\u2217'), // *
+    text: RenderConfig(AtomType.ord, mainrm), // *
+  ), // *
   '+': SymbolRenderConfig(
-    // +
-    math: RenderConfig(AtomType.bin, mainrm), // +,
-    text: RenderConfig(AtomType.ord, mainrm), // +,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // +
+    text: RenderConfig(AtomType.ord, mainrm), // +
+  ), // +
   '-': SymbolRenderConfig(
-    // -
-    math: RenderConfig(AtomType.bin, mainrm, '\u2212'), // -,
-    text: RenderConfig(AtomType.ord, mainrm), // -,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm, '\u2212'), // -
+    text: RenderConfig(AtomType.ord, mainrm), // -
+  ), // -
   '\u22C5': SymbolRenderConfig(
-    // ⋅
-    math: RenderConfig(AtomType.bin, mainrm), // \u22C5, \cdotp, \cdot,
+    math: RenderConfig(AtomType.bin, mainrm), // \u22C5 \cdotp \cdot
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.bin, amsrm), // \centerdot,
+      math: RenderConfig(AtomType.bin, amsrm), // \centerdot
     ),
-  ),
+  ), // ⋅
   '\u00F7': SymbolRenderConfig(
-    // ÷
-    math: RenderConfig(AtomType.bin, mainrm), // \u00F7, \div,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u00F7 \div
+  ), // ÷
   '\u00B1': SymbolRenderConfig(
-    // ±
-    math: RenderConfig(AtomType.bin, mainrm), // \u00B1, \pm,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u00B1 \pm
+  ), // ±
   '\u00D7': SymbolRenderConfig(
-    // ×
-    math: RenderConfig(AtomType.bin, mainrm), // \u00D7, \times,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u00D7 \times
+  ), // ×
   '\u2229': SymbolRenderConfig(
-    // ∩
-    math: RenderConfig(AtomType.bin, mainrm), // \u2229, \cap,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2229 \cap
+  ), // ∩
   '\u222A': SymbolRenderConfig(
-    // ∪
-    math: RenderConfig(AtomType.bin, mainrm), // \u222A, \cup,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u222A \cup
+  ), // ∪
   '\u2227': SymbolRenderConfig(
-    // ∧
-    math: RenderConfig(AtomType.bin, mainrm), // \u2227, \land, \wedge,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2227 \land \wedge
+  ), // ∧
   '\u2228': SymbolRenderConfig(
-    // ∨
-    math: RenderConfig(AtomType.bin, mainrm), // \u2228, \lor, \vee,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2228 \lor \vee
+  ), // ∨
   '(': SymbolRenderConfig(
-    // (
-    math: RenderConfig(AtomType.open, mainrm), // (, \lparen,
-    text: RenderConfig(AtomType.ord, mainrm), // (,
-  ),
+    math: RenderConfig(AtomType.open, mainrm), // ( \lparen
+    text: RenderConfig(AtomType.ord, mainrm), // (
+  ), // (
   '[': SymbolRenderConfig(
-    // [
-    math: RenderConfig(AtomType.open, mainrm), // [, \lbrack,
-    text: RenderConfig(AtomType.ord, mainrm), // [, \lbrack,
-  ),
+    math: RenderConfig(AtomType.open, mainrm), // [ \lbrack
+    text: RenderConfig(AtomType.ord, mainrm), // [ \lbrack
+  ), // [
   '\u27E8': SymbolRenderConfig(
-    // ⟨
-    math: RenderConfig(AtomType.open, mainrm), // \u27E8, \langle,
-  ),
+    math: RenderConfig(AtomType.open, mainrm), // \u27E8 \langle
+  ), // ⟨
   ')': SymbolRenderConfig(
-    // )
-    math: RenderConfig(AtomType.close, mainrm), // ), \rparen,
-    text: RenderConfig(AtomType.ord, mainrm), // ),
-  ),
+    math: RenderConfig(AtomType.close, mainrm), // ) \rparen
+    text: RenderConfig(AtomType.ord, mainrm), // )
+  ), // )
   ']': SymbolRenderConfig(
-    // ]
-    math: RenderConfig(AtomType.close, mainrm), // ], \rbrack,
-    text: RenderConfig(AtomType.ord, mainrm), // ], \rbrack,
-  ),
+    math: RenderConfig(AtomType.close, mainrm), // ] \rbrack
+    text: RenderConfig(AtomType.ord, mainrm), // ] \rbrack
+  ), // ]
   '?': SymbolRenderConfig(
-    // ?
-    math: RenderConfig(AtomType.close, mainrm), // ?,
-    text: RenderConfig(AtomType.ord, mainrm), // ?,
-  ),
+    math: RenderConfig(AtomType.close, mainrm), // ?
+    text: RenderConfig(AtomType.ord, mainrm), // ?
+  ), // ?
   '!': SymbolRenderConfig(
-    // !
-    math: RenderConfig(AtomType.close, mainrm), // !,
-    text: RenderConfig(AtomType.ord, mainrm), // !,
-  ),
+    math: RenderConfig(AtomType.close, mainrm), // !
+    text: RenderConfig(AtomType.ord, mainrm), // !
+  ), // !
   '\u27E9': SymbolRenderConfig(
-    // ⟩
-    math: RenderConfig(AtomType.close, mainrm), // \u27E9, \rangle,
-  ),
+    math: RenderConfig(AtomType.close, mainrm), // \u27E9 \rangle
+  ), // ⟩
   '=': SymbolRenderConfig(
-    // =
-    math: RenderConfig(AtomType.rel, mainrm), // =,
-    text: RenderConfig(AtomType.ord, mainrm), // =,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // =
+    text: RenderConfig(AtomType.ord, mainrm), // =
+  ), // =
   '<': SymbolRenderConfig(
-    // <
-    math: RenderConfig(AtomType.rel, mainrm), // <, \lt,
-    text: RenderConfig(AtomType.ord, mainrm), // <, \textless,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // < \lt
+    text: RenderConfig(AtomType.ord, mainrm), // < \textless
+  ), // <
   '>': SymbolRenderConfig(
-    // >
-    math: RenderConfig(AtomType.rel, mainrm), // >, \gt,
-    text: RenderConfig(AtomType.ord, mainrm), // >, \textgreater,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // > \gt
+    text: RenderConfig(AtomType.ord, mainrm), // > \textgreater
+  ), // >
   ':': SymbolRenderConfig(
-    // :
-    math: RenderConfig(AtomType.rel, mainrm), // :,
-    text: RenderConfig(AtomType.ord, mainrm), // :,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // :
+    text: RenderConfig(AtomType.ord, mainrm), // :
+  ), // :
   '\u2248': SymbolRenderConfig(
-    // ≈
-    math: RenderConfig(AtomType.rel, mainrm), // \u2248, \approx,
+    math: RenderConfig(AtomType.rel, mainrm), // \u2248 \approx
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm), // \thickapprox,
+      math: RenderConfig(AtomType.rel, amsrm), // \thickapprox
     ),
-  ),
+  ), // ≈
   '\u2245': SymbolRenderConfig(
-    // ≅
-    math: RenderConfig(AtomType.rel, mainrm), // \u2245, \cong,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2245 \cong
+  ), // ≅
   '\u2265': SymbolRenderConfig(
-    // ≥
-    math: RenderConfig(AtomType.rel, mainrm), // \u2265, \ge, \geq,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2265 \ge \geq
+  ), // ≥
   '\u2208': SymbolRenderConfig(
-    // ∈
-    math: RenderConfig(AtomType.rel, mainrm), // \u2208, \in,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2208 \in
+  ), // ∈
   '\u2282': SymbolRenderConfig(
-    // ⊂
-    math: RenderConfig(AtomType.rel, mainrm), // \u2282, \subset,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2282 \subset
+  ), // ⊂
   '\u2283': SymbolRenderConfig(
-    // ⊃
-    math: RenderConfig(AtomType.rel, mainrm), // \u2283, \supset,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2283 \supset
+  ), // ⊃
   '\u2286': SymbolRenderConfig(
-    // ⊆
-    math: RenderConfig(AtomType.rel, mainrm), // \u2286, \subseteq,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2286 \subseteq
+  ), // ⊆
   '\u2287': SymbolRenderConfig(
-    // ⊇
-    math: RenderConfig(AtomType.rel, mainrm), // \u2287, \supseteq,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2287 \supseteq
+  ), // ⊇
   '\u2288': SymbolRenderConfig(
-    // ⊈
-    math: RenderConfig(AtomType.rel, amsrm), // \u2288, \nsubseteq,
+    math: RenderConfig(AtomType.rel, amsrm), // \u2288 \nsubseteq
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE016'), // \nsubseteqq,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE016'), // \nsubseteqq
     ),
-  ),
+  ), // ⊈
   '\u2289': SymbolRenderConfig(
-    // ⊉
-    math: RenderConfig(AtomType.rel, amsrm), // \u2289, \nsupseteq,
+    math: RenderConfig(AtomType.rel, amsrm), // \u2289 \nsupseteq
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE018'), // \nsupseteqq,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE018'), // \nsupseteqq
     ),
-  ),
+  ), // ⊉
   '\u2190': SymbolRenderConfig(
-    // ←
-    math: RenderConfig(AtomType.rel, mainrm), // \u2190, \gets, \leftarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2190 \gets \leftarrow
+  ), // ←
   '\u2264': SymbolRenderConfig(
-    // ≤
-    math: RenderConfig(AtomType.rel, mainrm), // \u2264, \le, \leq,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2264 \le \leq
+  ), // ≤
   '\u2192': SymbolRenderConfig(
-    // →
-    math: RenderConfig(AtomType.rel, mainrm), // \u2192, \rightarrow, \to,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2192 \rightarrow \to
+  ), // →
   '\u2271': SymbolRenderConfig(
-    // ≱
-    math: RenderConfig(AtomType.rel, amsrm), // \u2271, \ngeq,
+    math: RenderConfig(AtomType.rel, amsrm), // \u2271 \ngeq
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE00E'), // \ngeqq,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE00E'), // \ngeqq
     ),
-  ),
+  ), // ≱
   '\u2270': SymbolRenderConfig(
-    // ≰
-    math: RenderConfig(AtomType.rel, amsrm), // \u2270, \nleq,
+    math: RenderConfig(AtomType.rel, amsrm), // \u2270 \nleq
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm, '\uE011'), // \nleqq,
+      math: RenderConfig(AtomType.rel, amsrm, '\uE011'), // \nleqq
     ),
-  ),
+  ), // ≰
   ',': SymbolRenderConfig(
-    // ,
-    math: RenderConfig(AtomType.punct, mainrm), // ,,
-    text: RenderConfig(AtomType.ord, mainrm), // ,,
-  ),
+    math: RenderConfig(AtomType.punct, mainrm), // ,
+    text: RenderConfig(AtomType.ord, mainrm), // ,
+  ), // ,
   ';': SymbolRenderConfig(
-    // ;
-    math: RenderConfig(AtomType.punct, mainrm), // ;,
-    text: RenderConfig(AtomType.ord, mainrm), // ;,
-  ),
+    math: RenderConfig(AtomType.punct, mainrm), // ;
+    text: RenderConfig(AtomType.ord, mainrm), // ;
+  ), // ;
   '\u22BC': SymbolRenderConfig(
-    // ⊼
-    math: RenderConfig(AtomType.bin, amsrm), // \u22BC, \barwedge,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22BC \barwedge
+  ), // ⊼
   '\u22BB': SymbolRenderConfig(
-    // ⊻
-    math: RenderConfig(AtomType.bin, amsrm), // \u22BB, \veebar,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22BB \veebar
+  ), // ⊻
   '\u2299': SymbolRenderConfig(
-    // ⊙
-    math: RenderConfig(AtomType.bin, mainrm), // \u2299, \odot,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2299 \odot
+  ), // ⊙
   '\u2295': SymbolRenderConfig(
-    // ⊕
-    math: RenderConfig(AtomType.bin, mainrm), // \u2295, \oplus,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2295 \oplus
+  ), // ⊕
   '\u2297': SymbolRenderConfig(
-    // ⊗
-    math: RenderConfig(AtomType.bin, mainrm), // \u2297, \otimes,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2297 \otimes
+  ), // ⊗
   '\u2202': SymbolRenderConfig(
-    // ∂
-    math: RenderConfig(AtomType.ord, mainrm), // \u2202, \partial,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u2202 \partial
+  ), // ∂
   '\u2298': SymbolRenderConfig(
-    // ⊘
-    math: RenderConfig(AtomType.bin, mainrm), // \u2298, \oslash,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \u2298 \oslash
+  ), // ⊘
   '\u229A': SymbolRenderConfig(
-    // ⊚
-    math: RenderConfig(AtomType.bin, amsrm), // \u229A, \circledcirc,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u229A \circledcirc
+  ), // ⊚
   '\u22A1': SymbolRenderConfig(
-    // ⊡
-    math: RenderConfig(AtomType.bin, amsrm), // \u22A1, \boxdot,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \u22A1 \boxdot
+  ), // ⊡
   '\u230A': SymbolRenderConfig(
-    // ⌊
-    math: RenderConfig(AtomType.open, mainrm), // \u230A, \lfloor,
-  ),
+    math: RenderConfig(AtomType.open, mainrm), // \u230A \lfloor
+  ), // ⌊
   '\u230B': SymbolRenderConfig(
-    // ⌋
-    math: RenderConfig(AtomType.close, mainrm), // \u230B, \rfloor,
-  ),
+    math: RenderConfig(AtomType.close, mainrm), // \u230B \rfloor
+  ), // ⌋
   '\u2308': SymbolRenderConfig(
-    // ⌈
-    math: RenderConfig(AtomType.open, mainrm), // \u2308, \lceil,
-  ),
+    math: RenderConfig(AtomType.open, mainrm), // \u2308 \lceil
+  ), // ⌈
   '\u2309': SymbolRenderConfig(
-    // ⌉
-    math: RenderConfig(AtomType.close, mainrm), // \u2309, \rceil,
-  ),
+    math: RenderConfig(AtomType.close, mainrm), // \u2309 \rceil
+  ), // ⌉
   '|': SymbolRenderConfig(
-    // |
-    math: RenderConfig(AtomType.ord, mainrm, '\u2223'), // |,
-    text: RenderConfig(AtomType.ord, mainrm), // |, \textbar,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm, '\u2223'), // |
+    text: RenderConfig(AtomType.ord, mainrm), // | \textbar
+  ), // |
   '\u2191': SymbolRenderConfig(
-    // ↑
-    math: RenderConfig(AtomType.rel, mainrm), // \u2191, \uparrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2191 \uparrow
+  ), // ↑
   '\u21D1': SymbolRenderConfig(
-    // ⇑
-    math: RenderConfig(AtomType.rel, mainrm), // \u21D1, \Uparrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21D1 \Uparrow
+  ), // ⇑
   '\u2193': SymbolRenderConfig(
-    // ↓
-    math: RenderConfig(AtomType.rel, mainrm), // \u2193, \downarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2193 \downarrow
+  ), // ↓
   '\u21D3': SymbolRenderConfig(
-    // ⇓
-    math: RenderConfig(AtomType.rel, mainrm), // \u21D3, \Downarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21D3 \Downarrow
+  ), // ⇓
   '\u2195': SymbolRenderConfig(
-    // ↕
-    math: RenderConfig(AtomType.rel, mainrm), // \u2195, \updownarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u2195 \updownarrow
+  ), // ↕
   '\u21D5': SymbolRenderConfig(
-    // ⇕
-    math: RenderConfig(AtomType.rel, mainrm), // \u21D5, \Updownarrow,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \u21D5 \Updownarrow
+  ), // ⇕
   '\u2026': SymbolRenderConfig(
-    // …
-    math:
-        RenderConfig(AtomType.inner, mainrm), // \u2026, \mathellipsis, \ldots,
-    text:
-        RenderConfig(AtomType.inner, mainrm), // \u2026, \textellipsis, \ldots,
-  ),
+    math: RenderConfig(AtomType.inner, mainrm), // \u2026 \mathellipsis \ldots
+    text: RenderConfig(AtomType.inner, mainrm), // \u2026 \textellipsis \ldots
+  ), // …
   '\u22EF': SymbolRenderConfig(
-    // ⋯
-    math: RenderConfig(AtomType.inner, mainrm), // \u22EF, \@cdots,
-  ),
+    math: RenderConfig(AtomType.inner, mainrm), // \u22EF \@cdots
+  ), // ⋯
   '\u22F1': SymbolRenderConfig(
-    // ⋱
-    math: RenderConfig(AtomType.inner, mainrm), // \u22F1, \ddots,
-  ),
+    math: RenderConfig(AtomType.inner, mainrm), // \u22F1 \ddots
+  ), // ⋱
   '\u0131': SymbolRenderConfig(
-    // ı
-    math: RenderConfig(AtomType.ord, mainit), // \u0131, \imath,
-    text: RenderConfig(AtomType.ord, mainrm), // \u0131, \i,
-  ),
+    math: RenderConfig(AtomType.ord, mainit), // \u0131 \imath
+    text: RenderConfig(AtomType.ord, mainrm), // \u0131 \i
+  ), // ı
   '\u0237': SymbolRenderConfig(
-    // ȷ
-    math: RenderConfig(AtomType.ord, mainit), // \u0237, \jmath,
-    text: RenderConfig(AtomType.ord, mainrm), // \u0237, \j,
-  ),
+    math: RenderConfig(AtomType.ord, mainit), // \u0237 \jmath
+    text: RenderConfig(AtomType.ord, mainrm), // \u0237 \j
+  ), // ȷ
   '\u00B0': SymbolRenderConfig(
-    // °
-    math: RenderConfig(AtomType.ord, mainrm), // \u00B0, \degree,
-    text: RenderConfig(AtomType.ord, mainrm), // \u00B0, \degree, \textdegree,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \u00B0 \degree
+    text: RenderConfig(AtomType.ord, mainrm), // \u00B0 \degree \textdegree
+  ), // °
   '\u00A3': SymbolRenderConfig(
-    // £
-    math: RenderConfig(AtomType.ord, mainit), // \u00A3, \pounds, \mathsterling,
-    text: RenderConfig(AtomType.ord, mainit), // \u00A3, \pounds, \textsterling,
-  ),
+    math: RenderConfig(AtomType.ord, mainit), // \u00A3 \pounds \mathsterling
+    text: RenderConfig(AtomType.ord, mainit), // \u00A3 \pounds \textsterling
+  ), // £
   '/': SymbolRenderConfig(
-    // /
-    math: RenderConfig(AtomType.ord, mainrm), // /,
-    text: RenderConfig(AtomType.ord, mainrm), // /,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // /
+    text: RenderConfig(AtomType.ord, mainrm), // /
+  ), // /
   '@': SymbolRenderConfig(
-    // @
-    math: RenderConfig(AtomType.ord, mainrm), // @,
-    text: RenderConfig(AtomType.ord, mainrm), // @,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // @
+    text: RenderConfig(AtomType.ord, mainrm), // @
+  ), // @
   '.': SymbolRenderConfig(
-    // .
-    math: RenderConfig(AtomType.ord, mainrm), // ., \ldotp,
-    text: RenderConfig(AtomType.ord, mainrm), // .,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // . \ldotp
+    text: RenderConfig(AtomType.ord, mainrm), // .
+  ), // .
   '\"': SymbolRenderConfig(
-    // "
-    math: RenderConfig(AtomType.ord, mainrm), // ",
-    text: RenderConfig(AtomType.ord, mainrm), // ",
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // "
+    text: RenderConfig(AtomType.ord, mainrm), // "
+  ), // "
   'A': SymbolRenderConfig(
-    // A
-    math: RenderConfig(AtomType.ord, mathdefault), // A,
-    text: RenderConfig(AtomType.ord, mainrm), // A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // A
+    text: RenderConfig(AtomType.ord, mainrm), // A
+  ), // A
   'B': SymbolRenderConfig(
-    // B
-    math: RenderConfig(AtomType.ord, mathdefault), // B,
-    text: RenderConfig(AtomType.ord, mainrm), // B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // B
+    text: RenderConfig(AtomType.ord, mainrm), // B
+  ), // B
   'C': SymbolRenderConfig(
-    // C
-    math: RenderConfig(AtomType.ord, mathdefault), // C,
-    text: RenderConfig(AtomType.ord, mainrm), // C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // C
+    text: RenderConfig(AtomType.ord, mainrm), // C
+  ), // C
   'D': SymbolRenderConfig(
-    // D
-    math: RenderConfig(AtomType.ord, mathdefault), // D,
-    text: RenderConfig(AtomType.ord, mainrm), // D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // D
+    text: RenderConfig(AtomType.ord, mainrm), // D
+  ), // D
   'E': SymbolRenderConfig(
-    // E
-    math: RenderConfig(AtomType.ord, mathdefault), // E,
-    text: RenderConfig(AtomType.ord, mainrm), // E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // E
+    text: RenderConfig(AtomType.ord, mainrm), // E
+  ), // E
   'F': SymbolRenderConfig(
-    // F
-    math: RenderConfig(AtomType.ord, mathdefault), // F,
-    text: RenderConfig(AtomType.ord, mainrm), // F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // F
+    text: RenderConfig(AtomType.ord, mainrm), // F
+  ), // F
   'G': SymbolRenderConfig(
-    // G
-    math: RenderConfig(AtomType.ord, mathdefault), // G,
-    text: RenderConfig(AtomType.ord, mainrm), // G,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // G
+    text: RenderConfig(AtomType.ord, mainrm), // G
+  ), // G
   'H': SymbolRenderConfig(
-    // H
-    math: RenderConfig(AtomType.ord, mathdefault), // H,
-    text: RenderConfig(AtomType.ord, mainrm), // H,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // H
+    text: RenderConfig(AtomType.ord, mainrm), // H
+  ), // H
   'I': SymbolRenderConfig(
-    // I
-    math: RenderConfig(AtomType.ord, mathdefault), // I,
-    text: RenderConfig(AtomType.ord, mainrm), // I,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // I
+    text: RenderConfig(AtomType.ord, mainrm), // I
+  ), // I
   'J': SymbolRenderConfig(
-    // J
-    math: RenderConfig(AtomType.ord, mathdefault), // J,
-    text: RenderConfig(AtomType.ord, mainrm), // J,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // J
+    text: RenderConfig(AtomType.ord, mainrm), // J
+  ), // J
   'K': SymbolRenderConfig(
-    // K
-    math: RenderConfig(AtomType.ord, mathdefault), // K,
-    text: RenderConfig(AtomType.ord, mainrm), // K,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // K
+    text: RenderConfig(AtomType.ord, mainrm), // K
+  ), // K
   'L': SymbolRenderConfig(
-    // L
-    math: RenderConfig(AtomType.ord, mathdefault), // L,
-    text: RenderConfig(AtomType.ord, mainrm), // L,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // L
+    text: RenderConfig(AtomType.ord, mainrm), // L
+  ), // L
   'M': SymbolRenderConfig(
-    // M
-    math: RenderConfig(AtomType.ord, mathdefault), // M,
-    text: RenderConfig(AtomType.ord, mainrm), // M,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // M
+    text: RenderConfig(AtomType.ord, mainrm), // M
+  ), // M
   'N': SymbolRenderConfig(
-    // N
-    math: RenderConfig(AtomType.ord, mathdefault), // N,
-    text: RenderConfig(AtomType.ord, mainrm), // N,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // N
+    text: RenderConfig(AtomType.ord, mainrm), // N
+  ), // N
   'O': SymbolRenderConfig(
-    // O
-    math: RenderConfig(AtomType.ord, mathdefault), // O,
-    text: RenderConfig(AtomType.ord, mainrm), // O,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // O
+    text: RenderConfig(AtomType.ord, mainrm), // O
+  ), // O
   'P': SymbolRenderConfig(
-    // P
-    math: RenderConfig(AtomType.ord, mathdefault), // P,
-    text: RenderConfig(AtomType.ord, mainrm), // P,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // P
+    text: RenderConfig(AtomType.ord, mainrm), // P
+  ), // P
   'Q': SymbolRenderConfig(
-    // Q
-    math: RenderConfig(AtomType.ord, mathdefault), // Q,
-    text: RenderConfig(AtomType.ord, mainrm), // Q,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // Q
+    text: RenderConfig(AtomType.ord, mainrm), // Q
+  ), // Q
   'R': SymbolRenderConfig(
-    // R
-    math: RenderConfig(AtomType.ord, mathdefault), // R,
-    text: RenderConfig(AtomType.ord, mainrm), // R,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // R
+    text: RenderConfig(AtomType.ord, mainrm), // R
+  ), // R
   'S': SymbolRenderConfig(
-    // S
-    math: RenderConfig(AtomType.ord, mathdefault), // S,
-    text: RenderConfig(AtomType.ord, mainrm), // S,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // S
+    text: RenderConfig(AtomType.ord, mainrm), // S
+  ), // S
   'T': SymbolRenderConfig(
-    // T
-    math: RenderConfig(AtomType.ord, mathdefault), // T,
-    text: RenderConfig(AtomType.ord, mainrm), // T,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // T
+    text: RenderConfig(AtomType.ord, mainrm), // T
+  ), // T
   'U': SymbolRenderConfig(
-    // U
-    math: RenderConfig(AtomType.ord, mathdefault), // U,
-    text: RenderConfig(AtomType.ord, mainrm), // U,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // U
+    text: RenderConfig(AtomType.ord, mainrm), // U
+  ), // U
   'V': SymbolRenderConfig(
-    // V
-    math: RenderConfig(AtomType.ord, mathdefault), // V,
-    text: RenderConfig(AtomType.ord, mainrm), // V,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // V
+    text: RenderConfig(AtomType.ord, mainrm), // V
+  ), // V
   'W': SymbolRenderConfig(
-    // W
-    math: RenderConfig(AtomType.ord, mathdefault), // W,
-    text: RenderConfig(AtomType.ord, mainrm), // W,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // W
+    text: RenderConfig(AtomType.ord, mainrm), // W
+  ), // W
   'X': SymbolRenderConfig(
-    // X
-    math: RenderConfig(AtomType.ord, mathdefault), // X,
-    text: RenderConfig(AtomType.ord, mainrm), // X,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // X
+    text: RenderConfig(AtomType.ord, mainrm), // X
+  ), // X
   'Y': SymbolRenderConfig(
-    // Y
-    math: RenderConfig(AtomType.ord, mathdefault), // Y,
-    text: RenderConfig(AtomType.ord, mainrm), // Y,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // Y
+    text: RenderConfig(AtomType.ord, mainrm), // Y
+  ), // Y
   'Z': SymbolRenderConfig(
-    // Z
-    math: RenderConfig(AtomType.ord, mathdefault), // Z,
-    text: RenderConfig(AtomType.ord, mainrm), // Z,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // Z
+    text: RenderConfig(AtomType.ord, mainrm), // Z
+  ), // Z
   'a': SymbolRenderConfig(
-    // a
-    math: RenderConfig(AtomType.ord, mathdefault), // a,
-    text: RenderConfig(AtomType.ord, mainrm), // a,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // a
+    text: RenderConfig(AtomType.ord, mainrm), // a
+  ), // a
   'b': SymbolRenderConfig(
-    // b
-    math: RenderConfig(AtomType.ord, mathdefault), // b,
-    text: RenderConfig(AtomType.ord, mainrm), // b,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // b
+    text: RenderConfig(AtomType.ord, mainrm), // b
+  ), // b
   'c': SymbolRenderConfig(
-    // c
-    math: RenderConfig(AtomType.ord, mathdefault), // c,
-    text: RenderConfig(AtomType.ord, mainrm), // c,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // c
+    text: RenderConfig(AtomType.ord, mainrm), // c
+  ), // c
   'd': SymbolRenderConfig(
-    // d
-    math: RenderConfig(AtomType.ord, mathdefault), // d,
-    text: RenderConfig(AtomType.ord, mainrm), // d,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // d
+    text: RenderConfig(AtomType.ord, mainrm), // d
+  ), // d
   'e': SymbolRenderConfig(
-    // e
-    math: RenderConfig(AtomType.ord, mathdefault), // e,
-    text: RenderConfig(AtomType.ord, mainrm), // e,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // e
+    text: RenderConfig(AtomType.ord, mainrm), // e
+  ), // e
   'f': SymbolRenderConfig(
-    // f
-    math: RenderConfig(AtomType.ord, mathdefault), // f,
-    text: RenderConfig(AtomType.ord, mainrm), // f,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // f
+    text: RenderConfig(AtomType.ord, mainrm), // f
+  ), // f
   'g': SymbolRenderConfig(
-    // g
-    math: RenderConfig(AtomType.ord, mathdefault), // g,
-    text: RenderConfig(AtomType.ord, mainrm), // g,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // g
+    text: RenderConfig(AtomType.ord, mainrm), // g
+  ), // g
   'h': SymbolRenderConfig(
-    // h
-    math: RenderConfig(AtomType.ord, mathdefault), // h,
-    text: RenderConfig(AtomType.ord, mainrm), // h,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // h
+    text: RenderConfig(AtomType.ord, mainrm), // h
+  ), // h
   'i': SymbolRenderConfig(
-    // i
-    math: RenderConfig(AtomType.ord, mathdefault), // i,
-    text: RenderConfig(AtomType.ord, mainrm), // i,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // i
+    text: RenderConfig(AtomType.ord, mainrm), // i
+  ), // i
   'j': SymbolRenderConfig(
-    // j
-    math: RenderConfig(AtomType.ord, mathdefault), // j,
-    text: RenderConfig(AtomType.ord, mainrm), // j,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // j
+    text: RenderConfig(AtomType.ord, mainrm), // j
+  ), // j
   'k': SymbolRenderConfig(
-    // k
-    math: RenderConfig(AtomType.ord, mathdefault), // k,
-    text: RenderConfig(AtomType.ord, mainrm), // k,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // k
+    text: RenderConfig(AtomType.ord, mainrm), // k
+  ), // k
   'l': SymbolRenderConfig(
-    // l
-    math: RenderConfig(AtomType.ord, mathdefault), // l,
-    text: RenderConfig(AtomType.ord, mainrm), // l,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // l
+    text: RenderConfig(AtomType.ord, mainrm), // l
+  ), // l
   'm': SymbolRenderConfig(
-    // m
-    math: RenderConfig(AtomType.ord, mathdefault), // m,
-    text: RenderConfig(AtomType.ord, mainrm), // m,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // m
+    text: RenderConfig(AtomType.ord, mainrm), // m
+  ), // m
   'n': SymbolRenderConfig(
-    // n
-    math: RenderConfig(AtomType.ord, mathdefault), // n,
-    text: RenderConfig(AtomType.ord, mainrm), // n,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // n
+    text: RenderConfig(AtomType.ord, mainrm), // n
+  ), // n
   'o': SymbolRenderConfig(
-    // o
-    math: RenderConfig(AtomType.ord, mathdefault), // o,
-    text: RenderConfig(AtomType.ord, mainrm), // o,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // o
+    text: RenderConfig(AtomType.ord, mainrm), // o
+  ), // o
   'p': SymbolRenderConfig(
-    // p
-    math: RenderConfig(AtomType.ord, mathdefault), // p,
-    text: RenderConfig(AtomType.ord, mainrm), // p,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // p
+    text: RenderConfig(AtomType.ord, mainrm), // p
+  ), // p
   'q': SymbolRenderConfig(
-    // q
-    math: RenderConfig(AtomType.ord, mathdefault), // q,
-    text: RenderConfig(AtomType.ord, mainrm), // q,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // q
+    text: RenderConfig(AtomType.ord, mainrm), // q
+  ), // q
   'r': SymbolRenderConfig(
-    // r
-    math: RenderConfig(AtomType.ord, mathdefault), // r,
-    text: RenderConfig(AtomType.ord, mainrm), // r,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // r
+    text: RenderConfig(AtomType.ord, mainrm), // r
+  ), // r
   's': SymbolRenderConfig(
-    // s
-    math: RenderConfig(AtomType.ord, mathdefault), // s,
-    text: RenderConfig(AtomType.ord, mainrm), // s,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // s
+    text: RenderConfig(AtomType.ord, mainrm), // s
+  ), // s
   't': SymbolRenderConfig(
-    // t
-    math: RenderConfig(AtomType.ord, mathdefault), // t,
-    text: RenderConfig(AtomType.ord, mainrm), // t,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // t
+    text: RenderConfig(AtomType.ord, mainrm), // t
+  ), // t
   'u': SymbolRenderConfig(
-    // u
-    math: RenderConfig(AtomType.ord, mathdefault), // u,
-    text: RenderConfig(AtomType.ord, mainrm), // u,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // u
+    text: RenderConfig(AtomType.ord, mainrm), // u
+  ), // u
   'v': SymbolRenderConfig(
-    // v
-    math: RenderConfig(AtomType.ord, mathdefault), // v,
-    text: RenderConfig(AtomType.ord, mainrm), // v,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // v
+    text: RenderConfig(AtomType.ord, mainrm), // v
+  ), // v
   'w': SymbolRenderConfig(
-    // w
-    math: RenderConfig(AtomType.ord, mathdefault), // w,
-    text: RenderConfig(AtomType.ord, mainrm), // w,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // w
+    text: RenderConfig(AtomType.ord, mainrm), // w
+  ), // w
   'x': SymbolRenderConfig(
-    // x
-    math: RenderConfig(AtomType.ord, mathdefault), // x,
-    text: RenderConfig(AtomType.ord, mainrm), // x,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // x
+    text: RenderConfig(AtomType.ord, mainrm), // x
+  ), // x
   'y': SymbolRenderConfig(
-    // y
-    math: RenderConfig(AtomType.ord, mathdefault), // y,
-    text: RenderConfig(AtomType.ord, mainrm), // y,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // y
+    text: RenderConfig(AtomType.ord, mainrm), // y
+  ), // y
   'z': SymbolRenderConfig(
-    // z
-    math: RenderConfig(AtomType.ord, mathdefault), // z,
-    text: RenderConfig(AtomType.ord, mainrm), // z,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // z
+    text: RenderConfig(AtomType.ord, mainrm), // z
+  ), // z
   '\u2102': SymbolRenderConfig(
-    // ℂ
-    math: RenderConfig(AtomType.ord, amsrm, 'C'), // \u2102,
-    text: RenderConfig(AtomType.ord, amsrm, 'C'), // \u2102,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm, 'C'), // \u2102
+    text: RenderConfig(AtomType.ord, amsrm, 'C'), // \u2102
+  ), // ℂ
   '\u210D': SymbolRenderConfig(
-    // ℍ
-    math: RenderConfig(AtomType.ord, amsrm, 'H'), // \u210D,
-    text: RenderConfig(AtomType.ord, amsrm, 'H'), // \u210D,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm, 'H'), // \u210D
+    text: RenderConfig(AtomType.ord, amsrm, 'H'), // \u210D
+  ), // ℍ
   '\u2115': SymbolRenderConfig(
-    // ℕ
-    math: RenderConfig(AtomType.ord, amsrm, 'N'), // \u2115,
-    text: RenderConfig(AtomType.ord, amsrm, 'N'), // \u2115,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm, 'N'), // \u2115
+    text: RenderConfig(AtomType.ord, amsrm, 'N'), // \u2115
+  ), // ℕ
   '\u2119': SymbolRenderConfig(
-    // ℙ
-    math: RenderConfig(AtomType.ord, amsrm, 'P'), // \u2119,
-    text: RenderConfig(AtomType.ord, amsrm, 'P'), // \u2119,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm, 'P'), // \u2119
+    text: RenderConfig(AtomType.ord, amsrm, 'P'), // \u2119
+  ), // ℙ
   '\u211A': SymbolRenderConfig(
-    // ℚ
-    math: RenderConfig(AtomType.ord, amsrm, 'Q'), // \u211A,
-    text: RenderConfig(AtomType.ord, amsrm, 'Q'), // \u211A,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm, 'Q'), // \u211A
+    text: RenderConfig(AtomType.ord, amsrm, 'Q'), // \u211A
+  ), // ℚ
   '\u211D': SymbolRenderConfig(
-    // ℝ
-    math: RenderConfig(AtomType.ord, amsrm, 'R'), // \u211D,
-    text: RenderConfig(AtomType.ord, amsrm, 'R'), // \u211D,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm, 'R'), // \u211D
+    text: RenderConfig(AtomType.ord, amsrm, 'R'), // \u211D
+  ), // ℝ
   '\u2124': SymbolRenderConfig(
-    // ℤ
-    math: RenderConfig(AtomType.ord, amsrm, 'Z'), // \u2124,
-    text: RenderConfig(AtomType.ord, amsrm, 'Z'), // \u2124,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm, 'Z'), // \u2124
+    text: RenderConfig(AtomType.ord, amsrm, 'Z'), // \u2124
+  ), // ℤ
   '\u210E': SymbolRenderConfig(
-    // ℎ
-    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \u210E,
-    text: RenderConfig(AtomType.ord, mathdefault, 'h'), // \u210E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \u210E
+    text: RenderConfig(AtomType.ord, mathdefault, 'h'), // \u210E
+  ), // ℎ
   '\uD835\uDC00': SymbolRenderConfig(
-    // 𝐀
-    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDC00,
-    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDC00,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDC00
+    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDC00
+  ), // 𝐀
   '\uD835\uDC34': SymbolRenderConfig(
-    // 𝐴
-    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDC34,
-    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDC34,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDC34
+    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDC34
+  ), // 𝐴
   '\uD835\uDC68': SymbolRenderConfig(
-    // 𝑨
-    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDC68,
-    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDC68,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDC68
+    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDC68
+  ), // 𝑨
   '\uD835\uDD04': SymbolRenderConfig(
-    // 𝔄
-    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDD04,
-    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDD04,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDD04
+    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDD04
+  ), // 𝔄
   '\uD835\uDDA0': SymbolRenderConfig(
-    // 𝖠
-    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDDA0,
-    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDDA0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDDA0
+    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDDA0
+  ), // 𝖠
   '\uD835\uDDD4': SymbolRenderConfig(
-    // 𝗔
-    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDDD4,
-    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDDD4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDDD4
+    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDDD4
+  ), // 𝗔
   '\uD835\uDE08': SymbolRenderConfig(
-    // 𝘈
-    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDE08,
-    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDE08,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDE08
+    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDE08
+  ), // 𝘈
   '\uD835\uDE70': SymbolRenderConfig(
-    // 𝙰
-    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDE70,
-    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDE70,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDE70
+    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDE70
+  ), // 𝙰
   '\uD835\uDD38': SymbolRenderConfig(
-    // 𝔸
-    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDD38,
-    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDD38,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDD38
+    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDD38
+  ), // 𝔸
   '\uD835\uDC9C': SymbolRenderConfig(
-    // 𝒜
-    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDC9C,
-    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDC9C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'A'), // \uD835\uDC9C
+    text: RenderConfig(AtomType.ord, mainrm, 'A'), // \uD835\uDC9C
+  ), // 𝒜
   '\uD835\uDC01': SymbolRenderConfig(
-    // 𝐁
-    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDC01,
-    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDC01,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDC01
+    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDC01
+  ), // 𝐁
   '\uD835\uDC35': SymbolRenderConfig(
-    // 𝐵
-    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDC35,
-    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDC35,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDC35
+    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDC35
+  ), // 𝐵
   '\uD835\uDC69': SymbolRenderConfig(
-    // 𝑩
-    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDC69,
-    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDC69,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDC69
+    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDC69
+  ), // 𝑩
   '\uD835\uDD05': SymbolRenderConfig(
-    // 𝔅
-    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDD05,
-    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDD05,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDD05
+    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDD05
+  ), // 𝔅
   '\uD835\uDDA1': SymbolRenderConfig(
-    // 𝖡
-    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDDA1,
-    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDDA1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDDA1
+    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDDA1
+  ), // 𝖡
   '\uD835\uDDD5': SymbolRenderConfig(
-    // 𝗕
-    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDDD5,
-    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDDD5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDDD5
+    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDDD5
+  ), // 𝗕
   '\uD835\uDE09': SymbolRenderConfig(
-    // 𝘉
-    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDE09,
-    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDE09,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDE09
+    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDE09
+  ), // 𝘉
   '\uD835\uDE71': SymbolRenderConfig(
-    // 𝙱
-    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDE71,
-    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDE71,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDE71
+    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDE71
+  ), // 𝙱
   '\uD835\uDD39': SymbolRenderConfig(
-    // 𝔹
-    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDD39,
-    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDD39,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDD39
+    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDD39
+  ), // 𝔹
   '\uD835\uDC9D': SymbolRenderConfig(
-    // 𝒝
-    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDC9D,
-    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDC9D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'B'), // \uD835\uDC9D
+    text: RenderConfig(AtomType.ord, mainrm, 'B'), // \uD835\uDC9D
+  ), // 𝒝
   '\uD835\uDC02': SymbolRenderConfig(
-    // 𝐂
-    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDC02,
-    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDC02,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDC02
+    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDC02
+  ), // 𝐂
   '\uD835\uDC36': SymbolRenderConfig(
-    // 𝐶
-    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDC36,
-    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDC36,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDC36
+    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDC36
+  ), // 𝐶
   '\uD835\uDC6A': SymbolRenderConfig(
-    // 𝑪
-    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDC6A,
-    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDC6A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDC6A
+    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDC6A
+  ), // 𝑪
   '\uD835\uDD06': SymbolRenderConfig(
-    // 𝔆
-    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDD06,
-    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDD06,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDD06
+    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDD06
+  ), // 𝔆
   '\uD835\uDDA2': SymbolRenderConfig(
-    // 𝖢
-    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDDA2,
-    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDDA2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDDA2
+    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDDA2
+  ), // 𝖢
   '\uD835\uDDD6': SymbolRenderConfig(
-    // 𝗖
-    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDDD6,
-    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDDD6,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDDD6
+    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDDD6
+  ), // 𝗖
   '\uD835\uDE0A': SymbolRenderConfig(
-    // 𝘊
-    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDE0A,
-    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDE0A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDE0A
+    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDE0A
+  ), // 𝘊
   '\uD835\uDE72': SymbolRenderConfig(
-    // 𝙲
-    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDE72,
-    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDE72,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDE72
+    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDE72
+  ), // 𝙲
   '\uD835\uDD3A': SymbolRenderConfig(
-    // 𝔺
-    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDD3A,
-    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDD3A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDD3A
+    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDD3A
+  ), // 𝔺
   '\uD835\uDC9E': SymbolRenderConfig(
-    // 𝒞
-    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDC9E,
-    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDC9E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'C'), // \uD835\uDC9E
+    text: RenderConfig(AtomType.ord, mainrm, 'C'), // \uD835\uDC9E
+  ), // 𝒞
   '\uD835\uDC03': SymbolRenderConfig(
-    // 𝐃
-    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDC03,
-    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDC03,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDC03
+    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDC03
+  ), // 𝐃
   '\uD835\uDC37': SymbolRenderConfig(
-    // 𝐷
-    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDC37,
-    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDC37,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDC37
+    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDC37
+  ), // 𝐷
   '\uD835\uDC6B': SymbolRenderConfig(
-    // 𝑫
-    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDC6B,
-    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDC6B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDC6B
+    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDC6B
+  ), // 𝑫
   '\uD835\uDD07': SymbolRenderConfig(
-    // 𝔇
-    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDD07,
-    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDD07,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDD07
+    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDD07
+  ), // 𝔇
   '\uD835\uDDA3': SymbolRenderConfig(
-    // 𝖣
-    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDDA3,
-    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDDA3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDDA3
+    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDDA3
+  ), // 𝖣
   '\uD835\uDDD7': SymbolRenderConfig(
-    // 𝗗
-    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDDD7,
-    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDDD7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDDD7
+    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDDD7
+  ), // 𝗗
   '\uD835\uDE0B': SymbolRenderConfig(
-    // 𝘋
-    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDE0B,
-    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDE0B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDE0B
+    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDE0B
+  ), // 𝘋
   '\uD835\uDE73': SymbolRenderConfig(
-    // 𝙳
-    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDE73,
-    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDE73,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDE73
+    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDE73
+  ), // 𝙳
   '\uD835\uDD3B': SymbolRenderConfig(
-    // 𝔻
-    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDD3B,
-    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDD3B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDD3B
+    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDD3B
+  ), // 𝔻
   '\uD835\uDC9F': SymbolRenderConfig(
-    // 𝒟
-    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDC9F,
-    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDC9F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'D'), // \uD835\uDC9F
+    text: RenderConfig(AtomType.ord, mainrm, 'D'), // \uD835\uDC9F
+  ), // 𝒟
   '\uD835\uDC04': SymbolRenderConfig(
-    // 𝐄
-    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDC04,
-    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDC04,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDC04
+    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDC04
+  ), // 𝐄
   '\uD835\uDC38': SymbolRenderConfig(
-    // 𝐸
-    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDC38,
-    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDC38,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDC38
+    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDC38
+  ), // 𝐸
   '\uD835\uDC6C': SymbolRenderConfig(
-    // 𝑬
-    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDC6C,
-    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDC6C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDC6C
+    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDC6C
+  ), // 𝑬
   '\uD835\uDD08': SymbolRenderConfig(
-    // 𝔈
-    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDD08,
-    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDD08,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDD08
+    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDD08
+  ), // 𝔈
   '\uD835\uDDA4': SymbolRenderConfig(
-    // 𝖤
-    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDDA4,
-    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDDA4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDDA4
+    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDDA4
+  ), // 𝖤
   '\uD835\uDDD8': SymbolRenderConfig(
-    // 𝗘
-    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDDD8,
-    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDDD8,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDDD8
+    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDDD8
+  ), // 𝗘
   '\uD835\uDE0C': SymbolRenderConfig(
-    // 𝘌
-    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDE0C,
-    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDE0C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDE0C
+    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDE0C
+  ), // 𝘌
   '\uD835\uDE74': SymbolRenderConfig(
-    // 𝙴
-    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDE74,
-    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDE74,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDE74
+    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDE74
+  ), // 𝙴
   '\uD835\uDD3C': SymbolRenderConfig(
-    // 𝔼
-    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDD3C,
-    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDD3C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDD3C
+    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDD3C
+  ), // 𝔼
   '\uD835\uDCA0': SymbolRenderConfig(
-    // 𝒠
-    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDCA0,
-    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDCA0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'E'), // \uD835\uDCA0
+    text: RenderConfig(AtomType.ord, mainrm, 'E'), // \uD835\uDCA0
+  ), // 𝒠
   '\uD835\uDC05': SymbolRenderConfig(
-    // 𝐅
-    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDC05,
-    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDC05,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDC05
+    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDC05
+  ), // 𝐅
   '\uD835\uDC39': SymbolRenderConfig(
-    // 𝐹
-    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDC39,
-    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDC39,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDC39
+    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDC39
+  ), // 𝐹
   '\uD835\uDC6D': SymbolRenderConfig(
-    // 𝑭
-    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDC6D,
-    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDC6D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDC6D
+    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDC6D
+  ), // 𝑭
   '\uD835\uDD09': SymbolRenderConfig(
-    // 𝔉
-    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDD09,
-    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDD09,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDD09
+    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDD09
+  ), // 𝔉
   '\uD835\uDDA5': SymbolRenderConfig(
-    // 𝖥
-    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDDA5,
-    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDDA5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDDA5
+    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDDA5
+  ), // 𝖥
   '\uD835\uDDD9': SymbolRenderConfig(
-    // 𝗙
-    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDDD9,
-    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDDD9,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDDD9
+    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDDD9
+  ), // 𝗙
   '\uD835\uDE0D': SymbolRenderConfig(
-    // 𝘍
-    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDE0D,
-    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDE0D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDE0D
+    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDE0D
+  ), // 𝘍
   '\uD835\uDE75': SymbolRenderConfig(
-    // 𝙵
-    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDE75,
-    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDE75,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDE75
+    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDE75
+  ), // 𝙵
   '\uD835\uDD3D': SymbolRenderConfig(
-    // 𝔽
-    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDD3D,
-    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDD3D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDD3D
+    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDD3D
+  ), // 𝔽
   '\uD835\uDCA1': SymbolRenderConfig(
-    // 𝒡
-    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDCA1,
-    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDCA1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'F'), // \uD835\uDCA1
+    text: RenderConfig(AtomType.ord, mainrm, 'F'), // \uD835\uDCA1
+  ), // 𝒡
   '\uD835\uDC06': SymbolRenderConfig(
-    // 𝐆
-    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDC06,
-    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDC06,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDC06
+    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDC06
+  ), // 𝐆
   '\uD835\uDC3A': SymbolRenderConfig(
-    // 𝐺
-    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDC3A,
-    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDC3A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDC3A
+    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDC3A
+  ), // 𝐺
   '\uD835\uDC6E': SymbolRenderConfig(
-    // 𝑮
-    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDC6E,
-    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDC6E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDC6E
+    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDC6E
+  ), // 𝑮
   '\uD835\uDD0A': SymbolRenderConfig(
-    // 𝔊
-    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDD0A,
-    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDD0A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDD0A
+    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDD0A
+  ), // 𝔊
   '\uD835\uDDA6': SymbolRenderConfig(
-    // 𝖦
-    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDDA6,
-    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDDA6,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDDA6
+    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDDA6
+  ), // 𝖦
   '\uD835\uDDDA': SymbolRenderConfig(
-    // 𝗚
-    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDDDA,
-    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDDDA,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDDDA
+    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDDDA
+  ), // 𝗚
   '\uD835\uDE0E': SymbolRenderConfig(
-    // 𝘎
-    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDE0E,
-    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDE0E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDE0E
+    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDE0E
+  ), // 𝘎
   '\uD835\uDE76': SymbolRenderConfig(
-    // 𝙶
-    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDE76,
-    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDE76,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDE76
+    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDE76
+  ), // 𝙶
   '\uD835\uDD3E': SymbolRenderConfig(
-    // 𝔾
-    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDD3E,
-    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDD3E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDD3E
+    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDD3E
+  ), // 𝔾
   '\uD835\uDCA2': SymbolRenderConfig(
-    // 𝒢
-    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDCA2,
-    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDCA2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'G'), // \uD835\uDCA2
+    text: RenderConfig(AtomType.ord, mainrm, 'G'), // \uD835\uDCA2
+  ), // 𝒢
   '\uD835\uDC07': SymbolRenderConfig(
-    // 𝐇
-    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDC07,
-    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDC07,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDC07
+    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDC07
+  ), // 𝐇
   '\uD835\uDC3B': SymbolRenderConfig(
-    // 𝐻
-    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDC3B,
-    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDC3B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDC3B
+    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDC3B
+  ), // 𝐻
   '\uD835\uDC6F': SymbolRenderConfig(
-    // 𝑯
-    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDC6F,
-    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDC6F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDC6F
+    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDC6F
+  ), // 𝑯
   '\uD835\uDD0B': SymbolRenderConfig(
-    // 𝔋
-    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDD0B,
-    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDD0B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDD0B
+    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDD0B
+  ), // 𝔋
   '\uD835\uDDA7': SymbolRenderConfig(
-    // 𝖧
-    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDDA7,
-    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDDA7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDDA7
+    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDDA7
+  ), // 𝖧
   '\uD835\uDDDB': SymbolRenderConfig(
-    // 𝗛
-    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDDDB,
-    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDDDB,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDDDB
+    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDDDB
+  ), // 𝗛
   '\uD835\uDE0F': SymbolRenderConfig(
-    // 𝘏
-    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDE0F,
-    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDE0F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDE0F
+    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDE0F
+  ), // 𝘏
   '\uD835\uDE77': SymbolRenderConfig(
-    // 𝙷
-    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDE77,
-    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDE77,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDE77
+    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDE77
+  ), // 𝙷
   '\uD835\uDD3F': SymbolRenderConfig(
-    // 𝔿
-    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDD3F,
-    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDD3F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDD3F
+    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDD3F
+  ), // 𝔿
   '\uD835\uDCA3': SymbolRenderConfig(
-    // 𝒣
-    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDCA3,
-    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDCA3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'H'), // \uD835\uDCA3
+    text: RenderConfig(AtomType.ord, mainrm, 'H'), // \uD835\uDCA3
+  ), // 𝒣
   '\uD835\uDC08': SymbolRenderConfig(
-    // 𝐈
-    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDC08,
-    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDC08,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDC08
+    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDC08
+  ), // 𝐈
   '\uD835\uDC3C': SymbolRenderConfig(
-    // 𝐼
-    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDC3C,
-    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDC3C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDC3C
+    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDC3C
+  ), // 𝐼
   '\uD835\uDC70': SymbolRenderConfig(
-    // 𝑰
-    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDC70,
-    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDC70,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDC70
+    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDC70
+  ), // 𝑰
   '\uD835\uDD0C': SymbolRenderConfig(
-    // 𝔌
-    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDD0C,
-    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDD0C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDD0C
+    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDD0C
+  ), // 𝔌
   '\uD835\uDDA8': SymbolRenderConfig(
-    // 𝖨
-    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDDA8,
-    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDDA8,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDDA8
+    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDDA8
+  ), // 𝖨
   '\uD835\uDDDC': SymbolRenderConfig(
-    // 𝗜
-    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDDDC,
-    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDDDC,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDDDC
+    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDDDC
+  ), // 𝗜
   '\uD835\uDE10': SymbolRenderConfig(
-    // 𝘐
-    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDE10,
-    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDE10,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDE10
+    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDE10
+  ), // 𝘐
   '\uD835\uDE78': SymbolRenderConfig(
-    // 𝙸
-    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDE78,
-    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDE78,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDE78
+    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDE78
+  ), // 𝙸
   '\uD835\uDD40': SymbolRenderConfig(
-    // 𝕀
-    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDD40,
-    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDD40,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDD40
+    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDD40
+  ), // 𝕀
   '\uD835\uDCA4': SymbolRenderConfig(
-    // 𝒤
-    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDCA4,
-    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDCA4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'I'), // \uD835\uDCA4
+    text: RenderConfig(AtomType.ord, mainrm, 'I'), // \uD835\uDCA4
+  ), // 𝒤
   '\uD835\uDC09': SymbolRenderConfig(
-    // 𝐉
-    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDC09,
-    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDC09,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDC09
+    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDC09
+  ), // 𝐉
   '\uD835\uDC3D': SymbolRenderConfig(
-    // 𝐽
-    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDC3D,
-    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDC3D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDC3D
+    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDC3D
+  ), // 𝐽
   '\uD835\uDC71': SymbolRenderConfig(
-    // 𝑱
-    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDC71,
-    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDC71,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDC71
+    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDC71
+  ), // 𝑱
   '\uD835\uDD0D': SymbolRenderConfig(
-    // 𝔍
-    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDD0D,
-    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDD0D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDD0D
+    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDD0D
+  ), // 𝔍
   '\uD835\uDDA9': SymbolRenderConfig(
-    // 𝖩
-    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDDA9,
-    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDDA9,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDDA9
+    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDDA9
+  ), // 𝖩
   '\uD835\uDDDD': SymbolRenderConfig(
-    // 𝗝
-    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDDDD,
-    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDDDD,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDDDD
+    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDDDD
+  ), // 𝗝
   '\uD835\uDE11': SymbolRenderConfig(
-    // 𝘑
-    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDE11,
-    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDE11,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDE11
+    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDE11
+  ), // 𝘑
   '\uD835\uDE79': SymbolRenderConfig(
-    // 𝙹
-    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDE79,
-    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDE79,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDE79
+    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDE79
+  ), // 𝙹
   '\uD835\uDD41': SymbolRenderConfig(
-    // 𝕁
-    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDD41,
-    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDD41,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDD41
+    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDD41
+  ), // 𝕁
   '\uD835\uDCA5': SymbolRenderConfig(
-    // 𝒥
-    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDCA5,
-    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDCA5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'J'), // \uD835\uDCA5
+    text: RenderConfig(AtomType.ord, mainrm, 'J'), // \uD835\uDCA5
+  ), // 𝒥
   '\uD835\uDC0A': SymbolRenderConfig(
-    // 𝐊
-    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDC0A,
-    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDC0A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDC0A
+    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDC0A
+  ), // 𝐊
   '\uD835\uDC3E': SymbolRenderConfig(
-    // 𝐾
-    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDC3E,
-    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDC3E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDC3E
+    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDC3E
+  ), // 𝐾
   '\uD835\uDC72': SymbolRenderConfig(
-    // 𝑲
-    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDC72,
-    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDC72,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDC72
+    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDC72
+  ), // 𝑲
   '\uD835\uDD0E': SymbolRenderConfig(
-    // 𝔎
-    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDD0E,
-    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDD0E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDD0E
+    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDD0E
+  ), // 𝔎
   '\uD835\uDDAA': SymbolRenderConfig(
-    // 𝖪
-    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDDAA,
-    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDDAA,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDDAA
+    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDDAA
+  ), // 𝖪
   '\uD835\uDDDE': SymbolRenderConfig(
-    // 𝗞
-    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDDDE,
-    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDDDE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDDDE
+    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDDDE
+  ), // 𝗞
   '\uD835\uDE12': SymbolRenderConfig(
-    // 𝘒
-    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDE12,
-    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDE12,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDE12
+    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDE12
+  ), // 𝘒
   '\uD835\uDE7A': SymbolRenderConfig(
-    // 𝙺
-    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDE7A,
-    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDE7A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDE7A
+    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDE7A
+  ), // 𝙺
   '\uD835\uDD42': SymbolRenderConfig(
-    // 𝕂
-    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDD42,
-    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDD42,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDD42
+    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDD42
+  ), // 𝕂
   '\uD835\uDCA6': SymbolRenderConfig(
-    // 𝒦
-    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDCA6,
-    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDCA6,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'K'), // \uD835\uDCA6
+    text: RenderConfig(AtomType.ord, mainrm, 'K'), // \uD835\uDCA6
+  ), // 𝒦
   '\uD835\uDC0B': SymbolRenderConfig(
-    // 𝐋
-    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDC0B,
-    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDC0B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDC0B
+    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDC0B
+  ), // 𝐋
   '\uD835\uDC3F': SymbolRenderConfig(
-    // 𝐿
-    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDC3F,
-    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDC3F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDC3F
+    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDC3F
+  ), // 𝐿
   '\uD835\uDC73': SymbolRenderConfig(
-    // 𝑳
-    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDC73,
-    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDC73,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDC73
+    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDC73
+  ), // 𝑳
   '\uD835\uDD0F': SymbolRenderConfig(
-    // 𝔏
-    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDD0F,
-    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDD0F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDD0F
+    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDD0F
+  ), // 𝔏
   '\uD835\uDDAB': SymbolRenderConfig(
-    // 𝖫
-    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDDAB,
-    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDDAB,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDDAB
+    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDDAB
+  ), // 𝖫
   '\uD835\uDDDF': SymbolRenderConfig(
-    // 𝗟
-    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDDDF,
-    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDDDF,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDDDF
+    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDDDF
+  ), // 𝗟
   '\uD835\uDE13': SymbolRenderConfig(
-    // 𝘓
-    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDE13,
-    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDE13,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDE13
+    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDE13
+  ), // 𝘓
   '\uD835\uDE7B': SymbolRenderConfig(
-    // 𝙻
-    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDE7B,
-    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDE7B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDE7B
+    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDE7B
+  ), // 𝙻
   '\uD835\uDD43': SymbolRenderConfig(
-    // 𝕃
-    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDD43,
-    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDD43,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDD43
+    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDD43
+  ), // 𝕃
   '\uD835\uDCA7': SymbolRenderConfig(
-    // 𝒧
-    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDCA7,
-    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDCA7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'L'), // \uD835\uDCA7
+    text: RenderConfig(AtomType.ord, mainrm, 'L'), // \uD835\uDCA7
+  ), // 𝒧
   '\uD835\uDC0C': SymbolRenderConfig(
-    // 𝐌
-    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDC0C,
-    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDC0C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDC0C
+    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDC0C
+  ), // 𝐌
   '\uD835\uDC40': SymbolRenderConfig(
-    // 𝑀
-    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDC40,
-    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDC40,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDC40
+    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDC40
+  ), // 𝑀
   '\uD835\uDC74': SymbolRenderConfig(
-    // 𝑴
-    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDC74,
-    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDC74,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDC74
+    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDC74
+  ), // 𝑴
   '\uD835\uDD10': SymbolRenderConfig(
-    // 𝔐
-    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDD10,
-    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDD10,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDD10
+    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDD10
+  ), // 𝔐
   '\uD835\uDDAC': SymbolRenderConfig(
-    // 𝖬
-    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDDAC,
-    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDDAC,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDDAC
+    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDDAC
+  ), // 𝖬
   '\uD835\uDDE0': SymbolRenderConfig(
-    // 𝗠
-    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDDE0,
-    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDDE0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDDE0
+    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDDE0
+  ), // 𝗠
   '\uD835\uDE14': SymbolRenderConfig(
-    // 𝘔
-    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDE14,
-    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDE14,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDE14
+    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDE14
+  ), // 𝘔
   '\uD835\uDE7C': SymbolRenderConfig(
-    // 𝙼
-    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDE7C,
-    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDE7C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDE7C
+    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDE7C
+  ), // 𝙼
   '\uD835\uDD44': SymbolRenderConfig(
-    // 𝕄
-    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDD44,
-    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDD44,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDD44
+    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDD44
+  ), // 𝕄
   '\uD835\uDCA8': SymbolRenderConfig(
-    // 𝒨
-    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDCA8,
-    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDCA8,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'M'), // \uD835\uDCA8
+    text: RenderConfig(AtomType.ord, mainrm, 'M'), // \uD835\uDCA8
+  ), // 𝒨
   '\uD835\uDC0D': SymbolRenderConfig(
-    // 𝐍
-    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDC0D,
-    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDC0D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDC0D
+    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDC0D
+  ), // 𝐍
   '\uD835\uDC41': SymbolRenderConfig(
-    // 𝑁
-    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDC41,
-    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDC41,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDC41
+    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDC41
+  ), // 𝑁
   '\uD835\uDC75': SymbolRenderConfig(
-    // 𝑵
-    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDC75,
-    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDC75,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDC75
+    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDC75
+  ), // 𝑵
   '\uD835\uDD11': SymbolRenderConfig(
-    // 𝔑
-    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDD11,
-    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDD11,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDD11
+    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDD11
+  ), // 𝔑
   '\uD835\uDDAD': SymbolRenderConfig(
-    // 𝖭
-    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDDAD,
-    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDDAD,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDDAD
+    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDDAD
+  ), // 𝖭
   '\uD835\uDDE1': SymbolRenderConfig(
-    // 𝗡
-    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDDE1,
-    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDDE1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDDE1
+    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDDE1
+  ), // 𝗡
   '\uD835\uDE15': SymbolRenderConfig(
-    // 𝘕
-    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDE15,
-    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDE15,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDE15
+    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDE15
+  ), // 𝘕
   '\uD835\uDE7D': SymbolRenderConfig(
-    // 𝙽
-    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDE7D,
-    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDE7D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDE7D
+    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDE7D
+  ), // 𝙽
   '\uD835\uDD45': SymbolRenderConfig(
-    // 𝕅
-    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDD45,
-    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDD45,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDD45
+    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDD45
+  ), // 𝕅
   '\uD835\uDCA9': SymbolRenderConfig(
-    // 𝒩
-    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDCA9,
-    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDCA9,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'N'), // \uD835\uDCA9
+    text: RenderConfig(AtomType.ord, mainrm, 'N'), // \uD835\uDCA9
+  ), // 𝒩
   '\uD835\uDC0E': SymbolRenderConfig(
-    // 𝐎
-    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDC0E,
-    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDC0E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDC0E
+    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDC0E
+  ), // 𝐎
   '\uD835\uDC42': SymbolRenderConfig(
-    // 𝑂
-    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDC42,
-    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDC42,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDC42
+    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDC42
+  ), // 𝑂
   '\uD835\uDC76': SymbolRenderConfig(
-    // 𝑶
-    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDC76,
-    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDC76,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDC76
+    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDC76
+  ), // 𝑶
   '\uD835\uDD12': SymbolRenderConfig(
-    // 𝔒
-    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDD12,
-    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDD12,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDD12
+    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDD12
+  ), // 𝔒
   '\uD835\uDDAE': SymbolRenderConfig(
-    // 𝖮
-    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDDAE,
-    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDDAE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDDAE
+    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDDAE
+  ), // 𝖮
   '\uD835\uDDE2': SymbolRenderConfig(
-    // 𝗢
-    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDDE2,
-    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDDE2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDDE2
+    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDDE2
+  ), // 𝗢
   '\uD835\uDE16': SymbolRenderConfig(
-    // 𝘖
-    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDE16,
-    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDE16,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDE16
+    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDE16
+  ), // 𝘖
   '\uD835\uDE7E': SymbolRenderConfig(
-    // 𝙾
-    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDE7E,
-    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDE7E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDE7E
+    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDE7E
+  ), // 𝙾
   '\uD835\uDD46': SymbolRenderConfig(
-    // 𝕆
-    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDD46,
-    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDD46,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDD46
+    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDD46
+  ), // 𝕆
   '\uD835\uDCAA': SymbolRenderConfig(
-    // 𝒪
-    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDCAA,
-    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDCAA,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'O'), // \uD835\uDCAA
+    text: RenderConfig(AtomType.ord, mainrm, 'O'), // \uD835\uDCAA
+  ), // 𝒪
   '\uD835\uDC0F': SymbolRenderConfig(
-    // 𝐏
-    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDC0F,
-    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDC0F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDC0F
+    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDC0F
+  ), // 𝐏
   '\uD835\uDC43': SymbolRenderConfig(
-    // 𝑃
-    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDC43,
-    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDC43,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDC43
+    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDC43
+  ), // 𝑃
   '\uD835\uDC77': SymbolRenderConfig(
-    // 𝑷
-    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDC77,
-    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDC77,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDC77
+    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDC77
+  ), // 𝑷
   '\uD835\uDD13': SymbolRenderConfig(
-    // 𝔓
-    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDD13,
-    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDD13,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDD13
+    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDD13
+  ), // 𝔓
   '\uD835\uDDAF': SymbolRenderConfig(
-    // 𝖯
-    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDDAF,
-    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDDAF,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDDAF
+    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDDAF
+  ), // 𝖯
   '\uD835\uDDE3': SymbolRenderConfig(
-    // 𝗣
-    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDDE3,
-    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDDE3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDDE3
+    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDDE3
+  ), // 𝗣
   '\uD835\uDE17': SymbolRenderConfig(
-    // 𝘗
-    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDE17,
-    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDE17,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDE17
+    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDE17
+  ), // 𝘗
   '\uD835\uDE7F': SymbolRenderConfig(
-    // 𝙿
-    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDE7F,
-    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDE7F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDE7F
+    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDE7F
+  ), // 𝙿
   '\uD835\uDD47': SymbolRenderConfig(
-    // 𝕇
-    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDD47,
-    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDD47,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDD47
+    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDD47
+  ), // 𝕇
   '\uD835\uDCAB': SymbolRenderConfig(
-    // 𝒫
-    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDCAB,
-    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDCAB,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'P'), // \uD835\uDCAB
+    text: RenderConfig(AtomType.ord, mainrm, 'P'), // \uD835\uDCAB
+  ), // 𝒫
   '\uD835\uDC10': SymbolRenderConfig(
-    // 𝐐
-    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDC10,
-    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDC10,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDC10
+    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDC10
+  ), // 𝐐
   '\uD835\uDC44': SymbolRenderConfig(
-    // 𝑄
-    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDC44,
-    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDC44,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDC44
+    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDC44
+  ), // 𝑄
   '\uD835\uDC78': SymbolRenderConfig(
-    // 𝑸
-    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDC78,
-    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDC78,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDC78
+    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDC78
+  ), // 𝑸
   '\uD835\uDD14': SymbolRenderConfig(
-    // 𝔔
-    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDD14,
-    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDD14,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDD14
+    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDD14
+  ), // 𝔔
   '\uD835\uDDB0': SymbolRenderConfig(
-    // 𝖰
-    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDDB0,
-    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDDB0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDDB0
+    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDDB0
+  ), // 𝖰
   '\uD835\uDDE4': SymbolRenderConfig(
-    // 𝗤
-    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDDE4,
-    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDDE4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDDE4
+    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDDE4
+  ), // 𝗤
   '\uD835\uDE18': SymbolRenderConfig(
-    // 𝘘
-    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDE18,
-    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDE18,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDE18
+    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDE18
+  ), // 𝘘
   '\uD835\uDE80': SymbolRenderConfig(
-    // 𝚀
-    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDE80,
-    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDE80,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDE80
+    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDE80
+  ), // 𝚀
   '\uD835\uDD48': SymbolRenderConfig(
-    // 𝕈
-    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDD48,
-    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDD48,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDD48
+    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDD48
+  ), // 𝕈
   '\uD835\uDCAC': SymbolRenderConfig(
-    // 𝒬
-    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDCAC,
-    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDCAC,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Q'), // \uD835\uDCAC
+    text: RenderConfig(AtomType.ord, mainrm, 'Q'), // \uD835\uDCAC
+  ), // 𝒬
   '\uD835\uDC11': SymbolRenderConfig(
-    // 𝐑
-    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDC11,
-    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDC11,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDC11
+    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDC11
+  ), // 𝐑
   '\uD835\uDC45': SymbolRenderConfig(
-    // 𝑅
-    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDC45,
-    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDC45,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDC45
+    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDC45
+  ), // 𝑅
   '\uD835\uDC79': SymbolRenderConfig(
-    // 𝑹
-    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDC79,
-    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDC79,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDC79
+    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDC79
+  ), // 𝑹
   '\uD835\uDD15': SymbolRenderConfig(
-    // 𝔕
-    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDD15,
-    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDD15,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDD15
+    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDD15
+  ), // 𝔕
   '\uD835\uDDB1': SymbolRenderConfig(
-    // 𝖱
-    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDDB1,
-    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDDB1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDDB1
+    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDDB1
+  ), // 𝖱
   '\uD835\uDDE5': SymbolRenderConfig(
-    // 𝗥
-    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDDE5,
-    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDDE5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDDE5
+    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDDE5
+  ), // 𝗥
   '\uD835\uDE19': SymbolRenderConfig(
-    // 𝘙
-    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDE19,
-    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDE19,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDE19
+    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDE19
+  ), // 𝘙
   '\uD835\uDE81': SymbolRenderConfig(
-    // 𝚁
-    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDE81,
-    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDE81,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDE81
+    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDE81
+  ), // 𝚁
   '\uD835\uDD49': SymbolRenderConfig(
-    // 𝕉
-    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDD49,
-    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDD49,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDD49
+    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDD49
+  ), // 𝕉
   '\uD835\uDCAD': SymbolRenderConfig(
-    // 𝒭
-    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDCAD,
-    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDCAD,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'R'), // \uD835\uDCAD
+    text: RenderConfig(AtomType.ord, mainrm, 'R'), // \uD835\uDCAD
+  ), // 𝒭
   '\uD835\uDC12': SymbolRenderConfig(
-    // 𝐒
-    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDC12,
-    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDC12,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDC12
+    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDC12
+  ), // 𝐒
   '\uD835\uDC46': SymbolRenderConfig(
-    // 𝑆
-    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDC46,
-    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDC46,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDC46
+    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDC46
+  ), // 𝑆
   '\uD835\uDC7A': SymbolRenderConfig(
-    // 𝑺
-    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDC7A,
-    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDC7A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDC7A
+    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDC7A
+  ), // 𝑺
   '\uD835\uDD16': SymbolRenderConfig(
-    // 𝔖
-    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDD16,
-    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDD16,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDD16
+    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDD16
+  ), // 𝔖
   '\uD835\uDDB2': SymbolRenderConfig(
-    // 𝖲
-    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDDB2,
-    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDDB2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDDB2
+    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDDB2
+  ), // 𝖲
   '\uD835\uDDE6': SymbolRenderConfig(
-    // 𝗦
-    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDDE6,
-    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDDE6,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDDE6
+    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDDE6
+  ), // 𝗦
   '\uD835\uDE1A': SymbolRenderConfig(
-    // 𝘚
-    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDE1A,
-    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDE1A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDE1A
+    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDE1A
+  ), // 𝘚
   '\uD835\uDE82': SymbolRenderConfig(
-    // 𝚂
-    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDE82,
-    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDE82,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDE82
+    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDE82
+  ), // 𝚂
   '\uD835\uDD4A': SymbolRenderConfig(
-    // 𝕊
-    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDD4A,
-    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDD4A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDD4A
+    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDD4A
+  ), // 𝕊
   '\uD835\uDCAE': SymbolRenderConfig(
-    // 𝒮
-    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDCAE,
-    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDCAE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'S'), // \uD835\uDCAE
+    text: RenderConfig(AtomType.ord, mainrm, 'S'), // \uD835\uDCAE
+  ), // 𝒮
   '\uD835\uDC13': SymbolRenderConfig(
-    // 𝐓
-    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDC13,
-    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDC13,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDC13
+    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDC13
+  ), // 𝐓
   '\uD835\uDC47': SymbolRenderConfig(
-    // 𝑇
-    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDC47,
-    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDC47,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDC47
+    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDC47
+  ), // 𝑇
   '\uD835\uDC7B': SymbolRenderConfig(
-    // 𝑻
-    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDC7B,
-    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDC7B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDC7B
+    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDC7B
+  ), // 𝑻
   '\uD835\uDD17': SymbolRenderConfig(
-    // 𝔗
-    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDD17,
-    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDD17,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDD17
+    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDD17
+  ), // 𝔗
   '\uD835\uDDB3': SymbolRenderConfig(
-    // 𝖳
-    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDDB3,
-    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDDB3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDDB3
+    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDDB3
+  ), // 𝖳
   '\uD835\uDDE7': SymbolRenderConfig(
-    // 𝗧
-    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDDE7,
-    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDDE7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDDE7
+    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDDE7
+  ), // 𝗧
   '\uD835\uDE1B': SymbolRenderConfig(
-    // 𝘛
-    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDE1B,
-    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDE1B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDE1B
+    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDE1B
+  ), // 𝘛
   '\uD835\uDE83': SymbolRenderConfig(
-    // 𝚃
-    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDE83,
-    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDE83,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDE83
+    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDE83
+  ), // 𝚃
   '\uD835\uDD4B': SymbolRenderConfig(
-    // 𝕋
-    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDD4B,
-    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDD4B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDD4B
+    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDD4B
+  ), // 𝕋
   '\uD835\uDCAF': SymbolRenderConfig(
-    // 𝒯
-    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDCAF,
-    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDCAF,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'T'), // \uD835\uDCAF
+    text: RenderConfig(AtomType.ord, mainrm, 'T'), // \uD835\uDCAF
+  ), // 𝒯
   '\uD835\uDC14': SymbolRenderConfig(
-    // 𝐔
-    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDC14,
-    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDC14,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDC14
+    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDC14
+  ), // 𝐔
   '\uD835\uDC48': SymbolRenderConfig(
-    // 𝑈
-    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDC48,
-    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDC48,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDC48
+    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDC48
+  ), // 𝑈
   '\uD835\uDC7C': SymbolRenderConfig(
-    // 𝑼
-    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDC7C,
-    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDC7C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDC7C
+    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDC7C
+  ), // 𝑼
   '\uD835\uDD18': SymbolRenderConfig(
-    // 𝔘
-    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDD18,
-    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDD18,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDD18
+    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDD18
+  ), // 𝔘
   '\uD835\uDDB4': SymbolRenderConfig(
-    // 𝖴
-    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDDB4,
-    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDDB4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDDB4
+    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDDB4
+  ), // 𝖴
   '\uD835\uDDE8': SymbolRenderConfig(
-    // 𝗨
-    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDDE8,
-    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDDE8,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDDE8
+    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDDE8
+  ), // 𝗨
   '\uD835\uDE1C': SymbolRenderConfig(
-    // 𝘜
-    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDE1C,
-    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDE1C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDE1C
+    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDE1C
+  ), // 𝘜
   '\uD835\uDE84': SymbolRenderConfig(
-    // 𝚄
-    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDE84,
-    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDE84,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDE84
+    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDE84
+  ), // 𝚄
   '\uD835\uDD4C': SymbolRenderConfig(
-    // 𝕌
-    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDD4C,
-    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDD4C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDD4C
+    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDD4C
+  ), // 𝕌
   '\uD835\uDCB0': SymbolRenderConfig(
-    // 𝒰
-    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDCB0,
-    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDCB0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'U'), // \uD835\uDCB0
+    text: RenderConfig(AtomType.ord, mainrm, 'U'), // \uD835\uDCB0
+  ), // 𝒰
   '\uD835\uDC15': SymbolRenderConfig(
-    // 𝐕
-    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDC15,
-    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDC15,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDC15
+    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDC15
+  ), // 𝐕
   '\uD835\uDC49': SymbolRenderConfig(
-    // 𝑉
-    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDC49,
-    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDC49,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDC49
+    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDC49
+  ), // 𝑉
   '\uD835\uDC7D': SymbolRenderConfig(
-    // 𝑽
-    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDC7D,
-    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDC7D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDC7D
+    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDC7D
+  ), // 𝑽
   '\uD835\uDD19': SymbolRenderConfig(
-    // 𝔙
-    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDD19,
-    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDD19,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDD19
+    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDD19
+  ), // 𝔙
   '\uD835\uDDB5': SymbolRenderConfig(
-    // 𝖵
-    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDDB5,
-    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDDB5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDDB5
+    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDDB5
+  ), // 𝖵
   '\uD835\uDDE9': SymbolRenderConfig(
-    // 𝗩
-    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDDE9,
-    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDDE9,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDDE9
+    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDDE9
+  ), // 𝗩
   '\uD835\uDE1D': SymbolRenderConfig(
-    // 𝘝
-    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDE1D,
-    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDE1D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDE1D
+    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDE1D
+  ), // 𝘝
   '\uD835\uDE85': SymbolRenderConfig(
-    // 𝚅
-    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDE85,
-    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDE85,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDE85
+    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDE85
+  ), // 𝚅
   '\uD835\uDD4D': SymbolRenderConfig(
-    // 𝕍
-    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDD4D,
-    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDD4D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDD4D
+    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDD4D
+  ), // 𝕍
   '\uD835\uDCB1': SymbolRenderConfig(
-    // 𝒱
-    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDCB1,
-    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDCB1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'V'), // \uD835\uDCB1
+    text: RenderConfig(AtomType.ord, mainrm, 'V'), // \uD835\uDCB1
+  ), // 𝒱
   '\uD835\uDC16': SymbolRenderConfig(
-    // 𝐖
-    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDC16,
-    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDC16,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDC16
+    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDC16
+  ), // 𝐖
   '\uD835\uDC4A': SymbolRenderConfig(
-    // 𝑊
-    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDC4A,
-    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDC4A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDC4A
+    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDC4A
+  ), // 𝑊
   '\uD835\uDC7E': SymbolRenderConfig(
-    // 𝑾
-    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDC7E,
-    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDC7E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDC7E
+    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDC7E
+  ), // 𝑾
   '\uD835\uDD1A': SymbolRenderConfig(
-    // 𝔚
-    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDD1A,
-    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDD1A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDD1A
+    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDD1A
+  ), // 𝔚
   '\uD835\uDDB6': SymbolRenderConfig(
-    // 𝖶
-    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDDB6,
-    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDDB6,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDDB6
+    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDDB6
+  ), // 𝖶
   '\uD835\uDDEA': SymbolRenderConfig(
-    // 𝗪
-    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDDEA,
-    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDDEA,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDDEA
+    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDDEA
+  ), // 𝗪
   '\uD835\uDE1E': SymbolRenderConfig(
-    // 𝘞
-    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDE1E,
-    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDE1E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDE1E
+    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDE1E
+  ), // 𝘞
   '\uD835\uDE86': SymbolRenderConfig(
-    // 𝚆
-    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDE86,
-    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDE86,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDE86
+    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDE86
+  ), // 𝚆
   '\uD835\uDD4E': SymbolRenderConfig(
-    // 𝕎
-    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDD4E,
-    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDD4E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDD4E
+    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDD4E
+  ), // 𝕎
   '\uD835\uDCB2': SymbolRenderConfig(
-    // 𝒲
-    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDCB2,
-    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDCB2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'W'), // \uD835\uDCB2
+    text: RenderConfig(AtomType.ord, mainrm, 'W'), // \uD835\uDCB2
+  ), // 𝒲
   '\uD835\uDC17': SymbolRenderConfig(
-    // 𝐗
-    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDC17,
-    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDC17,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDC17
+    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDC17
+  ), // 𝐗
   '\uD835\uDC4B': SymbolRenderConfig(
-    // 𝑋
-    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDC4B,
-    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDC4B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDC4B
+    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDC4B
+  ), // 𝑋
   '\uD835\uDC7F': SymbolRenderConfig(
-    // 𝑿
-    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDC7F,
-    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDC7F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDC7F
+    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDC7F
+  ), // 𝑿
   '\uD835\uDD1B': SymbolRenderConfig(
-    // 𝔛
-    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDD1B,
-    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDD1B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDD1B
+    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDD1B
+  ), // 𝔛
   '\uD835\uDDB7': SymbolRenderConfig(
-    // 𝖷
-    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDDB7,
-    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDDB7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDDB7
+    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDDB7
+  ), // 𝖷
   '\uD835\uDDEB': SymbolRenderConfig(
-    // 𝗫
-    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDDEB,
-    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDDEB,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDDEB
+    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDDEB
+  ), // 𝗫
   '\uD835\uDE1F': SymbolRenderConfig(
-    // 𝘟
-    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDE1F,
-    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDE1F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDE1F
+    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDE1F
+  ), // 𝘟
   '\uD835\uDE87': SymbolRenderConfig(
-    // 𝚇
-    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDE87,
-    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDE87,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDE87
+    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDE87
+  ), // 𝚇
   '\uD835\uDD4F': SymbolRenderConfig(
-    // 𝕏
-    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDD4F,
-    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDD4F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDD4F
+    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDD4F
+  ), // 𝕏
   '\uD835\uDCB3': SymbolRenderConfig(
-    // 𝒳
-    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDCB3,
-    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDCB3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'X'), // \uD835\uDCB3
+    text: RenderConfig(AtomType.ord, mainrm, 'X'), // \uD835\uDCB3
+  ), // 𝒳
   '\uD835\uDC18': SymbolRenderConfig(
-    // 𝐘
-    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDC18,
-    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDC18,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDC18
+    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDC18
+  ), // 𝐘
   '\uD835\uDC4C': SymbolRenderConfig(
-    // 𝑌
-    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDC4C,
-    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDC4C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDC4C
+    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDC4C
+  ), // 𝑌
   '\uD835\uDC80': SymbolRenderConfig(
-    // 𝒀
-    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDC80,
-    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDC80,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDC80
+    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDC80
+  ), // 𝒀
   '\uD835\uDD1C': SymbolRenderConfig(
-    // 𝔜
-    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDD1C,
-    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDD1C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDD1C
+    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDD1C
+  ), // 𝔜
   '\uD835\uDDB8': SymbolRenderConfig(
-    // 𝖸
-    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDDB8,
-    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDDB8,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDDB8
+    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDDB8
+  ), // 𝖸
   '\uD835\uDDEC': SymbolRenderConfig(
-    // 𝗬
-    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDDEC,
-    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDDEC,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDDEC
+    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDDEC
+  ), // 𝗬
   '\uD835\uDE20': SymbolRenderConfig(
-    // 𝘠
-    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDE20,
-    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDE20,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDE20
+    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDE20
+  ), // 𝘠
   '\uD835\uDE88': SymbolRenderConfig(
-    // 𝚈
-    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDE88,
-    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDE88,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDE88
+    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDE88
+  ), // 𝚈
   '\uD835\uDD50': SymbolRenderConfig(
-    // 𝕐
-    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDD50,
-    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDD50,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDD50
+    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDD50
+  ), // 𝕐
   '\uD835\uDCB4': SymbolRenderConfig(
-    // 𝒴
-    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDCB4,
-    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDCB4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Y'), // \uD835\uDCB4
+    text: RenderConfig(AtomType.ord, mainrm, 'Y'), // \uD835\uDCB4
+  ), // 𝒴
   '\uD835\uDC19': SymbolRenderConfig(
-    // 𝐙
-    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDC19,
-    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDC19,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDC19
+    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDC19
+  ), // 𝐙
   '\uD835\uDC4D': SymbolRenderConfig(
-    // 𝑍
-    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDC4D,
-    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDC4D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDC4D
+    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDC4D
+  ), // 𝑍
   '\uD835\uDC81': SymbolRenderConfig(
-    // 𝒁
-    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDC81,
-    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDC81,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDC81
+    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDC81
+  ), // 𝒁
   '\uD835\uDD1D': SymbolRenderConfig(
-    // 𝔝
-    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDD1D,
-    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDD1D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDD1D
+    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDD1D
+  ), // 𝔝
   '\uD835\uDDB9': SymbolRenderConfig(
-    // 𝖹
-    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDDB9,
-    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDDB9,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDDB9
+    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDDB9
+  ), // 𝖹
   '\uD835\uDDED': SymbolRenderConfig(
-    // 𝗭
-    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDDED,
-    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDDED,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDDED
+    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDDED
+  ), // 𝗭
   '\uD835\uDE21': SymbolRenderConfig(
-    // 𝘡
-    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDE21,
-    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDE21,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDE21
+    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDE21
+  ), // 𝘡
   '\uD835\uDE89': SymbolRenderConfig(
-    // 𝚉
-    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDE89,
-    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDE89,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDE89
+    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDE89
+  ), // 𝚉
   '\uD835\uDD51': SymbolRenderConfig(
-    // 𝕑
-    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDD51,
-    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDD51,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDD51
+    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDD51
+  ), // 𝕑
   '\uD835\uDCB5': SymbolRenderConfig(
-    // 𝒵
-    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDCB5,
-    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDCB5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'Z'), // \uD835\uDCB5
+    text: RenderConfig(AtomType.ord, mainrm, 'Z'), // \uD835\uDCB5
+  ), // 𝒵
   '\uD835\uDC1A': SymbolRenderConfig(
-    // 𝐚
-    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDC1A,
-    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDC1A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDC1A
+    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDC1A
+  ), // 𝐚
   '\uD835\uDC4E': SymbolRenderConfig(
-    // 𝑎
-    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDC4E,
-    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDC4E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDC4E
+    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDC4E
+  ), // 𝑎
   '\uD835\uDC82': SymbolRenderConfig(
-    // 𝒂
-    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDC82,
-    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDC82,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDC82
+    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDC82
+  ), // 𝒂
   '\uD835\uDD1E': SymbolRenderConfig(
-    // 𝔞
-    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDD1E,
-    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDD1E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDD1E
+    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDD1E
+  ), // 𝔞
   '\uD835\uDDBA': SymbolRenderConfig(
-    // 𝖺
-    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDDBA,
-    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDDBA,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDDBA
+    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDDBA
+  ), // 𝖺
   '\uD835\uDDEE': SymbolRenderConfig(
-    // 𝗮
-    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDDEE,
-    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDDEE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDDEE
+    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDDEE
+  ), // 𝗮
   '\uD835\uDE22': SymbolRenderConfig(
-    // 𝘢
-    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDE22,
-    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDE22,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDE22
+    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDE22
+  ), // 𝘢
   '\uD835\uDE8A': SymbolRenderConfig(
-    // 𝚊
-    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDE8A,
-    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDE8A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'a'), // \uD835\uDE8A
+    text: RenderConfig(AtomType.ord, mainrm, 'a'), // \uD835\uDE8A
+  ), // 𝚊
   '\uD835\uDC1B': SymbolRenderConfig(
-    // 𝐛
-    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDC1B,
-    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDC1B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDC1B
+    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDC1B
+  ), // 𝐛
   '\uD835\uDC4F': SymbolRenderConfig(
-    // 𝑏
-    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDC4F,
-    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDC4F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDC4F
+    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDC4F
+  ), // 𝑏
   '\uD835\uDC83': SymbolRenderConfig(
-    // 𝒃
-    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDC83,
-    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDC83,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDC83
+    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDC83
+  ), // 𝒃
   '\uD835\uDD1F': SymbolRenderConfig(
-    // 𝔟
-    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDD1F,
-    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDD1F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDD1F
+    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDD1F
+  ), // 𝔟
   '\uD835\uDDBB': SymbolRenderConfig(
-    // 𝖻
-    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDDBB,
-    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDDBB,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDDBB
+    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDDBB
+  ), // 𝖻
   '\uD835\uDDEF': SymbolRenderConfig(
-    // 𝗯
-    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDDEF,
-    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDDEF,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDDEF
+    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDDEF
+  ), // 𝗯
   '\uD835\uDE23': SymbolRenderConfig(
-    // 𝘣
-    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDE23,
-    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDE23,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDE23
+    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDE23
+  ), // 𝘣
   '\uD835\uDE8B': SymbolRenderConfig(
-    // 𝚋
-    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDE8B,
-    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDE8B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'b'), // \uD835\uDE8B
+    text: RenderConfig(AtomType.ord, mainrm, 'b'), // \uD835\uDE8B
+  ), // 𝚋
   '\uD835\uDC1C': SymbolRenderConfig(
-    // 𝐜
-    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDC1C,
-    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDC1C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDC1C
+    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDC1C
+  ), // 𝐜
   '\uD835\uDC50': SymbolRenderConfig(
-    // 𝑐
-    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDC50,
-    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDC50,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDC50
+    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDC50
+  ), // 𝑐
   '\uD835\uDC84': SymbolRenderConfig(
-    // 𝒄
-    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDC84,
-    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDC84,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDC84
+    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDC84
+  ), // 𝒄
   '\uD835\uDD20': SymbolRenderConfig(
-    // 𝔠
-    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDD20,
-    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDD20,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDD20
+    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDD20
+  ), // 𝔠
   '\uD835\uDDBC': SymbolRenderConfig(
-    // 𝖼
-    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDDBC,
-    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDDBC,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDDBC
+    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDDBC
+  ), // 𝖼
   '\uD835\uDDF0': SymbolRenderConfig(
-    // 𝗰
-    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDDF0,
-    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDDF0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDDF0
+    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDDF0
+  ), // 𝗰
   '\uD835\uDE24': SymbolRenderConfig(
-    // 𝘤
-    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDE24,
-    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDE24,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDE24
+    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDE24
+  ), // 𝘤
   '\uD835\uDE8C': SymbolRenderConfig(
-    // 𝚌
-    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDE8C,
-    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDE8C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'c'), // \uD835\uDE8C
+    text: RenderConfig(AtomType.ord, mainrm, 'c'), // \uD835\uDE8C
+  ), // 𝚌
   '\uD835\uDC1D': SymbolRenderConfig(
-    // 𝐝
-    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDC1D,
-    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDC1D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDC1D
+    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDC1D
+  ), // 𝐝
   '\uD835\uDC51': SymbolRenderConfig(
-    // 𝑑
-    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDC51,
-    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDC51,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDC51
+    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDC51
+  ), // 𝑑
   '\uD835\uDC85': SymbolRenderConfig(
-    // 𝒅
-    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDC85,
-    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDC85,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDC85
+    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDC85
+  ), // 𝒅
   '\uD835\uDD21': SymbolRenderConfig(
-    // 𝔡
-    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDD21,
-    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDD21,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDD21
+    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDD21
+  ), // 𝔡
   '\uD835\uDDBD': SymbolRenderConfig(
-    // 𝖽
-    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDDBD,
-    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDDBD,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDDBD
+    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDDBD
+  ), // 𝖽
   '\uD835\uDDF1': SymbolRenderConfig(
-    // 𝗱
-    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDDF1,
-    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDDF1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDDF1
+    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDDF1
+  ), // 𝗱
   '\uD835\uDE25': SymbolRenderConfig(
-    // 𝘥
-    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDE25,
-    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDE25,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDE25
+    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDE25
+  ), // 𝘥
   '\uD835\uDE8D': SymbolRenderConfig(
-    // 𝚍
-    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDE8D,
-    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDE8D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'd'), // \uD835\uDE8D
+    text: RenderConfig(AtomType.ord, mainrm, 'd'), // \uD835\uDE8D
+  ), // 𝚍
   '\uD835\uDC1E': SymbolRenderConfig(
-    // 𝐞
-    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDC1E,
-    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDC1E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDC1E
+    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDC1E
+  ), // 𝐞
   '\uD835\uDC52': SymbolRenderConfig(
-    // 𝑒
-    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDC52,
-    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDC52,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDC52
+    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDC52
+  ), // 𝑒
   '\uD835\uDC86': SymbolRenderConfig(
-    // 𝒆
-    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDC86,
-    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDC86,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDC86
+    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDC86
+  ), // 𝒆
   '\uD835\uDD22': SymbolRenderConfig(
-    // 𝔢
-    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDD22,
-    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDD22,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDD22
+    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDD22
+  ), // 𝔢
   '\uD835\uDDBE': SymbolRenderConfig(
-    // 𝖾
-    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDDBE,
-    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDDBE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDDBE
+    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDDBE
+  ), // 𝖾
   '\uD835\uDDF2': SymbolRenderConfig(
-    // 𝗲
-    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDDF2,
-    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDDF2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDDF2
+    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDDF2
+  ), // 𝗲
   '\uD835\uDE26': SymbolRenderConfig(
-    // 𝘦
-    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDE26,
-    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDE26,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDE26
+    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDE26
+  ), // 𝘦
   '\uD835\uDE8E': SymbolRenderConfig(
-    // 𝚎
-    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDE8E,
-    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDE8E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'e'), // \uD835\uDE8E
+    text: RenderConfig(AtomType.ord, mainrm, 'e'), // \uD835\uDE8E
+  ), // 𝚎
   '\uD835\uDC1F': SymbolRenderConfig(
-    // 𝐟
-    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDC1F,
-    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDC1F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDC1F
+    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDC1F
+  ), // 𝐟
   '\uD835\uDC53': SymbolRenderConfig(
-    // 𝑓
-    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDC53,
-    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDC53,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDC53
+    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDC53
+  ), // 𝑓
   '\uD835\uDC87': SymbolRenderConfig(
-    // 𝒇
-    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDC87,
-    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDC87,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDC87
+    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDC87
+  ), // 𝒇
   '\uD835\uDD23': SymbolRenderConfig(
-    // 𝔣
-    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDD23,
-    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDD23,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDD23
+    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDD23
+  ), // 𝔣
   '\uD835\uDDBF': SymbolRenderConfig(
-    // 𝖿
-    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDDBF,
-    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDDBF,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDDBF
+    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDDBF
+  ), // 𝖿
   '\uD835\uDDF3': SymbolRenderConfig(
-    // 𝗳
-    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDDF3,
-    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDDF3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDDF3
+    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDDF3
+  ), // 𝗳
   '\uD835\uDE27': SymbolRenderConfig(
-    // 𝘧
-    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDE27,
-    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDE27,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDE27
+    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDE27
+  ), // 𝘧
   '\uD835\uDE8F': SymbolRenderConfig(
-    // 𝚏
-    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDE8F,
-    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDE8F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'f'), // \uD835\uDE8F
+    text: RenderConfig(AtomType.ord, mainrm, 'f'), // \uD835\uDE8F
+  ), // 𝚏
   '\uD835\uDC20': SymbolRenderConfig(
-    // 𝐠
-    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDC20,
-    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDC20,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDC20
+    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDC20
+  ), // 𝐠
   '\uD835\uDC54': SymbolRenderConfig(
-    // 𝑔
-    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDC54,
-    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDC54,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDC54
+    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDC54
+  ), // 𝑔
   '\uD835\uDC88': SymbolRenderConfig(
-    // 𝒈
-    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDC88,
-    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDC88,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDC88
+    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDC88
+  ), // 𝒈
   '\uD835\uDD24': SymbolRenderConfig(
-    // 𝔤
-    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDD24,
-    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDD24,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDD24
+    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDD24
+  ), // 𝔤
   '\uD835\uDDC0': SymbolRenderConfig(
-    // 𝗀
-    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDDC0,
-    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDDC0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDDC0
+    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDDC0
+  ), // 𝗀
   '\uD835\uDDF4': SymbolRenderConfig(
-    // 𝗴
-    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDDF4,
-    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDDF4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDDF4
+    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDDF4
+  ), // 𝗴
   '\uD835\uDE28': SymbolRenderConfig(
-    // 𝘨
-    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDE28,
-    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDE28,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDE28
+    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDE28
+  ), // 𝘨
   '\uD835\uDE90': SymbolRenderConfig(
-    // 𝚐
-    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDE90,
-    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDE90,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'g'), // \uD835\uDE90
+    text: RenderConfig(AtomType.ord, mainrm, 'g'), // \uD835\uDE90
+  ), // 𝚐
   '\uD835\uDC21': SymbolRenderConfig(
-    // 𝐡
-    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDC21,
-    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDC21,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDC21
+    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDC21
+  ), // 𝐡
   '\uD835\uDC55': SymbolRenderConfig(
-    // 𝑕
-    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDC55,
-    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDC55,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDC55
+    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDC55
+  ), // 𝑕
   '\uD835\uDC89': SymbolRenderConfig(
-    // 𝒉
-    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDC89,
-    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDC89,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDC89
+    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDC89
+  ), // 𝒉
   '\uD835\uDD25': SymbolRenderConfig(
-    // 𝔥
-    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDD25,
-    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDD25,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDD25
+    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDD25
+  ), // 𝔥
   '\uD835\uDDC1': SymbolRenderConfig(
-    // 𝗁
-    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDDC1,
-    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDDC1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDDC1
+    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDDC1
+  ), // 𝗁
   '\uD835\uDDF5': SymbolRenderConfig(
-    // 𝗵
-    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDDF5,
-    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDDF5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDDF5
+    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDDF5
+  ), // 𝗵
   '\uD835\uDE29': SymbolRenderConfig(
-    // 𝘩
-    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDE29,
-    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDE29,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDE29
+    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDE29
+  ), // 𝘩
   '\uD835\uDE91': SymbolRenderConfig(
-    // 𝚑
-    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDE91,
-    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDE91,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'h'), // \uD835\uDE91
+    text: RenderConfig(AtomType.ord, mainrm, 'h'), // \uD835\uDE91
+  ), // 𝚑
   '\uD835\uDC22': SymbolRenderConfig(
-    // 𝐢
-    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDC22,
-    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDC22,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDC22
+    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDC22
+  ), // 𝐢
   '\uD835\uDC56': SymbolRenderConfig(
-    // 𝑖
-    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDC56,
-    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDC56,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDC56
+    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDC56
+  ), // 𝑖
   '\uD835\uDC8A': SymbolRenderConfig(
-    // 𝒊
-    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDC8A,
-    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDC8A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDC8A
+    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDC8A
+  ), // 𝒊
   '\uD835\uDD26': SymbolRenderConfig(
-    // 𝔦
-    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDD26,
-    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDD26,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDD26
+    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDD26
+  ), // 𝔦
   '\uD835\uDDC2': SymbolRenderConfig(
-    // 𝗂
-    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDDC2,
-    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDDC2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDDC2
+    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDDC2
+  ), // 𝗂
   '\uD835\uDDF6': SymbolRenderConfig(
-    // 𝗶
-    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDDF6,
-    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDDF6,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDDF6
+    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDDF6
+  ), // 𝗶
   '\uD835\uDE2A': SymbolRenderConfig(
-    // 𝘪
-    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDE2A,
-    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDE2A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDE2A
+    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDE2A
+  ), // 𝘪
   '\uD835\uDE92': SymbolRenderConfig(
-    // 𝚒
-    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDE92,
-    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDE92,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'i'), // \uD835\uDE92
+    text: RenderConfig(AtomType.ord, mainrm, 'i'), // \uD835\uDE92
+  ), // 𝚒
   '\uD835\uDC23': SymbolRenderConfig(
-    // 𝐣
-    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDC23,
-    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDC23,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDC23
+    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDC23
+  ), // 𝐣
   '\uD835\uDC57': SymbolRenderConfig(
-    // 𝑗
-    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDC57,
-    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDC57,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDC57
+    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDC57
+  ), // 𝑗
   '\uD835\uDC8B': SymbolRenderConfig(
-    // 𝒋
-    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDC8B,
-    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDC8B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDC8B
+    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDC8B
+  ), // 𝒋
   '\uD835\uDD27': SymbolRenderConfig(
-    // 𝔧
-    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDD27,
-    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDD27,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDD27
+    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDD27
+  ), // 𝔧
   '\uD835\uDDC3': SymbolRenderConfig(
-    // 𝗃
-    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDDC3,
-    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDDC3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDDC3
+    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDDC3
+  ), // 𝗃
   '\uD835\uDDF7': SymbolRenderConfig(
-    // 𝗷
-    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDDF7,
-    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDDF7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDDF7
+    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDDF7
+  ), // 𝗷
   '\uD835\uDE2B': SymbolRenderConfig(
-    // 𝘫
-    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDE2B,
-    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDE2B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDE2B
+    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDE2B
+  ), // 𝘫
   '\uD835\uDE93': SymbolRenderConfig(
-    // 𝚓
-    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDE93,
-    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDE93,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'j'), // \uD835\uDE93
+    text: RenderConfig(AtomType.ord, mainrm, 'j'), // \uD835\uDE93
+  ), // 𝚓
   '\uD835\uDC24': SymbolRenderConfig(
-    // 𝐤
-    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDC24,
-    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDC24,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDC24
+    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDC24
+  ), // 𝐤
   '\uD835\uDC58': SymbolRenderConfig(
-    // 𝑘
-    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDC58,
-    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDC58,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDC58
+    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDC58
+  ), // 𝑘
   '\uD835\uDC8C': SymbolRenderConfig(
-    // 𝒌
-    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDC8C,
-    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDC8C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDC8C
+    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDC8C
+  ), // 𝒌
   '\uD835\uDD28': SymbolRenderConfig(
-    // 𝔨
-    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDD28,
-    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDD28,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDD28
+    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDD28
+  ), // 𝔨
   '\uD835\uDDC4': SymbolRenderConfig(
-    // 𝗄
-    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDDC4,
-    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDDC4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDDC4
+    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDDC4
+  ), // 𝗄
   '\uD835\uDDF8': SymbolRenderConfig(
-    // 𝗸
-    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDDF8,
-    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDDF8,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDDF8
+    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDDF8
+  ), // 𝗸
   '\uD835\uDE2C': SymbolRenderConfig(
-    // 𝘬
-    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDE2C,
-    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDE2C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDE2C
+    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDE2C
+  ), // 𝘬
   '\uD835\uDE94': SymbolRenderConfig(
-    // 𝚔
-    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDE94,
-    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDE94,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDE94
+    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDE94
+  ), // 𝚔
   '\uD835\uDC25': SymbolRenderConfig(
-    // 𝐥
-    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDC25,
-    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDC25,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDC25
+    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDC25
+  ), // 𝐥
   '\uD835\uDC59': SymbolRenderConfig(
-    // 𝑙
-    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDC59,
-    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDC59,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDC59
+    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDC59
+  ), // 𝑙
   '\uD835\uDC8D': SymbolRenderConfig(
-    // 𝒍
-    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDC8D,
-    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDC8D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDC8D
+    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDC8D
+  ), // 𝒍
   '\uD835\uDD29': SymbolRenderConfig(
-    // 𝔩
-    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDD29,
-    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDD29,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDD29
+    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDD29
+  ), // 𝔩
   '\uD835\uDDC5': SymbolRenderConfig(
-    // 𝗅
-    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDDC5,
-    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDDC5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDDC5
+    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDDC5
+  ), // 𝗅
   '\uD835\uDDF9': SymbolRenderConfig(
-    // 𝗹
-    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDDF9,
-    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDDF9,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDDF9
+    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDDF9
+  ), // 𝗹
   '\uD835\uDE2D': SymbolRenderConfig(
-    // 𝘭
-    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDE2D,
-    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDE2D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDE2D
+    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDE2D
+  ), // 𝘭
   '\uD835\uDE95': SymbolRenderConfig(
-    // 𝚕
-    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDE95,
-    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDE95,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'l'), // \uD835\uDE95
+    text: RenderConfig(AtomType.ord, mainrm, 'l'), // \uD835\uDE95
+  ), // 𝚕
   '\uD835\uDC26': SymbolRenderConfig(
-    // 𝐦
-    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDC26,
-    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDC26,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDC26
+    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDC26
+  ), // 𝐦
   '\uD835\uDC5A': SymbolRenderConfig(
-    // 𝑚
-    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDC5A,
-    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDC5A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDC5A
+    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDC5A
+  ), // 𝑚
   '\uD835\uDC8E': SymbolRenderConfig(
-    // 𝒎
-    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDC8E,
-    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDC8E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDC8E
+    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDC8E
+  ), // 𝒎
   '\uD835\uDD2A': SymbolRenderConfig(
-    // 𝔪
-    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDD2A,
-    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDD2A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDD2A
+    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDD2A
+  ), // 𝔪
   '\uD835\uDDC6': SymbolRenderConfig(
-    // 𝗆
-    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDDC6,
-    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDDC6,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDDC6
+    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDDC6
+  ), // 𝗆
   '\uD835\uDDFA': SymbolRenderConfig(
-    // 𝗺
-    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDDFA,
-    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDDFA,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDDFA
+    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDDFA
+  ), // 𝗺
   '\uD835\uDE2E': SymbolRenderConfig(
-    // 𝘮
-    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDE2E,
-    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDE2E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDE2E
+    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDE2E
+  ), // 𝘮
   '\uD835\uDE96': SymbolRenderConfig(
-    // 𝚖
-    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDE96,
-    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDE96,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'm'), // \uD835\uDE96
+    text: RenderConfig(AtomType.ord, mainrm, 'm'), // \uD835\uDE96
+  ), // 𝚖
   '\uD835\uDC27': SymbolRenderConfig(
-    // 𝐧
-    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDC27,
-    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDC27,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDC27
+    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDC27
+  ), // 𝐧
   '\uD835\uDC5B': SymbolRenderConfig(
-    // 𝑛
-    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDC5B,
-    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDC5B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDC5B
+    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDC5B
+  ), // 𝑛
   '\uD835\uDC8F': SymbolRenderConfig(
-    // 𝒏
-    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDC8F,
-    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDC8F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDC8F
+    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDC8F
+  ), // 𝒏
   '\uD835\uDD2B': SymbolRenderConfig(
-    // 𝔫
-    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDD2B,
-    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDD2B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDD2B
+    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDD2B
+  ), // 𝔫
   '\uD835\uDDC7': SymbolRenderConfig(
-    // 𝗇
-    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDDC7,
-    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDDC7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDDC7
+    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDDC7
+  ), // 𝗇
   '\uD835\uDDFB': SymbolRenderConfig(
-    // 𝗻
-    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDDFB,
-    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDDFB,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDDFB
+    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDDFB
+  ), // 𝗻
   '\uD835\uDE2F': SymbolRenderConfig(
-    // 𝘯
-    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDE2F,
-    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDE2F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDE2F
+    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDE2F
+  ), // 𝘯
   '\uD835\uDE97': SymbolRenderConfig(
-    // 𝚗
-    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDE97,
-    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDE97,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'n'), // \uD835\uDE97
+    text: RenderConfig(AtomType.ord, mainrm, 'n'), // \uD835\uDE97
+  ), // 𝚗
   '\uD835\uDC28': SymbolRenderConfig(
-    // 𝐨
-    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDC28,
-    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDC28,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDC28
+    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDC28
+  ), // 𝐨
   '\uD835\uDC5C': SymbolRenderConfig(
-    // 𝑜
-    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDC5C,
-    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDC5C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDC5C
+    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDC5C
+  ), // 𝑜
   '\uD835\uDC90': SymbolRenderConfig(
-    // 𝒐
-    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDC90,
-    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDC90,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDC90
+    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDC90
+  ), // 𝒐
   '\uD835\uDD2C': SymbolRenderConfig(
-    // 𝔬
-    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDD2C,
-    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDD2C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDD2C
+    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDD2C
+  ), // 𝔬
   '\uD835\uDDC8': SymbolRenderConfig(
-    // 𝗈
-    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDDC8,
-    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDDC8,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDDC8
+    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDDC8
+  ), // 𝗈
   '\uD835\uDDFC': SymbolRenderConfig(
-    // 𝗼
-    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDDFC,
-    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDDFC,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDDFC
+    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDDFC
+  ), // 𝗼
   '\uD835\uDE30': SymbolRenderConfig(
-    // 𝘰
-    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDE30,
-    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDE30,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDE30
+    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDE30
+  ), // 𝘰
   '\uD835\uDE98': SymbolRenderConfig(
-    // 𝚘
-    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDE98,
-    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDE98,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'o'), // \uD835\uDE98
+    text: RenderConfig(AtomType.ord, mainrm, 'o'), // \uD835\uDE98
+  ), // 𝚘
   '\uD835\uDC29': SymbolRenderConfig(
-    // 𝐩
-    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDC29,
-    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDC29,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDC29
+    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDC29
+  ), // 𝐩
   '\uD835\uDC5D': SymbolRenderConfig(
-    // 𝑝
-    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDC5D,
-    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDC5D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDC5D
+    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDC5D
+  ), // 𝑝
   '\uD835\uDC91': SymbolRenderConfig(
-    // 𝒑
-    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDC91,
-    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDC91,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDC91
+    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDC91
+  ), // 𝒑
   '\uD835\uDD2D': SymbolRenderConfig(
-    // 𝔭
-    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDD2D,
-    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDD2D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDD2D
+    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDD2D
+  ), // 𝔭
   '\uD835\uDDC9': SymbolRenderConfig(
-    // 𝗉
-    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDDC9,
-    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDDC9,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDDC9
+    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDDC9
+  ), // 𝗉
   '\uD835\uDDFD': SymbolRenderConfig(
-    // 𝗽
-    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDDFD,
-    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDDFD,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDDFD
+    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDDFD
+  ), // 𝗽
   '\uD835\uDE31': SymbolRenderConfig(
-    // 𝘱
-    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDE31,
-    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDE31,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDE31
+    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDE31
+  ), // 𝘱
   '\uD835\uDE99': SymbolRenderConfig(
-    // 𝚙
-    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDE99,
-    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDE99,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'p'), // \uD835\uDE99
+    text: RenderConfig(AtomType.ord, mainrm, 'p'), // \uD835\uDE99
+  ), // 𝚙
   '\uD835\uDC2A': SymbolRenderConfig(
-    // 𝐪
-    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDC2A,
-    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDC2A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDC2A
+    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDC2A
+  ), // 𝐪
   '\uD835\uDC5E': SymbolRenderConfig(
-    // 𝑞
-    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDC5E,
-    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDC5E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDC5E
+    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDC5E
+  ), // 𝑞
   '\uD835\uDC92': SymbolRenderConfig(
-    // 𝒒
-    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDC92,
-    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDC92,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDC92
+    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDC92
+  ), // 𝒒
   '\uD835\uDD2E': SymbolRenderConfig(
-    // 𝔮
-    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDD2E,
-    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDD2E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDD2E
+    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDD2E
+  ), // 𝔮
   '\uD835\uDDCA': SymbolRenderConfig(
-    // 𝗊
-    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDDCA,
-    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDDCA,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDDCA
+    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDDCA
+  ), // 𝗊
   '\uD835\uDDFE': SymbolRenderConfig(
-    // 𝗾
-    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDDFE,
-    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDDFE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDDFE
+    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDDFE
+  ), // 𝗾
   '\uD835\uDE32': SymbolRenderConfig(
-    // 𝘲
-    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDE32,
-    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDE32,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDE32
+    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDE32
+  ), // 𝘲
   '\uD835\uDE9A': SymbolRenderConfig(
-    // 𝚚
-    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDE9A,
-    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDE9A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'q'), // \uD835\uDE9A
+    text: RenderConfig(AtomType.ord, mainrm, 'q'), // \uD835\uDE9A
+  ), // 𝚚
   '\uD835\uDC2B': SymbolRenderConfig(
-    // 𝐫
-    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDC2B,
-    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDC2B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDC2B
+    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDC2B
+  ), // 𝐫
   '\uD835\uDC5F': SymbolRenderConfig(
-    // 𝑟
-    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDC5F,
-    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDC5F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDC5F
+    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDC5F
+  ), // 𝑟
   '\uD835\uDC93': SymbolRenderConfig(
-    // 𝒓
-    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDC93,
-    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDC93,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDC93
+    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDC93
+  ), // 𝒓
   '\uD835\uDD2F': SymbolRenderConfig(
-    // 𝔯
-    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDD2F,
-    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDD2F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDD2F
+    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDD2F
+  ), // 𝔯
   '\uD835\uDDCB': SymbolRenderConfig(
-    // 𝗋
-    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDDCB,
-    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDDCB,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDDCB
+    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDDCB
+  ), // 𝗋
   '\uD835\uDDFF': SymbolRenderConfig(
-    // 𝗿
-    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDDFF,
-    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDDFF,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDDFF
+    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDDFF
+  ), // 𝗿
   '\uD835\uDE33': SymbolRenderConfig(
-    // 𝘳
-    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDE33,
-    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDE33,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDE33
+    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDE33
+  ), // 𝘳
   '\uD835\uDE9B': SymbolRenderConfig(
-    // 𝚛
-    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDE9B,
-    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDE9B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'r'), // \uD835\uDE9B
+    text: RenderConfig(AtomType.ord, mainrm, 'r'), // \uD835\uDE9B
+  ), // 𝚛
   '\uD835\uDC2C': SymbolRenderConfig(
-    // 𝐬
-    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDC2C,
-    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDC2C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDC2C
+    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDC2C
+  ), // 𝐬
   '\uD835\uDC60': SymbolRenderConfig(
-    // 𝑠
-    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDC60,
-    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDC60,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDC60
+    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDC60
+  ), // 𝑠
   '\uD835\uDC94': SymbolRenderConfig(
-    // 𝒔
-    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDC94,
-    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDC94,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDC94
+    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDC94
+  ), // 𝒔
   '\uD835\uDD30': SymbolRenderConfig(
-    // 𝔰
-    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDD30,
-    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDD30,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDD30
+    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDD30
+  ), // 𝔰
   '\uD835\uDDCC': SymbolRenderConfig(
-    // 𝗌
-    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDDCC,
-    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDDCC,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDDCC
+    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDDCC
+  ), // 𝗌
   '\uD835\uDE00': SymbolRenderConfig(
-    // 𝘀
-    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDE00,
-    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDE00,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDE00
+    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDE00
+  ), // 𝘀
   '\uD835\uDE34': SymbolRenderConfig(
-    // 𝘴
-    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDE34,
-    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDE34,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDE34
+    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDE34
+  ), // 𝘴
   '\uD835\uDE9C': SymbolRenderConfig(
-    // 𝚜
-    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDE9C,
-    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDE9C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 's'), // \uD835\uDE9C
+    text: RenderConfig(AtomType.ord, mainrm, 's'), // \uD835\uDE9C
+  ), // 𝚜
   '\uD835\uDC2D': SymbolRenderConfig(
-    // 𝐭
-    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDC2D,
-    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDC2D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDC2D
+    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDC2D
+  ), // 𝐭
   '\uD835\uDC61': SymbolRenderConfig(
-    // 𝑡
-    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDC61,
-    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDC61,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDC61
+    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDC61
+  ), // 𝑡
   '\uD835\uDC95': SymbolRenderConfig(
-    // 𝒕
-    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDC95,
-    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDC95,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDC95
+    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDC95
+  ), // 𝒕
   '\uD835\uDD31': SymbolRenderConfig(
-    // 𝔱
-    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDD31,
-    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDD31,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDD31
+    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDD31
+  ), // 𝔱
   '\uD835\uDDCD': SymbolRenderConfig(
-    // 𝗍
-    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDDCD,
-    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDDCD,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDDCD
+    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDDCD
+  ), // 𝗍
   '\uD835\uDE01': SymbolRenderConfig(
-    // 𝘁
-    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDE01,
-    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDE01,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDE01
+    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDE01
+  ), // 𝘁
   '\uD835\uDE35': SymbolRenderConfig(
-    // 𝘵
-    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDE35,
-    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDE35,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDE35
+    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDE35
+  ), // 𝘵
   '\uD835\uDE9D': SymbolRenderConfig(
-    // 𝚝
-    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDE9D,
-    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDE9D,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 't'), // \uD835\uDE9D
+    text: RenderConfig(AtomType.ord, mainrm, 't'), // \uD835\uDE9D
+  ), // 𝚝
   '\uD835\uDC2E': SymbolRenderConfig(
-    // 𝐮
-    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDC2E,
-    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDC2E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDC2E
+    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDC2E
+  ), // 𝐮
   '\uD835\uDC62': SymbolRenderConfig(
-    // 𝑢
-    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDC62,
-    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDC62,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDC62
+    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDC62
+  ), // 𝑢
   '\uD835\uDC96': SymbolRenderConfig(
-    // 𝒖
-    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDC96,
-    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDC96,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDC96
+    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDC96
+  ), // 𝒖
   '\uD835\uDD32': SymbolRenderConfig(
-    // 𝔲
-    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDD32,
-    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDD32,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDD32
+    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDD32
+  ), // 𝔲
   '\uD835\uDDCE': SymbolRenderConfig(
-    // 𝗎
-    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDDCE,
-    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDDCE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDDCE
+    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDDCE
+  ), // 𝗎
   '\uD835\uDE02': SymbolRenderConfig(
-    // 𝘂
-    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDE02,
-    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDE02,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDE02
+    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDE02
+  ), // 𝘂
   '\uD835\uDE36': SymbolRenderConfig(
-    // 𝘶
-    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDE36,
-    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDE36,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDE36
+    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDE36
+  ), // 𝘶
   '\uD835\uDE9E': SymbolRenderConfig(
-    // 𝚞
-    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDE9E,
-    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDE9E,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'u'), // \uD835\uDE9E
+    text: RenderConfig(AtomType.ord, mainrm, 'u'), // \uD835\uDE9E
+  ), // 𝚞
   '\uD835\uDC2F': SymbolRenderConfig(
-    // 𝐯
-    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDC2F,
-    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDC2F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDC2F
+    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDC2F
+  ), // 𝐯
   '\uD835\uDC63': SymbolRenderConfig(
-    // 𝑣
-    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDC63,
-    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDC63,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDC63
+    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDC63
+  ), // 𝑣
   '\uD835\uDC97': SymbolRenderConfig(
-    // 𝒗
-    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDC97,
-    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDC97,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDC97
+    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDC97
+  ), // 𝒗
   '\uD835\uDD33': SymbolRenderConfig(
-    // 𝔳
-    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDD33,
-    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDD33,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDD33
+    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDD33
+  ), // 𝔳
   '\uD835\uDDCF': SymbolRenderConfig(
-    // 𝗏
-    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDDCF,
-    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDDCF,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDDCF
+    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDDCF
+  ), // 𝗏
   '\uD835\uDE03': SymbolRenderConfig(
-    // 𝘃
-    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDE03,
-    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDE03,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDE03
+    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDE03
+  ), // 𝘃
   '\uD835\uDE37': SymbolRenderConfig(
-    // 𝘷
-    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDE37,
-    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDE37,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDE37
+    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDE37
+  ), // 𝘷
   '\uD835\uDE9F': SymbolRenderConfig(
-    // 𝚟
-    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDE9F,
-    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDE9F,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'v'), // \uD835\uDE9F
+    text: RenderConfig(AtomType.ord, mainrm, 'v'), // \uD835\uDE9F
+  ), // 𝚟
   '\uD835\uDC30': SymbolRenderConfig(
-    // 𝐰
-    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDC30,
-    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDC30,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDC30
+    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDC30
+  ), // 𝐰
   '\uD835\uDC64': SymbolRenderConfig(
-    // 𝑤
-    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDC64,
-    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDC64,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDC64
+    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDC64
+  ), // 𝑤
   '\uD835\uDC98': SymbolRenderConfig(
-    // 𝒘
-    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDC98,
-    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDC98,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDC98
+    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDC98
+  ), // 𝒘
   '\uD835\uDD34': SymbolRenderConfig(
-    // 𝔴
-    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDD34,
-    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDD34,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDD34
+    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDD34
+  ), // 𝔴
   '\uD835\uDDD0': SymbolRenderConfig(
-    // 𝗐
-    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDDD0,
-    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDDD0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDDD0
+    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDDD0
+  ), // 𝗐
   '\uD835\uDE04': SymbolRenderConfig(
-    // 𝘄
-    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDE04,
-    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDE04,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDE04
+    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDE04
+  ), // 𝘄
   '\uD835\uDE38': SymbolRenderConfig(
-    // 𝘸
-    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDE38,
-    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDE38,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDE38
+    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDE38
+  ), // 𝘸
   '\uD835\uDEA0': SymbolRenderConfig(
-    // 𝚠
-    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDEA0,
-    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDEA0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'w'), // \uD835\uDEA0
+    text: RenderConfig(AtomType.ord, mainrm, 'w'), // \uD835\uDEA0
+  ), // 𝚠
   '\uD835\uDC31': SymbolRenderConfig(
-    // 𝐱
-    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDC31,
-    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDC31,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDC31
+    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDC31
+  ), // 𝐱
   '\uD835\uDC65': SymbolRenderConfig(
-    // 𝑥
-    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDC65,
-    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDC65,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDC65
+    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDC65
+  ), // 𝑥
   '\uD835\uDC99': SymbolRenderConfig(
-    // 𝒙
-    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDC99,
-    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDC99,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDC99
+    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDC99
+  ), // 𝒙
   '\uD835\uDD35': SymbolRenderConfig(
-    // 𝔵
-    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDD35,
-    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDD35,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDD35
+    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDD35
+  ), // 𝔵
   '\uD835\uDDD1': SymbolRenderConfig(
-    // 𝗑
-    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDDD1,
-    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDDD1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDDD1
+    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDDD1
+  ), // 𝗑
   '\uD835\uDE05': SymbolRenderConfig(
-    // 𝘅
-    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDE05,
-    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDE05,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDE05
+    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDE05
+  ), // 𝘅
   '\uD835\uDE39': SymbolRenderConfig(
-    // 𝘹
-    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDE39,
-    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDE39,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDE39
+    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDE39
+  ), // 𝘹
   '\uD835\uDEA1': SymbolRenderConfig(
-    // 𝚡
-    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDEA1,
-    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDEA1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'x'), // \uD835\uDEA1
+    text: RenderConfig(AtomType.ord, mainrm, 'x'), // \uD835\uDEA1
+  ), // 𝚡
   '\uD835\uDC32': SymbolRenderConfig(
-    // 𝐲
-    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDC32,
-    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDC32,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDC32
+    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDC32
+  ), // 𝐲
   '\uD835\uDC66': SymbolRenderConfig(
-    // 𝑦
-    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDC66,
-    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDC66,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDC66
+    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDC66
+  ), // 𝑦
   '\uD835\uDC9A': SymbolRenderConfig(
-    // 𝒚
-    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDC9A,
-    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDC9A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDC9A
+    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDC9A
+  ), // 𝒚
   '\uD835\uDD36': SymbolRenderConfig(
-    // 𝔶
-    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDD36,
-    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDD36,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDD36
+    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDD36
+  ), // 𝔶
   '\uD835\uDDD2': SymbolRenderConfig(
-    // 𝗒
-    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDDD2,
-    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDDD2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDDD2
+    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDDD2
+  ), // 𝗒
   '\uD835\uDE06': SymbolRenderConfig(
-    // 𝘆
-    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDE06,
-    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDE06,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDE06
+    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDE06
+  ), // 𝘆
   '\uD835\uDE3A': SymbolRenderConfig(
-    // 𝘺
-    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDE3A,
-    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDE3A,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDE3A
+    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDE3A
+  ), // 𝘺
   '\uD835\uDEA2': SymbolRenderConfig(
-    // 𝚢
-    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDEA2,
-    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDEA2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'y'), // \uD835\uDEA2
+    text: RenderConfig(AtomType.ord, mainrm, 'y'), // \uD835\uDEA2
+  ), // 𝚢
   '\uD835\uDC33': SymbolRenderConfig(
-    // 𝐳
-    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDC33,
-    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDC33,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDC33
+    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDC33
+  ), // 𝐳
   '\uD835\uDC67': SymbolRenderConfig(
-    // 𝑧
-    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDC67,
-    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDC67,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDC67
+    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDC67
+  ), // 𝑧
   '\uD835\uDC9B': SymbolRenderConfig(
-    // 𝒛
-    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDC9B,
-    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDC9B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDC9B
+    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDC9B
+  ), // 𝒛
   '\uD835\uDD37': SymbolRenderConfig(
-    // 𝔷
-    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDD37,
-    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDD37,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDD37
+    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDD37
+  ), // 𝔷
   '\uD835\uDDD3': SymbolRenderConfig(
-    // 𝗓
-    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDDD3,
-    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDDD3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDDD3
+    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDDD3
+  ), // 𝗓
   '\uD835\uDE07': SymbolRenderConfig(
-    // 𝘇
-    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDE07,
-    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDE07,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDE07
+    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDE07
+  ), // 𝘇
   '\uD835\uDE3B': SymbolRenderConfig(
-    // 𝘻
-    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDE3B,
-    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDE3B,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDE3B
+    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDE3B
+  ), // 𝘻
   '\uD835\uDEA3': SymbolRenderConfig(
-    // 𝚣
-    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDEA3,
-    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDEA3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'z'), // \uD835\uDEA3
+    text: RenderConfig(AtomType.ord, mainrm, 'z'), // \uD835\uDEA3
+  ), // 𝚣
   '\uD835\uDD5C': SymbolRenderConfig(
-    // 𝕜
-    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDD5C,
-    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDD5C,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, 'k'), // \uD835\uDD5C
+    text: RenderConfig(AtomType.ord, mainrm, 'k'), // \uD835\uDD5C
+  ), // 𝕜
   '\uD835\uDFCE': SymbolRenderConfig(
-    // 𝟎
-    math: RenderConfig(AtomType.ord, mathdefault, '0'), // \uD835\uDFCE,
-    text: RenderConfig(AtomType.ord, mainrm, '0'), // \uD835\uDFCE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '0'), // \uD835\uDFCE
+    text: RenderConfig(AtomType.ord, mainrm, '0'), // \uD835\uDFCE
+  ), // 𝟎
   '\uD835\uDFE2': SymbolRenderConfig(
-    // 𝟢
-    math: RenderConfig(AtomType.ord, mathdefault, '0'), // \uD835\uDFE2,
-    text: RenderConfig(AtomType.ord, mainrm, '0'), // \uD835\uDFE2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '0'), // \uD835\uDFE2
+    text: RenderConfig(AtomType.ord, mainrm, '0'), // \uD835\uDFE2
+  ), // 𝟢
   '\uD835\uDFEC': SymbolRenderConfig(
-    // 𝟬
-    math: RenderConfig(AtomType.ord, mathdefault, '0'), // \uD835\uDFEC,
-    text: RenderConfig(AtomType.ord, mainrm, '0'), // \uD835\uDFEC,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '0'), // \uD835\uDFEC
+    text: RenderConfig(AtomType.ord, mainrm, '0'), // \uD835\uDFEC
+  ), // 𝟬
   '\uD835\uDFF6': SymbolRenderConfig(
-    // 𝟶
-    math: RenderConfig(AtomType.ord, mathdefault, '0'), // \uD835\uDFF6,
-    text: RenderConfig(AtomType.ord, mainrm, '0'), // \uD835\uDFF6,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '0'), // \uD835\uDFF6
+    text: RenderConfig(AtomType.ord, mainrm, '0'), // \uD835\uDFF6
+  ), // 𝟶
   '\uD835\uDFCF': SymbolRenderConfig(
-    // 𝟏
-    math: RenderConfig(AtomType.ord, mathdefault, '1'), // \uD835\uDFCF,
-    text: RenderConfig(AtomType.ord, mainrm, '1'), // \uD835\uDFCF,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '1'), // \uD835\uDFCF
+    text: RenderConfig(AtomType.ord, mainrm, '1'), // \uD835\uDFCF
+  ), // 𝟏
   '\uD835\uDFE3': SymbolRenderConfig(
-    // 𝟣
-    math: RenderConfig(AtomType.ord, mathdefault, '1'), // \uD835\uDFE3,
-    text: RenderConfig(AtomType.ord, mainrm, '1'), // \uD835\uDFE3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '1'), // \uD835\uDFE3
+    text: RenderConfig(AtomType.ord, mainrm, '1'), // \uD835\uDFE3
+  ), // 𝟣
   '\uD835\uDFED': SymbolRenderConfig(
-    // 𝟭
-    math: RenderConfig(AtomType.ord, mathdefault, '1'), // \uD835\uDFED,
-    text: RenderConfig(AtomType.ord, mainrm, '1'), // \uD835\uDFED,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '1'), // \uD835\uDFED
+    text: RenderConfig(AtomType.ord, mainrm, '1'), // \uD835\uDFED
+  ), // 𝟭
   '\uD835\uDFF7': SymbolRenderConfig(
-    // 𝟷
-    math: RenderConfig(AtomType.ord, mathdefault, '1'), // \uD835\uDFF7,
-    text: RenderConfig(AtomType.ord, mainrm, '1'), // \uD835\uDFF7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '1'), // \uD835\uDFF7
+    text: RenderConfig(AtomType.ord, mainrm, '1'), // \uD835\uDFF7
+  ), // 𝟷
   '\uD835\uDFD0': SymbolRenderConfig(
-    // 𝟐
-    math: RenderConfig(AtomType.ord, mathdefault, '2'), // \uD835\uDFD0,
-    text: RenderConfig(AtomType.ord, mainrm, '2'), // \uD835\uDFD0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '2'), // \uD835\uDFD0
+    text: RenderConfig(AtomType.ord, mainrm, '2'), // \uD835\uDFD0
+  ), // 𝟐
   '\uD835\uDFE4': SymbolRenderConfig(
-    // 𝟤
-    math: RenderConfig(AtomType.ord, mathdefault, '2'), // \uD835\uDFE4,
-    text: RenderConfig(AtomType.ord, mainrm, '2'), // \uD835\uDFE4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '2'), // \uD835\uDFE4
+    text: RenderConfig(AtomType.ord, mainrm, '2'), // \uD835\uDFE4
+  ), // 𝟤
   '\uD835\uDFEE': SymbolRenderConfig(
-    // 𝟮
-    math: RenderConfig(AtomType.ord, mathdefault, '2'), // \uD835\uDFEE,
-    text: RenderConfig(AtomType.ord, mainrm, '2'), // \uD835\uDFEE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '2'), // \uD835\uDFEE
+    text: RenderConfig(AtomType.ord, mainrm, '2'), // \uD835\uDFEE
+  ), // 𝟮
   '\uD835\uDFF8': SymbolRenderConfig(
-    // 𝟸
-    math: RenderConfig(AtomType.ord, mathdefault, '2'), // \uD835\uDFF8,
-    text: RenderConfig(AtomType.ord, mainrm, '2'), // \uD835\uDFF8,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '2'), // \uD835\uDFF8
+    text: RenderConfig(AtomType.ord, mainrm, '2'), // \uD835\uDFF8
+  ), // 𝟸
   '\uD835\uDFD1': SymbolRenderConfig(
-    // 𝟑
-    math: RenderConfig(AtomType.ord, mathdefault, '3'), // \uD835\uDFD1,
-    text: RenderConfig(AtomType.ord, mainrm, '3'), // \uD835\uDFD1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '3'), // \uD835\uDFD1
+    text: RenderConfig(AtomType.ord, mainrm, '3'), // \uD835\uDFD1
+  ), // 𝟑
   '\uD835\uDFE5': SymbolRenderConfig(
-    // 𝟥
-    math: RenderConfig(AtomType.ord, mathdefault, '3'), // \uD835\uDFE5,
-    text: RenderConfig(AtomType.ord, mainrm, '3'), // \uD835\uDFE5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '3'), // \uD835\uDFE5
+    text: RenderConfig(AtomType.ord, mainrm, '3'), // \uD835\uDFE5
+  ), // 𝟥
   '\uD835\uDFEF': SymbolRenderConfig(
-    // 𝟯
-    math: RenderConfig(AtomType.ord, mathdefault, '3'), // \uD835\uDFEF,
-    text: RenderConfig(AtomType.ord, mainrm, '3'), // \uD835\uDFEF,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '3'), // \uD835\uDFEF
+    text: RenderConfig(AtomType.ord, mainrm, '3'), // \uD835\uDFEF
+  ), // 𝟯
   '\uD835\uDFF9': SymbolRenderConfig(
-    // 𝟹
-    math: RenderConfig(AtomType.ord, mathdefault, '3'), // \uD835\uDFF9,
-    text: RenderConfig(AtomType.ord, mainrm, '3'), // \uD835\uDFF9,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '3'), // \uD835\uDFF9
+    text: RenderConfig(AtomType.ord, mainrm, '3'), // \uD835\uDFF9
+  ), // 𝟹
   '\uD835\uDFD2': SymbolRenderConfig(
-    // 𝟒
-    math: RenderConfig(AtomType.ord, mathdefault, '4'), // \uD835\uDFD2,
-    text: RenderConfig(AtomType.ord, mainrm, '4'), // \uD835\uDFD2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '4'), // \uD835\uDFD2
+    text: RenderConfig(AtomType.ord, mainrm, '4'), // \uD835\uDFD2
+  ), // 𝟒
   '\uD835\uDFE6': SymbolRenderConfig(
-    // 𝟦
-    math: RenderConfig(AtomType.ord, mathdefault, '4'), // \uD835\uDFE6,
-    text: RenderConfig(AtomType.ord, mainrm, '4'), // \uD835\uDFE6,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '4'), // \uD835\uDFE6
+    text: RenderConfig(AtomType.ord, mainrm, '4'), // \uD835\uDFE6
+  ), // 𝟦
   '\uD835\uDFF0': SymbolRenderConfig(
-    // 𝟰
-    math: RenderConfig(AtomType.ord, mathdefault, '4'), // \uD835\uDFF0,
-    text: RenderConfig(AtomType.ord, mainrm, '4'), // \uD835\uDFF0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '4'), // \uD835\uDFF0
+    text: RenderConfig(AtomType.ord, mainrm, '4'), // \uD835\uDFF0
+  ), // 𝟰
   '\uD835\uDFFA': SymbolRenderConfig(
-    // 𝟺
-    math: RenderConfig(AtomType.ord, mathdefault, '4'), // \uD835\uDFFA,
-    text: RenderConfig(AtomType.ord, mainrm, '4'), // \uD835\uDFFA,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '4'), // \uD835\uDFFA
+    text: RenderConfig(AtomType.ord, mainrm, '4'), // \uD835\uDFFA
+  ), // 𝟺
   '\uD835\uDFD3': SymbolRenderConfig(
-    // 𝟓
-    math: RenderConfig(AtomType.ord, mathdefault, '5'), // \uD835\uDFD3,
-    text: RenderConfig(AtomType.ord, mainrm, '5'), // \uD835\uDFD3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '5'), // \uD835\uDFD3
+    text: RenderConfig(AtomType.ord, mainrm, '5'), // \uD835\uDFD3
+  ), // 𝟓
   '\uD835\uDFE7': SymbolRenderConfig(
-    // 𝟧
-    math: RenderConfig(AtomType.ord, mathdefault, '5'), // \uD835\uDFE7,
-    text: RenderConfig(AtomType.ord, mainrm, '5'), // \uD835\uDFE7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '5'), // \uD835\uDFE7
+    text: RenderConfig(AtomType.ord, mainrm, '5'), // \uD835\uDFE7
+  ), // 𝟧
   '\uD835\uDFF1': SymbolRenderConfig(
-    // 𝟱
-    math: RenderConfig(AtomType.ord, mathdefault, '5'), // \uD835\uDFF1,
-    text: RenderConfig(AtomType.ord, mainrm, '5'), // \uD835\uDFF1,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '5'), // \uD835\uDFF1
+    text: RenderConfig(AtomType.ord, mainrm, '5'), // \uD835\uDFF1
+  ), // 𝟱
   '\uD835\uDFFB': SymbolRenderConfig(
-    // 𝟻
-    math: RenderConfig(AtomType.ord, mathdefault, '5'), // \uD835\uDFFB,
-    text: RenderConfig(AtomType.ord, mainrm, '5'), // \uD835\uDFFB,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '5'), // \uD835\uDFFB
+    text: RenderConfig(AtomType.ord, mainrm, '5'), // \uD835\uDFFB
+  ), // 𝟻
   '\uD835\uDFD4': SymbolRenderConfig(
-    // 𝟔
-    math: RenderConfig(AtomType.ord, mathdefault, '6'), // \uD835\uDFD4,
-    text: RenderConfig(AtomType.ord, mainrm, '6'), // \uD835\uDFD4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '6'), // \uD835\uDFD4
+    text: RenderConfig(AtomType.ord, mainrm, '6'), // \uD835\uDFD4
+  ), // 𝟔
   '\uD835\uDFE8': SymbolRenderConfig(
-    // 𝟨
-    math: RenderConfig(AtomType.ord, mathdefault, '6'), // \uD835\uDFE8,
-    text: RenderConfig(AtomType.ord, mainrm, '6'), // \uD835\uDFE8,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '6'), // \uD835\uDFE8
+    text: RenderConfig(AtomType.ord, mainrm, '6'), // \uD835\uDFE8
+  ), // 𝟨
   '\uD835\uDFF2': SymbolRenderConfig(
-    // 𝟲
-    math: RenderConfig(AtomType.ord, mathdefault, '6'), // \uD835\uDFF2,
-    text: RenderConfig(AtomType.ord, mainrm, '6'), // \uD835\uDFF2,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '6'), // \uD835\uDFF2
+    text: RenderConfig(AtomType.ord, mainrm, '6'), // \uD835\uDFF2
+  ), // 𝟲
   '\uD835\uDFFC': SymbolRenderConfig(
-    // 𝟼
-    math: RenderConfig(AtomType.ord, mathdefault, '6'), // \uD835\uDFFC,
-    text: RenderConfig(AtomType.ord, mainrm, '6'), // \uD835\uDFFC,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '6'), // \uD835\uDFFC
+    text: RenderConfig(AtomType.ord, mainrm, '6'), // \uD835\uDFFC
+  ), // 𝟼
   '\uD835\uDFD5': SymbolRenderConfig(
-    // 𝟕
-    math: RenderConfig(AtomType.ord, mathdefault, '7'), // \uD835\uDFD5,
-    text: RenderConfig(AtomType.ord, mainrm, '7'), // \uD835\uDFD5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '7'), // \uD835\uDFD5
+    text: RenderConfig(AtomType.ord, mainrm, '7'), // \uD835\uDFD5
+  ), // 𝟕
   '\uD835\uDFE9': SymbolRenderConfig(
-    // 𝟩
-    math: RenderConfig(AtomType.ord, mathdefault, '7'), // \uD835\uDFE9,
-    text: RenderConfig(AtomType.ord, mainrm, '7'), // \uD835\uDFE9,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '7'), // \uD835\uDFE9
+    text: RenderConfig(AtomType.ord, mainrm, '7'), // \uD835\uDFE9
+  ), // 𝟩
   '\uD835\uDFF3': SymbolRenderConfig(
-    // 𝟳
-    math: RenderConfig(AtomType.ord, mathdefault, '7'), // \uD835\uDFF3,
-    text: RenderConfig(AtomType.ord, mainrm, '7'), // \uD835\uDFF3,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '7'), // \uD835\uDFF3
+    text: RenderConfig(AtomType.ord, mainrm, '7'), // \uD835\uDFF3
+  ), // 𝟳
   '\uD835\uDFFD': SymbolRenderConfig(
-    // 𝟽
-    math: RenderConfig(AtomType.ord, mathdefault, '7'), // \uD835\uDFFD,
-    text: RenderConfig(AtomType.ord, mainrm, '7'), // \uD835\uDFFD,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '7'), // \uD835\uDFFD
+    text: RenderConfig(AtomType.ord, mainrm, '7'), // \uD835\uDFFD
+  ), // 𝟽
   '\uD835\uDFD6': SymbolRenderConfig(
-    // 𝟖
-    math: RenderConfig(AtomType.ord, mathdefault, '8'), // \uD835\uDFD6,
-    text: RenderConfig(AtomType.ord, mainrm, '8'), // \uD835\uDFD6,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '8'), // \uD835\uDFD6
+    text: RenderConfig(AtomType.ord, mainrm, '8'), // \uD835\uDFD6
+  ), // 𝟖
   '\uD835\uDFEA': SymbolRenderConfig(
-    // 𝟪
-    math: RenderConfig(AtomType.ord, mathdefault, '8'), // \uD835\uDFEA,
-    text: RenderConfig(AtomType.ord, mainrm, '8'), // \uD835\uDFEA,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '8'), // \uD835\uDFEA
+    text: RenderConfig(AtomType.ord, mainrm, '8'), // \uD835\uDFEA
+  ), // 𝟪
   '\uD835\uDFF4': SymbolRenderConfig(
-    // 𝟴
-    math: RenderConfig(AtomType.ord, mathdefault, '8'), // \uD835\uDFF4,
-    text: RenderConfig(AtomType.ord, mainrm, '8'), // \uD835\uDFF4,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '8'), // \uD835\uDFF4
+    text: RenderConfig(AtomType.ord, mainrm, '8'), // \uD835\uDFF4
+  ), // 𝟴
   '\uD835\uDFFE': SymbolRenderConfig(
-    // 𝟾
-    math: RenderConfig(AtomType.ord, mathdefault, '8'), // \uD835\uDFFE,
-    text: RenderConfig(AtomType.ord, mainrm, '8'), // \uD835\uDFFE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '8'), // \uD835\uDFFE
+    text: RenderConfig(AtomType.ord, mainrm, '8'), // \uD835\uDFFE
+  ), // 𝟾
   '\uD835\uDFD7': SymbolRenderConfig(
-    // 𝟗
-    math: RenderConfig(AtomType.ord, mathdefault, '9'), // \uD835\uDFD7,
-    text: RenderConfig(AtomType.ord, mainrm, '9'), // \uD835\uDFD7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '9'), // \uD835\uDFD7
+    text: RenderConfig(AtomType.ord, mainrm, '9'), // \uD835\uDFD7
+  ), // 𝟗
   '\uD835\uDFEB': SymbolRenderConfig(
-    // 𝟫
-    math: RenderConfig(AtomType.ord, mathdefault, '9'), // \uD835\uDFEB,
-    text: RenderConfig(AtomType.ord, mainrm, '9'), // \uD835\uDFEB,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '9'), // \uD835\uDFEB
+    text: RenderConfig(AtomType.ord, mainrm, '9'), // \uD835\uDFEB
+  ), // 𝟫
   '\uD835\uDFF5': SymbolRenderConfig(
-    // 𝟵
-    math: RenderConfig(AtomType.ord, mathdefault, '9'), // \uD835\uDFF5,
-    text: RenderConfig(AtomType.ord, mainrm, '9'), // \uD835\uDFF5,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '9'), // \uD835\uDFF5
+    text: RenderConfig(AtomType.ord, mainrm, '9'), // \uD835\uDFF5
+  ), // 𝟵
   '\uD835\uDFFF': SymbolRenderConfig(
-    // 𝟿
-    math: RenderConfig(AtomType.ord, mathdefault, '9'), // \uD835\uDFFF,
-    text: RenderConfig(AtomType.ord, mainrm, '9'), // \uD835\uDFFF,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault, '9'), // \uD835\uDFFF
+    text: RenderConfig(AtomType.ord, mainrm, '9'), // \uD835\uDFFF
+  ), // 𝟿
   '\u00C7': SymbolRenderConfig(
-    // Ç
-    math: RenderConfig(AtomType.ord, mathdefault), // \u00C7,
-    text: RenderConfig(AtomType.ord, mainrm), // \u00C7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u00C7
+    text: RenderConfig(AtomType.ord, mainrm), // \u00C7
+  ), // Ç
   '\u00D0': SymbolRenderConfig(
-    // Ð
-    math: RenderConfig(AtomType.ord, mathdefault), // \u00D0,
-    text: RenderConfig(AtomType.ord, mainrm), // \u00D0,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u00D0
+    text: RenderConfig(AtomType.ord, mainrm), // \u00D0
+  ), // Ð
   '\u00DE': SymbolRenderConfig(
-    // Þ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u00DE,
-    text: RenderConfig(AtomType.ord, mainrm), // \u00DE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u00DE
+    text: RenderConfig(AtomType.ord, mainrm), // \u00DE
+  ), // Þ
   '\u00E7': SymbolRenderConfig(
-    // ç
-    math: RenderConfig(AtomType.ord, mathdefault), // \u00E7,
-    text: RenderConfig(AtomType.ord, mainrm), // \u00E7,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u00E7
+    text: RenderConfig(AtomType.ord, mainrm), // \u00E7
+  ), // ç
   '\u00FE': SymbolRenderConfig(
-    // þ
-    math: RenderConfig(AtomType.ord, mathdefault), // \u00FE,
-    text: RenderConfig(AtomType.ord, mainrm), // \u00FE,
-  ),
+    math: RenderConfig(AtomType.ord, mathdefault), // \u00FE
+    text: RenderConfig(AtomType.ord, mainrm), // \u00FE
+  ), // þ
   '\u00A0': SymbolRenderConfig(
-    //
     math: RenderConfig(
-        AtomType.spacing, mainrm), // \u00A0, \ , ~, \space, \nobreakspace,
+        AtomType.spacing, mainrm), // \u00A0 \  ~ \space \nobreakspace
     text: RenderConfig(
-        AtomType.spacing, mainrm), // \u00A0, \ , ~, \space, \nobreakspace,
-  ),
+        AtomType.spacing, mainrm), // \u00A0 \  ~ \space \nobreakspace
+  ), //
   ' ': SymbolRenderConfig(
-    //
-    math: RenderConfig(AtomType.spacing, mainrm, '\u00A0'), //  ,
-    text: RenderConfig(AtomType.spacing, mainrm, '\u00A0'), //  ,
-  ),
+    math: RenderConfig(AtomType.spacing, mainrm, '\u00A0'), //
+    text: RenderConfig(AtomType.spacing, mainrm, '\u00A0'), //
+  ), //
   '\u00A7': SymbolRenderConfig(
-    // §
-    text: RenderConfig(AtomType.ord, mainrm), // \u00A7, \S,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u00A7 \S
+  ), // §
   '\u00B6': SymbolRenderConfig(
-    // ¶
-    text: RenderConfig(AtomType.ord, mainrm), // \u00B6, \P,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u00B6 \P
+  ), // ¶
   '\u00DF': SymbolRenderConfig(
-    // ß
-    text: RenderConfig(AtomType.ord, mainrm), // \u00DF, \ss,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u00DF \ss
+  ), // ß
   '\u00E6': SymbolRenderConfig(
-    // æ
-    text: RenderConfig(AtomType.ord, mainrm), // \u00E6, \ae,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u00E6 \ae
+  ), // æ
   '\u0153': SymbolRenderConfig(
-    // œ
-    text: RenderConfig(AtomType.ord, mainrm), // \u0153, \oe,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u0153 \oe
+  ), // œ
   '\u00F8': SymbolRenderConfig(
-    // ø
-    text: RenderConfig(AtomType.ord, mainrm), // \u00F8, \o,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u00F8 \o
+  ), // ø
   '\u00C6': SymbolRenderConfig(
-    // Æ
-    text: RenderConfig(AtomType.ord, mainrm), // \u00C6, \AE,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u00C6 \AE
+  ), // Æ
   '\u0152': SymbolRenderConfig(
-    // Œ
-    text: RenderConfig(AtomType.ord, mainrm), // \u0152, \OE,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u0152 \OE
+  ), // Œ
   '\u00D8': SymbolRenderConfig(
-    // Ø
-    text: RenderConfig(AtomType.ord, mainrm), // \u00D8, \O,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u00D8 \O
+  ), // Ø
   '\'': SymbolRenderConfig(
-    // '
-    text: RenderConfig(AtomType.ord, mainrm, '\u2019'), // \',
-  ),
+    text: RenderConfig(AtomType.ord, mainrm, '\u2019'), // \'
+  ), // '
   '\u2013': SymbolRenderConfig(
-    // –
-    text: RenderConfig(AtomType.ord, mainrm), // \u2013, --, \textendash,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u2013 -- \textendash
+  ), // –
   '\u2014': SymbolRenderConfig(
-    // —
-    text: RenderConfig(AtomType.ord, mainrm), // \u2014, ---, \textemdash,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u2014 --- \textemdash
+  ), // —
   '\u2018': SymbolRenderConfig(
-    // ‘
-    text: RenderConfig(AtomType.ord, mainrm), // \u2018, \textquoteleft,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u2018 \textquoteleft
+  ), // ‘
   '\u2019': SymbolRenderConfig(
-    // ’
-    text: RenderConfig(AtomType.ord, mainrm), // \u2019, \textquoteright,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u2019 \textquoteright
+  ), // ’
   '\u201C': SymbolRenderConfig(
-    // “
-    text: RenderConfig(AtomType.ord, mainrm), // \u201C, ``, \textquotedblleft,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u201C `` \textquotedblleft
+  ), // “
   '\u201D': SymbolRenderConfig(
-    // ”
-    text:
-        RenderConfig(AtomType.ord, mainrm), // \u201D, \'\', \textquotedblright,
-  ),
+    text: RenderConfig(AtomType.ord, mainrm), // \u201D \'\' \textquotedblright
+  ), // ”
   '\u231C': SymbolRenderConfig(
-    // ⌜
-    math: RenderConfig(AtomType.open, amsrm, '\u250C'), // \u250C, \@ulcorner,
-  ),
+    math: RenderConfig(AtomType.open, amsrm, '\u250C'), // \u250C \@ulcorner
+  ), // ⌜
   '\u231D': SymbolRenderConfig(
-    // ⌝
-    math: RenderConfig(AtomType.close, amsrm, '\u2510'), // \u2510, \@urcorner,
-  ),
+    math: RenderConfig(AtomType.close, amsrm, '\u2510'), // \u2510 \@urcorner
+  ), // ⌝
   '\u231E': SymbolRenderConfig(
-    // ⌞
-    math: RenderConfig(AtomType.open, amsrm, '\u2514'), // \u2514, \@llcorner,
-  ),
+    math: RenderConfig(AtomType.open, amsrm, '\u2514'), // \u2514 \@llcorner
+  ), // ⌞
   '\u231F': SymbolRenderConfig(
-    // ⌟
-    math: RenderConfig(AtomType.close, amsrm, '\u2518'), // \u2518, \@lrcorner,
-  ),
+    math: RenderConfig(AtomType.close, amsrm, '\u2518'), // \u2518 \@lrcorner
+  ), // ⌟
   '\u22A5': SymbolRenderConfig(
-    // ⊥
-    math: RenderConfig(AtomType.rel, mainrm), // \perp, \bot,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm), // \perp \bot
+  ), // ⊥
   '\u2225': SymbolRenderConfig(
-    // ∥
     math: RenderConfig(AtomType.rel,
-        mainrm), // \parallel, \shortparallel, \lVert, \rVert, \|, \Vert,
-    text: RenderConfig(AtomType.ord, mainrm), // \textbardbl,
+        mainrm), // \parallel \shortparallel \lVert \rVert \| \Vert
+    text: RenderConfig(AtomType.ord, mainrm), // \textbardbl
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm), // \shortparallel,
+      math: RenderConfig(AtomType.rel, amsrm), // \shortparallel
     ),
-  ),
+  ), // ∥
   '#': SymbolRenderConfig(
-    // #
-    math: RenderConfig(AtomType.ord, mainrm), // \#,
-    text: RenderConfig(AtomType.ord, mainrm), // \#,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \#
+    text: RenderConfig(AtomType.ord, mainrm), // \#
+  ), // #
   '&': SymbolRenderConfig(
-    // &
-    math: RenderConfig(AtomType.ord, mainrm), // \&, \And,
-    text: RenderConfig(AtomType.ord, mainrm), // \&,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \& \And
+    text: RenderConfig(AtomType.ord, mainrm), // \&
+  ), // &
   '\u2020': SymbolRenderConfig(
-    // †
-    math: RenderConfig(AtomType.bin, mainrm), // \dag, \dagger,
-    text: RenderConfig(AtomType.ord, mainrm), // \dag, \textdagger,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \dag \dagger
+    text: RenderConfig(AtomType.ord, mainrm), // \dag \textdagger
+  ), // †
   '\u2021': SymbolRenderConfig(
-    // ‡
-    math: RenderConfig(AtomType.bin, mainrm), // \ddag, \ddagger,
-    text: RenderConfig(AtomType.ord, mainrm), // \ddag, \textdaggerdbl,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \ddag \ddagger
+    text: RenderConfig(AtomType.ord, mainrm), // \ddag \textdaggerdbl
+  ), // ‡
   '\u25EF': SymbolRenderConfig(
-    // ◯
-    math: RenderConfig(AtomType.bin, mainrm), // \bigcirc,
-    text: RenderConfig(null, mainrm), // \textcircled,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \bigcirc
+    text: RenderConfig(null, mainrm), // \textcircled
+  ), // ◯
   '\u2219': SymbolRenderConfig(
-    // ∙
-    math: RenderConfig(AtomType.bin, mainrm), // \bullet,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \bullet
+  ), // ∙
   '\u2A3F': SymbolRenderConfig(
-    // ⨿
-    math: RenderConfig(AtomType.bin, mainrm), // \amalg,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \amalg
+  ), // ⨿
   '\u22EA': SymbolRenderConfig(
-    // ⋪
-    math: RenderConfig(AtomType.rel, amsrm), // \ntriangleleft,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \ntriangleleft
+  ), // ⋪
   '\u22EB': SymbolRenderConfig(
-    // ⋫
-    math: RenderConfig(AtomType.rel, amsrm), // \ntriangleright,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \ntriangleright
+  ), // ⋫
   '\u22B4': SymbolRenderConfig(
-    // ⊴
-    math: RenderConfig(AtomType.rel, amsrm), // \unlhd, \trianglelefteq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \unlhd \trianglelefteq
+  ), // ⊴
   '\u22B5': SymbolRenderConfig(
-    // ⊵
-    math: RenderConfig(AtomType.rel, amsrm), // \unrhd, \trianglerighteq,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \unrhd \trianglerighteq
+  ), // ⊵
   '\u25B3': SymbolRenderConfig(
-    // △
     math: RenderConfig(
-        AtomType.bin, mainrm), // \vartriangle, \triangle, \bigtriangleup,
+        AtomType.bin, mainrm), // \vartriangle \triangle \bigtriangleup
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm), // \vartriangle,
+      math: RenderConfig(AtomType.rel, amsrm), // \vartriangle
     ),
-  ),
+  ), // △
   '\u25BD': SymbolRenderConfig(
-    // ▽
-    math:
-        RenderConfig(AtomType.bin, mainrm), // \triangledown, \bigtriangledown,
+    math: RenderConfig(AtomType.bin, mainrm), // \triangledown \bigtriangledown
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.ord, amsrm), // \triangledown,
+      math: RenderConfig(AtomType.ord, amsrm), // \triangledown
     ),
-  ),
+  ), // ▽
   '\u25CA': SymbolRenderConfig(
-    // ◊
-    math: RenderConfig(AtomType.ord, amsrm), // \lozenge, \Diamond,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \lozenge \Diamond
+  ), // ◊
   '\u24C8': SymbolRenderConfig(
-    // Ⓢ
-    math: RenderConfig(AtomType.ord, amsrm), // \circledS,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \circledS
+  ), // Ⓢ
   '\u00AE': SymbolRenderConfig(
-    // ®
-    math: RenderConfig(AtomType.ord, amsrm), // \circledR,
-    text: RenderConfig(AtomType.ord, amsrm), // \circledR,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \circledR
+    text: RenderConfig(AtomType.ord, amsrm), // \circledR
+  ), // ®
   '\u2204': SymbolRenderConfig(
-    // ∄
-    math: RenderConfig(AtomType.ord, amsrm), // \nexists,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \nexists
+  ), // ∄
   '\u2127': SymbolRenderConfig(
-    // ℧
-    math: RenderConfig(AtomType.ord, amsrm), // \mho,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \mho
+  ), // ℧
   '\u2035': SymbolRenderConfig(
-    // ‵
-    math: RenderConfig(AtomType.ord, amsrm), // \backprime,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \backprime
+  ), // ‵
   '\u25B2': SymbolRenderConfig(
-    // ▲
-    math: RenderConfig(AtomType.ord, amsrm), // \blacktriangle,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \blacktriangle
+  ), // ▲
   '\u25BC': SymbolRenderConfig(
-    // ▼
-    math: RenderConfig(AtomType.ord, amsrm), // \blacktriangledown,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \blacktriangledown
+  ), // ▼
   '\u25A0': SymbolRenderConfig(
-    // ■
-    math: RenderConfig(AtomType.ord, amsrm), // \blacksquare,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \blacksquare
+  ), // ■
   '\u29EB': SymbolRenderConfig(
-    // ⧫
-    math: RenderConfig(AtomType.ord, amsrm), // \blacklozenge,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \blacklozenge
+  ), // ⧫
   '\u2605': SymbolRenderConfig(
-    // ★
-    math: RenderConfig(AtomType.ord, amsrm), // \bigstar,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \bigstar
+  ), // ★
   '\u2571': SymbolRenderConfig(
-    // ╱
-    math: RenderConfig(AtomType.ord, amsrm), // \diagup,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \diagup
+  ), // ╱
   '\u2572': SymbolRenderConfig(
-    // ╲
-    math: RenderConfig(AtomType.ord, amsrm), // \diagdown,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \diagdown
+  ), // ╲
   '\u25A1': SymbolRenderConfig(
-    // □
-    math: RenderConfig(AtomType.ord, amsrm), // \square, \Box,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \square \Box
+  ), // □
   '\u03F0': SymbolRenderConfig(
-    // ϰ
-    math: RenderConfig(AtomType.ord, amsrm), // \varkappa,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \varkappa
+  ), // ϰ
   '\u22D6': SymbolRenderConfig(
-    // ⋖
-    math: RenderConfig(AtomType.bin, amsrm), // \lessdot,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \lessdot
+  ), // ⋖
   '\u22B2': SymbolRenderConfig(
-    // ⊲
-    math: RenderConfig(AtomType.bin, amsrm), // \vartriangleleft, \lhd,
+    math: RenderConfig(AtomType.bin, amsrm), // \vartriangleleft \lhd
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.rel, amsrm), // \vartriangleleft,
+      math: RenderConfig(AtomType.rel, amsrm), // \vartriangleleft
     ),
-  ),
+  ), // ⊲
   '\u22D7': SymbolRenderConfig(
-    // ⋗
-    math: RenderConfig(AtomType.bin, amsrm), // \gtrdot,
-  ),
+    math: RenderConfig(AtomType.bin, amsrm), // \gtrdot
+  ), // ⋗
   '\u22B3': SymbolRenderConfig(
-    // ⊳
-    math: RenderConfig(AtomType.rel, amsrm), // \vartriangleright, \rhd,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \vartriangleright \rhd
+  ), // ⊳
   '\u25C0': SymbolRenderConfig(
-    // ◀
-    math: RenderConfig(AtomType.rel, amsrm), // \blacktriangleleft,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \blacktriangleleft
+  ), // ◀
   '\u220D': SymbolRenderConfig(
-    // ∍
-    math: RenderConfig(AtomType.rel, amsrm), // \backepsilon,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \backepsilon
+  ), // ∍
   '\u25B6': SymbolRenderConfig(
-    // ▶
-    math: RenderConfig(AtomType.rel, amsrm), // \blacktriangleright,
-  ),
+    math: RenderConfig(AtomType.rel, amsrm), // \blacktriangleright
+  ), // ▶
   '\u2216': SymbolRenderConfig(
-    // ∖
-    math: RenderConfig(AtomType.bin, mainrm), // \smallsetminus, \setminus,
+    math: RenderConfig(AtomType.bin, mainrm), // \smallsetminus \setminus
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.bin, amsrm), // \smallsetminus,
+      math: RenderConfig(AtomType.bin, amsrm), // \smallsetminus
     ),
-  ),
+  ), // ∖
   '\$': SymbolRenderConfig(
-    // $
-    math: RenderConfig(AtomType.ord, mainrm), // \\$,
-    text: RenderConfig(AtomType.ord, mainrm), // \\$, \textdollar,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \\$
+    text: RenderConfig(AtomType.ord, mainrm), // \\$ \textdollar
+  ), // $
   '%': SymbolRenderConfig(
-    // %
-    math: RenderConfig(AtomType.ord, mainrm), // \%,
-    text: RenderConfig(AtomType.ord, mainrm), // \%,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \%
+    text: RenderConfig(AtomType.ord, mainrm), // \%
+  ), // %
   '_': SymbolRenderConfig(
-    // _
-    math: RenderConfig(AtomType.ord, mainrm), // \_,
-    text: RenderConfig(AtomType.ord, mainrm), // \_, \textunderscore,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \_
+    text: RenderConfig(AtomType.ord, mainrm), // \_ \textunderscore
+  ), // _
   '\u2032': SymbolRenderConfig(
-    // ′
-    math: RenderConfig(AtomType.ord, mainrm), // \prime,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \prime
+  ), // ′
   '\u22A4': SymbolRenderConfig(
-    // ⊤
-    math: RenderConfig(AtomType.ord, mainrm), // \top,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \top
+  ), // ⊤
   '\u2205': SymbolRenderConfig(
-    // ∅
-    math: RenderConfig(AtomType.ord, mainrm), // \emptyset, \varnothing,
+    math: RenderConfig(AtomType.ord, mainrm), // \emptyset \varnothing
     variantForm: SymbolRenderConfig(
-      math: RenderConfig(AtomType.ord, amsrm), // \varnothing,
+      math: RenderConfig(AtomType.ord, amsrm), // \varnothing
     ),
-  ),
+  ), // ∅
   '\u2218': SymbolRenderConfig(
-    // ∘
-    math: RenderConfig(AtomType.bin, mainrm), // \circ,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \circ
+  ), // ∘
   '\u221A': SymbolRenderConfig(
-    // √
-    math: RenderConfig(AtomType.ord, mainrm), // \surd,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \surd
+  ), // √
   '\u0338': SymbolRenderConfig(
-    // ̸
-    math: RenderConfig(AtomType.rel, mainrm, '\uE020'), // \not,
-  ),
+    math: RenderConfig(AtomType.rel, mainrm, '\uE020'), // \not
+  ), // ̸
   '\u22C4': SymbolRenderConfig(
-    // ⋄
-    math: RenderConfig(AtomType.bin, mainrm), // \diamond,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \diamond
+  ), // ⋄
   '\u22C6': SymbolRenderConfig(
-    // ⋆
-    math: RenderConfig(AtomType.bin, mainrm), // \star,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \star
+  ), // ⋆
   '\u25C3': SymbolRenderConfig(
-    // ◃
-    math: RenderConfig(AtomType.bin, mainrm), // \triangleleft,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \triangleleft
+  ), // ◃
   '\u25B9': SymbolRenderConfig(
-    // ▹
-    math: RenderConfig(AtomType.bin, mainrm), // \triangleright,
-  ),
+    math: RenderConfig(AtomType.bin, mainrm), // \triangleright
+  ), // ▹
   '{': SymbolRenderConfig(
-    // {
-    math: RenderConfig(AtomType.open, mainrm), // \{, \lbrace,
-    text: RenderConfig(AtomType.ord, mainrm), // \{, \textbraceleft,
-  ),
+    math: RenderConfig(AtomType.open, mainrm), // \{ \lbrace
+    text: RenderConfig(AtomType.ord, mainrm), // \{ \textbraceleft
+  ), // {
   '}': SymbolRenderConfig(
-    // }
-    math: RenderConfig(AtomType.close, mainrm), // \}, \rbrace,
-    text: RenderConfig(AtomType.ord, mainrm), // \}, \textbraceright,
-  ),
+    math: RenderConfig(AtomType.close, mainrm), // \} \rbrace
+    text: RenderConfig(AtomType.ord, mainrm), // \} \textbraceright
+  ), // }
   '\\': SymbolRenderConfig(
-    // \
-    math: RenderConfig(AtomType.ord, mainrm), // \backslash,
-    text: RenderConfig(AtomType.ord, mainrm), // \textbackslash,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \backslash
+    text: RenderConfig(AtomType.ord, mainrm), // \textbackslash
+  ), // \
   '\u2210': SymbolRenderConfig(
-    // ∐
-    math: RenderConfig(null, mainrm), // \coprod,
-  ),
+    math: RenderConfig(null, mainrm), // \coprod
+  ), // ∐
   '\u22C1': SymbolRenderConfig(
-    // ⋁
-    math: RenderConfig(null, mainrm), // \bigvee,
-  ),
+    math: RenderConfig(null, mainrm), // \bigvee
+  ), // ⋁
   '\u22C0': SymbolRenderConfig(
-    // ⋀
-    math: RenderConfig(null, mainrm), // \bigwedge,
-  ),
+    math: RenderConfig(null, mainrm), // \bigwedge
+  ), // ⋀
   '\u2A04': SymbolRenderConfig(
-    // ⨄
-    math: RenderConfig(null, mainrm), // \biguplus,
-  ),
+    math: RenderConfig(null, mainrm), // \biguplus
+  ), // ⨄
   '\u22C2': SymbolRenderConfig(
-    // ⋂
-    math: RenderConfig(null, mainrm), // \bigcap,
-  ),
+    math: RenderConfig(null, mainrm), // \bigcap
+  ), // ⋂
   '\u22C3': SymbolRenderConfig(
-    // ⋃
-    math: RenderConfig(null, mainrm), // \bigcup,
-  ),
+    math: RenderConfig(null, mainrm), // \bigcup
+  ), // ⋃
   '\u222B': SymbolRenderConfig(
-    // ∫
-    math: RenderConfig(null, mainrm), // \int, \intop, \smallint,
-  ),
+    math: RenderConfig(null, mainrm), // \int \intop \smallint
+  ), // ∫
   '\u222C': SymbolRenderConfig(
-    // ∬
-    math: RenderConfig(null, mainrm), // \iint,
-  ),
+    math: RenderConfig(null, mainrm), // \iint
+  ), // ∬
   '\u222D': SymbolRenderConfig(
-    // ∭
-    math: RenderConfig(null, mainrm), // \iiint,
-  ),
+    math: RenderConfig(null, mainrm), // \iiint
+  ), // ∭
   '\u220F': SymbolRenderConfig(
-    // ∏
-    math: RenderConfig(null, mainrm), // \prod,
-  ),
+    math: RenderConfig(null, mainrm), // \prod
+  ), // ∏
   '\u2211': SymbolRenderConfig(
-    // ∑
-    math: RenderConfig(null, mainrm), // \sum,
-  ),
+    math: RenderConfig(null, mainrm), // \sum
+  ), // ∑
   '\u2A02': SymbolRenderConfig(
-    // ⨂
-    math: RenderConfig(null, mainrm), // \bigotimes,
-  ),
+    math: RenderConfig(null, mainrm), // \bigotimes
+  ), // ⨂
   '\u2A01': SymbolRenderConfig(
-    // ⨁
-    math: RenderConfig(null, mainrm), // \bigoplus,
-  ),
+    math: RenderConfig(null, mainrm), // \bigoplus
+  ), // ⨁
   '\u2A00': SymbolRenderConfig(
-    // ⨀
-    math: RenderConfig(null, mainrm), // \bigodot,
-  ),
+    math: RenderConfig(null, mainrm), // \bigodot
+  ), // ⨀
   '\u222E': SymbolRenderConfig(
-    // ∮
-    math: RenderConfig(null, mainrm), // \oint,
-  ),
+    math: RenderConfig(null, mainrm), // \oint
+  ), // ∮
   '\u222F': SymbolRenderConfig(
-    // ∯
-    math: RenderConfig(null, mainrm), // \oiint,
-  ),
+    math: RenderConfig(null, mainrm), // \oiint
+  ), // ∯
   '\u2230': SymbolRenderConfig(
-    // ∰
-    math: RenderConfig(null, mainrm), // \oiiint,
-  ),
+    math: RenderConfig(null, mainrm), // \oiiint
+  ), // ∰
   '\u2A06': SymbolRenderConfig(
-    // ⨆
-    math: RenderConfig(null, mainrm), // \bigsqcup,
-  ),
+    math: RenderConfig(null, mainrm), // \bigsqcup
+  ), // ⨆
   '\u22EE': SymbolRenderConfig(
-    // ⋮
-    math: RenderConfig(AtomType.ord, mainrm), // \varvdots,
-  ),
+    math: RenderConfig(AtomType.ord, mainrm), // \varvdots
+  ), // ⋮
   '\u02CA': SymbolRenderConfig(
-    // ˊ
-    math: RenderConfig(null, mainrm), // \acute,
-    text: RenderConfig(null, mainrm), // \\',
-  ),
+    math: RenderConfig(null, mainrm), // \acute
+    text: RenderConfig(null, mainrm), // \\'
+  ), // ˊ
   '\u02CB': SymbolRenderConfig(
-    // ˋ
-    math: RenderConfig(null, mainrm), // \grave,
-    text: RenderConfig(null, mainrm), // \`,
-  ),
+    math: RenderConfig(null, mainrm), // \grave
+    text: RenderConfig(null, mainrm), // \`
+  ), // ˋ
   '\u00A8': SymbolRenderConfig(
-    // ¨
-    math: RenderConfig(null, mainrm), // \ddot,
-    text: RenderConfig(null, mainrm), // \",
-  ),
+    math: RenderConfig(null, mainrm), // \ddot
+    text: RenderConfig(null, mainrm), // \"
+  ), // ¨
   '~': SymbolRenderConfig(
-    // ~
-    math: RenderConfig(null, mainrm), // \tilde,
-    text: RenderConfig(AtomType.ord, mainrm), // \textasciitilde,
-  ),
+    math: RenderConfig(null, mainrm), // \tilde
+    text: RenderConfig(AtomType.ord, mainrm), // \textasciitilde
+  ), // ~
   '\u02C9': SymbolRenderConfig(
-    // ˉ
-    math: RenderConfig(null, mainrm), // \bar,
-    text: RenderConfig(null, mainrm), // \=,
-  ),
+    math: RenderConfig(null, mainrm), // \bar
+    text: RenderConfig(null, mainrm), // \=
+  ), // ˉ
   '\u02D8': SymbolRenderConfig(
-    // ˘
-    math: RenderConfig(null, mainrm), // \breve,
-    text: RenderConfig(null, mainrm), // \u,
-  ),
+    math: RenderConfig(null, mainrm), // \breve
+    text: RenderConfig(null, mainrm), // \u
+  ), // ˘
   '\u02C7': SymbolRenderConfig(
-    // ˇ
-    math: RenderConfig(null, mainrm), // \check,
-    text: RenderConfig(null, mainrm), // \v,
-  ),
+    math: RenderConfig(null, mainrm), // \check
+    text: RenderConfig(null, mainrm), // \v
+  ), // ˇ
   '^': SymbolRenderConfig(
-    // ^
-    math: RenderConfig(null, mainrm), // \hat,
-    text: RenderConfig(AtomType.ord, mainrm), // \textasciicircum,
-  ),
+    math: RenderConfig(null, mainrm), // \hat
+    text: RenderConfig(AtomType.ord, mainrm), // \textasciicircum
+  ), // ^
   '\u20D7': SymbolRenderConfig(
-    // ⃗
-    math: RenderConfig(null, mainrm), // \vec,
-  ),
+    math: RenderConfig(null, mainrm), // \vec
+  ), // ⃗
   '\u02D9': SymbolRenderConfig(
-    // ˙
-    math: RenderConfig(null, mainrm), // \dot,
-    text: RenderConfig(null, mainrm), // \.,
-  ),
+    math: RenderConfig(null, mainrm), // \dot
+    text: RenderConfig(null, mainrm), // \.
+  ), // ˙
   '\u02DA': SymbolRenderConfig(
-    // ˚
-    math: RenderConfig(null, mainrm), // \mathring,
-    text: RenderConfig(null, mainrm), // \r,
-  ),
+    math: RenderConfig(null, mainrm), // \mathring
+    text: RenderConfig(null, mainrm), // \r
+  ), // ˚
   '\u2720': SymbolRenderConfig(
-    // ✠
-    math: RenderConfig(AtomType.ord, amsrm), // \maltese,
-    text: RenderConfig(AtomType.ord, amsrm), // \maltese,
-  ),
+    math: RenderConfig(AtomType.ord, amsrm), // \maltese
+    text: RenderConfig(AtomType.ord, amsrm), // \maltese
+  ), // ✠
   '\u02C6': SymbolRenderConfig(
-    // ˆ
-    text: RenderConfig(null, mainrm), // \^,
-  ),
+    text: RenderConfig(null, mainrm), // \^
+  ), // ˆ
   '\u02DC': SymbolRenderConfig(
-    // ˜
-    text: RenderConfig(null, mainrm), // \~,
-  ),
+    text: RenderConfig(null, mainrm), // \~
+  ), // ˜
   '\u02DD': SymbolRenderConfig(
-    // ˝
-    text: RenderConfig(null, mainrm), // \H,
-  ),
+    text: RenderConfig(null, mainrm), // \H
+  ), // ˝
 };
 const ligatures = {
   '–': '--',
@@ -5005,3 +3961,31 @@ const ligatures = {
   '“': '``',
   '”': "''",
 };
+
+AtomType getDefaultAtomTypeForSymbol(
+  String symbol, {
+  bool variantForm = false,
+  @required Mode mode,
+}) {
+  var symbolRenderConfig = symbolRenderConfigs[symbol];
+  if (variantForm) {
+    symbolRenderConfig = symbolRenderConfig?.variantForm;
+  }
+  final renderConfig =
+      mode == Mode.math ? symbolRenderConfig?.math : symbolRenderConfig?.text;
+  if (renderConfig != null) {
+    return renderConfig.defaultType;
+  }
+  if (variantForm == false && mode == Mode.math) {
+    if (negatedOperatorSymbols.containsKey(symbol)) {
+      return AtomType.rel;
+    }
+    if (compactedCompositeSymbols.containsKey(symbol)) {
+      return compactedCompositeSymbolTypes[symbol];
+    }
+    if (decoratedEqualSymbols.contains(symbol)) {
+      return AtomType.rel;
+    }
+  }
+  return AtomType.ord;
+}

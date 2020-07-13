@@ -21,54 +21,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _horizBraceEntries = {
-  ['\\overbrace', '\\underbrace']:
-      FunctionSpec(numArgs: 1, handler: _horizBraceHandler),
+const _kernEntries = {
+  ['\\kern', '\\mkern', '\\hskip', '\\mskip']: FunctionSpec(
+    numArgs: 1,
+    allowedInText: true,
+    handler: _kernHandler,
+  ),
 };
+GreenNode _kernHandler(TexParser parser, FunctionContext context) {
+  final size = parser.parseArgSize(optional: false) ?? Measurement.zero;
 
-GreenNode _horizBraceHandler(TexParser parser, FunctionContext context) {
-  final base = parser.parseArgNode(mode: null, optional: false);
-  final scripts = parser.parseScripts();
-  var res = base;
-  if (context.funcName == '\\overbrace') {
-    res = AccentNode(
-      base: res.wrapWithEquationRow(),
-      label: '\u23de',
-      isStretchy: true,
-      isShifty: false,
-    );
-    if (scripts.superscript != null) {
-      res = OverNode(
-        base: res.wrapWithEquationRow(),
-        above: scripts.superscript,
-      );
+  final mathFunction = (context.funcName[1] == 'm');
+  final muUnit = (size.unit == Unit.mu);
+  if (mathFunction) {
+    if (!muUnit) {
+      parser.settings.reportNonstrict(
+          'mathVsTextUnits',
+          "LaTeX's ${context.funcName} supports only mu units, "
+              'not ${size.unit} units');
     }
-    if (scripts.subscript != null) {
-      res = UnderNode(
-        base: res.wrapWithEquationRow(),
-        below: scripts.subscript,
-      );
+    if (parser.mode != Mode.math) {
+      parser.settings.reportNonstrict('mathVsTextUnits',
+          "LaTeX's ${context.funcName} works only in math mode");
     }
-    return res;
   } else {
-    res = AccentUnderNode(
-      base: res.wrapWithEquationRow(),
-      label: '\u23de',
-    );
-    if (scripts.subscript != null) {
-      res = UnderNode(
-        base: res.wrapWithEquationRow(),
-        below: scripts.subscript,
-      );
+    if (muUnit) {
+      parser.settings.reportNonstrict('mathVsTextUnits',
+          "LaTeX's ${context.funcName} doesn't support mu units");
     }
-    if (scripts.superscript != null) {
-      res = OverNode(
-        base: res.wrapWithEquationRow(),
-        above: scripts.superscript,
-      );
-    }
-    return res;
   }
+
+  return SpaceNode(
+    height: Measurement.zero,
+    width: size,
+    mode: parser.mode,
+  );
 }

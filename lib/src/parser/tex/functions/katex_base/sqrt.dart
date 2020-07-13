@@ -21,26 +21,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _underOverEntries = {
-  ['\\stackrel', '\\overset', '\\underset']: FunctionSpec(
-    numArgs: 2,
-    handler: _underOverHandler,
-  )
+const _sqrtEntries = {
+  ['\\sqrt']: FunctionSpec(
+    numArgs: 1,
+    numOptionalArgs: 1,
+    handler: _sqrtHandler,
+  ),
 };
-GreenNode _underOverHandler(TexParser parser, FunctionContext context) {
-  final shiftedArg = parser.parseArgNode(mode: null, optional: false);
-  final baseArg = parser.parseArgNode(mode: null, optional: false);
-  if (context.funcName == '\\underset') {
-    return UnderNode(
-      base: baseArg.wrapWithEquationRow(), //TODO We need to preserve binrel!
-      below: shiftedArg.wrapWithEquationRow(),
-    );
-  } else {
-    return OverNode(
-      base: baseArg.wrapWithEquationRow(), //TODO We need to preserve binrel!
-      above: shiftedArg.wrapWithEquationRow(),
-    );
-  }
+GreenNode _sqrtHandler(TexParser parser, FunctionContext context) {
+  final index = parser.parseArgNode(mode: null, optional: true);
+  final body = parser.parseArgNode(mode: null, optional: false);
+  return SqrtNode(
+    index: index?.wrapWithEquationRow(),
+    base: body.wrapWithEquationRow(),
+  );
 }

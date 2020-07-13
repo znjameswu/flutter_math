@@ -21,20 +21,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _sqrtEntries = {
-  ['\\sqrt']: FunctionSpec(
+const _textEntries = {
+  [
+    // Font families
+    '\\text', '\\textrm', '\\textsf', '\\texttt', '\\textnormal',
+    // Font weights
+    '\\textbf', '\\textmd',
+    // Font Shapes
+    '\\textit', '\\textup',
+  ]: FunctionSpec(
     numArgs: 1,
-    numOptionalArgs: 1,
-    handler: _sqrtHandler,
-  ),
+    greediness: 2,
+    allowedInText: true,
+    handler: _textHandler,
+  )
 };
-GreenNode _sqrtHandler(TexParser parser, FunctionContext context) {
-  final index = parser.parseArgNode(mode: null, optional: true);
-  final body = parser.parseArgNode(mode: null, optional: false);
-  return SqrtNode(
-    index: index?.wrapWithEquationRow(),
-    base: body.wrapWithEquationRow(),
-  );
+GreenNode _textHandler(TexParser parser, FunctionContext context) {
+  final body = parser.parseArgNode(mode: Mode.text, optional: false);
+  return body; //TODO
 }

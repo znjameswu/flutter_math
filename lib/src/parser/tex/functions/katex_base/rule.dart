@@ -21,41 +21,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _kernEntries = {
-  ['\\kern', '\\mkern', '\\hskip', '\\mskip']: FunctionSpec(
-    numArgs: 1,
-    allowedInText: true,
-    handler: _kernHandler,
-  ),
+const _ruleEntries = {
+  ['\\rule']:
+      FunctionSpec(numArgs: 2, numOptionalArgs: 1, handler: _ruleHandler),
 };
-GreenNode _kernHandler(TexParser parser, FunctionContext context) {
-  final size = parser.parseArgSize(optional: false) ?? Measurement.zero;
-
-  final mathFunction = (context.funcName[1] == 'm');
-  final muUnit = (size.unit == Unit.mu);
-  if (mathFunction) {
-    if (!muUnit) {
-      parser.settings.reportNonstrict(
-          'mathVsTextUnits',
-          "LaTeX's ${context.funcName} supports only mu units, "
-              'not ${size.unit} units');
-    }
-    if (parser.mode != Mode.math) {
-      parser.settings.reportNonstrict('mathVsTextUnits',
-          "LaTeX's ${context.funcName} works only in math mode");
-    }
-  } else {
-    if (muUnit) {
-      parser.settings.reportNonstrict('mathVsTextUnits',
-          "LaTeX's ${context.funcName} doesn't support mu units");
-    }
-  }
+GreenNode _ruleHandler(TexParser parser, FunctionContext context) {
+  final shift = parser.parseArgSize(optional: true) ?? Measurement.zero;
+  final width = parser.parseArgSize(optional: false) ?? Measurement.zero;
+  final height = parser.parseArgSize(optional: false) ?? Measurement.zero;
 
   return SpaceNode(
-    height: Measurement.zero,
-    width: size,
-    mode: parser.mode,
+    height: height,
+    width: width,
+    shift: shift,
+    background: Colors.black,
+    mode: Mode.math,
   );
 }

@@ -21,17 +21,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-part of latex_base;
+part of katex_base;
 
-const _raiseBoxEntries = {
-  ['\\raisebox']:
-      FunctionSpec(numArgs: 2, allowedInText: true, handler: _raiseBoxHandler),
+const _mathEntries = {
+  ['\\(', '\$']: FunctionSpec(
+    numArgs: 0,
+    allowedInMath: false,
+    allowedInText: true,
+    handler: _mathLeftHandler,
+  ),
+  ['\\)', '\\]']: FunctionSpec(
+      numArgs: 0,
+      allowedInMath: false,
+      allowedInText: true,
+      handler: _mathRightHandler),
 };
-GreenNode _raiseBoxHandler(TexParser parser, FunctionContext context) {
-  final dy = parser.parseArgSize(optional: false) ?? Measurement.zero;
-  final body = parser.parseArgHbox(optional: false);
-  return RaiseBoxNode(
-    body: body.wrapWithEquationRow(),
-    dy: dy,
+GreenNode _mathLeftHandler(TexParser parser, FunctionContext context) {
+  final outerMode = parser.mode;
+  parser.switchMode(Mode.math);
+  final close = context.funcName == '\\(' ? '\\)' : '\$';
+  final body =
+      parser.parseExpression(breakOnInfix: false, breakOnTokenText: close);
+
+  parser.expect(close);
+  parser.switchMode(outerMode);
+
+  return StyleNode(
+    optionsDiff: OptionsDiff(style: MathStyle.text),
+    children: body,
   );
+}
+
+GreenNode _mathRightHandler(TexParser parser, FunctionContext context) {
+  throw ParseError('Mismatched ${context.funcName}');
 }
