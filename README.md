@@ -10,7 +10,7 @@ This project aims to achieve maximum compatibility and fidelity with regard to t
 The TeX parser is a completely rewritten Dart port of the KaTeX parser, with almost full features. There are only a few differences. List of some unsupported features can be found [here](doc/unsupported.md).
 
 
-## Render Samples
+## Rendering Samples
 
 `x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}`
 
@@ -108,7 +108,7 @@ In-line equations
 FlutterMath.fromTexString(r'\frac a b', options: Options.textOptions)
 ```
 
-You can also resize the output by providing `baseSizeMultiplier` parameter. (This parameter will also affect the size of absolute unit used in the equation. You can obtain the approximate font size for normal-sized letters by Options.fontSize.)
+You can also resize the output by providing `baseSizeMultiplier` parameter. (This parameter will also affect the size of absolute unit used in the equation. You can obtain the approximate font size for normal-sized letters by `Options.fontSize`.)
 
 ```dart
 FlutterMath.fromTexString(

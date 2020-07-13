@@ -18,7 +18,7 @@
 - `Vmatrix` environment
 - `\mathnormal`
 
-## Knowm parsing differences to KaTeX
+## Known parsing differences to KaTeX
 - `\not` can only accept selected characters following it, because it is no longer backed by `\rlap`. (This will probably be revisited).
 - The parsing behavior of `\overbrace` and `\underbase` with sub-sup pairs will be in line with MathJax rather than KaTeX. (Possibly KaTeX bug?)
 - `\u2258` will be investigated later
@@ -30,7 +30,7 @@
 - `\genfrac`'s delimiters will have a larger spacing with inner node. (This might be fixed in future)
 - `\color` commands inside a block will NOT be applied to right delimiters. This is in line with MathJax rather than KaTeX. 
 - `\colon`'s behavior will be in line with MathJax rather than KaTeX.
-- `\mathop` will no longer vertically center single characaters. This is MathJax's behavior.
+- `\mathop` will no longer vertically center single characaters. MathJax doesn't do this either.
 - `\cancel`, `\xcancel`, `\bcancel` will render differently compared to KaTeX. The vertical padding will be more similar to MathJaX.
 - Due to the lack of `\mathchoice`, `\pod`, `\pmod`, `\mod` will have fixed spacing.
 - `\dfrac`, `\tfrac` ... will have slight size deviation from KaTeX and will be in line with MathJax's rendering behavior. 

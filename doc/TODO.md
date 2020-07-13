@@ -8,10 +8,6 @@
 
 * modify symbols.dart to change the render config of surrogate pairs
 
-* extra symbols and complex symbols
-
-* 1 em spacing for cases environment
-
 * equation breaking
 
 * gathered environment
