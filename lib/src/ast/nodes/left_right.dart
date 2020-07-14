@@ -198,11 +198,11 @@ Widget buildCustomSizedDelimWidget(
           lookupChar(delim, delimConf.font, Mode.math), options),
     );
   } else {
-    return makeStakedDelim(delim, minDelimiterHeight, Mode.math, options);
+    return makeStackedDelim(delim, minDelimiterHeight, Mode.math, options);
   }
 }
 
-Widget makeStakedDelim(
+Widget makeStackedDelim(
     String delim, double minDelimiterHeight, Mode mode, Options options) {
   final conf = stackDelimiterConfs[delim];
   final topMetrics = lookupChar(conf.top, conf.font, Mode.math);
