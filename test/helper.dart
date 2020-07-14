@@ -31,6 +31,7 @@ void testTexToMatchGoldenFile(
                     style: MathStyle.display,
                     baseSizeMultiplier: scale,
                   ),
+                  onErrorFallback: (_) => throw _,
                 ),
               ),
             ),
@@ -65,6 +66,7 @@ void testTexToRender(
                   options: Options(
                     style: MathStyle.display,
                   ),
+                  onErrorFallback: (_) => throw _,
                 ),
               ),
             ),

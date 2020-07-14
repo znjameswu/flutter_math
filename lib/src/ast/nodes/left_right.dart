@@ -149,8 +149,8 @@ const stackAlwaysDelimiters = {
 
 // and delimiters that never stack
 const stackNeverDelimiters = {
-  '<',
-  '>',
+  '\u27e8', //'<',
+  '\u27e9', //'>',
   '/',
 };
 

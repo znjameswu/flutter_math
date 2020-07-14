@@ -56,7 +56,7 @@ void main() {
 
   testTexToMatchGoldenFile(
     'Enclosure renderer',
-    r'\fcolorbox{blue}{yellow}{a b}\colorbox{red}{a b}\cancel{x}\bcancel{x}\xcancel{x}\sout{x}\fbox{\frac a b}',
+    r'\fcolorbox{blue}{yellow}{a b}\colorbox{red}{a b}\cancel{x}\bcancel{x}\xcancel{x}\sout{x}\fbox{a}',
     location: 'golden/enclosure.png',
   );
 
@@ -68,7 +68,7 @@ void main() {
 
   testTexToMatchGoldenFile(
     'LeftRight renderer',
-    r'\left( \dfrac{x}{y} \middle| \dfrac{y}{z} \right} \left. \dfrac{x}{y} \middle|\right>',
+    r'\left( \dfrac{x}{y} \middle| \dfrac{y}{z} \right> \left( x \middle| y \right> \left. \dfrac{x}{y} \right\}',
     location: '../doc/img/leftright.png',
   );
 
