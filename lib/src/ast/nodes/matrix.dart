@@ -383,6 +383,8 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
   // Paint vlines and hlines
   @override
   void additionalPaint(PaintingContext context, Offset offset) {
+    const dashSize = 4;
+    final paint = Paint()..strokeWidth = ruleThickness;
     for (var i = 0; i < hLines.length; i++) {
       switch (hLines[i]) {
         case MatrixSeparatorStyle.solid:
@@ -395,16 +397,27 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
                 offset.dx + width,
                 offset.dy + hLinePos[i] + ruleThickness / 2,
               ),
-              Paint()..strokeWidth = ruleThickness);
+              paint);
           break;
         case MatrixSeparatorStyle.dashed:
-          // TODO: Handle this case.
+          for (var dx = 0.0; dx < width; dx += dashSize) {
+            context.canvas.drawLine(
+                Offset(
+                  offset.dx + dx,
+                  offset.dy + hLinePos[i] + ruleThickness / 2,
+                ),
+                Offset(
+                  offset.dx + math.min(dx + dashSize / 2, width),
+                  offset.dy + hLinePos[i] + ruleThickness / 2,
+                ),
+                paint);
+          }
           break;
       }
     }
 
     for (var i = 0; i < vLines.length; i++) {
-      switch (hLines[i]) {
+      switch (vLines[i]) {
         case MatrixSeparatorStyle.solid:
           context.canvas.drawLine(
               Offset(
@@ -415,10 +428,21 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
                 offset.dx + vLinePos[i] + ruleThickness / 2,
                 offset.dy + totalHeight,
               ),
-              Paint()..strokeWidth = ruleThickness);
+              paint);
           break;
         case MatrixSeparatorStyle.dashed:
-          // TODO: Handle this case.
+          for (var dy = 0.0; dy < totalHeight; dy += dashSize) {
+            context.canvas.drawLine(
+                Offset(
+                  offset.dx + vLinePos[i] + ruleThickness / 2,
+                  offset.dy + dy,
+                ),
+                Offset(
+                  offset.dx + vLinePos[i] + ruleThickness / 2,
+                  offset.dy + math.min(dy + dashSize / 2, totalHeight),
+                ),
+                paint);
+          }
           break;
       }
     }
