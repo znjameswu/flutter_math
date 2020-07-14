@@ -1,3 +1,5 @@
+## [0.1.3] - 2020/7/12
+- Dashed matrix separator will now be rendered correctly
 ## [0.1.2] - 2020/7/12
 - Add support for composite symbols, i.e. \notin \not\lt
 - Add API to indicate font size
