@@ -36,7 +36,8 @@ GreenNode _ruleHandler(TexParser parser, FunctionContext context) {
     height: height,
     width: width,
     shift: shift,
-    background: Colors.black,
+    fill: true,
+    // background: Colors.black,
     mode: Mode.math,
   );
 }

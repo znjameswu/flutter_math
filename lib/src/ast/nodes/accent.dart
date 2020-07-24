@@ -84,7 +84,7 @@ class AccentNode extends SlotableNode {
               child: Container(
                 width: constraints.minWidth,
                 height: defaultRuleThickness, // TODO minRuleThickness
-                color: Colors.black,
+                color: options.color,
               ),
             );
           } else {

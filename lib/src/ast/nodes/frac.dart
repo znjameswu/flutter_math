@@ -208,7 +208,7 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
   void additionalPaint(PaintingContext context, Offset offset) {
     if (theta != 0) {
       final paint = Paint()
-        ..color = Colors.black
+        ..color = options.color
         ..strokeWidth = theta;
       context.canvas.drawLine(
         Offset(0.5 * (width - barLength), height - a) + offset,
