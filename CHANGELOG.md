@@ -1,3 +1,5 @@
+## [0.1.4] - 2020/7/24
+- Fix incorrect color for lines in \frac, \overline, \underline, and \rule (#1)
 ## [0.1.3] - 2020/7/12
 - Dashed matrix separator will now be rendered correctly
 ## [0.1.2] - 2020/7/12
