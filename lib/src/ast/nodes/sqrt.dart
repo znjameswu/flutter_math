@@ -95,6 +95,13 @@ class SqrtNode extends SlotableNode {
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
       this.copyWith(index: newChildren[0], base: newChildren[1]);
+
+  @override
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'index': index.toJson(),
+      'base': base.toJson(),
+    });
 }
 
 enum _SqrtPos {

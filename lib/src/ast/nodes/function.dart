@@ -56,4 +56,11 @@ class FunctionNode extends SlotableNode {
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
       FunctionNode(functionName: newChildren[0], argument: newChildren[2]);
+
+  @override
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'functionName': functionName.toJson(),
+      'argument': argument.toJson(),
+    });
 }

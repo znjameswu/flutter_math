@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/utils/unicode_literal.dart';
 
 import '../../render/symbols/make_atom.dart';
 import '../options.dart';
@@ -73,6 +74,14 @@ class AtomNode extends LeafNode {
         overrideFont: overrideFont ?? this.overrideFont,
         mode: mode ?? this.mode,
       );
+
+  @override
+  Map<String, Object> toJson() => super.toJson()..addAll({
+    'mode': mode.toString(),
+    'symbol': unicodeLiteral(symbol) ,
+    if (variantForm) 'variantForm': variantForm,
+    if (_atomType != null) 'atomType': _atomType.toString(),
+  });
 }
 
 EquationRowNode stringToNode(String string, [Mode mode = Mode.text]) =>

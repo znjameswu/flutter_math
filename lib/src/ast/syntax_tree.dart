@@ -9,6 +9,7 @@ import 'nodes/space.dart';
 import 'nodes/sqrt.dart';
 import 'options.dart';
 import 'spacing.dart';
+import 'types.dart';
 
 /// Root of Roslyn's Red-Green Tree
 ///
@@ -286,7 +287,6 @@ abstract class GreenNode {
 
   Map<String, Object> toJson() => {
         'type': runtimeType.toString(),
-        'children': children.map<Object>((child) => child?.toJson()).toList(),
       };
 }
 
@@ -520,41 +520,17 @@ class EquationRowNode extends ParentableNode<GreenNode>
   ParentableNode<GreenNode> updateChildren(List<GreenNode> newChildren) =>
       EquationRowNode(children: newChildren);
 
-  // Left type for a equation row can never be AtomType.bin, nor
-  // AtomTpye.spacing, unless overriden.
-  //
-  // This guarantees some properties.
-  //
-  // If a node's left type is AtomType.bin/AtomTpye.spacing, then it right
-  // node must be the same, vice versa.
-  // AtomType _leftType;
   @override
   AtomType get leftType => overrideType ?? AtomType.ord;
-  // {
-  //   final firstNonSpace = flattenedChildList.firstWhere(
-  //       (element) => element.leftType != AtomType.spacing,
-  //       orElse: () => null);
-  //   return _leftType ??= overrideType ??
-  //       (firstNonSpace?.leftType == AtomType.bin
-  //           ? AtomType.ord
-  //           : firstNonSpace?.leftType) ??
-  //       AtomType.ord;
-  // }
 
-  // AtomType _rightType;
   @override
   AtomType get rightType => overrideType ?? AtomType.ord;
-  // {
-  //   final lastNonSpace = flattenedChildList.reversed.firstWhere(
-  //       (element) => element.rightType != AtomType.spacing,
-  //       orElse: () => null);
-  //   return _rightType ??= overrideType ??
-  //       (lastNonSpace?.rightType == AtomType.bin
-  //           ? AtomType.ord
-  //           : lastNonSpace?.rightType) ??
-  //       AtomType.ord;
-  // }
 
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'children': children.map<Object>((child) => child?.toJson()).toList(),
+      if (overrideType != null) 'overrideType': overrideType,
+    });
 }
 
 extension GreenNodeWrappingExt on GreenNode {
@@ -598,6 +574,8 @@ extension GreenNodeListWrappingExt on List<GreenNode> {
 }
 
 abstract class LeafNode extends GreenNode {
+  Mode get mode;
+
   @override
   List<GreenNode> get children => const [];
 
@@ -638,6 +616,10 @@ enum AtomType {
 }
 
 class TemporaryNode extends LeafNode {
+
+  @override
+  Mode get mode => Mode.math;
+
   @override
   List<BuildResult> buildWidget(
           Options options, List<List<BuildResult>> childBuildResults) =>

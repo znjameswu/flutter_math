@@ -112,6 +112,15 @@ class LeftRightNode extends SlotableNode {
         body: newChildren,
         middle: middle,
       );
+
+  @override
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'body': body.map((e) => e.toJson()),
+      'leftDelim': leftDelim,
+      'rightDelim': rightDelim,
+      if (middle.isNotEmpty) 'middle': middle,
+    });
 }
 
 // TexBook Appendix B

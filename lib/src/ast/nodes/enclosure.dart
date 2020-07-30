@@ -158,6 +158,20 @@ class EnclosureNode extends SlotableNode {
         horizontalPadding: horizontalPadding,
         verticalPadding: verticalPadding,
       );
+
+  @override
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'base': base.toJson(),
+      'hasBorder': hasBorder,
+      if (bordercolor != null) 'bordercolor': bordercolor,
+      if (backgroundcolor != null) 'backgroundcolor': backgroundcolor,
+      if (notation.isNotEmpty) 'notation': notation,
+      if (horizontalPadding != Measurement.zero)
+        'horizontalPadding': horizontalPadding.toString(),
+      if (verticalPadding != Measurement.zero)
+        'verticalPadding': verticalPadding.toString(),
+    });
 }
 
 class LinePainter extends CustomPainter {

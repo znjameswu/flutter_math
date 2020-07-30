@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/utils/unicode_literal.dart';
 
 import '../../font/metrics/font_metrics.dart';
 import '../../render/layout/line.dart';
@@ -193,6 +194,16 @@ class NaryOperatorNode extends SlotableNode {
         upperLimit: newChildren[1],
         naryand: newChildren[2],
       );
+  
+  @override
+  Map<String, Object> toJson() => super.toJson()..addAll({
+    'operator': unicodeLiteral(operator),
+    if (upperLimit != null) 'upperLimit': upperLimit.toJson(),
+    if (lowerLimit != null) 'lowerLimit': lowerLimit.toJson(),
+    'naryand': naryand.toJson(),
+    if (limits != null) 'limits': limits,
+    if (allowLargeOp != null) 'allowLargeOp': allowLargeOp,
+  });
 }
 
 const _naryDefaultLimit = {

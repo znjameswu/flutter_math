@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/utils/unicode_literal.dart';
 import 'package:meta/meta.dart';
 
 import '../../render/layout/layout_builder_baseline.dart';
@@ -93,6 +94,13 @@ class StretchyOpNode extends SlotableNode {
         below: newChildren[1],
         symbol: symbol,
       );
+
+  @override
+  Map<String, Object> toJson() => super.toJson()..addAll({
+    'symbol': unicodeLiteral(symbol),
+    if (above != null) 'above': above.toJson(),
+    if (below != null) 'below': below.toJson(),
+  });
 }
 
 const stretchyOpMapping = {

@@ -50,4 +50,11 @@ class RaiseBoxNode extends SlotableNode {
         body: newChildren[0],
         dy: dy,
       );
+
+  @override
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'body': body.toJson(),
+      'dy': dy.toString(),
+    });
 }

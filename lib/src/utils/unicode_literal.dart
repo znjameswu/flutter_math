@@ -11,7 +11,7 @@ String unicodeLiteral(String str, {bool escape = false}) =>
     str.split('').map((e) {
       if (e.codeUnitAt(0) > 126 || e.codeUnitAt(0) < 32) {
         return '\\u${fixedHex(e.codeUnitAt(0), 4)}';
-      } else if (escape || (e == '\'' || e == '\$')) {
+      } else if (escape && (e == '\'' || e == '\$')) {
         return '\\$e';
       } else {
         return e;

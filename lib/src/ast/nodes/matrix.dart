@@ -213,6 +213,23 @@ class MatrixNode extends SlotableNode {
         hLines: rowLines ?? this.hLines,
         body: body ?? this.body,
       );
+
+  @override
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'cols': cols,
+      if (arrayStretch != 1) 'arrayStretch': arrayStretch,
+      if (hskipBeforeAndAfter != false)
+        'hskipBeforeAndAfter': hskipBeforeAndAfter,
+      if (isSmall != false) 'isSmall': isSmall,
+      'columnAligns': columnAligns.map((e) => e.toString()),
+      'vLines': vLines.map((e) => e.toString()),
+      if (!rowSpacings.every((element) => element.value == 0))
+        'rowSpacings': rowSpacings.map((e) => e.toString()),
+      if (!hLines.every((element) => element == null))
+        'hLines': hLines.map((e) => e.toString()),
+      'body': body.map((e) => e.map((e) => e.toJson())),
+    });
 }
 
 class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {

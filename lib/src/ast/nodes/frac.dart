@@ -12,13 +12,13 @@ import '../style.dart';
 import '../syntax_tree.dart';
 
 class FracNode extends SlotableNode {
-  final Options options;
+  // final Options options;
   final EquationRowNode numerator;
   final EquationRowNode denominator;
   final Measurement barSize;
-  final bool continued;
+  final bool continued; // TODO continued
   FracNode({
-    this.options,
+    // this.options,
     @required this.numerator,
     @required this.denominator,
     this.barSize,
@@ -36,7 +36,7 @@ class FracNode extends SlotableNode {
     Measurement barSize,
   }) =>
       FracNode(
-        options: options ?? this.options,
+        // options: options ?? this.options,
         numerator: numerator ?? this.numerator,
         denominator: denumerator ?? this.denominator,
         barSize: barSize ?? this.barSize,
@@ -87,6 +87,14 @@ class FracNode extends SlotableNode {
 
   @override
   AtomType get rightType => AtomType.ord;
+
+  @override
+  Map<String, Object> toJson() => super.toJson()..addAll({
+    'numerator': numerator.toJson(),
+    'denominator': denominator.toJson(),
+    if (barSize != null) 'barSize': barSize.toString(),
+    if (continued) 'continued': continued,
+  });
 }
 
 enum _FracPos {

@@ -71,4 +71,10 @@ class UnderNode extends SlotableNode {
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
       UnderNode(base: newChildren[0], below: newChildren[1]);
+  
+  @override
+  Map<String, Object> toJson() => super.toJson()..addAll({
+    'base': base.toJson(),
+    'below': below.toJson(),
+  });
 }

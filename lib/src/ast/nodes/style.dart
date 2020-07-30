@@ -24,4 +24,10 @@ class StyleNode extends TransparentNode {
         children: newChildren,
         optionsDiff: optionsDiff,
       );
+  
+  @override
+  Map<String, Object> toJson() => super.toJson()..addAll({
+    'children': children.map((e) => e.toJson()),
+    'optionsDiff': optionsDiff.toString(),
+  });
 }

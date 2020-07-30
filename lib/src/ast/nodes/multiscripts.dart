@@ -86,4 +86,13 @@ class MultiscriptsNode extends SlotableNode {
         presub: newChildren[3],
         presup: newChildren[4],
       );
+
+  @override
+  Map<String, Object> toJson() => super.toJson()..addAll({
+    'base': base.toJson(),
+    if (sub != null) 'sub': sub.toJson(),
+    if (sup != null) 'sup': sup.toJson(),
+    if (presub != null) 'presub': presub.toJson(),
+    if (presup != null) 'presup': presup.toJson(),
+  });
 }

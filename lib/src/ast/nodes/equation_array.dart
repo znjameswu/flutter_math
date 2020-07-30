@@ -18,7 +18,7 @@ class EquationArrayNode extends SlotableNode {
   final int rows;
 
   EquationArrayNode(
-      {@required this.addJot,
+      {this.addJot = false,
       @required this.body,
       this.arrayStretch = 1.0,
       List<MatrixSeparatorStyle> hlines,
@@ -77,4 +77,14 @@ class EquationArrayNode extends SlotableNode {
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
       EquationArrayNode(addJot: addJot, body: newChildren);
+
+  @override
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      if (addJot != false) 'addJot': addJot,
+      'body': body.map((e) => e.toJson()),
+      if (arrayStretch != 1.0) 'arrayStretch': arrayStretch,
+      'hlines': hlines.map((e) => e.toString()),
+      'rowSpacings': rowSpacings.map((e) => e.toString())
+    });
 }

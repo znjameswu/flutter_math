@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/utils/unicode_literal.dart';
 
 import '../../render/layout/reset_dimension.dart';
 import '../../render/layout/shift_baseline.dart';
@@ -175,4 +176,12 @@ class AccentNode extends SlotableNode {
         isStretchy: isStretchy,
         isShifty: isShifty,
       );
+  @override
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'base': base.toJson(),
+      'label': unicodeLiteral(label),
+      'isStretchy': isStretchy,
+      'isShifty': isShifty,
+    });
 }
