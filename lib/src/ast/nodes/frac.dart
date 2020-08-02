@@ -29,19 +29,6 @@ class FracNode extends SlotableNode {
   @override
   List<EquationRowNode> computeChildren() => [numerator, denominator];
 
-  FracNode copyWith({
-    Options options,
-    EquationRowNode numerator,
-    EquationRowNode denumerator,
-    Measurement barSize,
-  }) =>
-      FracNode(
-        // options: options ?? this.options,
-        numerator: numerator ?? this.numerator,
-        denominator: denumerator ?? this.denominator,
-        barSize: barSize ?? this.barSize,
-      );
-
   @override
   List<BuildResult> buildSlotableWidget(
           Options options, List<BuildResult> childBuildResults) =>
@@ -89,12 +76,26 @@ class FracNode extends SlotableNode {
   AtomType get rightType => AtomType.ord;
 
   @override
-  Map<String, Object> toJson() => super.toJson()..addAll({
-    'numerator': numerator.toJson(),
-    'denominator': denominator.toJson(),
-    if (barSize != null) 'barSize': barSize.toString(),
-    if (continued) 'continued': continued,
-  });
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'numerator': numerator.toJson(),
+      'denominator': denominator.toJson(),
+      if (barSize != null) 'barSize': barSize.toString(),
+      if (continued) 'continued': continued,
+    });
+
+  FracNode copyWith({
+    Options options,
+    EquationRowNode numerator,
+    EquationRowNode denumerator,
+    Measurement barSize,
+  }) =>
+      FracNode(
+        // options: options ?? this.options,
+        numerator: numerator ?? this.numerator,
+        denominator: denumerator ?? this.denominator,
+        barSize: barSize ?? this.barSize,
+      );
 }
 
 enum _FracPos {

@@ -79,7 +79,7 @@ class MultiscriptsNode extends SlotableNode {
   @override
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
-      MultiscriptsNode(
+      copyWith(
         base: newChildren[0],
         sub: newChildren[1],
         sup: newChildren[2],
@@ -88,11 +88,29 @@ class MultiscriptsNode extends SlotableNode {
       );
 
   @override
-  Map<String, Object> toJson() => super.toJson()..addAll({
-    'base': base.toJson(),
-    if (sub != null) 'sub': sub.toJson(),
-    if (sup != null) 'sup': sup.toJson(),
-    if (presub != null) 'presub': presub.toJson(),
-    if (presup != null) 'presup': presup.toJson(),
-  });
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'base': base.toJson(),
+      if (sub != null) 'sub': sub.toJson(),
+      if (sup != null) 'sup': sup.toJson(),
+      if (presub != null) 'presub': presub.toJson(),
+      if (presup != null) 'presup': presup.toJson(),
+    });
+
+  MultiscriptsNode copyWith({
+    bool alignPostscripts,
+    EquationRowNode base,
+    EquationRowNode sub,
+    EquationRowNode sup,
+    EquationRowNode presub,
+    EquationRowNode presup,
+  }) =>
+      MultiscriptsNode(
+        alignPostscripts: alignPostscripts ?? this.alignPostscripts,
+        base: base ?? this.base,
+        sub: sub ?? this.sub,
+        sup: sup ?? this.sup,
+        presub: presub ?? this.presub,
+        presup: presup ?? this.presup,
+      );
 }

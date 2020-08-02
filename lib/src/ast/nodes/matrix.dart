@@ -78,10 +78,10 @@ class MatrixNode extends SlotableNode {
     double arrayStretch = 1.0,
     bool hskipBeforeAndAfter = false,
     bool isSmall = false,
-    @required List<MatrixColumnAlign> columnAligns,
-    @required List<MatrixSeparatorStyle> vLines,
-    @required List<Measurement> rowSpacings,
-    @required List<MatrixSeparatorStyle> hLines,
+    List<MatrixColumnAlign> columnAligns = const [],
+    List<MatrixSeparatorStyle> vLines = const [],
+    List<Measurement> rowSpacings = const [],
+    List<MatrixSeparatorStyle> hLines = const [],
     @required List<List<EquationRowNode>> body,
   }) {
     final cols = [

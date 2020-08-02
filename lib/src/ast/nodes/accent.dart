@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/utils/unicode_literal.dart';
 
 import '../../render/layout/reset_dimension.dart';
 import '../../render/layout/shift_baseline.dart';
@@ -8,6 +7,7 @@ import '../../render/layout/vlist.dart';
 import '../../render/svg/static.dart';
 import '../../render/svg/stretchy.dart';
 import '../../render/symbols/make_atom.dart';
+import '../../utils/unicode_literal.dart';
 import '../accents.dart';
 import '../options.dart';
 import '../size.dart';
@@ -170,12 +170,8 @@ class AccentNode extends SlotableNode {
   @override
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
-      AccentNode(
-        base: newChildren[0],
-        label: label,
-        isStretchy: isStretchy,
-        isShifty: isShifty,
-      );
+      copyWith(base: newChildren[0]);
+
   @override
   Map<String, Object> toJson() => super.toJson()
     ..addAll({
@@ -184,4 +180,17 @@ class AccentNode extends SlotableNode {
       'isStretchy': isStretchy,
       'isShifty': isShifty,
     });
+
+  AccentNode copyWith({
+    EquationRowNode base,
+    String label,
+    bool isStretchy,
+    bool isShifty,
+  }) =>
+      AccentNode(
+        base: base ?? this.base,
+        label: label ?? this.label,
+        isStretchy: isStretchy ?? this.isStretchy,
+        isShifty: isShifty ?? this.isShifty,
+      );
 }

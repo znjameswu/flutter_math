@@ -7,9 +7,8 @@ import '../syntax_tree.dart';
 import '../types.dart';
 
 class PhantomNode extends LeafNode {
-
   Mode get mode => Mode.math;
-  
+
   // TODO: suppress editbox in edit mode
   // If we use arbitrary GreenNode here, then we will face the danger of
   // transparent node
@@ -57,11 +56,12 @@ class PhantomNode extends LeafNode {
   @override
   bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
       phantomChild.shouldRebuildWidget(oldOptions, newOptions);
-  
+
   @override
-  Map<String, Object> toJson() => super.toJson()..addAll({
-    'phantomChild': phantomChild.toJson(),
-    if (zeroWidth != false) 'zeroWidth': zeroWidth,
-    if (zeroHeight != false) 'zeroHeight': zeroHeight,
-  });
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'phantomChild': phantomChild.toJson(),
+      if (zeroWidth != false) 'zeroWidth': zeroWidth,
+      if (zeroHeight != false) 'zeroHeight': zeroHeight,
+    });
 }

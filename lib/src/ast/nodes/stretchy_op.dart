@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/utils/unicode_literal.dart';
 import 'package:meta/meta.dart';
 
 import '../../render/layout/layout_builder_baseline.dart';
 import '../../render/layout/shift_baseline.dart';
 import '../../render/layout/vlist.dart';
 import '../../render/svg/stretchy.dart';
+import '../../utils/unicode_literal.dart';
 import '../options.dart';
 import '../size.dart';
 import '../style.dart';
@@ -89,18 +89,29 @@ class StretchyOpNode extends SlotableNode {
   @override
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
-      StretchyOpNode(
+      copyWith(
         above: newChildren[0],
         below: newChildren[1],
-        symbol: symbol,
       );
 
   @override
-  Map<String, Object> toJson() => super.toJson()..addAll({
-    'symbol': unicodeLiteral(symbol),
-    if (above != null) 'above': above.toJson(),
-    if (below != null) 'below': below.toJson(),
-  });
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'symbol': unicodeLiteral(symbol),
+      if (above != null) 'above': above.toJson(),
+      if (below != null) 'below': below.toJson(),
+    });
+
+  StretchyOpNode copyWith({
+    EquationRowNode above,
+    EquationRowNode below,
+    String symbol,
+  }) =>
+      StretchyOpNode(
+        above: above ?? this.above,
+        below: below ?? this.below,
+        symbol: symbol ?? this.symbol,
+      );
 }
 
 const stretchyOpMapping = {

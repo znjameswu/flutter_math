@@ -518,7 +518,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
 
   @override
   ParentableNode<GreenNode> updateChildren(List<GreenNode> newChildren) =>
-      EquationRowNode(children: newChildren);
+      copyWith(children: newChildren);
 
   @override
   AtomType get leftType => overrideType ?? AtomType.ord;
@@ -531,6 +531,15 @@ class EquationRowNode extends ParentableNode<GreenNode>
       'children': children.map<Object>((child) => child?.toJson()).toList(),
       if (overrideType != null) 'overrideType': overrideType,
     });
+
+  EquationRowNode copyWith({
+    AtomType overrideType,
+    List<GreenNode> children,
+  }) =>
+      EquationRowNode(
+        overrideType: overrideType ?? this.overrideType,
+        children: children ?? this.children,
+      );
 }
 
 extension GreenNodeWrappingExt on GreenNode {
@@ -616,7 +625,6 @@ enum AtomType {
 }
 
 class TemporaryNode extends LeafNode {
-
   @override
   Mode get mode => Mode.math;
 

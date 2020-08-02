@@ -32,15 +32,6 @@ class SqrtNode extends SlotableNode {
     @required this.base,
   }) : assert(base != null);
 
-  SqrtNode copyWith({
-    EquationRowNode index,
-    EquationRowNode base,
-  }) =>
-      SqrtNode(
-        index: index ?? this.index,
-        base: base ?? this.base,
-      );
-
   @override
   List<BuildResult> buildSlotableWidget(
           Options options, List<BuildResult> childBuildResults) =>
@@ -94,7 +85,7 @@ class SqrtNode extends SlotableNode {
   @override
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
-      this.copyWith(index: newChildren[0], base: newChildren[1]);
+      copyWith(index: newChildren[0], base: newChildren[1]);
 
   @override
   Map<String, Object> toJson() => super.toJson()
@@ -102,6 +93,15 @@ class SqrtNode extends SlotableNode {
       'index': index.toJson(),
       'base': base.toJson(),
     });
+
+  SqrtNode copyWith({
+    EquationRowNode index,
+    EquationRowNode base,
+  }) =>
+      SqrtNode(
+        index: index ?? this.index,
+        base: base ?? this.base,
+      );
 }
 
 enum _SqrtPos {

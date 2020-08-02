@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import '../options.dart';
 import '../syntax_tree.dart';
 
@@ -20,14 +21,21 @@ class StyleNode extends TransparentNode {
 
   @override
   ParentableNode<GreenNode> updateChildren(List<GreenNode> newChildren) =>
-      StyleNode(
-        children: newChildren,
-        optionsDiff: optionsDiff,
-      );
-  
+      copyWith(children: newChildren);
+
   @override
-  Map<String, Object> toJson() => super.toJson()..addAll({
-    'children': children.map((e) => e.toJson()),
-    'optionsDiff': optionsDiff.toString(),
-  });
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'children': children.map((e) => e.toJson()),
+      'optionsDiff': optionsDiff.toString(),
+    });
+
+  StyleNode copyWith({
+    List<GreenNode> children,
+    OptionsDiff optionsDiff,
+  }) =>
+      StyleNode(
+        children: children ?? this.children,
+        optionsDiff: optionsDiff ?? this.optionsDiff,
+      );
 }

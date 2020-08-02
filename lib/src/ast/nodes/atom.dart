@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/utils/unicode_literal.dart';
+
 
 import '../../render/symbols/make_atom.dart';
+import '../../utils/unicode_literal.dart';
 import '../options.dart';
 import '../symbols.dart';
 import '../syntax_tree.dart';
@@ -60,6 +61,15 @@ class AtomNode extends LeafNode {
   @override
   AtomType get rightType => atomType;
 
+  @override
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'mode': mode.toString(),
+      'symbol': unicodeLiteral(symbol),
+      if (variantForm) 'variantForm': variantForm,
+      if (_atomType != null) 'atomType': _atomType.toString(),
+    });
+
   AtomNode copyWith({
     String symbol,
     bool variantForm,
@@ -70,18 +80,10 @@ class AtomNode extends LeafNode {
       AtomNode(
         symbol: symbol ?? this.symbol,
         variantForm: variantForm ?? this.variantForm,
-        atomType: atomType ?? this._atomType,
+        atomType: _atomType ?? this._atomType,
         overrideFont: overrideFont ?? this.overrideFont,
         mode: mode ?? this.mode,
       );
-
-  @override
-  Map<String, Object> toJson() => super.toJson()..addAll({
-    'mode': mode.toString(),
-    'symbol': unicodeLiteral(symbol) ,
-    if (variantForm) 'variantForm': variantForm,
-    if (_atomType != null) 'atomType': _atomType.toString(),
-  });
 }
 
 EquationRowNode stringToNode(String string, [Mode mode = Mode.text]) =>

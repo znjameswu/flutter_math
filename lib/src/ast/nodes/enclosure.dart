@@ -149,15 +149,7 @@ class EnclosureNode extends SlotableNode {
   @override
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
-      EnclosureNode(
-        base: newChildren[0],
-        hasBorder: hasBorder,
-        bordercolor: bordercolor,
-        backgroundcolor: backgroundcolor,
-        notation: notation,
-        horizontalPadding: horizontalPadding,
-        verticalPadding: verticalPadding,
-      );
+      copyWith(base: newChildren[0]);
 
   @override
   Map<String, Object> toJson() => super.toJson()
@@ -172,6 +164,25 @@ class EnclosureNode extends SlotableNode {
       if (verticalPadding != Measurement.zero)
         'verticalPadding': verticalPadding.toString(),
     });
+
+  EnclosureNode copyWith({
+    EquationRowNode base,
+    bool hasBorder,
+    Color bordercolor,
+    Color backgroundcolor,
+    List<String> notation,
+    Measurement horizontalPadding,
+    Measurement verticalPadding,
+  }) =>
+      EnclosureNode(
+        base: base ?? this.base,
+        hasBorder: hasBorder ?? this.hasBorder,
+        bordercolor: bordercolor ?? this.bordercolor,
+        backgroundcolor: backgroundcolor ?? this.backgroundcolor,
+        notation: notation ?? this.notation,
+        horizontalPadding: horizontalPadding ?? this.horizontalPadding,
+        verticalPadding: verticalPadding ?? this.verticalPadding,
+      );
 }
 
 class LinePainter extends CustomPainter {

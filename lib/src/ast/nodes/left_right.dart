@@ -106,12 +106,7 @@ class LeftRightNode extends SlotableNode {
   @override
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
-      LeftRightNode(
-        leftDelim: leftDelim,
-        rightDelim: rightDelim,
-        body: newChildren,
-        middle: middle,
-      );
+      copyWith(body: newChildren);
 
   @override
   Map<String, Object> toJson() => super.toJson()
@@ -121,6 +116,19 @@ class LeftRightNode extends SlotableNode {
       'rightDelim': rightDelim,
       if (middle.isNotEmpty) 'middle': middle,
     });
+
+  LeftRightNode copyWith({
+    String leftDelim,
+    String rightDelim,
+    List<EquationRowNode> body,
+    List<String> middle,
+  }) =>
+      LeftRightNode(
+        leftDelim: leftDelim ?? this.leftDelim,
+        rightDelim: rightDelim ?? this.rightDelim,
+        body: body ?? this.body,
+        middle: middle ?? this.middle,
+      );
 }
 
 // TexBook Appendix B

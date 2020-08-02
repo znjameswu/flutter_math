@@ -15,20 +15,19 @@ class EquationArrayNode extends SlotableNode {
   final List<MatrixSeparatorStyle> hlines;
   final List<Measurement> rowSpacings;
 
-  final int rows;
+  // final int rows;
 
-  EquationArrayNode(
-      {this.addJot = false,
-      @required this.body,
-      this.arrayStretch = 1.0,
-      List<MatrixSeparatorStyle> hlines,
-      List<Measurement> rowSpacings})
-      : assert(body != null),
+  EquationArrayNode({
+    this.addJot = false,
+    @required this.body,
+    this.arrayStretch = 1.0,
+    List<MatrixSeparatorStyle> hlines,
+    List<Measurement> rowSpacings,
+  })  : assert(body != null),
         assert(body.every((element) => element != null)),
         hlines = (hlines ?? []).extendToByFill(body.length, null),
         rowSpacings =
-            (rowSpacings ?? []).extendToByFill(body.length, Measurement.zero),
-        rows = body.length;
+            (rowSpacings ?? []).extendToByFill(body.length, Measurement.zero);
 
   @override
   List<BuildResult> buildSlotableWidget(
@@ -59,7 +58,7 @@ class EquationArrayNode extends SlotableNode {
 
   @override
   List<Options> computeChildOptions(Options options) =>
-      List.filled(rows, options, growable: false);
+      List.filled(body.length, options, growable: false);
 
   @override
   List<EquationRowNode> computeChildren() => body;
@@ -76,7 +75,7 @@ class EquationArrayNode extends SlotableNode {
   @override
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
-      EquationArrayNode(addJot: addJot, body: newChildren);
+      copyWith(body: newChildren);
 
   @override
   Map<String, Object> toJson() => super.toJson()
@@ -87,4 +86,19 @@ class EquationArrayNode extends SlotableNode {
       'hlines': hlines.map((e) => e.toString()),
       'rowSpacings': rowSpacings.map((e) => e.toString())
     });
+
+  EquationArrayNode copyWith({
+    double arrayStretch,
+    bool addJot,
+    List<EquationRowNode> body,
+    List<MatrixSeparatorStyle> hlines,
+    List<Measurement> rowSpacings,
+  }) =>
+      EquationArrayNode(
+        arrayStretch: arrayStretch ?? this.arrayStretch,
+        addJot: addJot ?? this.addJot,
+        body: body ?? this.body,
+        hlines: hlines ?? this.hlines,
+        rowSpacings: rowSpacings ?? this.rowSpacings,
+      );
 }

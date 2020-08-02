@@ -88,10 +88,7 @@ class AccentUnderNode extends SlotableNode {
   @override
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
-      AccentUnderNode(
-        base: newChildren[0],
-        label: label,
-      );
+      copyWith(base: newChildren[0]);
 
   @override
   Map<String, Object> toJson() => super.toJson()
@@ -101,4 +98,13 @@ class AccentUnderNode extends SlotableNode {
       // 'isStretchy': isStretchy,
       // 'isShifty': isShifty,
     });
+
+  AccentUnderNode copyWith({
+    EquationRowNode base,
+    String label,
+  }) =>
+      AccentUnderNode(
+        base: base ?? this.base,
+        label: label ?? this.label,
+      );
 }

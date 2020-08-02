@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/utils/unicode_literal.dart';
+
 
 import '../../font/metrics/font_metrics.dart';
 import '../../render/layout/line.dart';
@@ -9,6 +9,7 @@ import '../../render/layout/shift_baseline.dart';
 import '../../render/layout/vlist.dart';
 import '../../render/svg/static.dart';
 import '../../render/symbols/make_atom.dart';
+import '../../utils/unicode_literal.dart';
 import '../options.dart';
 import '../size.dart';
 import '../spacing.dart';
@@ -188,22 +189,39 @@ class NaryOperatorNode extends SlotableNode {
   @override
   ParentableNode<EquationRowNode> updateChildren(
           List<EquationRowNode> newChildren) =>
-      NaryOperatorNode(
-        operator: operator,
+      copyWith(
         lowerLimit: newChildren[0],
         upperLimit: newChildren[1],
         naryand: newChildren[2],
       );
-  
+
   @override
-  Map<String, Object> toJson() => super.toJson()..addAll({
-    'operator': unicodeLiteral(operator),
-    if (upperLimit != null) 'upperLimit': upperLimit.toJson(),
-    if (lowerLimit != null) 'lowerLimit': lowerLimit.toJson(),
-    'naryand': naryand.toJson(),
-    if (limits != null) 'limits': limits,
-    if (allowLargeOp != null) 'allowLargeOp': allowLargeOp,
-  });
+  Map<String, Object> toJson() => super.toJson()
+    ..addAll({
+      'operator': unicodeLiteral(operator),
+      if (upperLimit != null) 'upperLimit': upperLimit.toJson(),
+      if (lowerLimit != null) 'lowerLimit': lowerLimit.toJson(),
+      'naryand': naryand.toJson(),
+      if (limits != null) 'limits': limits,
+      if (allowLargeOp != null) 'allowLargeOp': allowLargeOp,
+    });
+
+  NaryOperatorNode copyWith({
+    String operator,
+    EquationRowNode lowerLimit,
+    EquationRowNode upperLimit,
+    EquationRowNode naryand,
+    bool limits,
+    bool allowLargeOp,
+  }) =>
+      NaryOperatorNode(
+        operator: operator ?? this.operator,
+        lowerLimit: lowerLimit ?? this.lowerLimit,
+        upperLimit: upperLimit ?? this.upperLimit,
+        naryand: naryand ?? this.naryand,
+        limits: limits ?? this.limits,
+        allowLargeOp: allowLargeOp ?? this.allowLargeOp,
+      );
 }
 
 const _naryDefaultLimit = {
