@@ -16,6 +16,7 @@ Spec-wise, this reference algorithm deviates from the spec:
 - Handling of the unary operators before and after subsup (*Align with reference*)
   - '+^2', 'a^-2' as subsup? (Spec says no. Reference says yes.)
 - \of \funcapply \naryand
+- The Reference algorithm doesn't even mention the spec for `\prime` when inside the subsup expressions.
 
 Also, MS Word's implementation deviates from the reference:
 - Handling of the normal operators after div & subsup (*Align with MS Word*)
@@ -31,6 +32,8 @@ Some quirks in MS Word:
 - `(1) /2` folds into `\frac{1}{2}`, while `1 /2` folds into `1 \frac{}{2}`. (*reproduced*)
 - `\sum \of  \of  ` folds into `\sum{}`. (*reproduced*)
 - In `∑^∑_a▒a`, `\of` has a higher precedence than `^`.
+- Interactions between `'` and `^`. E.g., `a'^b` vs `a' ^b`. `a_'^a` vs `a^'^a`, `a^a'` vs `a_a'`, `a'_b^c` vs `a' _b^c`.
+- You will get different results..., when inputting `a^b _c `, or hitting space after `a^b _c`, or convert `a^b _c ` as a whole (Potentially bug).
 
 Some conflicts between UnicodeMath and TeX:
 - Rendering of subsup scripts when base comprises of multiple elements.
@@ -64,6 +67,7 @@ Some special points:
 - Many operators will be forcefully taken as base if the script operators cannot fetch a left operand as base.
 - The folding of Naryand will only be triggered by \of
 - Some operators will eventually have to rollback due to their non-local ambiguity, such as `|`.
+- To handle interactions between `\prime` and `^`, there will be a flag to halt folding \prime to superscript. The existence of \prime will be examined by `^` operator outer.
 
 ## Unsupported UnicodeMath functions
 The following features are not supported by MS Word and by Flutter Math
@@ -80,6 +84,9 @@ The following feature are not supported by Flutter Math
 - multiscript with a composite base (render difference)
 - \coint
 - \middle
+- arbitrary delimiters using \open and \close
+- '
+- smash
 
 ## Reference algorithm
 - char ← Unicode character 

@@ -33,6 +33,7 @@ GreenNode _phantomHandler(TexParser parser, FunctionContext context) {
   return PhantomNode(
     phantomChild: body.wrapWithEquationRow(),
     zeroHeight: context.funcName == '\\hphantom',
+    zeroDepth: context.funcName == '\\hphantom',
     zeroWidth: context.funcName == '\\vphantom',
   );
 }

@@ -16,10 +16,12 @@ class PhantomNode extends LeafNode {
 
   final bool zeroWidth;
   final bool zeroHeight;
+  final bool zeroDepth;
   PhantomNode({
     @required this.phantomChild,
     this.zeroHeight = false,
     this.zeroWidth = false,
+    this.zeroDepth = false,
   });
 
   @override
@@ -32,12 +34,12 @@ class PhantomNode extends LeafNode {
       opacity: 0.0,
       child: phantomResult.widget,
     );
-    if (this.zeroHeight) {
-      widget = ResetDimension(height: 0, depth: 0, child: widget);
-    }
-    if (this.zeroWidth) {
-      widget = ResetDimension(width: 0, child: widget);
-    }
+    widget = ResetDimension(
+      width: zeroWidth ? 0 : null,
+      height: zeroHeight ? 0 : null,
+      depth: zeroDepth ? 0 : null,
+      child: widget,
+    );
     return [
       BuildResult(
         widget: widget,

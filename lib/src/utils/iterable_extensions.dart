@@ -23,6 +23,20 @@ extension IterableExtension<T> on Iterable<T> {
   }
 }
 
+extension SplitExtension<T> on List<T> {
+  List<List<T>> splitBy(bool Function(T element) f) {
+    final res = <List<T>>[];
+    var lastIndex = 0;
+    for (var i = 0; i < this.length; i++) {
+      if (f(this[i])) {
+        res.add(this.sublist(lastIndex, i));
+        lastIndex = i + 1;
+      }
+    }
+    return res;
+  }
+}
+
 extension ListExtension<T> on List<T> {
   void sortBy<T2 extends Comparable<T2>>(T2 Function(T element) f) {
     this.sort((a, b) => f(a).compareTo(f(b)));

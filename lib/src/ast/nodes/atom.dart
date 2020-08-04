@@ -18,6 +18,7 @@ enum DelimiterSize {
 class AtomNode extends LeafNode {
   final String symbol;
   final bool variantForm;
+  final bool unicodeMathLiteral;
   AtomType _atomType;
   AtomType get atomType => _atomType ??=
       getDefaultAtomTypeForSymbol(symbol, variantForm: variantForm, mode: mode);
@@ -33,6 +34,7 @@ class AtomNode extends LeafNode {
     AtomType atomType,
     this.overrideFont,
     this.mode = Mode.math,
+    this.unicodeMathLiteral = true,
   }) : _atomType = atomType;
 
   @override
