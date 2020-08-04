@@ -83,6 +83,9 @@ const accentRenderConfigs = {
 
   '\u23de': AccentRenderConfig(
     overImageName: 'overbrace',
+  ),
+
+  '\u23df': AccentRenderConfig(
     underImageName: 'underbrace',
   ),
 

@@ -55,7 +55,7 @@ GreenNode _horizBraceHandler(TexParser parser, FunctionContext context) {
   } else {
     res = AccentUnderNode(
       base: res.wrapWithEquationRow(),
-      label: '\u23de',
+      label: '\u23df',
     );
     if (scripts.subscript != null) {
       res = UnderNode(
