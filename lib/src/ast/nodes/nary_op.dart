@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 
-
 import '../../font/metrics/font_metrics.dart';
 import '../../render/layout/line.dart';
 import '../../render/layout/multiscripts.dart';

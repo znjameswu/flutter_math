@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 
-
 import '../../render/symbols/make_atom.dart';
 import '../../utils/unicode_literal.dart';
 import '../options.dart';

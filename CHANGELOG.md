@@ -1,5 +1,8 @@
+## [0.1.5] - 2020/8/5
+- Fix breakings caused by [dart/#40674](https://github.com/dart-lang/sdk/issues/40674)
+- Support Flutter 1.20.
 ## [0.1.4] - 2020/7/24
-- Fix incorrect color for lines in \frac, \overline, \underline, and \rule (#1)
+- Fix incorrect color for lines in \frac, \overline, \underline, and \rule
 ## [0.1.3] - 2020/7/12
 - Dashed matrix separator will now be rendered correctly
 ## [0.1.2] - 2020/7/12

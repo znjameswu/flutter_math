@@ -89,7 +89,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.1.4"
+    version: "0.1.5"
   flutter_svg:
     dependency: transitive
     description:
@@ -283,5 +283,5 @@ packages:
     source: hosted
     version: "4.2.0"
 sdks:
-  dart: ">=2.9.0-14.0.dev <3.0.0"
+  dart: ">=2.9.0 <3.0.0"
   flutter: ">=1.18.0 <2.0.0"
