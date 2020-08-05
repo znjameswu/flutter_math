@@ -56,8 +56,8 @@ class _RenderLayoutBuilderPreserveBaseline extends RenderBox
   @override
   void performLayout() {
     final constraints = this.constraints;
-    // rebuildIfNecessary();
-    layoutAndBuildChild();
+    // layoutAndBuildChild(); // Flutter >=1.17.0 <1.18.0
+    rebuildIfNecessary(); // Flutter >=1.18.0
     if (child != null) {
       child.layout(constraints, parentUsesSize: true);
       size = constraints.constrain(child.size);
