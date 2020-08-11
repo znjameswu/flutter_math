@@ -11,16 +11,16 @@
 - Exotic composite symbols: `\Coloneqq, \coloneq, \Coloneq, \Eqqcolon, \Eqcolon, \colonapprox, \Colonapprox, \colonsim, \Colonsim, \simcolon, \simcoloncolon, \approxcolon, \approxcoloncolon`, and also their equivalent `\coloncolonequals` ...
 - `\vcentcolon`
 - `\textcircle` and related `\copyright`, `\registered`, etc.
+- Text-mode accent and related commands.
 
 ## Functionalities that will be supported later
-- **Text-mode accent**
 - `gather` environment
 - `Vmatrix` environment
 - `\mathnormal`
 
 ## Known parsing differences to KaTeX
 - `\not` can only accept selected characters following it, because it is no longer backed by `\rlap`. (This will probably be revisited).
-- The parsing behavior of `\overbrace` and `\underbase` with sub-sup pairs will be in line with MathJax rather than KaTeX. (Possibly KaTeX bug?)
+- The parsing behavior of `\overbrace` and `\underbase` with sub-sup pairs will be in line with MathJax rather than KaTeX.
 - `\u2258` will be investigated later
 
 ## Known rendering differences to KaTeX
