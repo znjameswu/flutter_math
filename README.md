@@ -10,7 +10,7 @@ This project aims to achieve maximum compatibility and fidelity with regard to t
 
 The TeX parser is a completely rewritten Dart port of the KaTeX parser, with almost full features. There are only a few differences. List of some unsupported features can be found [here](doc/unsupported.md).
 
-## [Online Demo](https://znjameswu.github.io/flutter_math_pages/)
+## [Online Demo](https://znjameswu.github.io/flutter_math_demo/)
 
 ## Rendering Samples
 
