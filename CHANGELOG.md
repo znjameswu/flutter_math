@@ -1,7 +1,5 @@
-## 0.1.6+2
-
+## [0.1.7] - 2020/8/11
 - Remove need for specifying fonts in package Pubspec.
-
 ## [0.1.6+1] - 2020/8/10
 ## [0.1.6] - 2020/8/10
 - Add support for Flutter Web (DomCanvas backend)

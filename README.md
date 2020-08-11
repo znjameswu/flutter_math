@@ -29,11 +29,15 @@ The TeX parser is a completely rewritten Dart port of the KaTeX parser, with alm
 
 ## How to use
 
+Add `flutter_math` to your `pubspec.yaml` dependencies
+
+From v0.1.7, this plugin no longer require extra font declarations in `pubspec.yaml`. 
+
 ### Mobile
 Currently only Android platform has been tested. If you encounter any issues with iOS, please file them.
 
 ### Web
-Web supported is added in v0.1.6. It is tested for DomCanvas backend. In general it should behave largely the same with mobile. It is expected to break with CanvasKit backend. Check out the [Online Demo](https://znjameswu.github.io/flutter_math_pages/)
+Web support is added in v0.1.6. It is tested for DomCanvas backend. In general it should behave largely the same with mobile. It is expected to break with CanvasKit backend. Check out the [Online Demo](https://znjameswu.github.io/flutter_math_demo/)
 
 ## API usage
 Currently the usage is straightforward. Just `FlutterMath.fromTexString(r'\frac a b')`. There is also optional arguments of `Options` and `Settings`, which correspond to Options and Settings in KaTeX and support a subset of their features.
@@ -70,7 +74,7 @@ FlutterMath.fromTexString(
 ```
 
 ## Credits
-This project is possible thanks to the inspirations and resources from [the KaTeX Project](https://katex.org/), [MathJax](www.mathjax.org), and [Zefyr](https://github.com/memspace/zefyr).
+This project is made possible thanks to the inspirations and resources from [the KaTeX Project](https://katex.org/), [MathJax](www.mathjax.org), and [Zefyr](https://github.com/memspace/zefyr).
 
 ## Goals
 - [x] : TeX math parsing (See [design doc](doc/design.md))
