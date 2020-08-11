@@ -338,7 +338,7 @@ Widget sqrtSvg({double minDelimiterHeight, double baseWidth, Options options}) {
             Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
             options.color,
             Alignment.topLeft,
-            BoxFit.fitHeight,
+            BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
           ),
         ),
       );
@@ -366,7 +366,7 @@ Widget sqrtSvg({double minDelimiterHeight, double baseWidth, Options options}) {
           Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
           options.color,
           Alignment.topLeft,
-          BoxFit.fitHeight,
+          BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
         ),
       ),
     );
