@@ -1,3 +1,4 @@
+## [0.1.6+1] - 2020/8/10
 ## [0.1.6] - 2020/8/10
 - Add support for Flutter Web (DomCanvas backend)
 ## [0.1.5] - 2020/8/5
