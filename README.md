@@ -95,7 +95,7 @@ flutter:
 Currently only Android platform has been tested. If you encounter any issues with iOS, please file them.
 
 ### Web
-Web supported is added in v0.1.7. It is tested for DomCanvas backend. In general it should behave largely the same with mobile. It is expected to break with CanvasKit backend. Check out the [Online Demo](https://znjameswu.github.io/flutter_math_pages/)
+Web supported is added in v0.1.6. It is tested for DomCanvas backend. In general it should behave largely the same with mobile. It is expected to break with CanvasKit backend. Check out the [Online Demo](https://znjameswu.github.io/flutter_math_pages/)
 
 ## API usage
 Currently the usage is straightforward. Just `FlutterMath.fromTexString(r'\frac a b')`. There is also optional arguments of `Options` and `Settings`, which correspond to Options and Settings in KaTeX and support a subset of their features.
