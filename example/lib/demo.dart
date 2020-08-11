@@ -8,7 +8,7 @@ import 'package:flutter_tex/flutter_tex.dart';
 class DemoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
-    child: Container(
+        child: Container(
           constraints: BoxConstraints(maxWidth: 800),
           child: ChangeNotifierProvider(
             create: (context) => TextEditingController(),
@@ -103,10 +103,11 @@ class DemoPage extends StatelessWidget {
                                 child: TeXViewDocument(
                                   '\$\$${controller.value.text}\$\$',
                                   id: '0',
-                                  style:
-                                      TeXViewStyle(backgroundColor: Colors.white),
+                                  style: TeXViewStyle(
+                                      backgroundColor: Colors.white),
                                 ),
-                                style: TeXViewStyle(backgroundColor: Colors.white),
+                                style:
+                                    TeXViewStyle(backgroundColor: Colors.white),
                               ),
                             ),
                           ),
@@ -119,5 +120,5 @@ class DemoPage extends StatelessWidget {
             ),
           ),
         ),
-  );
+      );
 }

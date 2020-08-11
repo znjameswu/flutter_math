@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
@@ -124,7 +123,6 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
   var heightAboveBaseline = 0.0;
   var svgHorizontalPos = 0.0;
   var svgVerticalPos = 0.0;
-  DrawableRoot svgRoot;
 
   @override
   double computeDistanceToActualBaseline(

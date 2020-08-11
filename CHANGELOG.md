@@ -1,3 +1,5 @@
+## [0.1.6] - 2020/8/10
+- Add support for Flutter Web (DomCanvas backend)
 ## [0.1.5] - 2020/8/5
 - Fix breakings caused by [dart/#40674](https://github.com/dart-lang/sdk/issues/40674)
 - Support Flutter 1.20.
