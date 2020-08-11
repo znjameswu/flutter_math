@@ -392,8 +392,8 @@ final Map<String, MacroDefinition> builtinMacros = {
 // \def \AA {\r A}
   '\\lq': MacroDefinition.fromString("`"),
   '\\rq': MacroDefinition.fromString("'"),
-  '\\aa': MacroDefinition.fromString("\\r a"),
-  '\\AA': MacroDefinition.fromString("\\r A"),
+  // '\\aa': MacroDefinition.fromString("\\r a"),
+  // '\\AA': MacroDefinition.fromString("\\r A"),
 
 // TODO these should be migrated into renderconfigs
 // Characters omitted from Unicode range 1D400–1D7FF

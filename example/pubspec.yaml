@@ -18,6 +18,7 @@ dependencies:
   provider:
   matrix_gesture_detector:
   flutter_tex:
+  google_fonts:
 
 
   cupertino_icons: ^0.1.3

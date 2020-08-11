@@ -12,28 +12,24 @@ class DisplayMath extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Material(
-        elevation: 5,
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(expression, softWrap: true),
-              ),
-              Divider(
-                thickness: 1.0,
-                height: 1.0,
-              ),
-              Expanded(
-                child: Center(child: FlutterMath.fromTexString(expression)),
-              )
-            ],
-          ),
+  Widget build(BuildContext context) => Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(expression, softWrap: true),
+            ),
+            Divider(
+              thickness: 1.0,
+              height: 1.0,
+            ),
+            Expanded(
+              child: Center(child: FlutterMath.fromTexString(expression)),
+            )
+          ],
         ),
       );
 }

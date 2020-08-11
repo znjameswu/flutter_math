@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'demo.dart';
-import 'docs.dart';
+import 'equations.dart';
 import 'feature.dart';
 
 void main() {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) => MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Flutter Math Demo',
         theme: ThemeData(
           // This is the theme of your application.
           //
@@ -43,15 +43,15 @@ class MyHomePage extends StatelessWidget {
               'Flutter Math Demo',
             ),
             bottom: TabBar(tabs: [
-              Text('Demo'),
-              Text('Features'),
-              Text('Docs'),
+              Text('Interactive Demo'),
+              Text('Equation Samples'),
+              Text('Supported Features'),
             ]),
           ),
           body: TabBarView(children: [
             DemoPage(),
+            EquationsPage(),
             FeaturePage(),
-            DocsPage(),
           ]),
         ),
       );
