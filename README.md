@@ -28,69 +28,7 @@ The TeX parser is a completely rewritten Dart port of the KaTeX parser, with alm
 
 
 ## How to use
-Add the following font resources into your pubspec.yaml (under the root `flutter:` tag, not `dependencies:  flutter:`)
-```yaml
-flutter:
 
-  // ......
-
-  fonts:
-    - family: KaTeX_Main
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Main-Regular.ttf
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Main-Italic.ttf
-          style: italic
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Main-Bold.ttf
-          weight: 700
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Main-BoldItalic.ttf
-          weight: 700
-          style: italic
-    - family: KaTeX_Math
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Math-Italic.ttf
-          style: italic
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Math-BoldItalic.ttf
-          weight: 700
-          style: italic
-    - family: KaTeX_AMS
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_AMS-Regular.ttf
-    - family: KaTeX_Caligraphic
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Caligraphic-Regular.ttf
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Caligraphic-Bold.ttf
-          weight: 700
-    - family: KaTeX_Fraktur
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Fraktur-Regular.ttf
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Fraktur-Bold.ttf
-          weight: 700
-    - family: KaTeX_SansSerif
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_SansSerif-Regular.ttf
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_SansSerif-Bold.ttf
-          weight: 700
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_SansSerif-Italic.ttf
-          style: italic
-    - family: KaTeX_Script
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Script-Regular.ttf
-    - family: KaTeX_Typewriter
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Typewriter-Regular.ttf
-    - family: KaTeX_Size1
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Size1-Regular.ttf
-    - family: KaTeX_Size2
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Size2-Regular.ttf
-    - family: KaTeX_Size3
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Size3-Regular.ttf
-    - family: KaTeX_Size4
-      fonts:
-        - asset: packages/flutter_math/katex_fonts/fonts/KaTeX_Size4-Regular.ttf
-```
 ### Mobile
 Currently only Android platform has been tested. If you encounter any issues with iOS, please file them.
 
