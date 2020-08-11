@@ -133,7 +133,7 @@ Widget makeChar(String character, FontOptions font,
     child: Text(
       character,
       style: TextStyle(
-        fontFamily: 'KaTeX_${font.fontFamily}',
+        fontFamily: 'packages/flutter_math/KaTeX_${font.fontFamily}',
         fontWeight: font.fontWeight,
         fontStyle: font.fontShape,
         fontSize: 1.0.cssEm.toLpUnder(options),
