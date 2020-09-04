@@ -90,20 +90,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_hooks:
-    dependency: "direct main"
-    description:
-      name: flutter_hooks
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.0"
   flutter_math:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "0.1.7"
+    version: "0.1.8"
   flutter_svg:
     dependency: transitive
     description:
@@ -165,13 +158,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.8"
-  matrix_gesture_detector:
-    dependency: "direct main"
-    description:
-      name: matrix_gesture_detector
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
   meta:
     dependency: transitive
     description:

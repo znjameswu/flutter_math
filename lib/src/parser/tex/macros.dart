@@ -28,7 +28,6 @@ import 'dart:developer';
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../font/metrics/font_metrics_data.dart';
-// import 'functions.dart';
 
 import 'functions.dart';
 import 'macro_expander.dart';

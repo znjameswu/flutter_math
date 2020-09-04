@@ -1,3 +1,6 @@
+## [0.1.8] - 2020/9/3
+- Add support for text-mode accent and unicode accents. (e.g. `ä` and `\text{\v{a}}`)
+- Fix underflow issues of accents and sqrts when their child has too little height.
 ## [0.1.7] - 2020/8/11
 - Remove need for specifying fonts in package Pubspec.
 ## [0.1.6+1] - 2020/8/10

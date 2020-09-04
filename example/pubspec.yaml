@@ -14,9 +14,7 @@ dependencies:
     sdk: flutter
   flutter_math:
     path: ../
-  flutter_hooks:
   provider:
-  matrix_gesture_detector:
   flutter_tex:
   google_fonts:
 
