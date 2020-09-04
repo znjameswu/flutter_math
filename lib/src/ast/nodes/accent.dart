@@ -121,7 +121,12 @@ class AccentNode extends SlotableNode {
               hShift: skew,
               child: accentWidget,
             ),
-            childBuildResults[0].widget,
+            // Set min height
+            ResetDimension(
+              height: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+              minTopPadding: 0,
+              child: childBuildResults[0].widget,
+            ),
           ],
         ),
       )

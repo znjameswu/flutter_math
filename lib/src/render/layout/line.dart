@@ -96,6 +96,8 @@ class Line extends MultiChildRenderObjectWidget {
     this.crossAxisAlignment = CrossAxisAlignment.baseline,
     this.textDirection,
     this.background,
+    this.minHeight = 0.0,
+    this.minDepth = 0.0,
     List<Widget> children = const [],
   })  : assert(textBaseline != null),
         // assert(baselineOffset != null),
@@ -105,6 +107,8 @@ class Line extends MultiChildRenderObjectWidget {
   // final double baselineOffset;
   final CrossAxisAlignment crossAxisAlignment;
   final TextDirection textDirection;
+  final double minHeight;
+  final double minDepth;
   bool get _needTextDirection => true;
   final ValueNotifier<Color> background;
 
@@ -118,6 +122,8 @@ class Line extends MultiChildRenderObjectWidget {
         crossAxisAlignment: crossAxisAlignment,
         textDirection: getEffectiveTextDirection(context),
         background: background,
+        minHeight: minHeight,
+        minDepth: minDepth,
       );
 
   @override
@@ -128,7 +134,9 @@ class Line extends MultiChildRenderObjectWidget {
       // ..baselineOffset = baselineOffset
       ..crossAxisAlignment = crossAxisAlignment
       ..textDirection = getEffectiveTextDirection(context)
-      ..background = background;
+      ..background = background
+      ..minHeight = minHeight
+      ..minDepth = minDepth;
   }
 
   @override
@@ -153,18 +161,19 @@ class RenderLine extends RenderBox
   RenderLine({
     List<RenderBox> children,
     TextBaseline textBaseline = TextBaseline.alphabetic,
-    // double baselineOffset = 0,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.baseline,
     TextDirection textDirection = TextDirection.ltr,
     ValueNotifier<Color> background,
+    double minHeight,
+    double minDepth,
   })  : assert(textBaseline != null),
-        // assert(baselineOffset != null),
         assert(crossAxisAlignment != null),
         _textBaseline = textBaseline,
-        // _baselineOffset = baselineOffset,
         _crossAxisAlignment = crossAxisAlignment,
         _textDirection = textDirection,
-        _background = background {
+        _background = background,
+        _minHeight = minHeight,
+        _minDepth = minDepth {
     addAll(children);
   }
 
@@ -176,15 +185,6 @@ class RenderLine extends RenderBox
       markNeedsLayout();
     }
   }
-
-  // double get baselineOffset => _baselineOffset;
-  // double _baselineOffset;
-  // set baselineOffset(double value) {
-  //   if (_baselineOffset != value) {
-  //     _baselineOffset = value;
-  //     markNeedsLayout();
-  //   }
-  // }
 
   CrossAxisAlignment get crossAxisAlignment => _crossAxisAlignment;
   CrossAxisAlignment _crossAxisAlignment;
@@ -216,6 +216,24 @@ class RenderLine extends RenderBox
       _background.addListener(markNeedsPaint);
     }
     markNeedsPaint();
+  }
+
+  double get minHeight => _minHeight;
+  double _minHeight;
+  set minHeight(double value) {
+    if (_minHeight != value) {
+      _minHeight = value;
+      markNeedsLayout();
+    }
+  }
+
+  double get minDepth => _minDepth;
+  double _minDepth;
+  set minDepth(double value) {
+    if (_minDepth != value) {
+      _minDepth = value;
+      markNeedsLayout();
+    }
   }
 
   bool get _debugHasNecessaryDirections {
@@ -370,6 +388,10 @@ class RenderLine extends RenderBox
       maxDepthBelowBaseline =
           math.max(maxDepthBelowBaseline, child.size.height - distance);
     }
+
+    // Apply mininmum size constraint
+    maxHeightAboveBaseline = math.max(maxHeightAboveBaseline, minHeight);
+    maxDepthBelowBaseline = math.max(maxDepthBelowBaseline, minDepth);
 
     // Third pass. Calculate column width separate by aligners and spacers.
     //

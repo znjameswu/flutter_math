@@ -8,6 +8,7 @@ import 'nodes/atom.dart';
 import 'nodes/space.dart';
 import 'nodes/sqrt.dart';
 import 'options.dart';
+import 'size.dart';
 import 'spacing.dart';
 import 'types.dart';
 

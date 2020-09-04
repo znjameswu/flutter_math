@@ -45,18 +45,28 @@ class SqrtNode extends SlotableNode {
             ),
             children: <Widget>[
               CustomLayoutId(
-                  id: _SqrtPos.base, child: childBuildResults[1].widget),
+                id: _SqrtPos.base,
+                child: ResetDimension(
+                  height: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+                  minTopPadding: 0,
+                  child: childBuildResults[1].widget,
+                ),
+              ),
               CustomLayoutId(
-                  id: _SqrtPos.surd,
-                  child: LayoutBuilderPreserveBaseline(
-                    builder: (context, constraints) => sqrtSvg(
-                        minDelimiterHeight: constraints.minHeight,
-                        baseWidth: constraints.minWidth,
-                        options: options),
-                  )),
+                id: _SqrtPos.surd,
+                child: LayoutBuilderPreserveBaseline(
+                  builder: (context, constraints) => sqrtSvg(
+                    minDelimiterHeight: constraints.minHeight,
+                    baseWidth: constraints.minWidth,
+                    options: options,
+                  ),
+                ),
+              ),
               if (index != null)
                 CustomLayoutId(
-                    id: _SqrtPos.ind, child: childBuildResults[0].widget),
+                  id: _SqrtPos.ind,
+                  child: childBuildResults[0].widget,
+                ),
             ],
           ),
           italic: 0.0,
