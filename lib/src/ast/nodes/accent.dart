@@ -6,7 +6,7 @@ import '../../render/layout/shift_baseline.dart';
 import '../../render/layout/vlist.dart';
 import '../../render/svg/static.dart';
 import '../../render/svg/stretchy.dart';
-import '../../render/symbols/make_atom.dart';
+import '../../render/symbols/make_symbol.dart';
 import '../../utils/unicode_literal.dart';
 import '../accents.dart';
 import '../options.dart';

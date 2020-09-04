@@ -154,7 +154,7 @@ final _delimiterSymbols = _delimiterCommands
     .toList();
 
 String _checkDelimiter(GreenNode delim, FunctionContext context) {
-  if (delim is AtomNode) {
+  if (delim is SymbolNode) {
     if (_delimiterSymbols.any((symbol) =>
         symbol.symbol == delim.symbol &&
         symbol.variantForm == delim.variantForm)) {
@@ -183,7 +183,7 @@ GreenNode _delimSizeHandler(TexParser parser, FunctionContext context) {
   return delim == null
       ? SpaceNode(
           height: Measurement.zero, width: Measurement.zero, mode: Mode.math)
-      : AtomNode(
+      : SymbolNode(
           symbol: delim,
           atomType: _delimiterTypes[context.funcName],
           overrideFont: FontOptions(

@@ -25,19 +25,50 @@ import 'dart:developer';
 
 import 'macros.dart';
 import 'parse_error.dart';
+import 'parser.dart';
 import 'token.dart';
 
-enum Strict { ignore, warn, error, function }
+/// Strict level for [TexParser]
+enum Strict {
+  /// Ignore non-strict behaviors
+  ignore,
 
+  /// Warn on non-strict behaviors
+  warn,
+
+  /// Throw on non-strict behaviors
+  error,
+
+  /// Non-strict behaviors will be reported to [Settings.strictFun] and
+  /// processed according to the return value
+  function,
+}
+
+/// Settings for [TexParser]
 class Settings {
-  final bool displayMode;
-  final bool throwOnError;
+  final bool displayMode; // TODO
+  final bool throwOnError; // TODO
+
+  /// Extra macros
   final Map<String, MacroDefinition> macros;
+
+  /// Max expand depth for macro expansions. Default 1000
   final int maxExpand;
+
+  /// Strict level for parsing. Default [Strict.warn]
   final Strict strict;
+
+  /// Functions to decide how to handle non-strict behaviors. Must set
+  /// [Settings.strict] to [Strict.function]
   final Strict Function(String, String, Token) strictFun;
-  final bool globalGroup;
+
+  final bool globalGroup; // TODO
+
+  /// Behavior of `\color` command
+  ///
+  /// See https://katex.org/docs/options.html
   final bool colorIsTextColor;
+
   const Settings({
     this.displayMode = false,
     this.throwOnError = true,
@@ -48,7 +79,7 @@ class Settings {
     this.globalGroup = false,
     this.colorIsTextColor = false,
   })
-  //: assert(strict != Strict.function || strictFun != null)
+  //: assert(strict != Strict.function || strictFun != null) // This line causes analyzer error
   ;
 
   void reportNonstrict(String errorCode, String errorMsg, [Token token]) {
@@ -76,15 +107,14 @@ class Settings {
 
   bool useStrictBehavior(String errorCode, String errorMsg, [Token token]) {
     var strict = this.strict;
+    if (strict == Strict.function) {
+      try {
+        strict = strictFun(errorCode, errorMsg, token);
+      } on Object {
+        strict = Strict.error;
+      }
+    }
     switch (strict) {
-      case Strict.function:
-        try {
-          strict = strictFun(errorCode, errorMsg, token);
-        } on Object {
-          strict = Strict.error;
-        }
-        continue fallThrough;
-      fallThrough:
       case Strict.ignore:
         return false;
       case Strict.error:
@@ -93,7 +123,10 @@ class Settings {
         log("LaTeX-incompatible input and strict mode is set to 'warn': "
             '$errorMsg [$errorCode]');
         return false;
+      default:
+        log('LaTeX-incompatible input and strict mode is set to '
+            "unrecognized '$strict': $errorMsg [$errorCode]");
+        return false;
     }
-    return false;
   }
 }

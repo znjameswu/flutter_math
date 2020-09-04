@@ -5,7 +5,6 @@ import 'package:meta/meta.dart';
 
 import '../../../ast/nodes/accent.dart';
 import '../../../ast/nodes/accent_under.dart';
-import '../../../ast/nodes/atom.dart';
 import '../../../ast/nodes/enclosure.dart';
 import '../../../ast/nodes/frac.dart';
 import '../../../ast/nodes/function.dart';
@@ -19,6 +18,7 @@ import '../../../ast/nodes/space.dart';
 import '../../../ast/nodes/sqrt.dart';
 import '../../../ast/nodes/stretchy_op.dart';
 import '../../../ast/nodes/style.dart';
+import '../../../ast/nodes/symbol.dart';
 import '../../../ast/nodes/under.dart';
 import '../../../ast/options.dart';
 import '../../../ast/size.dart';
@@ -34,8 +34,8 @@ import '../symbols.dart';
 
 part 'katex_base/accent.dart';
 part 'katex_base/accent_under.dart';
-part 'katex_base/arrow.dart';
 part 'katex_base/array.dart';
+part 'katex_base/arrow.dart';
 part 'katex_base/break.dart';
 part 'katex_base/char.dart';
 part 'katex_base/color.dart';

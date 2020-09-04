@@ -21,12 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import '../../../ast/nodes/atom.dart';
 import '../../../ast/nodes/equation_array.dart';
 import '../../../ast/nodes/left_right.dart';
 import '../../../ast/nodes/matrix.dart';
 import '../../../ast/nodes/space.dart';
 import '../../../ast/nodes/style.dart';
+import '../../../ast/nodes/symbol.dart';
 import '../../../ast/options.dart';
 import '../../../ast/size.dart';
 import '../../../ast/style.dart';
@@ -37,7 +37,6 @@ import '../define_environment.dart';
 import '../functions/katex_base.dart';
 import '../macros.dart';
 import '../parse_error.dart';
-
 import '../parser.dart';
 import 'array.dart';
 
@@ -119,8 +118,9 @@ GreenNode _alignedHandler(TexParser parser, EnvContext context) =>
 GreenNode _alignedAtHandler(TexParser parser, EnvContext context) {
   final arg = parser.parseArgNode(mode: null, optional: false);
   final numNode = assertNodeType<EquationRowNode>(arg);
-  final string =
-      numNode.children.map((e) => assertNodeType<AtomNode>(e).symbol).join('');
+  final string = numNode.children
+      .map((e) => assertNodeType<SymbolNode>(e).symbol)
+      .join('');
   final cols = int.tryParse(string);
   if (cols == null) {
     throw ParseError('Invalid argument for environment: alignedat');

@@ -1,5 +1,8 @@
 import 'size.dart';
 
+/// Math styles for equation elements.
+///
+/// \displaystyle \textstyle etc.
 enum MathStyle {
   display,
   displayCramped,

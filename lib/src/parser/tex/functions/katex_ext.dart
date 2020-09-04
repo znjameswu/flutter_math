@@ -1,6 +1,6 @@
 library katex_ext;
 
-import '../../../ast/nodes/atom.dart';
+import '../../../ast/nodes/symbol.dart';
 import '../../../ast/syntax_tree.dart';
 import '../../../ast/types.dart';
 import '../functions.dart';

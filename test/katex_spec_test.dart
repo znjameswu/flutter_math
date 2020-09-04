@@ -30,7 +30,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_math/flutter_math.dart';
 import 'package:flutter_math/src/ast/nodes/accent.dart';
 import 'package:flutter_math/src/ast/nodes/accent_under.dart';
-import 'package:flutter_math/src/ast/nodes/atom.dart';
+import 'package:flutter_math/src/ast/nodes/symbol.dart';
 import 'package:flutter_math/src/ast/nodes/enclosure.dart';
 import 'package:flutter_math/src/ast/nodes/frac.dart';
 import 'package:flutter_math/src/ast/nodes/left_right.dart';
@@ -90,7 +90,7 @@ void main() {
 
       for (var i = 0; i < parse.children.length; i++) {
         final group = parse.children[i];
-        expect(group, isA<AtomNode>());
+        expect(group, isA<SymbolNode>());
         expect(group.leftType, AtomType.ord);
       }
     });
@@ -114,7 +114,7 @@ void main() {
 
       for (var i = 0; i < parse.children.length; i++) {
         final group = parse.children[i];
-        expect(group, isA<AtomNode>());
+        expect(group, isA<SymbolNode>());
         expect(group.leftType, AtomType.bin);
       }
     });
@@ -134,8 +134,8 @@ void main() {
 
       for (var i = 0; i < parse.length; i++) {
         var group = parse[i];
-        expect(group, isA<AtomNode>());
-        expect((group as AtomNode).atomType, AtomType.rel);
+        expect(group, isA<SymbolNode>());
+        expect((group as SymbolNode).atomType, AtomType.rel);
       }
     });
   });
@@ -152,7 +152,7 @@ void main() {
 
       for (var i = 0; i < parse.children.length; i++) {
         final group = parse.children[i];
-        expect(group, isA<AtomNode>());
+        expect(group, isA<SymbolNode>());
         expect(group.leftType, AtomType.punct);
       }
     });
@@ -170,7 +170,7 @@ void main() {
 
       for (var i = 0; i < parse.children.length; i++) {
         final group = parse.children[i];
-        expect(group, isA<AtomNode>());
+        expect(group, isA<SymbolNode>());
         expect(group.leftType, AtomType.open);
       }
     });
@@ -188,7 +188,7 @@ void main() {
 
       for (var i = 0; i < parse.children.length; i++) {
         final group = parse.children[i];
-        expect(group, isA<AtomNode>());
+        expect(group, isA<SymbolNode>());
         expect(group.leftType, AtomType.close);
       }
     });
@@ -712,14 +712,14 @@ void main() {
       if (parse is FracNode) {
         expect(parse.numerator.children[0], isA<FracNode>());
         expect(
-            (parse.numerator.children[0].children[0].children[0] as AtomNode)
+            (parse.numerator.children[0].children[0].children[0] as SymbolNode)
                 .symbol,
             "1");
         expect(
-            (parse.numerator.children[0].children[1].children[0] as AtomNode)
+            (parse.numerator.children[0].children[1].children[0] as SymbolNode)
                 .symbol,
             "2");
-        expect((parse.denominator.children[0] as AtomNode).symbol, "3");
+        expect((parse.denominator.children[0] as SymbolNode).symbol, "3");
       }
     });
 
@@ -1029,8 +1029,8 @@ void main() {
     test("should produce a delimsizing", () {
       final parse = getParsed(normalDelim).children[0];
 
-      expect(parse, isA<AtomNode>());
-      expect((parse as AtomNode).overrideFont, isNotNull);
+      expect(parse, isA<SymbolNode>());
+      expect((parse as SymbolNode).overrideFont, isNotNull);
     });
 
     test("should produce the correct direction delimiter", () {
@@ -1045,8 +1045,8 @@ void main() {
       final smallParse = getParsed(normalDelim).children[0];
       final bigParse = getParsed(bigDelim).children[0];
 
-      expect((smallParse as AtomNode).overrideFont.fontFamily, 'Size1');
-      expect((bigParse as AtomNode).overrideFont.fontFamily, 'Size4');
+      expect((smallParse as SymbolNode).overrideFont.fontFamily, 'Size1');
+      expect((bigParse as SymbolNode).overrideFont.fontFamily, 'Size4');
     });
   });
 
@@ -1217,14 +1217,14 @@ void main() {
       final abParse3 = getParsed(abKern3);
 
       expect(abParse1.children.length, 3);
-      expect((abParse1.children[0] as AtomNode).symbol, "a");
-      expect((abParse1.children[2] as AtomNode).symbol, "b");
+      expect((abParse1.children[0] as SymbolNode).symbol, "a");
+      expect((abParse1.children[2] as SymbolNode).symbol, "b");
       expect(abParse2.children.length, 3);
-      expect((abParse2.children[0] as AtomNode).symbol, "a");
-      expect((abParse2.children[2] as AtomNode).symbol, "b");
+      expect((abParse2.children[0] as SymbolNode).symbol, "a");
+      expect((abParse2.children[2] as SymbolNode).symbol, "b");
       expect(abParse3.children.length, 3);
-      expect((abParse3.children[0] as AtomNode).symbol, "a");
-      expect((abParse3.children[2] as AtomNode).symbol, "b");
+      expect((abParse3.children[0] as SymbolNode).symbol, "a");
+      expect((abParse3.children[2] as SymbolNode).symbol, "b");
     });
 
     test("should not parse invalid units", () {
@@ -1247,9 +1247,9 @@ void main() {
       final abParse = getParsed(abKern);
 
       expect(abParse.children.length, 3);
-      expect((abParse.children[0] as AtomNode).symbol, "a");
+      expect((abParse.children[0] as SymbolNode).symbol, "a");
       expect((abParse.children[1] as SpaceNode).width.unit, Unit.mu);
-      expect((abParse.children[2] as AtomNode).symbol, "b");
+      expect((abParse.children[2] as SymbolNode).symbol, "b");
     });
   });
 
@@ -1612,7 +1612,7 @@ void main() {
       final displayBody = displayNode;
 
       expect(displayBody.children.length, 2);
-      expect((displayBody.children[0] as AtomNode).symbol, "e");
+      expect((displayBody.children[0] as SymbolNode).symbol, "e");
     });
   });
 
@@ -1691,11 +1691,11 @@ void main() {
       final bf = getParsed(r'\mathbf{a\mathrm{b}c}').children[0] as StyleNode;
       expect(bf.optionsDiff.mathFontOptions, fontOptionsTable["mathbf"]);
       expect(bf.children.length, 3);
-      expect((bf.children[0] as AtomNode).symbol, "a");
+      expect((bf.children[0] as SymbolNode).symbol, "a");
       expect(bf.children[1], isA<StyleNode>());
       expect((bf.children[1] as StyleNode).optionsDiff.mathFontOptions,
           fontOptionsTable["mathrm"]);
-      expect((bf.children[2] as AtomNode).symbol, "c");
+      expect((bf.children[2] as SymbolNode).symbol, "c");
     });
 
     test("should have the correct greediness", () {

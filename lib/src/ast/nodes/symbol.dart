@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../../render/symbols/make_atom.dart';
+import '../../render/symbols/make_symbol.dart';
 import '../../utils/unicode_literal.dart';
 import '../options.dart';
 import '../symbols/symbols.dart';
@@ -12,14 +12,7 @@ import '../syntax_tree.dart';
 import '../types.dart';
 import 'accent.dart';
 
-enum DelimiterSize {
-  size1,
-  size2,
-  size3,
-  size4,
-}
-
-class AtomNode extends LeafNode {
+class SymbolNode extends LeafNode {
   final String symbol;
   final bool variantForm;
   AtomType _atomType;
@@ -31,7 +24,7 @@ class AtomNode extends LeafNode {
 
   bool get noBreak => symbol == '\u00AF';
 
-  AtomNode({
+  SymbolNode({
     @required this.symbol,
     this.variantForm = false,
     AtomType atomType,
@@ -119,14 +112,14 @@ class AtomNode extends LeafNode {
       if (_atomType != null) 'atomType': _atomType.toString(),
     });
 
-  AtomNode copyWith({
+  SymbolNode copyWith({
     String symbol,
     bool variantForm,
     AtomType atomType,
     FontOptions overrideFont,
     Mode mode,
   }) =>
-      AtomNode(
+      SymbolNode(
         symbol: symbol ?? this.symbol,
         variantForm: variantForm ?? this.variantForm,
         atomType: _atomType ?? this._atomType,
@@ -139,7 +132,7 @@ EquationRowNode stringToNode(String string, [Mode mode = Mode.text]) =>
     EquationRowNode(
       children: string
           .split('')
-          .map((ch) => AtomNode(symbol: ch, mode: mode))
+          .map((ch) => SymbolNode(symbol: ch, mode: mode))
           .toList(growable: false),
     );
 

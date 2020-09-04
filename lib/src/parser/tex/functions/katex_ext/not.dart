@@ -53,13 +53,13 @@ const _notRemap = {
 };
 GreenNode _notHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: null, optional: false);
-  final atom = assertNodeType<AtomNode>(base);
-  if (atom.mode != Mode.math ||
-      atom.variantForm == true ||
-      !_notRemap.containsKey(atom.symbol)) {
+  final node = assertNodeType<SymbolNode>(base);
+  if (node.mode != Mode.math ||
+      node.variantForm == true ||
+      !_notRemap.containsKey(node.symbol)) {
     throw ParseError('\\not has to be followed by a combinable character');
   }
-  return atom.copyWith(
-    symbol: _notRemap[atom.symbol],
+  return node.copyWith(
+    symbol: _notRemap[node.symbol],
   );
 }

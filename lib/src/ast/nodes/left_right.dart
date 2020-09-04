@@ -9,7 +9,7 @@ import '../../render/layout/layout_builder_baseline.dart';
 import '../../render/layout/line.dart';
 import '../../render/layout/shift_baseline.dart';
 import '../../render/svg/delimiter.dart';
-import '../../render/symbols/make_atom.dart';
+import '../../render/symbols/make_symbol.dart';
 import '../../utils/iterable_extensions.dart';
 import '../options.dart';
 import '../size.dart';

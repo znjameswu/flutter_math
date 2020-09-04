@@ -1,3 +1,5 @@
+## [0.1.9] - 2020/9/3
+- More documentations.
 ## [0.1.8] - 2020/9/3
 - Add support for text-mode accent and unicode accents. (e.g. `ä` and `\text{\v{a}}`)
 - Fix underflow issues of accents and sqrts when their child has too little height.

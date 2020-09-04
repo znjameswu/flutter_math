@@ -21,10 +21,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import '../../../ast/nodes/atom.dart';
 import '../../../ast/nodes/left_right.dart';
 import '../../../ast/nodes/matrix.dart';
 import '../../../ast/nodes/style.dart';
+import '../../../ast/nodes/symbol.dart';
 import '../../../ast/options.dart';
 import '../../../ast/size.dart';
 import '../../../ast/style.dart';
@@ -34,7 +34,6 @@ import '../define_environment.dart';
 import '../functions/katex_base.dart';
 import '../macros.dart';
 import '../parse_error.dart';
-
 import '../parser.dart';
 
 const arrayEntries = {
@@ -210,7 +209,7 @@ MathStyle _dCellStyle(String envName) =>
 
 GreenNode _arrayHandler(TexParser parser, EnvContext context) {
   final symArg = parser.parseArgNode(mode: null, optional: false);
-  final colalign = symArg is AtomNode
+  final colalign = symArg is SymbolNode
       ? [symArg]
       : assertNodeType<EquationRowNode>(symArg).children;
   final separators = <MatrixSeparatorStyle>[];
@@ -218,7 +217,7 @@ GreenNode _arrayHandler(TexParser parser, EnvContext context) {
   var alignSpecified = true;
   bool lastIsSeparator;
   for (final nde in colalign) {
-    final node = assertNodeType<AtomNode>(nde);
+    final node = assertNodeType<SymbolNode>(nde);
     final ca = node.symbol;
     switch (ca) {
       case 'l':
@@ -299,13 +298,13 @@ GreenNode _smallMatrixHandler(TexParser parser, EnvContext context) =>
 GreenNode _subArrayHandler(TexParser parser, EnvContext context) {
   // Parsing of {subarray} is similar to {array}
   final symArg = parser.parseArgNode(mode: null, optional: false);
-  final colalign = symArg is AtomNode
+  final colalign = symArg is SymbolNode
       ? [symArg]
       : assertNodeType<EquationRowNode>(symArg).children;
   // final separators = <MatrixSeparatorStyle>[];
   final aligns = <MatrixColumnAlign>[];
   for (final nde in colalign) {
-    final node = assertNodeType<AtomNode>(nde);
+    final node = assertNodeType<SymbolNode>(nde);
     final ca = node.symbol;
     if (ca == 'l' || ca == 'c') {
       aligns.add(ca == 'l' ? MatrixColumnAlign.left : MatrixColumnAlign.center);

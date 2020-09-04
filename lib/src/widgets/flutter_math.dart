@@ -40,6 +40,7 @@ class FlutterMath extends StatelessWidget {
         // assert(focusNode != null),
         super(key: key);
 
+  /// Render equations from TeX string
   factory FlutterMath.fromTexString(
     String expression, {
     Options options = Options.displayOptions,

@@ -26,10 +26,10 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 
-import '../../ast/nodes/atom.dart';
 import '../../ast/nodes/multiscripts.dart';
 import '../../ast/nodes/over.dart';
 import '../../ast/nodes/style.dart';
+import '../../ast/nodes/symbol.dart';
 import '../../ast/nodes/under.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
@@ -49,6 +49,9 @@ import 'symbols.dart';
 import 'token.dart';
 import 'unicode_accents.dart';
 
+/// Parser for TeX equations
+///
+/// Convert TeX string to Flutter Math's AST
 class TexParser {
   TexParser(this.content, this.settings)
       : this.leftrightDepth = 0,
@@ -63,6 +66,7 @@ class TexParser {
   final MacroExpander macroExpander;
   Token nextToken;
 
+  /// Get parse result
   EquationRowNode parse() {
     if (!this.settings.globalGroup) {
       this.macroExpander.beginGroup();
@@ -257,23 +261,25 @@ class TexParser {
           }
           final primeCommand = texSymbolCommandConfigs[Mode.math]['\\prime'];
           final superscriptList = <GreenNode>[
-            makeOrdNode(
-              mode,
-              primeCommand.symbol,
-              primeCommand.variantForm,
-              primeCommand.type,
-              primeCommand.font,
+            SymbolNode(
+              mode: mode,
+              symbol: primeCommand.symbol,
+              variantForm: primeCommand.variantForm,
+              atomType: primeCommand.type,
+              overrideFont: primeCommand.font,
             ),
           ];
           this.consume();
           while (this.fetch().text == "'") {
-            superscriptList.add(makeOrdNode(
-              mode,
-              primeCommand.symbol,
-              primeCommand.variantForm,
-              primeCommand.type,
-              primeCommand.font,
-            ));
+            superscriptList.add(
+              SymbolNode(
+                mode: mode,
+                symbol: primeCommand.symbol,
+                variantForm: primeCommand.variantForm,
+                atomType: primeCommand.type,
+                overrideFont: primeCommand.font,
+              ),
+            );
             this.consume();
           }
           if (this.fetch().text == '^') {
@@ -712,7 +718,7 @@ class TexParser {
       return EquationRowNode(
         children: arg
             .split('')
-            .map((char) => AtomNode(
+            .map((char) => SymbolNode(
                   symbol: char,
                   overrideFont: const FontOptions(fontFamily: 'Typewriter'),
                   mode: Mode.text,
@@ -761,12 +767,12 @@ class TexParser {
             nucleus);
       }
       // final loc = SourceLocation.range(nucleus);
-      symbol = makeOrdNode(
-        mode,
-        symbolCommandConfig.symbol + combiningMarks,
-        symbolCommandConfig.variantForm,
-        symbolCommandConfig.type,
-        symbolCommandConfig.font,
+      symbol = SymbolNode(
+        mode: mode,
+        symbol: symbolCommandConfig.symbol + combiningMarks,
+        variantForm: symbolCommandConfig.variantForm,
+        atomType: symbolCommandConfig.type,
+        overrideFont: symbolCommandConfig.font,
       );
     } else if (text.isNotEmpty && text.codeUnitAt(0) >= 0x80) {
       if (!supportedCodepoint(text.codeUnitAt(0))) {
@@ -779,7 +785,8 @@ class TexParser {
         this.settings.reportNonstrict('unicodeTextInMathMode',
             'Unicode text character "${text[0]} used in math mode"', nucleus);
       }
-      symbol = AtomNode(symbol: text + combiningMarks, atomType: AtomType.ord);
+      symbol =
+          SymbolNode(symbol: text + combiningMarks, atomType: AtomType.ord);
     } else {
       return null;
     }
@@ -837,15 +844,6 @@ class ScriptsParsingResults {
 
   bool get empty => subscript == null && superscript == null;
 }
-
-GreenNode makeOrdNode(Mode mode, String symbol, bool variantForm, AtomType type,
-        FontOptions font) =>
-    AtomNode(
-        symbol: symbol,
-        variantForm: variantForm,
-        atomType: type,
-        overrideFont: font,
-        mode: mode);
 
 T assertNodeType<T extends GreenNode>(GreenNode node) {
   if (node is T) {

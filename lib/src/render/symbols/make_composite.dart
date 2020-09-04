@@ -1,17 +1,17 @@
 import 'package:flutter/widgets.dart';
 
-import '../../../flutter_math.dart';
-import '../../ast/nodes/atom.dart';
 import '../../ast/nodes/over.dart';
 import '../../ast/nodes/style.dart';
+import '../../ast/nodes/symbol.dart';
+import '../../ast/options.dart';
 import '../../ast/size.dart';
+import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../parser/tex/font.dart';
 import '../layout/line.dart';
 import '../layout/reset_dimension.dart';
 import '../layout/shift_baseline.dart';
-
-import 'make_atom.dart';
+import 'make_symbol.dart';
 
 BuildResult makeRlapCompositeSymbol(
   String char1,
@@ -128,7 +128,7 @@ BuildResult makeDecoratedEqualSymbol(
 
   final decorator = StyleNode(
     children: decoratorSymbols
-        .map((symbol) => AtomNode(symbol: symbol, mode: mode))
+        .map((symbol) => SymbolNode(symbol: symbol, mode: mode))
         .toList(growable: false),
     optionsDiff: OptionsDiff(
       size: decoratorSize,
@@ -137,8 +137,8 @@ BuildResult makeDecoratedEqualSymbol(
   );
 
   final proxyNode = OverNode(
-    base:
-        AtomNode(symbol: '=', mode: mode, atomType: type).wrapWithEquationRow(),
+    base: SymbolNode(symbol: '=', mode: mode, atomType: type)
+        .wrapWithEquationRow(),
     above: decorator.wrapWithEquationRow(),
   );
   return SyntaxNode(parent: null, value: proxyNode, pos: 0)

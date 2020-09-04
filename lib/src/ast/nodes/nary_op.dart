@@ -7,7 +7,7 @@ import '../../render/layout/reset_dimension.dart';
 import '../../render/layout/shift_baseline.dart';
 import '../../render/layout/vlist.dart';
 import '../../render/svg/static.dart';
-import '../../render/symbols/make_atom.dart';
+import '../../render/symbols/make_symbol.dart';
 import '../../utils/unicode_literal.dart';
 import '../options.dart';
 import '../size.dart';

@@ -4,22 +4,25 @@ import 'package:flutter/widgets.dart';
 
 import '../render/layout/line.dart';
 import '../utils/iterable_extensions.dart';
-import 'nodes/atom.dart';
 import 'nodes/space.dart';
 import 'nodes/sqrt.dart';
+import 'nodes/symbol.dart';
 import 'options.dart';
 import 'spacing.dart';
 import 'types.dart';
 
-/// Root of Roslyn's Red-Green Tree
+/// Roslyn's Red-Green Tree
 ///
 /// [Description of Roslyn's Red-Green Tree](https://docs.microsoft.com/en-us/archive/blogs/ericlippert/persistence-facades-and-roslyns-red-green-trees)
 class SyntaxTree {
+  /// Root of the green tree
   final GreenNode greenRoot;
+
   SyntaxTree({
     @required this.greenRoot,
   }) : assert(greenRoot != null);
 
+  /// Root of the red tree
   SyntaxNode _root;
   SyntaxNode get root => _root ??= SyntaxNode(
         parent: null,
@@ -27,6 +30,7 @@ class SyntaxTree {
         pos: -1, // Important
       );
 
+  /// Replace node at [pos] with [newNode]
   SyntaxTree replaceNode(SyntaxNode pos, GreenNode newNode) {
     if (identical(pos.value, newNode)) {
       return this;
@@ -45,11 +49,12 @@ class SyntaxTree {
             .toList(growable: false)));
   }
 
+  // Build widget tree
   Widget buildWidget([Options options = Options.displayOptions]) =>
       root.buildWidget(options)[0].widget;
 }
 
-/// Node of Roslyn's Red Tree. Immutable facade for any math nodes.
+/// Red Node. Immutable facade for math nodes.
 ///
 /// [Description of Roslyn's Red-Green Tree](https://docs.microsoft.com/en-us/archive/blogs/ericlippert/persistence-facades-and-roslyns-red-green-trees).
 ///
@@ -86,14 +91,15 @@ class SyntaxNode {
     return _children = res;
   }
 
+  /// [GreenNode.getRange]
   NodeRange _range;
   NodeRange get range => _range ??= value.getRange(pos);
 
+  /// [GreenNode.editingWidth]
   int get width => value.editingWidth;
-  int get capturedCursor => value.capturedCursor;
 
-  bool get isNull => value == null;
-  bool get isLeaf => value is LeafNode;
+  /// [GreenNode.capturedCursor]
+  int get capturedCursor => value.capturedCursor;
 
   /// This is where the actual widget building process happens.
   ///
@@ -146,7 +152,7 @@ class SyntaxNode {
 /// The [NodeRange] is a closed interval where the cursor whose position falls
 /// inside this interval will be captured by the corresponding node. If the node
 /// only captures 1 cursor position, then [start] == [end]. If the node does not
-/// capture cursor at all (e.g. [AtomNode]), then [start] > [end]
+/// capture cursor at all (e.g. [SymbolNode]), then [start] > [end]
 ///
 /// The position of a cursor is defined as number of "Right" keystrokes needed
 /// to move the cursor from the starting position to the current position.
@@ -267,6 +273,7 @@ abstract class GreenNode {
   /// By definition, [NodeRange.end] - [NodeRange.start] = capturedCursor - 1.
   int get capturedCursor => editingWidth - 1;
 
+  /// [NodeRange]
   NodeRange getRange(int pos) => NodeRange(pos + 1, pos + capturedCursor);
 
   /// Position of child nodes.
@@ -278,7 +285,10 @@ abstract class GreenNode {
   /// at the starting position.
   List<int> get childPositions;
 
+  /// [AtomType] observed from the left side.
   AtomType get leftType;
+
+  /// [AtomType] observed from the right side.
   AtomType get rightType;
 
   Options _oldOptions;
@@ -290,22 +300,23 @@ abstract class GreenNode {
       };
 }
 
+/// [GreenNode] that can have children
 abstract class ParentableNode<T extends GreenNode> extends GreenNode {
   @override
   List<T> get children;
 
   int _width;
+  @override
   int get editingWidth => _width ??= computeWidth();
 
+  /// Compute width from children. Abstract.
   int computeWidth();
 
-  /// We do not cache children here, because [EquationRowNode] directly has a
-  /// [children] property.
-
-  ///
   List<int> _childPositions;
+  @override
   List<int> get childPositions => _childPositions ??= computeChildPositions();
 
+  /// Compute children positions. Abstract.
   List<int> computeChildPositions();
 
   @override
@@ -320,11 +331,24 @@ mixin PositionDependentMixin<T extends GreenNode> on ParentableNode<T> {
   }
 }
 
+/// [SlotableNode] is those composite node that has editable [EquationRowNode]
+/// as children and lay them out into certain slots.
+///
+/// [SlotableNode] is the most commonly-used node. They share cursor logic and
+/// editing logic.
+///
+/// Depending on node type, some [SlotableNode] can have nulls inside their
+/// children list. When null is allowed, it usually means that node will have
+/// different layout slot logic depending on non-null children number.
 abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
     with PositionDependentMixin {
   List<T> _children;
+  @override
   List<T> get children => _children ??= computeChildren();
 
+  /// Compute children. Abstract.
+  ///
+  /// Used to cache children list
   List<T> computeChildren();
 
   @override
@@ -333,6 +357,10 @@ abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
       buildSlotableWidget(
           options, childBuildResults.map((e) => e?.firstOrNull).toList());
 
+  /// Build widget for [SlotableNode]. Abstract
+  ///
+  /// This is a utility override that helps with unwrapping build result from
+  /// children.
   List<BuildResult> buildSlotableWidget(
       Options options, List<BuildResult> childBuildResults);
 
@@ -379,6 +407,8 @@ abstract class TransparentNode extends ParentableNode<GreenNode> {
       childBuildResults.expand((element) => element).toList();
 
   List<GreenNode> _flattenedChildList;
+
+  /// Children list when fully expand any underlying [TransparentNode]
   List<GreenNode> get flattenedChildList => _flattenedChildList ??= children
       .expand((child) =>
           child is TransparentNode ? child.flattenedChildList : [child])
@@ -393,8 +423,13 @@ abstract class TransparentNode extends ParentableNode<GreenNode> {
   AtomType get rightType => _rightType ??= children.last.rightType;
 }
 
+/// A row of unrelated [GreenNode]s.
+///
+/// [EquationRowNode] provides cursor-reachability and editability. It
+/// represents a collection of nodes that you can freely edit and navigate.
 class EquationRowNode extends ParentableNode<GreenNode>
     with PositionDependentMixin {
+  /// If non-null, the leftmost and rightmost [AtomType] will be overriden.
   final AtomType overrideType;
 
   @override
@@ -422,11 +457,12 @@ class EquationRowNode extends ParentableNode<GreenNode>
 
   factory EquationRowNode.empty() => EquationRowNode(children: []);
 
-  List<GreenNode> _flattenedChildList;
+  /// Children list when fully expand any underlying [TransparentNode]
   List<GreenNode> get flattenedChildList => _flattenedChildList ??= children
       .expand((child) =>
           child is TransparentNode ? child.flattenedChildList : [child])
       .toList(growable: false);
+  List<GreenNode> _flattenedChildList;
 
   @override
   List<BuildResult> buildWidget(
@@ -447,7 +483,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
         .mapIndexed((e, index) => _NodeSpacingConf(
             e.leftType, e.rightType, flattenedChildOptions[index], 0.0))
         .toList(growable: false);
-    traverseNonSpaceNodes(childSpacingConfs, (prev, curr) {
+    _traverseNonSpaceNodes(childSpacingConfs, (prev, curr) {
       if (prev?.rightType == AtomType.bin &&
           const {
             AtomType.rel,
@@ -475,7 +511,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
       }
     });
 
-    traverseNonSpaceNodes(childSpacingConfs, (prev, curr) {
+    _traverseNonSpaceNodes(childSpacingConfs, (prev, curr) {
       if (prev != null && curr != null) {
         prev.spacingAfter = getSpacingSize(
           prev.rightType,
@@ -532,6 +568,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
       if (overrideType != null) 'overrideType': overrideType,
     });
 
+  /// Utility method.
   EquationRowNode copyWith({
     AtomType overrideType,
     List<GreenNode> children,
@@ -543,6 +580,9 @@ class EquationRowNode extends ParentableNode<GreenNode>
 }
 
 extension GreenNodeWrappingExt on GreenNode {
+  /// Wrap a node in [EquationRowNode]
+  ///
+  /// If this node is already [EquationRowNode], then it won't be wrapped
   EquationRowNode wrapWithEquationRow() {
     if (this is EquationRowNode) {
       return this as EquationRowNode;
@@ -550,6 +590,8 @@ extension GreenNodeWrappingExt on GreenNode {
     return EquationRowNode(children: [this]);
   }
 
+  /// If this node is [EquationRowNode], its children will be returned. If not,
+  /// itself will be returned in a list.
   List<GreenNode> expandEquationRow() {
     if (this is EquationRowNode) {
       return this.children;
@@ -561,6 +603,9 @@ extension GreenNodeWrappingExt on GreenNode {
     }
   }
 
+  /// Return the only child of [EquationRowNode]
+  ///
+  /// If the [EquationRowNode] has more than one child, an error will be thrown.
   GreenNode unwrapEquationRow() {
     if (this is EquationRowNode) {
       if (this.children.length == 1) {
@@ -574,6 +619,10 @@ extension GreenNodeWrappingExt on GreenNode {
 }
 
 extension GreenNodeListWrappingExt on List<GreenNode> {
+  /// Wrap list of [GreenNode] in an [EquationRowNode]
+  ///
+  /// If the list only contain one [EquationRowNode], then this note will be
+  /// returned.
   EquationRowNode wrapWithEquationRow() {
     if (this.length == 1 && this[0] is EquationRowNode) {
       return this[0] as EquationRowNode;
@@ -582,7 +631,9 @@ extension GreenNodeListWrappingExt on List<GreenNode> {
   }
 }
 
+/// [GreenNode] that doesn't have any children
 abstract class LeafNode extends GreenNode {
+  /// [Mode] that this node acquires during parse.
   Mode get mode;
 
   @override
@@ -604,6 +655,14 @@ abstract class LeafNode extends GreenNode {
   int get editingWidth => 1;
 }
 
+/// Type of atoms. See TeXBook Chap.17
+///
+/// These following types will be determined by their repective [GreenNode] type
+/// - over
+/// - under
+/// - acc
+/// - rad
+/// - vcent
 enum AtomType {
   ord,
   op,
@@ -616,14 +675,9 @@ enum AtomType {
 
   spacing, // symbols
 
-  // These types will be determined by their repective GreenNode type
-  // over,
-  // under,
-  // acc,
-  // rad,
-  // vcent,
 }
 
+/// Only for improvisional use during parsing. Do not use.
 class TemporaryNode extends LeafNode {
   @override
   Mode get mode => Mode.math;
@@ -663,7 +717,7 @@ class BuildResult {
   });
 }
 
-void traverseNonSpaceNodes(
+void _traverseNonSpaceNodes(
   List<_NodeSpacingConf> childTypeList,
   void Function(
     _NodeSpacingConf prev,

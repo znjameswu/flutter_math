@@ -164,14 +164,14 @@ const _textUnicodeAccentMapping = {
 
 GreenNode _textAccentHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: null, optional: false);
-  if (base is AtomNode) {
+  if (base is SymbolNode) {
     return base.copyWith(
       symbol: base.symbol + _textUnicodeAccentMapping[context.funcName],
     );
   }
   if (base is EquationRowNode && base.children.length == 1) {
     final node = base.children[0];
-    if (node is AtomNode) {
+    if (node is SymbolNode) {
       return node.copyWith(
         symbol: node.symbol + _textUnicodeAccentMapping[context.funcName],
       );

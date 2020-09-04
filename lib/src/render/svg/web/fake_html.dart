@@ -4,5 +4,6 @@ class ImageElement {
 }
 
 class CssStyleDeclaration {
+  // ignore: avoid_setters_without_getters
   set verticalAlign(String value) {}
 }
