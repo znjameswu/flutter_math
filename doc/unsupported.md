@@ -11,7 +11,6 @@
 - Exotic composite symbols: `\Coloneqq, \coloneq, \Coloneq, \Eqqcolon, \Eqcolon, \colonapprox, \Colonapprox, \colonsim, \Colonsim, \simcolon, \simcoloncolon, \approxcolon, \approxcoloncolon`, and also their equivalent `\coloncolonequals` ...
 - `\vcentcolon`
 - `\textcircle` and related `\copyright`, `\registered`, etc.
-- Text-mode accent and related commands.
 
 ## Functionalities that will be supported later
 - `gather` environment

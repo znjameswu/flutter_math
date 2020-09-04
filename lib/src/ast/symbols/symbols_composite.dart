@@ -1,32 +1,14 @@
-import 'size.dart';
-import 'syntax_tree.dart';
+import '../size.dart';
+import '../syntax_tree.dart';
 
-// These symbols are too complex, we need to store their widget
-// const complexSymbolRenderResult = {
-//   // Stacked operator
-//   '\u2258',
-//   '\u2259',
-//   '\u225A',
-//   '\u225B',
-//   '\u225D', //\defeq
-//   '\u225E',
-//   '\u225F',
-
-//   // Circled char
-//   '\u00A9',
-// };
-
-const decoratedEqualSymbols = {
-  // '\u2258',
-  '\u2259',
-  '\u225A',
-  '\u225B',
-  '\u225D',
-  '\u225E',
-  '\u225F',
+const ligatures = {
+  '–': '--',
+  '—': '---',
+  '“': '``',
+  '”': "''",
 };
 
-// Remaps caused by \not
+// Composite symbols caused by the folding of \not
 const negatedOperatorSymbols = {
   '\u219A': ['\u0338', '\u2190'],
   '\u219B': ['\u0338', '\u2192'],
@@ -74,6 +56,8 @@ const negatedOperatorSymbols = {
   '\u22ED': ['\u0338', '\u22B5'],
   '\u2204': ['\u0338', '\u2203'],
 };
+
+// Compacted composite symbols
 
 const compactedCompositeSymbols = {
   '\u2237': [':', ':'], //\dblcolon

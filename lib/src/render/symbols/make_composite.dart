@@ -20,10 +20,10 @@ BuildResult makeRlapCompositeSymbol(
   Mode mode,
   Options options,
 ) {
-  final res1 =
-      makeAtom(symbol: char1, atomType: type, mode: mode, options: options);
-  final res2 =
-      makeAtom(symbol: char2, atomType: type, mode: mode, options: options);
+  final res1 = makeBaseSymbol(
+      symbol: char1, atomType: type, mode: mode, options: options);
+  final res2 = makeBaseSymbol(
+      symbol: char2, atomType: type, mode: mode, options: options);
   return BuildResult(
     italic: res2.italic,
     options: options,
@@ -52,10 +52,10 @@ BuildResult makeCompactedCompositeSymbol(
   Mode mode,
   Options options,
 ) {
-  final res1 =
-      makeAtom(symbol: char1, atomType: type, mode: mode, options: options);
-  final res2 =
-      makeAtom(symbol: char2, atomType: type, mode: mode, options: options);
+  final res1 = makeBaseSymbol(
+      symbol: char1, atomType: type, mode: mode, options: options);
+  final res2 = makeBaseSymbol(
+      symbol: char2, atomType: type, mode: mode, options: options);
   final widget1 = char1 != ':'
       ? res1.widget
       : ShiftBaseline(

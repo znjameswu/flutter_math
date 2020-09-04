@@ -53,28 +53,28 @@ const _accentEntries = {
     numArgs: 1,
     handler: _accentHandler,
   ),
-  // [
-  //   "\\'",
-  //   '\\`',
-  //   '\\^',
-  //   '\\~',
-  //   '\\=',
-  //   '\\u',
-  //   '\\.',
-  //   '\\"',
-  //   '\\r',
-  //   '\\H',
-  //   '\\v',
-  //   '\\textcircled',
-  // ]: FunctionSpec(
-  //   numArgs: 1,
-  //   allowedInMath: false,
-  //   allowedInText: true,
-  //   handler: _textAccentHandler,
-  // ),
+  [
+    "\\'",
+    '\\`',
+    '\\^',
+    '\\~',
+    '\\=',
+    '\\u',
+    '\\.',
+    '\\"',
+    '\\r',
+    '\\H',
+    '\\v',
+    // '\\textcircled',
+  ]: FunctionSpec(
+    numArgs: 1,
+    allowedInMath: false,
+    allowedInText: true,
+    handler: _textAccentHandler,
+  ),
 };
 
-const _nonStrctchyAccents = {
+const _nonStretchyAccents = {
   '\\acute',
   '\\grave',
   '\\ddot',
@@ -117,17 +117,17 @@ const _accentCommandMapping = {
   // '\\overlinesegment': '\u',
   '\\overleftharpoon': '\u21bc',
   '\\overrightharpoon': '\u21c0',
-  // "\\'": '\u00b4',
-  // '\\`': '\u0060',
-  // '\\^': '\u005e',
-  // '\\~': '\u007e',
-  // '\\=': '\u00af',
-  // '\\u': '\u02d8',
-  // '\\.': '\u02d9',
-  // '\\"': '\u',
-  // '\\r': '\u02da',
-  // '\\H': '\u',
-  // '\\v': '\u02c7',
+  "\\'": '\u00b4',
+  '\\`': '\u0060',
+  '\\^': '\u005e',
+  '\\~': '\u007e',
+  '\\=': '\u00af',
+  '\\u': '\u02d8',
+  '\\.': '\u02d9',
+  '\\"': '\u00a8',
+  '\\r': '\u02da',
+  '\\H': '\u02dd',
+  '\\v': '\u02c7',
   // '\\textcircled': '\u',
 
   '\\overline': '\u00AF',
@@ -136,7 +136,7 @@ const _accentCommandMapping = {
 GreenNode _accentHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: Mode.math, optional: false);
 
-  final isStretchy = !_nonStrctchyAccents.contains(context.funcName);
+  final isStretchy = !_nonStretchyAccents.contains(context.funcName);
   final isShifty = !isStretchy || _shiftyAccents.contains(context.funcName);
 
   return AccentNode(
@@ -147,12 +147,40 @@ GreenNode _accentHandler(TexParser parser, FunctionContext context) {
   );
 }
 
-// GreenNode _textAccentHandler(TexParser parser, FunctionContext context) {
-//   final base = parser.parseArgNode(mode: null, optional: false);
-//   return AccentNode(
-//     base: base.wrapWithEquationRow(),
-//     label: context.funcName,
-//     isStretchy: false,
-//     isShifty: true,
-//   );
-// }
+const _textUnicodeAccentMapping = {
+  '\\`': '\u0300',
+  '\\"': '\u0308',
+  '\\~': '\u0303',
+  '\\=': '\u0304',
+  "\\'": '\u0301',
+  '\\u': '\u0306',
+  '\\v': '\u030c',
+  '\\^': '\u0302',
+  '\\.': '\u0307',
+  '\\r': '\u030a',
+  '\\H': '\u030b',
+  // '\\textcircled': '\u',
+};
+
+GreenNode _textAccentHandler(TexParser parser, FunctionContext context) {
+  final base = parser.parseArgNode(mode: null, optional: false);
+  if (base is AtomNode) {
+    return base.copyWith(
+      symbol: base.symbol + _textUnicodeAccentMapping[context.funcName],
+    );
+  }
+  if (base is EquationRowNode && base.children.length == 1) {
+    final node = base.children[0];
+    if (node is AtomNode) {
+      return node.copyWith(
+        symbol: node.symbol + _textUnicodeAccentMapping[context.funcName],
+      );
+    }
+  }
+  return AccentNode(
+    base: base.wrapWithEquationRow(),
+    label: _accentCommandMapping[context.funcName],
+    isStretchy: false,
+    isShifty: true,
+  );
+}

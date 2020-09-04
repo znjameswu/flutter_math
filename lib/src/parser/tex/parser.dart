@@ -26,7 +26,6 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 
-import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/atom.dart';
 import '../../ast/nodes/multiscripts.dart';
 import '../../ast/nodes/over.dart';
@@ -35,6 +34,7 @@ import '../../ast/nodes/under.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/style.dart';
+import '../../ast/symbols/symbols_unicode.dart';
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../font/metrics/unicode_scripts.dart';
@@ -48,7 +48,6 @@ import 'settings.dart';
 import 'symbols.dart';
 import 'token.dart';
 import 'unicode_accents.dart';
-import 'unicode_symbols.dart';
 
 class TexParser {
   TexParser(this.content, this.settings)
@@ -731,17 +730,25 @@ class TexParser {
             'Accented Unicode text character "${text[0]}" used in math mode',
             nucleus);
       }
-      text = unicodeSymbols[text[0]] + text.substring(1);
+      // text = unicodeSymbols[text[0]] + text.substring(1);
     }
     // Strip off any combining characters
     final match = combiningDiacriticalMarksEndRegex.firstMatch(text);
+    var combiningMarks = '';
     if (match != null) {
       text = text.substring(0, match.start);
-      if (text == 'i') {
-        text = '\u0131'; // dotless i, in math and text mode
-      } else if (text == 'j') {
-        text = '\u0237'; // dotless j, in math and text mode
+      for (var i = 0; i < match[0].length; i++) {
+        final accent = match[0][i];
+        if (!unicodeAccents.containsKey(accent)) {
+          throw ParseError("Unknown accent ' $accent'", nucleus);
+        }
+        final command = unicodeAccents[accent][this.mode];
+        if (command == null) {
+          throw ParseError(
+              'Accent $accent unsupported in ${this.mode} mode', nucleus);
+        }
       }
+      combiningMarks = match[0];
     }
     // Recognize base symbol
     GreenNode symbol;
@@ -756,12 +763,12 @@ class TexParser {
       // final loc = SourceLocation.range(nucleus);
       symbol = makeOrdNode(
         mode,
-        symbolCommandConfig.symbol,
+        symbolCommandConfig.symbol + combiningMarks,
         symbolCommandConfig.variantForm,
         symbolCommandConfig.type,
         symbolCommandConfig.font,
       );
-    } else if (text.codeUnitAt(0) >= 0x80) {
+    } else if (text.isNotEmpty && text.codeUnitAt(0) >= 0x80) {
       if (!supportedCodepoint(text.codeUnitAt(0))) {
         this.settings.reportNonstrict(
             'unknownSymbol',
@@ -772,31 +779,11 @@ class TexParser {
         this.settings.reportNonstrict('unicodeTextInMathMode',
             'Unicode text character "${text[0]} used in math mode"', nucleus);
       }
-      symbol = AtomNode(symbol: text, atomType: AtomType.ord);
+      symbol = AtomNode(symbol: text + combiningMarks, atomType: AtomType.ord);
     } else {
       return null;
     }
     this.consume();
-    // Transform combining characters into accents
-    if (match != null) {
-      for (var i = 0; i < match[0].length; i++) {
-        final accent = match[0][i];
-        if (!unicodeAccents.containsKey(accent)) {
-          throw ParseError("Unknown accent ' $accent'", nucleus);
-        }
-        final command = unicodeAccents[accent][this.mode];
-        if (command == null) {
-          throw ParseError(
-              'Accent $accent unsupported in ${this.mode} mode', nucleus);
-        }
-        symbol = AccentNode(
-          base: symbol.wrapWithEquationRow(),
-          label: command,
-          isShifty: true,
-          isStretchy: false,
-        );
-      }
-    }
     return symbol;
   }
 

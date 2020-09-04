@@ -47,7 +47,7 @@ class AccentNode extends SlotableNode {
         // baseline distance of null due to Flutter rendering pipeline design.
         accentSymbolWidget = staticSvg('vec', options, needBaseline: true);
       } else {
-        accentSymbolWidget = makeAtom(
+        accentSymbolWidget = makeBaseSymbol(
           symbol: accentRenderConfigs[label].overChar,
           variantForm: false,
           atomType: AtomType.ord,

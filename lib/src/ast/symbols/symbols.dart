@@ -27,12 +27,9 @@
 // This file is transfromed from KaTeX/src/symbols.js
 
 import 'dart:ui';
-import 'package:meta/meta.dart';
 
-import 'options.dart';
-import 'symbols_extra.dart';
-import 'syntax_tree.dart';
-import 'types.dart';
+import '../options.dart';
+import '../syntax_tree.dart';
 
 class SymbolId {
   final String symbol;
@@ -3955,37 +3952,3 @@ const symbolRenderConfigs = {
     text: RenderConfig(null, mainrm), // \H
   ), // ˝
 };
-const ligatures = {
-  '–': '--',
-  '—': '---',
-  '“': '``',
-  '”': "''",
-};
-
-AtomType getDefaultAtomTypeForSymbol(
-  String symbol, {
-  bool variantForm = false,
-  @required Mode mode,
-}) {
-  var symbolRenderConfig = symbolRenderConfigs[symbol];
-  if (variantForm) {
-    symbolRenderConfig = symbolRenderConfig?.variantForm;
-  }
-  final renderConfig =
-      mode == Mode.math ? symbolRenderConfig?.math : symbolRenderConfig?.text;
-  if (renderConfig != null) {
-    return renderConfig.defaultType;
-  }
-  if (variantForm == false && mode == Mode.math) {
-    if (negatedOperatorSymbols.containsKey(symbol)) {
-      return AtomType.rel;
-    }
-    if (compactedCompositeSymbols.containsKey(symbol)) {
-      return compactedCompositeSymbolTypes[symbol];
-    }
-    if (decoratedEqualSymbols.contains(symbol)) {
-      return AtomType.rel;
-    }
-  }
-  return AtomType.ord;
-}

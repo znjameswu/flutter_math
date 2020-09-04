@@ -70,6 +70,10 @@ const accentRenderConfigs = {
     // '\u030a'
     overChar: '\u02da', // \mathring
   ),
+  '\u02dd': AccentRenderConfig(
+    // '\u030b'
+    overChar: '\u02dd', // \H
+  ),
   '\u2190': AccentRenderConfig(
     // '\u20d6'
     overImageName: 'overleftarrow',

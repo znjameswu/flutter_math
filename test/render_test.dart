@@ -54,6 +54,57 @@ void main() {
     }
   });
 
+  group('Text accent renderer', () {
+    const accents1 = {
+      '\\`',
+      '\\"',
+      '\\~',
+      '\\=',
+      "\\'",
+      '\\^',
+      '\\.',
+    };
+    const accents2 = {
+      '\\u',
+      '\\v',
+      '\\r',
+      '\\H',
+    };
+
+    testTexToMatchGoldenFile(
+      'render text accent set #1',
+      [
+        for (final command in accents1)
+          '\\text{${command}a$command{i}$command{ab}}'
+      ].join(),
+      location: 'golden/text-accents-1.png',
+    );
+
+    testTexToMatchGoldenFile(
+      'render text accent set #2',
+      [
+        for (final command in accents2)
+          '\\text{$command a$command{i}$command{ab}}'
+      ].join(),
+      location: 'golden/text-accents-2.png',
+    );
+  });
+
+  group('Unicode accent renderer', () {
+    const symbols = {
+      'ä', 'Ö',
+      '\u00e1', '\u0061\u0301', // á = \'{a}
+      '\u01df', '\u0061\u0308\u0304', // ǟ = \"\={a}
+      'i\u0300', 'j\u0300'
+    };
+
+    testTexToMatchGoldenFile(
+      'render unicode accent',
+      [for (final symbol in symbols) '$symbol\\text{$symbol}'].join(),
+      location: 'golden/unicode-accents.png',
+    );
+  });
+
   testTexToMatchGoldenFile(
     'Enclosure renderer',
     r'\fcolorbox{blue}{yellow}{a b}\colorbox{red}{a b}\cancel{x}\bcancel{x}\xcancel{x}\sout{x}\fbox{a}',
