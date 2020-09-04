@@ -5,10 +5,10 @@
 Math equation rendering in pure Dart & Flutter. 
 
 
-This project aims to achieve maximum compatibility and fidelity with regard to the [KaTeX](https://github.com/KaTeX/KaTeX) project, while maintaining the performance advantage of Dart and Flutter. A furthur [UnicodeMath](https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.1.pdf)-style equation editing support will be experimented in the future.
+This project aims to achieve maximum compatibility and fidelity with regard to the [KaTeX](https://github.com/KaTeX/KaTeX) project, while maintaining the performance advantage of Dart and Flutter. A further [UnicodeMath](https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.1.pdf)-style equation editing support will be experimented in the future.
 
 
-The TeX parser is a completely rewritten Dart port of the KaTeX parser, with almost full features. There are only a few differences. List of some unsupported features can be found [here](doc/unsupported.md).
+The TeX parser is a Dart port of the KaTeX parser. There are only a few unsupported features and parsing differences compared to the original KaTeX parser. List of some unsupported features can be found [here](doc/unsupported.md).
 
 ## [Online Demo](https://znjameswu.github.io/flutter_math_demo/)
 
