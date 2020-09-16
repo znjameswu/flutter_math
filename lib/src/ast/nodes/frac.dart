@@ -30,30 +30,27 @@ class FracNode extends SlotableNode {
   List<EquationRowNode> computeChildren() => [numerator, denominator];
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
           Options options, List<BuildResult> childBuildResults) =>
-      [
-        BuildResult(
-          options: options,
-          widget: CustomLayout(
-            delegate: FracLayoutDelegate(
-              barSize: barSize,
-              options: options,
-            ),
-            children: <Widget>[
-              CustomLayoutId(
-                id: _FracPos.numer,
-                child: childBuildResults[0].widget,
-              ),
-              CustomLayoutId(
-                id: _FracPos.denom,
-                child: childBuildResults[1].widget,
-              ),
-            ],
+      BuildResult(
+        options: options,
+        widget: CustomLayout(
+          delegate: FracLayoutDelegate(
+            barSize: barSize,
+            options: options,
           ),
-          italic: 0.0,
-        )
-      ];
+          children: <Widget>[
+            CustomLayoutId(
+              id: _FracPos.numer,
+              child: childBuildResults[0].widget,
+            ),
+            CustomLayoutId(
+              id: _FracPos.denom,
+              child: childBuildResults[1].widget,
+            ),
+          ],
+        ),
+      );
 
   @override
   List<Options> computeChildOptions(Options options) => [

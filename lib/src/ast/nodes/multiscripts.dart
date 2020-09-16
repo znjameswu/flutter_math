@@ -30,30 +30,27 @@ class MultiscriptsNode extends SlotableNode {
   });
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
           Options options, List<BuildResult> childBuildResults) =>
-      [
-        BuildResult(
-          options: options,
-          widget: Multiscripts(
-            alignPostscripts: alignPostscripts,
-            italic: childBuildResults[0].italic,
-            isBaseCharacterBox: base.flattenedChildList.length == 1 &&
-                base.flattenedChildList[0] is SymbolNode,
-            baseOptions: childBuildResults[0].options,
-            subOptions: childBuildResults[1]?.options,
-            supOptions: childBuildResults[2]?.options,
-            presubOptions: childBuildResults[3]?.options,
-            presupOptions: childBuildResults[4]?.options,
-            base: childBuildResults[0].widget,
-            sub: childBuildResults[1]?.widget,
-            sup: childBuildResults[2]?.widget,
-            presub: childBuildResults[3]?.widget,
-            presup: childBuildResults[4]?.widget,
-          ),
-          italic: 0.0,
-        )
-      ];
+      BuildResult(
+        options: options,
+        widget: Multiscripts(
+          alignPostscripts: alignPostscripts,
+          italic: childBuildResults[0].italic,
+          isBaseCharacterBox: base.flattenedChildList.length == 1 &&
+              base.flattenedChildList[0] is SymbolNode,
+          baseOptions: childBuildResults[0].options,
+          subOptions: childBuildResults[1]?.options,
+          supOptions: childBuildResults[2]?.options,
+          presubOptions: childBuildResults[3]?.options,
+          presupOptions: childBuildResults[4]?.options,
+          base: childBuildResults[0].widget,
+          sub: childBuildResults[1]?.widget,
+          sup: childBuildResults[2]?.widget,
+          presub: childBuildResults[3]?.widget,
+          presup: childBuildResults[4]?.widget,
+        ),
+      );
 
   @override
   List<Options> computeChildOptions(Options options) {

@@ -25,46 +25,44 @@ class StretchyOpNode extends SlotableNode {
   }) : assert(above != null || below != null);
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
       Options options, List<BuildResult> childBuildResults) {
     final verticalPadding = 2.0.mu.toLpUnder(options);
-    return [
-      BuildResult(
-        options: options,
-        italic: 0.0,
-        widget: VList(
-          baselineReferenceWidgetIndex: above != null ? 1 : 0,
-          children: <Widget>[
-            if (above != null)
-              Padding(
-                padding: EdgeInsets.only(bottom: verticalPadding),
-                child: childBuildResults[0].widget,
-              ),
-            VListElement(
-              // From katex.less/x-arrow-pad
-              customCrossSize: (width) => BoxConstraints(
-                  minWidth: width + 1.0.cssEm.toLpUnder(options)),
-              child: LayoutBuilderPreserveBaseline(
-                builder: (context, constraints) => ShiftBaseline(
-                  relativePos: 0.5,
-                  offset: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
-                  child: strechySvgSpan(
-                    stretchyOpMapping[symbol] ?? symbol,
-                    constraints.minWidth,
-                    options,
-                  ),
+    return BuildResult(
+      options: options,
+      italic: 0.0,
+      widget: VList(
+        baselineReferenceWidgetIndex: above != null ? 1 : 0,
+        children: <Widget>[
+          if (above != null)
+            Padding(
+              padding: EdgeInsets.only(bottom: verticalPadding),
+              child: childBuildResults[0].widget,
+            ),
+          VListElement(
+            // From katex.less/x-arrow-pad
+            customCrossSize: (width) =>
+                BoxConstraints(minWidth: width + 1.0.cssEm.toLpUnder(options)),
+            child: LayoutBuilderPreserveBaseline(
+              builder: (context, constraints) => ShiftBaseline(
+                relativePos: 0.5,
+                offset: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+                child: strechySvgSpan(
+                  stretchyOpMapping[symbol] ?? symbol,
+                  constraints.minWidth,
+                  options,
                 ),
               ),
             ),
-            if (below != null)
-              Padding(
-                padding: EdgeInsets.only(top: verticalPadding),
-                child: childBuildResults[1].widget,
-              )
-          ],
-        ),
-      )
-    ];
+          ),
+          if (below != null)
+            Padding(
+              padding: EdgeInsets.only(top: verticalPadding),
+              child: childBuildResults[1].widget,
+            )
+        ],
+      ),
+    );
   }
 
   @override

@@ -27,7 +27,7 @@ class AccentNode extends SlotableNode {
   });
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
       Options options, List<BuildResult> childBuildResults) {
     // Checking of character box is done automatically by the passing of
     // BuildResult, so we don't need to check it here.
@@ -107,7 +107,7 @@ class AccentNode extends SlotableNode {
         },
       );
     }
-    return [
+    return 
       BuildResult(
         options: options,
         italic: childBuildResults[0].italic,
@@ -130,30 +130,7 @@ class AccentNode extends SlotableNode {
           ],
         ),
       )
-    ];
-    // return [
-    //   BuildResult(
-    //     options: options,
-    //     italic: childBuildResults[0].italic,
-    //     skew: childBuildResults[0].skew,
-    //     widget: CustomLayout<_AccentPos>(
-    //       delegate: AccentLayoutDelegate(
-    //         skew: skew,
-    //         options: options,
-    //       ),
-    //       children: <Widget>[
-    //         CustomLayoutId(
-    //           id: _AccentPos.base,
-    //           child: childBuildResults[0].widget,
-    //         ),
-    //         CustomLayoutId(
-    //           id: _AccentPos.accent,
-    //           child: accentWidget,
-    //         ),
-    //       ],
-    //     ),
-    //   )
-    // ];
+    ;
   }
 
   @override

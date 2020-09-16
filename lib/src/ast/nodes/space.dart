@@ -45,17 +45,13 @@ class SpaceNode extends LeafNode {
         alignerOrSpacer = true;
 
   @override
-  List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults) {
+  BuildResult buildWidget(
+      Options options, List<BuildResult> childBuildResults) {
     if (alignerOrSpacer == true) {
-      return [
-        BuildResult(
-            italic: 0.0,
-            options: options,
-            widget: Container(
-              height: 0.0,
-            ))
-      ];
+      return BuildResult(
+        options: options,
+        widget: Container(height: 0.0),
+      );
     }
 
     final height = this.height.toLpUnder(options);
@@ -64,20 +60,17 @@ class SpaceNode extends LeafNode {
     final shift = this.shift.toLpUnder(options);
     final topMost = math.max(height, -depth) + shift;
     final bottomMost = math.min(height, -depth) + shift;
-    return [
-      BuildResult(
-        widget: ResetBaseline(
-          height: topMost,
-          child: Container(
-            color: fill ? options.color : null,
-            height: topMost - bottomMost,
-            width: math.max(0.0, width),
-          ),
+    return BuildResult(
+      options: options,
+      widget: ResetBaseline(
+        height: topMost,
+        child: Container(
+          color: fill ? options.color : null,
+          height: topMost - bottomMost,
+          width: math.max(0.0, width),
         ),
-        options: options,
-        italic: 0.0,
-      )
-    ];
+      ),
+    );
   }
 
   @override

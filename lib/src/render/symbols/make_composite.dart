@@ -142,5 +142,5 @@ BuildResult makeDecoratedEqualSymbol(
     above: decorator.wrapWithEquationRow(),
   );
   return SyntaxNode(parent: null, value: proxyNode, pos: 0)
-      .buildWidget(options)[0];
+      .buildWidget(options);
 }

@@ -32,46 +32,43 @@ class SqrtNode extends SlotableNode {
   }) : assert(base != null);
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
           Options options, List<BuildResult> childBuildResults) =>
-      [
-        BuildResult(
-          options: options,
-          widget: CustomLayout<_SqrtPos>(
-            delegate: SqrtLayoutDelegate(
-              options: options,
-              baseOptions: childBuildResults[1].options,
-              indexOptions: childBuildResults[0]?.options,
-            ),
-            children: <Widget>[
-              CustomLayoutId(
-                id: _SqrtPos.base,
-                child: ResetDimension(
-                  height: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
-                  minTopPadding: 0,
-                  child: childBuildResults[1].widget,
-                ),
-              ),
-              CustomLayoutId(
-                id: _SqrtPos.surd,
-                child: LayoutBuilderPreserveBaseline(
-                  builder: (context, constraints) => sqrtSvg(
-                    minDelimiterHeight: constraints.minHeight,
-                    baseWidth: constraints.minWidth,
-                    options: options,
-                  ),
-                ),
-              ),
-              if (index != null)
-                CustomLayoutId(
-                  id: _SqrtPos.ind,
-                  child: childBuildResults[0].widget,
-                ),
-            ],
+      BuildResult(
+        options: options,
+        widget: CustomLayout<_SqrtPos>(
+          delegate: SqrtLayoutDelegate(
+            options: options,
+            baseOptions: childBuildResults[1].options,
+            indexOptions: childBuildResults[0]?.options,
           ),
-          italic: 0.0,
-        )
-      ];
+          children: <Widget>[
+            CustomLayoutId(
+              id: _SqrtPos.base,
+              child: ResetDimension(
+                height: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+                minTopPadding: 0,
+                child: childBuildResults[1].widget,
+              ),
+            ),
+            CustomLayoutId(
+              id: _SqrtPos.surd,
+              child: LayoutBuilderPreserveBaseline(
+                builder: (context, constraints) => sqrtSvg(
+                  minDelimiterHeight: constraints.minHeight,
+                  baseWidth: constraints.minWidth,
+                  options: options,
+                ),
+              ),
+            ),
+            if (index != null)
+              CustomLayoutId(
+                id: _SqrtPos.ind,
+                child: childBuildResults[0].widget,
+              ),
+          ],
+        ),
+      );
 
   @override
   List<Options> computeChildOptions(Options options) => [

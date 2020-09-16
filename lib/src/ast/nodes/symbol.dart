@@ -34,8 +34,8 @@ class SymbolNode extends LeafNode {
         _atomType = atomType;
 
   @override
-  List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults) {
+  BuildResult buildWidget(
+      Options options, List<BuildResult> childBuildResults) {
     final expanded = symbol.runes.expand((code) {
       final ch = String.fromCharCode(code);
       return unicodeSymbols[ch]?.split('') ?? [ch];
@@ -43,16 +43,14 @@ class SymbolNode extends LeafNode {
 
     // If symbol is single code
     if (expanded.length == 1) {
-      return [
-        makeBaseSymbol(
-          symbol: expanded[0],
-          variantForm: variantForm,
-          atomType: atomType,
-          overrideFont: overrideFont,
-          mode: mode,
-          options: options,
-        )
-      ];
+      return makeBaseSymbol(
+        symbol: expanded[0],
+        variantForm: variantForm,
+        atomType: atomType,
+        overrideFont: overrideFont,
+        mode: mode,
+        options: options,
+      );
     } else if (expanded.length > 1) {
       if (isCombiningMark(expanded[1])) {
         if (expanded[0] == 'i') {
@@ -78,16 +76,14 @@ class SymbolNode extends LeafNode {
       return SyntaxNode(parent: null, value: res, pos: 0).buildWidget(options);
     } else {
       // TODO: log a warning here.
-      return [
-        BuildResult(
-          widget: Container(
-            height: 0,
-            width: 0,
-          ),
-          options: options,
-          italic: 0,
+      return BuildResult(
+        widget: Container(
+          height: 0,
+          width: 0,
         ),
-      ];
+        options: options,
+        italic: 0,
+      );
     }
   }
 

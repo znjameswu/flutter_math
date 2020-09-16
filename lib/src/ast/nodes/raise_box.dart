@@ -15,18 +15,15 @@ class RaiseBoxNode extends SlotableNode {
   });
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
           Options options, List<BuildResult> childBuildResults) =>
-      [
-        BuildResult(
-          widget: ShiftBaseline(
-            offset: dy.toLpUnder(options),
-            child: childBuildResults[0].widget,
-          ),
-          options: options,
-          italic: 0.0,
-        )
-      ];
+      BuildResult(
+        options: options,
+        widget: ShiftBaseline(
+          offset: dy.toLpUnder(options),
+          child: childBuildResults[0].widget,
+        ),
+      );
 
   @override
   List<Options> computeChildOptions(Options options) => [options];

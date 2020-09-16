@@ -78,7 +78,7 @@ class SyntaxTree {
 
   // Build widget tree
   Widget buildWidget([Options options = Options.displayOptions]) =>
-      root.buildWidget(options)[0].widget;
+      root.buildWidget(options).widget;
 }
 
 /// Red Node. Immutable facade for math nodes.
@@ -136,7 +136,7 @@ class SyntaxNode {
   /// - If [GreenNode.shouldRebuildWidget], force rebuild
   /// - Call [buildWidget] on [children]. If the results are identical to the
   /// results returned by [buildWidget] called last time, then bypass.
-  List<BuildResult> buildWidget(Options options) {
+  BuildResult buildWidget(Options options) {
     if (value is PositionDependentMixin) {
       (value as PositionDependentMixin).updatePos(pos);
     }
@@ -160,11 +160,11 @@ class SyntaxNode {
             value.buildWidget(options, newChildBuildResults));
   }
 
-  List<List<BuildResult>> _buildChildWidgets(List<Options> childOptions) {
+  List<BuildResult> _buildChildWidgets(List<Options> childOptions) {
     assert(children.length == childOptions.length);
     if (children.isEmpty) return const [];
     final result =
-        List<List<BuildResult>>.filled(children.length, null, growable: false);
+        List<BuildResult>.filled(children.length, null, growable: false);
     for (var i = 0; i < children.length; i++) {
       result[i] = children[i]?.buildWidget(childOptions[i]);
     }
@@ -265,8 +265,7 @@ abstract class GreenNode {
   ///
   /// Please ensure [children] works in the same order as [updateChildren],
   /// [computeChildOptions], and [buildWidget].
-  List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults);
+  BuildResult buildWidget(Options options, List<BuildResult> childBuildResults);
 
   /// Whether the specific [Options] parameters that this node directly depends
   /// upon have changed.
@@ -319,8 +318,8 @@ abstract class GreenNode {
   AtomType get rightType;
 
   Options _oldOptions;
-  List<BuildResult> _oldBuildResult;
-  List<List<BuildResult>> _oldChildBuildResults;
+  BuildResult _oldBuildResult;
+  List<BuildResult> _oldChildBuildResults;
 
   Map<String, Object> toJson() => {
         'type': runtimeType.toString(),
@@ -379,19 +378,6 @@ abstract class SlotableNode<T extends EquationRowNode>
   List<T> computeChildren();
 
   @override
-  List<BuildResult> buildWidget(
-          Options options, List<List<BuildResult>> childBuildResults) =>
-      buildSlotableWidget(
-          options, childBuildResults.map((e) => e?.firstOrNull).toList());
-
-  /// Build widget for [SlotableNode]. Abstract
-  ///
-  /// This is a utility override that helps with unwrapping build result from
-  /// children.
-  List<BuildResult> buildSlotableWidget(
-      Options options, List<BuildResult> childBuildResults);
-
-  @override
   int computeWidth() =>
       children.map((child) => child?.capturedCursor ?? -1).sum() + 1;
 
@@ -429,9 +415,17 @@ abstract class TransparentNode extends ParentableNode<GreenNode> {
   }
 
   @override
-  List<BuildResult> buildWidget(
-          Options options, List<List<BuildResult>> childBuildResults) =>
-      childBuildResults.expand((element) => element).toList();
+  BuildResult buildWidget(
+          Options options, List<BuildResult> childBuildResults) =>
+      BuildResult(
+        widget: const Text('This widget should not appear. '
+            'It means one of FlutterMath\'s AST nodes '
+            'forgot to handle the case for TransparentNodes'),
+        options: options,
+        results: childBuildResults
+            .expand((result) => result.results ?? [result])
+            .toList(growable: false),
+      );
 
   List<GreenNode> _flattenedChildList;
 
@@ -504,12 +498,13 @@ class EquationRowNode extends ParentableNode<GreenNode>
   }
 
   @override
-  List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults) {
-    final flattenedBuildResults =
-        childBuildResults.expand((element) => element).toList();
+  BuildResult buildWidget(
+      Options options, List<BuildResult> childBuildResults) {
+    final flattenedBuildResults = childBuildResults
+        .expand((result) => result.results ?? [result])
+        .toList(growable: false);
     final flattenedChildOptions =
-        flattenedBuildResults.map((e) => e.options).toList();
+        flattenedBuildResults.map((e) => e.options).toList(growable: false);
     // assert(flattenedChildList.length == actualChildWidgets.length);
 
     // We need to calculate spacings between nodes
@@ -610,16 +605,14 @@ class EquationRowNode extends ParentableNode<GreenNode>
       ),
     );
 
-    return [
-      BuildResult(
-        options: options,
-        italic: flattenedBuildResults.lastOrNull?.italic ?? 0.0,
-        skew: flattenedBuildResults.length == 1
-            ? flattenedBuildResults.first.italic
-            : 0.0,
-        widget: widget,
-      )
-    ];
+    return BuildResult(
+      options: options,
+      italic: flattenedBuildResults.lastOrNull?.italic ?? 0.0,
+      skew: flattenedBuildResults.length == 1
+          ? flattenedBuildResults.first.italic
+          : 0.0,
+      widget: widget,
+    );
   }
 
   @override
@@ -760,8 +753,8 @@ class TemporaryNode extends LeafNode {
   Mode get mode => Mode.math;
 
   @override
-  List<BuildResult> buildWidget(
-          Options options, List<List<BuildResult>> childBuildResults) =>
+  BuildResult buildWidget(
+          Options options, List<BuildResult> childBuildResults) =>
       throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
@@ -786,11 +779,13 @@ class BuildResult {
   final Options options;
   final double italic;
   final double skew;
+  final List<BuildResult> results;
   const BuildResult({
     @required this.widget,
     @required this.options,
-    @required this.italic,
+    this.italic = 0.0,
     this.skew = 0.0,
+    this.results,
   });
 }
 

@@ -32,7 +32,7 @@ class LeftRightNode extends SlotableNode {
         assert(middle.length == body.length - 1);
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
       Options options, List<BuildResult> childBuildResults) {
     final numElements = 2 + body.length + middle.length;
     final a = options.fontMetrics.axisHeight.cssEm.toLpUnder(options);
@@ -76,15 +76,12 @@ class LeftRightNode extends SlotableNode {
         );
       }
     }, growable: false);
-    return [
-      BuildResult(
-        italic: 0.0,
-        options: options,
-        widget: Line(
-          children: childWidgets,
-        ),
-      )
-    ];
+    return BuildResult(
+      options: options,
+      widget: Line(
+        children: childWidgets,
+      ),
+    );
   }
 
   @override

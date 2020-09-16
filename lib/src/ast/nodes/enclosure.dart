@@ -36,7 +36,7 @@ class EnclosureNode extends SlotableNode {
   }) : assert(base != null);
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
       Options options, List<BuildResult> childBuildResults) {
     final horizontalPadding = this.horizontalPadding.toLpUnder(options);
     final verticalPadding = this.verticalPadding.toLpUnder(options);
@@ -122,13 +122,10 @@ class EnclosureNode extends SlotableNode {
         ],
       );
     }
-    return [
-      BuildResult(
-        options: options,
-        italic: 0.0,
-        widget: widget,
-      ),
-    ];
+    return BuildResult(
+      options: options,
+      widget: widget,
+    );
   }
 
   @override

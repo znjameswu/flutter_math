@@ -43,7 +43,7 @@ class NaryOperatorNode extends SlotableNode {
   }) : assert(naryand != null);
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
       Options options, List<BuildResult> childBuildResults) {
     final large =
         allowLargeOp && (options.style.size == MathStyle.display.size);
@@ -144,25 +144,25 @@ class NaryOperatorNode extends SlotableNode {
         );
       }
     }
-    final widget = Line(children: [
-      LineElement(
-        child: operatorWidget,
-        trailingMargin:
-            getSpacingSize(AtomType.op, naryand.leftType, options.style)
-                .toLpUnder(options),
-      ),
-      LineElement(
-        child: childBuildResults[2].widget,
-        trailingMargin: 0.0,
-      ),
-    ]);
-    return [
-      BuildResult(
-        widget: widget,
-        options: options,
-        italic: childBuildResults[2].italic,
-      ),
-    ];
+    final widget = Line(
+      children: [
+        LineElement(
+          child: operatorWidget,
+          trailingMargin:
+              getSpacingSize(AtomType.op, naryand.leftType, options.style)
+                  .toLpUnder(options),
+        ),
+        LineElement(
+          child: childBuildResults[2].widget,
+          trailingMargin: 0.0,
+        ),
+      ],
+    );
+    return BuildResult(
+      widget: widget,
+      options: options,
+      italic: childBuildResults[2].italic,
+    );
   }
 
   @override
