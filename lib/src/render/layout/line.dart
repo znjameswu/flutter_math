@@ -369,6 +369,8 @@ class RenderLine extends RenderBox
     return maxHeightAboveBaseline;
   }
 
+  List<double> _caretPositions;
+
   @override
   void performLayout() {
     assert(_debugHasNecessaryDirections);
@@ -423,20 +425,23 @@ class RenderLine extends RenderBox
     // Also determine offset for each children in the meantime, as if there are
     // no aligning instructions. If there are indeed none, this will be the
     // final pass.
-    final colWidths = <double>[0.0];
     child = firstChild;
     var mainPos = 0.0;
+    var lastColPosition = mainPos;
+    final colWidths = <double>[];
+    _caretPositions = [mainPos];
     while (child != null) {
       final childParentData = child.parentData as LineParentData;
       if (childParentData.alignerOrSpacer) {
         child.layout(BoxConstraints.tightFor(width: 0.0), parentUsesSize: true);
-        colWidths.add(0);
+        colWidths.add(mainPos - lastColPosition);
+        lastColPosition = mainPos;
       }
       childParentData.offset =
           Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
-      colWidths.last += child.size.width + childParentData.trailingMargin;
       mainPos += child.size.width + childParentData.trailingMargin;
 
+      _caretPositions.add(mainPos);
       child = childParentData.nextSibling;
     }
 
@@ -444,77 +449,82 @@ class RenderLine extends RenderBox
         Size(mainPos, maxHeightAboveBaseline + maxDepthBelowBaseline));
     _overflow = mainPos - size.width;
 
+    // If we have no aligners or spacers, no need to do the fourth pass.
+    if (alignerAndSpacers.isEmpty) return;
+
+    // If we are have no aligning instructions, no need to do the fourth pass.
     if (this.alignColWidth == null) {
-      // It means we are in the initial layout with no aligning instructions
-      if (alignerAndSpacers.isNotEmpty) {
-        alignColWidth = colWidths;
-      }
-    } else {
-      // We will determine the width of the spacers using aligning instructions
-      ///
-      ///       Aligner     Spacer      Aligner
-      ///         |           |           |
-      ///       x | f o o b a |         r | z z z
-      ///         |           |-------|   |
-      ///     y y | f         | o o b a r |
-      ///         |   |-------|           |
-      /// Index:  0           1           2
-      /// Col: 0        1           2
-      ///
-      var aligner = true;
-      var index = 0;
-      for (final alignerOrSpacer in alignerAndSpacers) {
-        if (aligner) {
-          alignerOrSpacer.layout(BoxConstraints.tightFor(width: 0.0),
-              parentUsesSize: true);
-        } else {
-          alignerOrSpacer.layout(
-              BoxConstraints.tightFor(
-                width: alignColWidth[index] +
-                    alignColWidth[index + 1] -
-                    colWidths[index] -
-                    colWidths[index + 1],
-              ),
-              parentUsesSize: true);
-        }
-        aligner = !aligner;
-        index++;
-      }
-
-      // Fourth pass, determine position for each children
-      child = firstChild;
-      colWidths.clear();
-      var mainPos = 0.0;
-      while (child != null) {
-        final childParentData = child.parentData as LineParentData;
-        if (childParentData.alignerOrSpacer) {
-          colWidths.add(mainPos);
-        }
-        childParentData.offset =
-            Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
-        mainPos += child.size.width + childParentData.trailingMargin;
-        child = childParentData.nextSibling;
-      }
-      size = constraints.constrain(
-          Size(mainPos, maxHeightAboveBaseline + maxDepthBelowBaseline));
-      _overflow = mainPos - size.width;
+      // Report column width
       alignColWidth = colWidths;
+      return;
     }
+
+    // If the code reaches here, means we have aligners/spacers and the
+    // aligning instructions.
+
+    // First report first column width.
+    alignColWidth = List.of(alignColWidth, growable: false)
+      ..[0] = colWidths.first;
+
+    // We will determine the width of the spacers using aligning instructions
+    ///
+    ///       Aligner     Spacer      Aligner
+    ///         |           |           |
+    ///       x | f o o b a |         r | z z z
+    ///         |           |-------|   |
+    ///     y y | f         | o o b a r |
+    ///         |   |-------|           |
+    /// Index:  0           1           2
+    /// Col: 0        1           2
+    ///
+    var aligner = true;
+    var index = 0;
+    for (final alignerOrSpacer in alignerAndSpacers) {
+      if (aligner) {
+        alignerOrSpacer.layout(BoxConstraints.tightFor(width: 0.0),
+            parentUsesSize: true);
+      } else {
+        alignerOrSpacer.layout(
+          BoxConstraints.tightFor(
+            width: alignColWidth[index] +
+                alignColWidth[index + 1] -
+                colWidths[index] -
+                colWidths[index + 1],
+          ),
+          parentUsesSize: true,
+        );
+      }
+      aligner = !aligner;
+      index++;
+    }
+
+    // Fourth pass, determine position for each children
+    child = firstChild;
+    mainPos = 0.0;
+    _caretPositions..clear()..add(mainPos);
+    while (child != null) {
+      final childParentData = child.parentData as LineParentData;
+      childParentData.offset =
+          Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
+      mainPos += child.size.width + childParentData.trailingMargin;
+
+      _caretPositions.add(mainPos);
+      child = childParentData.nextSibling;
+    }
+    size = constraints.constrain(
+        Size(mainPos, maxHeightAboveBaseline + maxDepthBelowBaseline));
+    _overflow = mainPos - size.width;
   }
 
-  List<double> get alignColWidth => _alignColWidth;
-  List<double> _alignColWidth;
-  set alignColWidth(List<double> value) {
-    if (_alignColWidth != value) {
-      _alignColWidth = value;
-      // markNeedsLayout();
-    }
-  }
-  // List<double> alignColWidth;
+  List<double> alignColWidth;
 
   @override
   bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
       defaultHitTestChildren(result, position: position);
+
+  int getCaretPositionForPoint(Offset globalOffset) {
+    final localOffset = globalToLocal(globalOffset);
+  }
 
   // List<Rect> get rects {
   //   final constraints = this.constraints;
@@ -543,16 +553,8 @@ class RenderLine extends RenderBox
       if (_selection.end > -1 && _selection.start < childCount + 1) {
         if (!_selection.isCollapsed) {
           // Paint selection if not collapsed
-          var child = firstChild;
-          for (var i = 0; i < selection.start; i++) {
-            child = (child.parentData as LineParentData).nextSibling;
-          }
-          final startOffset = (child.parentData as LineParentData).offset.dx;
-          for (var i = 0; i < selection.end - selection.start - 1; i++) {
-            child = (child.parentData as LineParentData).nextSibling;
-          }
-          final endOffset =
-              (child.parentData as LineParentData).offset.dx + child.size.width;
+          final startOffset = _caretPositions[selection.start];
+          final endOffset = _caretPositions[selection.end];
 
           context.canvas.drawRect(
             Rect.fromLTRB(startOffset, 0, endOffset, size.height).shift(offset),
