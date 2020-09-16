@@ -76,7 +76,7 @@ extension MathStyleExtOnInt on int {
 extension MathStyleExtOnSize on SizeMode {
   /// katex/src/Options.js/sizeStyleMap
   SizeMode underStyle(MathStyle style) {
-    if (style.index <= MathStyle.textCramped.index) {
+    if (style >= MathStyle.textCramped) {
       return this;
     }
     return SizeMode.values[sizeStyleMap[this.index][style.size - 1] - 1];
