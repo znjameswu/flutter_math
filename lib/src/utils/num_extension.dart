@@ -1,0 +1,8 @@
+extension IntExt on int {
+  int clampInt(int lowerLimit, int upperLimit) {
+    assert(upperLimit >= lowerLimit);
+    if (this < lowerLimit) return lowerLimit;
+    if (this > upperLimit) return upperLimit;
+    return this;
+  }
+}

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../ast/syntax_tree.dart';
 import '../constants.dart';
 import '../utils/render_box_offset.dart';
 
@@ -91,61 +92,77 @@ class LineElement extends ParentDataWidget<LineParentData> {
 class Line extends MultiChildRenderObjectWidget {
   Line({
     Key key,
-    this.textBaseline = TextBaseline.alphabetic,
-    // this.baselineOffset = 0,
     this.crossAxisAlignment = CrossAxisAlignment.baseline,
-    this.textDirection,
-    this.background,
-    this.minHeight = 0.0,
+    this.hintingColor,
     this.minDepth = 0.0,
+    this.minHeight = 0.0,
+    this.node,
+    this.selection = const TextSelection.collapsed(offset: -1),
+    this.selectionColor,
+    this.textBaseline = TextBaseline.alphabetic,
+    this.textDirection,
     List<Widget> children = const [],
   })  : assert(textBaseline != null),
         // assert(baselineOffset != null),
         assert(crossAxisAlignment != null),
         super(key: key, children: children);
-  final TextBaseline textBaseline;
-  // final double baselineOffset;
+
   final CrossAxisAlignment crossAxisAlignment;
-  final TextDirection textDirection;
-  final double minHeight;
+
+  final Color hintingColor;
+
   final double minDepth;
+
+  final double minHeight;
+
+  final PositionDependentMixin node;
+
+  final TextSelection selection;
+
+  final Color selectionColor;
+
+  final TextBaseline textBaseline;
+
+  final TextDirection textDirection;
+
   bool get _needTextDirection => true;
-  final ValueNotifier<Color> background;
 
   @protected
   TextDirection getEffectiveTextDirection(BuildContext context) =>
       textDirection ?? (_needTextDirection ? Directionality.of(context) : null);
+
   @override
   RenderLine createRenderObject(BuildContext context) => RenderLine(
-        textBaseline: textBaseline,
-        // baselineOffset: baselineOffset,
         crossAxisAlignment: crossAxisAlignment,
-        textDirection: getEffectiveTextDirection(context),
-        background: background,
-        minHeight: minHeight,
+        hintingColor: hintingColor,
         minDepth: minDepth,
+        minHeight: minHeight,
+        node: node,
+        selection: selection,
+        selectionColor: selectionColor,
+        textBaseline: textBaseline,
+        textDirection: getEffectiveTextDirection(context),
       );
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant RenderLine renderObject) {
-    renderObject
-      ..textBaseline = textBaseline
-      // ..baselineOffset = baselineOffset
-      ..crossAxisAlignment = crossAxisAlignment
-      ..textDirection = getEffectiveTextDirection(context)
-      ..background = background
-      ..minHeight = minHeight
-      ..minDepth = minDepth;
-  }
+          BuildContext context, covariant RenderLine renderObject) =>
+      renderObject
+        ..crossAxisAlignment = crossAxisAlignment
+        ..hintingColor = hintingColor
+        ..minDepth = minDepth
+        ..minHeight = minHeight
+        ..node = node
+        ..selection = selection
+        ..selectionColor = selectionColor
+        ..textBaseline = textBaseline
+        ..textDirection = getEffectiveTextDirection(context);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(EnumProperty<TextBaseline>('textBaseline', textBaseline,
         defaultValue: null));
-    // properties
-    //     .add(DoubleProperty('baselineOffset', baselineOffset, defaultValue: 0));
     properties.add(EnumProperty<CrossAxisAlignment>(
         'crossAxisAlignment', crossAxisAlignment));
     properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
@@ -160,30 +177,26 @@ class RenderLine extends RenderBox
         DebugOverflowIndicatorMixin {
   RenderLine({
     List<RenderBox> children,
-    TextBaseline textBaseline = TextBaseline.alphabetic,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.baseline,
-    TextDirection textDirection = TextDirection.ltr,
-    ValueNotifier<Color> background,
-    double minHeight,
+    Color hintingColor,
     double minDepth,
+    double minHeight,
+    this.node,
+    TextSelection selection,
+    @required Color selectionColor,
+    TextBaseline textBaseline = TextBaseline.alphabetic,
+    TextDirection textDirection = TextDirection.ltr,
   })  : assert(textBaseline != null),
         assert(crossAxisAlignment != null),
-        _textBaseline = textBaseline,
         _crossAxisAlignment = crossAxisAlignment,
-        _textDirection = textDirection,
-        _background = background,
+        _hintingColor = hintingColor,
+        _minDepth = minDepth,
         _minHeight = minHeight,
-        _minDepth = minDepth {
+        _selection = selection,
+        _selectionColor = selectionColor,
+        _textBaseline = textBaseline,
+        _textDirection = textDirection {
     addAll(children);
-  }
-
-  TextBaseline get textBaseline => _textBaseline;
-  TextBaseline _textBaseline;
-  set textBaseline(TextBaseline value) {
-    if (_textBaseline != value) {
-      _textBaseline = value;
-      markNeedsLayout();
-    }
   }
 
   CrossAxisAlignment get crossAxisAlignment => _crossAxisAlignment;
@@ -191,6 +204,62 @@ class RenderLine extends RenderBox
   set crossAxisAlignment(CrossAxisAlignment value) {
     if (_crossAxisAlignment != value) {
       _crossAxisAlignment = value;
+      markNeedsLayout();
+    }
+  }
+
+  Color get hintingColor => _hintingColor;
+  Color _hintingColor;
+  set hintingColor(Color value) {
+    if (_hintingColor != value) {
+      _hintingColor = value;
+      markNeedsPaint();
+    }
+  }
+
+  double get minDepth => _minDepth;
+  double _minDepth;
+  set minDepth(double value) {
+    if (_minDepth != value) {
+      _minDepth = value;
+      markNeedsLayout();
+    }
+  }
+
+  double get minHeight => _minHeight;
+  double _minHeight;
+  set minHeight(double value) {
+    if (_minHeight != value) {
+      _minHeight = value;
+      markNeedsLayout();
+    }
+  }
+
+  PositionDependentMixin node;
+
+  TextSelection get selection => _selection;
+  TextSelection _selection;
+  set selection(TextSelection value) {
+    if (_selection != value) {
+      _selection = value;
+      markNeedsPaint();
+    }
+  }
+
+  Color get selectionColor => _selectionColor;
+  Color _selectionColor;
+  set selectionColor(Color value) {
+    if (_selectionColor != value) {
+      _selectionColor = value;
+      markNeedsPaint();
+    }
+  }
+
+  TextBaseline get textBaseline => _textBaseline;
+  TextBaseline _textBaseline;
+  set textBaseline(TextBaseline value) {
+    if (_textBaseline != value) {
+      _textBaseline = value;
       markNeedsLayout();
     }
   }
@@ -204,38 +273,6 @@ class RenderLine extends RenderBox
     }
   }
 
-  ValueNotifier<Color> get background => _background;
-  ValueNotifier<Color> _background;
-  set background(ValueNotifier<Color> value) {
-    // assert(value != null);
-    if (attached && _background != null) {
-      _background.removeListener(markNeedsPaint);
-    }
-    _background = value;
-    if (attached && _background != null) {
-      _background.addListener(markNeedsPaint);
-    }
-    markNeedsPaint();
-  }
-
-  double get minHeight => _minHeight;
-  double _minHeight;
-  set minHeight(double value) {
-    if (_minHeight != value) {
-      _minHeight = value;
-      markNeedsLayout();
-    }
-  }
-
-  double get minDepth => _minDepth;
-  double _minDepth;
-  set minDepth(double value) {
-    if (_minDepth != value) {
-      _minDepth = value;
-      markNeedsLayout();
-    }
-  }
-
   bool get _debugHasNecessaryDirections {
     assert(crossAxisAlignment != null);
     assert(textDirection != null,
@@ -245,18 +282,6 @@ class RenderLine extends RenderBox
 
   double _overflow;
   bool get _hasOverflow => _overflow > precisionErrorTolerance;
-
-  @override
-  void attach(PipelineOwner owner) {
-    super.attach(owner);
-    background?.addListener(markNeedsPaint);
-  }
-
-  @override
-  void detach() {
-    background?.removeListener(markNeedsPaint);
-    super.detach();
-  }
 
   @override
   void setupParentData(RenderBox child) {
@@ -514,13 +539,36 @@ class RenderLine extends RenderBox
   @override
   void paint(PaintingContext context, Offset offset) {
     if (!_hasOverflow) {
-      if (_background != null) {
-        context.canvas.drawRect(
-          offset & size,
-          Paint()
-            ..style = PaintingStyle.fill
-            ..color = _background?.value ?? Colors.transparent,
-        );
+      // Only paint selection/hinting if the selection is in range
+      if (_selection.end > -1 && _selection.start < childCount + 1) {
+        if (!_selection.isCollapsed) {
+          // Paint selection if not collapsed
+          var child = firstChild;
+          for (var i = 0; i < selection.start; i++) {
+            child = (child.parentData as LineParentData).nextSibling;
+          }
+          final startOffset = (child.parentData as LineParentData).offset.dx;
+          for (var i = 0; i < selection.end - selection.start - 1; i++) {
+            child = (child.parentData as LineParentData).nextSibling;
+          }
+          final endOffset =
+              (child.parentData as LineParentData).offset.dx + child.size.width;
+
+          context.canvas.drawRect(
+            Rect.fromLTRB(startOffset, 0, endOffset, size.height).shift(offset),
+            Paint()
+              ..style = PaintingStyle.fill
+              ..color = _selectionColor,
+          );
+        } else if (_hintingColor != null) {
+          // Paint hinting background if selection is collapsed
+          context.canvas.drawRect(
+            offset & size,
+            Paint()
+              ..style = PaintingStyle.fill
+              ..color = _hintingColor,
+          );
+        }
       }
       defaultPaint(context, offset);
       return;

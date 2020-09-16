@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../render/layout/line.dart';
 import '../utils/iterable_extensions.dart';
+import '../utils/num_extension.dart';
 import 'nodes/space.dart';
 import 'nodes/sqrt.dart';
 import 'nodes/symbol.dart';
@@ -16,7 +18,7 @@ import 'types.dart';
 /// [Description of Roslyn's Red-Green Tree](https://docs.microsoft.com/en-us/archive/blogs/ericlippert/persistence-facades-and-roslyns-red-green-trees)
 class SyntaxTree {
   /// Root of the green tree
-  final GreenNode greenRoot;
+  final EquationRowNode greenRoot;
 
   SyntaxTree({
     @required this.greenRoot,
@@ -36,7 +38,7 @@ class SyntaxTree {
       return this;
     }
     if (identical(pos, root)) {
-      return SyntaxTree(greenRoot: newNode);
+      return SyntaxTree(greenRoot: newNode.wrapWithEquationRow());
     }
     if (pos.parent == null) {
       throw ArgumentError(
@@ -47,6 +49,31 @@ class SyntaxTree {
         pos.parent.value.updateChildren(pos.parent.value.children
             .map((child) => identical(child, pos.value) ? newNode : child)
             .toList(growable: false)));
+  }
+
+  List<GreenNode> findNodesAtPosition(int position) {
+    var curr = root;
+    final res = <GreenNode>[];
+    while (true) {
+      res.add(curr.value);
+      final next = curr.children.firstWhere((child) =>
+          child.range.start <= position && child.range.end >= position);
+      if (next == null) break;
+      curr = next;
+    }
+    return res;
+  }
+
+  EquationRowNode findNodesManagesPosition(int position) {
+    var curr = root;
+    while (true) {
+      final next = curr.children.firstWhere((child) =>
+          child.range.start <= position && child.range.end >= position);
+      if (next == null) break;
+      curr = next;
+    }
+    // assert(curr.value is EquationRowNode);
+    return curr.value as EquationRowNode;
   }
 
   // Build widget tree
@@ -340,8 +367,8 @@ mixin PositionDependentMixin<T extends GreenNode> on ParentableNode<T> {
 /// Depending on node type, some [SlotableNode] can have nulls inside their
 /// children list. When null is allowed, it usually means that node will have
 /// different layout slot logic depending on non-null children number.
-abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
-    with PositionDependentMixin {
+abstract class SlotableNode<T extends EquationRowNode>
+    extends ParentableNode<T> {
   List<T> _children;
   @override
   List<T> get children => _children ??= computeChildren();
@@ -435,25 +462,25 @@ class EquationRowNode extends ParentableNode<GreenNode>
   @override
   final List<GreenNode> children;
 
+  GlobalKey _key;
+  GlobalKey get key => _key;
+
   @override
   int computeWidth() => children.map((child) => child.editingWidth).sum() + 2;
 
   @override
   List<int> computeChildPositions() {
     var curPos = 1;
-    final result = <int>[];
-    for (final child in children) {
-      result.add(curPos);
-      curPos += child.editingWidth;
-    }
-    return result;
+    return List.generate(children.length, (index) {
+      final pos = curPos;
+      curPos += children[index].editingWidth;
+      return pos;
+    }, growable: false);
   }
 
   EquationRowNode({@required this.children, this.overrideType})
       : assert(children != null),
-        assert(children.every((child) => child != null))
-  // assert(children.every((child) => child is! EquationRowNode))
-  ;
+        assert(children.every((child) => child != null));
 
   factory EquationRowNode.empty() => EquationRowNode(children: []);
 
@@ -463,6 +490,18 @@ class EquationRowNode extends ParentableNode<GreenNode>
           child is TransparentNode ? child.flattenedChildList : [child])
       .toList(growable: false);
   List<GreenNode> _flattenedChildList;
+
+  List<int> _caretPositions;
+  List<int> get caretPositions => _caretPositions ??= computeCaretPositions();
+  List<int> computeCaretPositions() {
+    var curPos = 1;
+    return List.generate(flattenedChildList.length, (index) {
+      final pos = curPos;
+      curPos += flattenedChildList[index].editingWidth;
+      return pos;
+    })
+      ..add(curPos);
+  }
 
   @override
   List<BuildResult> buildWidget(
@@ -521,26 +560,64 @@ class EquationRowNode extends ParentableNode<GreenNode>
       }
     });
 
+    _key = GlobalKey();
+
+    final lineChildren = List.generate(
+      flattenedBuildResults.length,
+      (index) => LineElement(
+        child: flattenedBuildResults[index].widget,
+        canBreakBefore: false, // TODO
+        alignerOrSpacer: flattenedChildList[index] is SpaceNode &&
+            (flattenedChildList[index] as SpaceNode).alignerOrSpacer,
+        trailingMargin: childSpacingConfs[index].spacingAfter,
+      ),
+      growable: false,
+    );
+
+    // Each EquationRow will filter out unrelated selection changes (changes
+    // happen entirely outside the range of this EquationRow)
+    final widget = ProxyProvider<TextSelection, TextSelection>(
+      create: (_) => const TextSelection.collapsed(offset: -1),
+      update: (context, selection, _) => selection.copyWith(
+        baseOffset: selection.baseOffset.clampInt(range.start, range.end),
+        extentOffset: selection.extentOffset.clampInt(range.start, range.end),
+      ),
+      // Selector translates global cursor position to local LineElement index
+      // Will only update Line when selection range actually changes
+      child: Selector<TextSelection, TextSelection>(
+        selector: (context, selection) {
+          final start = selection.start - range.start + 1;
+          final end = selection.end - range.start + 1;
+          return TextSelection(
+            baseOffset: start < 1
+                ? -1
+                : start > capturedCursor
+                    ? caretPositions.length
+                    : caretPositions.indexWhere((pos) => pos >= start),
+            extentOffset: end > capturedCursor
+                ? caretPositions.length
+                : end < 1
+                    ? -1
+                    : caretPositions.lastIndexWhere((pos) => pos <= end),
+          );
+        },
+        builder: (context, selection, _) => Line(
+          key: _key,
+          children: lineChildren,
+          node: this,
+          selection: selection,
+        ),
+      ),
+    );
+
     return [
       BuildResult(
         options: options,
-        widget: Line(
-          children: <Widget>[
-            for (var i = 0; i < flattenedBuildResults.length; i++)
-              LineElement(
-                child: flattenedBuildResults[i].widget,
-                canBreakBefore: false, // TODO
-                alignerOrSpacer: flattenedChildList[i] is SpaceNode &&
-                    (flattenedChildList[i] as SpaceNode).alignerOrSpacer,
-                // trailingMargin: spacings[i],
-                trailingMargin: childSpacingConfs[i].spacingAfter,
-              )
-          ],
-        ),
         italic: flattenedBuildResults.lastOrNull?.italic ?? 0.0,
         skew: flattenedBuildResults.length == 1
             ? flattenedBuildResults.first.italic
             : 0.0,
+        widget: widget,
       )
     ];
   }
