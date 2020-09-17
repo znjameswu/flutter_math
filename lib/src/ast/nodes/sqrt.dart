@@ -7,8 +7,8 @@ import 'package:flutter/widgets.dart';
 import '../../render/constants.dart';
 import '../../render/layout/custom_layout.dart';
 import '../../render/layout/layout_builder_baseline.dart';
+import '../../render/layout/min_dimension.dart';
 import '../../render/layout/reset_baseline.dart';
-import '../../render/layout/reset_dimension.dart';
 import '../../render/svg/delimiter.dart';
 import '../../render/svg/svg_geomertry.dart';
 import '../../render/svg/svg_string.dart';
@@ -45,9 +45,9 @@ class SqrtNode extends SlotableNode {
           children: <Widget>[
             CustomLayoutId(
               id: _SqrtPos.base,
-              child: ResetDimension(
-                height: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
-                minTopPadding: 0,
+              child: MinDimension(
+                minHeight: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+                topPadding: 0,
                 child: childBuildResults[1].widget,
               ),
             ),
@@ -307,8 +307,8 @@ Widget sqrtSvg({double minDelimiterHeight, double baseWidth, Options options}) {
         height: (options.fontMetrics.sqrtRuleThickness + extraViniculum)
             .cssEm
             .toLpUnder(delimOptions),
-        child: ResetDimension(
-          minTopPadding: -emPad.cssEm.toLpUnder(delimOptions),
+        child: MinDimension(
+          topPadding: -emPad.cssEm.toLpUnder(delimOptions),
           child: svgWidgetFromPath(
             svgPath,
             Size(viewPortWidth, viewPortHeight),
@@ -335,8 +335,8 @@ Widget sqrtSvg({double minDelimiterHeight, double baseWidth, Options options}) {
         height: (options.fontMetrics.sqrtRuleThickness + extraViniculum)
             .cssEm
             .toLpUnder(delimOptions),
-        child: ResetDimension(
-          minTopPadding: -emPad.cssEm.toLpUnder(delimOptions),
+        child: MinDimension(
+          topPadding: -emPad.cssEm.toLpUnder(delimOptions),
           child: svgWidgetFromPath(
             svgPath,
             Size(viewPortWidth, viewPortHeight),
@@ -363,8 +363,8 @@ Widget sqrtSvg({double minDelimiterHeight, double baseWidth, Options options}) {
       height: (options.fontMetrics.sqrtRuleThickness + extraViniculum)
           .cssEm
           .toLpUnder(options),
-      child: ResetDimension(
-        minTopPadding: -emPad.cssEm.toLpUnder(options),
+      child: MinDimension(
+        topPadding: -emPad.cssEm.toLpUnder(options),
         child: svgWidgetFromPath(
           svgPath,
           Size(viewPortWidth, viewPortHeight),

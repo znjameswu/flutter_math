@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../../render/layout/reset_dimension.dart';
+import '../../render/layout/min_dimension.dart';
 import '../../render/layout/vlist.dart';
 import '../options.dart';
 import '../size.dart';
@@ -34,10 +34,10 @@ class UnderNode extends SlotableNode {
           children: <Widget>[
             childBuildResults[0].widget,
             // TexBook Rule 13a
-            ResetDimension(
-              height:
+            MinDimension(
+              minHeight:
                   options.fontMetrics.bigOpSpacing4.cssEm.toLpUnder(options),
-              minTopPadding:
+              topPadding:
                   options.fontMetrics.bigOpSpacing2.cssEm.toLpUnder(options),
               child: childBuildResults[1].widget,
             ),

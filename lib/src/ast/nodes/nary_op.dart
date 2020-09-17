@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../font/metrics/font_metrics.dart';
 import '../../render/layout/line.dart';
+import '../../render/layout/min_dimension.dart';
 import '../../render/layout/multiscripts.dart';
 import '../../render/layout/reset_dimension.dart';
 import '../../render/layout/shift_baseline.dart';
@@ -119,10 +120,10 @@ class NaryOperatorNode extends SlotableNode {
               if (upperLimit != null)
                 VListElement(
                   hShift: 0.5 * italic,
-                  child: ResetDimension(
-                    depth: options.fontMetrics.bigOpSpacing3.cssEm
+                  child: MinDimension(
+                    minDepth: options.fontMetrics.bigOpSpacing3.cssEm
                         .toLpUnder(options),
-                    minBottomPadding: options.fontMetrics.bigOpSpacing1.cssEm
+                    bottomPadding: options.fontMetrics.bigOpSpacing1.cssEm
                         .toLpUnder(options),
                     child: childBuildResults[1].widget,
                   ),
@@ -131,10 +132,10 @@ class NaryOperatorNode extends SlotableNode {
               if (lowerLimit != null)
                 VListElement(
                   hShift: -0.5 * italic,
-                  child: ResetDimension(
-                    height: options.fontMetrics.bigOpSpacing4.cssEm
+                  child: MinDimension(
+                    minHeight: options.fontMetrics.bigOpSpacing4.cssEm
                         .toLpUnder(options),
-                    minTopPadding: options.fontMetrics.bigOpSpacing2.cssEm
+                    topPadding: options.fontMetrics.bigOpSpacing2.cssEm
                         .toLpUnder(options),
                     child: childBuildResults[0].widget,
                   ),

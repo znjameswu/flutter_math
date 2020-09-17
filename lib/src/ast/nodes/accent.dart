@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../render/layout/min_dimension.dart';
 import '../../render/layout/reset_dimension.dart';
 import '../../render/layout/shift_baseline.dart';
 import '../../render/layout/vlist.dart';
@@ -122,9 +123,9 @@ class AccentNode extends SlotableNode {
               child: accentWidget,
             ),
             // Set min height
-            ResetDimension(
-              height: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
-              minTopPadding: 0,
+            MinDimension(
+              minHeight: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+              topPadding: 0,
               child: childBuildResults[0].widget,
             ),
           ],

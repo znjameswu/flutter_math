@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../../render/layout/reset_dimension.dart';
+import '../../render/layout/min_dimension.dart';
 import '../../render/layout/vlist.dart';
 import '../options.dart';
 import '../size.dart';
@@ -34,9 +34,10 @@ class OverNode extends SlotableNode {
           baselineReferenceWidgetIndex: 1,
           children: <Widget>[
             // TexBook Rule 13a
-            ResetDimension(
-              depth: options.fontMetrics.bigOpSpacing3.cssEm.toLpUnder(options),
-              minBottomPadding:
+            MinDimension(
+              minDepth:
+                  options.fontMetrics.bigOpSpacing3.cssEm.toLpUnder(options),
+              bottomPadding:
                   options.fontMetrics.bigOpSpacing1.cssEm.toLpUnder(options),
               child: childBuildResults[1].widget,
             ),
