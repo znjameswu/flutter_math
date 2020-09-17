@@ -12,6 +12,11 @@ class ResetBaseline extends SingleChildRenderObjectWidget {
   @override
   RenderResetBaseline createRenderObject(BuildContext context) =>
       RenderResetBaseline(height: height);
+
+  @override
+  void updateRenderObject(
+          BuildContext context, RenderResetBaseline renderObject) =>
+      renderObject..height = height;
 }
 
 class RenderResetBaseline extends RenderProxyBox {
