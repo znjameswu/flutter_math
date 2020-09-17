@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../ast/syntax_tree.dart';
 import '../constants.dart';
 import '../utils/render_box_offset.dart';
 
@@ -93,12 +92,8 @@ class Line extends MultiChildRenderObjectWidget {
   Line({
     Key key,
     this.crossAxisAlignment = CrossAxisAlignment.baseline,
-    this.hintingColor,
     this.minDepth = 0.0,
     this.minHeight = 0.0,
-    this.node,
-    this.selection = const TextSelection.collapsed(offset: -1),
-    this.selectionColor,
     this.textBaseline = TextBaseline.alphabetic,
     this.textDirection,
     List<Widget> children = const [],
@@ -109,17 +104,9 @@ class Line extends MultiChildRenderObjectWidget {
 
   final CrossAxisAlignment crossAxisAlignment;
 
-  final Color hintingColor;
-
   final double minDepth;
 
   final double minHeight;
-
-  final PositionDependentMixin node;
-
-  final TextSelection selection;
-
-  final Color selectionColor;
 
   final TextBaseline textBaseline;
 
@@ -134,27 +121,18 @@ class Line extends MultiChildRenderObjectWidget {
   @override
   RenderLine createRenderObject(BuildContext context) => RenderLine(
         crossAxisAlignment: crossAxisAlignment,
-        hintingColor: hintingColor,
         minDepth: minDepth,
         minHeight: minHeight,
-        node: node,
-        selection: selection,
-        selectionColor: selectionColor,
         textBaseline: textBaseline,
         textDirection: getEffectiveTextDirection(context),
       );
 
   @override
-  void updateRenderObject(
-          BuildContext context, covariant RenderLine renderObject) =>
+  void updateRenderObject(BuildContext context, RenderLine renderObject) =>
       renderObject
         ..crossAxisAlignment = crossAxisAlignment
-        ..hintingColor = hintingColor
         ..minDepth = minDepth
         ..minHeight = minHeight
-        ..node = node
-        ..selection = selection
-        ..selectionColor = selectionColor
         ..textBaseline = textBaseline
         ..textDirection = getEffectiveTextDirection(context);
 
@@ -170,6 +148,7 @@ class Line extends MultiChildRenderObjectWidget {
   }
 }
 
+// RenderLine
 class RenderLine extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, LineParentData>,
@@ -178,22 +157,15 @@ class RenderLine extends RenderBox
   RenderLine({
     List<RenderBox> children,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.baseline,
-    Color hintingColor,
     double minDepth,
     double minHeight,
-    this.node,
-    TextSelection selection,
-    @required Color selectionColor,
     TextBaseline textBaseline = TextBaseline.alphabetic,
     TextDirection textDirection = TextDirection.ltr,
   })  : assert(textBaseline != null),
         assert(crossAxisAlignment != null),
         _crossAxisAlignment = crossAxisAlignment,
-        _hintingColor = hintingColor,
         _minDepth = minDepth,
         _minHeight = minHeight,
-        _selection = selection,
-        _selectionColor = selectionColor,
         _textBaseline = textBaseline,
         _textDirection = textDirection {
     addAll(children);
@@ -205,15 +177,6 @@ class RenderLine extends RenderBox
     if (_crossAxisAlignment != value) {
       _crossAxisAlignment = value;
       markNeedsLayout();
-    }
-  }
-
-  Color get hintingColor => _hintingColor;
-  Color _hintingColor;
-  set hintingColor(Color value) {
-    if (_hintingColor != value) {
-      _hintingColor = value;
-      markNeedsPaint();
     }
   }
 
@@ -232,26 +195,6 @@ class RenderLine extends RenderBox
     if (_minHeight != value) {
       _minHeight = value;
       markNeedsLayout();
-    }
-  }
-
-  PositionDependentMixin node;
-
-  TextSelection get selection => _selection;
-  TextSelection _selection;
-  set selection(TextSelection value) {
-    if (_selection != value) {
-      _selection = value;
-      markNeedsPaint();
-    }
-  }
-
-  Color get selectionColor => _selectionColor;
-  Color _selectionColor;
-  set selectionColor(Color value) {
-    if (_selectionColor != value) {
-      _selectionColor = value;
-      markNeedsPaint();
     }
   }
 
@@ -369,7 +312,8 @@ class RenderLine extends RenderBox
     return maxHeightAboveBaseline;
   }
 
-  List<double> _caretPositions;
+  @protected
+  List<double> caretPositions;
 
   @override
   void performLayout() {
@@ -429,7 +373,7 @@ class RenderLine extends RenderBox
     var mainPos = 0.0;
     var lastColPosition = mainPos;
     final colWidths = <double>[];
-    _caretPositions = [mainPos];
+    caretPositions = [mainPos];
     while (child != null) {
       final childParentData = child.parentData as LineParentData;
       if (childParentData.alignerOrSpacer) {
@@ -441,7 +385,7 @@ class RenderLine extends RenderBox
           Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
       mainPos += child.size.width + childParentData.trailingMargin;
 
-      _caretPositions.add(mainPos);
+      caretPositions.add(mainPos);
       child = childParentData.nextSibling;
     }
 
@@ -501,14 +445,16 @@ class RenderLine extends RenderBox
     // Fourth pass, determine position for each children
     child = firstChild;
     mainPos = 0.0;
-    _caretPositions..clear()..add(mainPos);
+    caretPositions
+      ..clear()
+      ..add(mainPos);
     while (child != null) {
       final childParentData = child.parentData as LineParentData;
       childParentData.offset =
           Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
       mainPos += child.size.width + childParentData.trailingMargin;
 
-      _caretPositions.add(mainPos);
+      caretPositions.add(mainPos);
       child = childParentData.nextSibling;
     }
     size = constraints.constrain(
@@ -521,10 +467,6 @@ class RenderLine extends RenderBox
   @override
   bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
       defaultHitTestChildren(result, position: position);
-
-  int getCaretPositionForPoint(Offset globalOffset) {
-    final localOffset = globalToLocal(globalOffset);
-  }
 
   // List<Rect> get rects {
   //   final constraints = this.constraints;
@@ -549,29 +491,6 @@ class RenderLine extends RenderBox
   @override
   void paint(PaintingContext context, Offset offset) {
     if (!_hasOverflow) {
-      // Only paint selection/hinting if the selection is in range
-      if (_selection.end > -1 && _selection.start < childCount + 1) {
-        if (!_selection.isCollapsed) {
-          // Paint selection if not collapsed
-          final startOffset = _caretPositions[selection.start];
-          final endOffset = _caretPositions[selection.end];
-
-          context.canvas.drawRect(
-            Rect.fromLTRB(startOffset, 0, endOffset, size.height).shift(offset),
-            Paint()
-              ..style = PaintingStyle.fill
-              ..color = _selectionColor,
-          );
-        } else if (_hintingColor != null) {
-          // Paint hinting background if selection is collapsed
-          context.canvas.drawRect(
-            offset & size,
-            Paint()
-              ..style = PaintingStyle.fill
-              ..color = _hintingColor,
-          );
-        }
-      }
       defaultPaint(context, offset);
       return;
     }

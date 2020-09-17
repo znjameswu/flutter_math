@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../render/layout/line.dart';
+import '../render/layout/line_editable.dart';
 import '../utils/iterable_extensions.dart';
 import '../utils/num_extension.dart';
 import 'nodes/space.dart';
@@ -596,11 +597,13 @@ class EquationRowNode extends ParentableNode<GreenNode>
                     : caretPositions.lastIndexWhere((pos) => pos <= end),
           );
         },
-        builder: (context, selection, _) => Line(
+        builder: (context, selection, _) => EditableLine(
           key: _key,
           children: lineChildren,
           node: this,
+          preferredLineHeight: options.fontSize,
           selection: selection,
+          selectionColor: Theme.of(context).textSelectionColor,
         ),
       ),
     );
