@@ -431,9 +431,11 @@ class RenderLine extends RenderBox
         alignerOrSpacer.layout(
           BoxConstraints.tightFor(
             width: alignColWidth[index] +
-                alignColWidth[index + 1] -
+                (index + 1 < alignColWidth.length - 1
+                    ? alignColWidth[index + 1]
+                    : 0) -
                 colWidths[index] -
-                colWidths[index + 1],
+                (index + 1 < colWidths.length - 1 ? colWidths[index + 1] : 0),
           ),
           parentUsesSize: true,
         );
