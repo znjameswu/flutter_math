@@ -99,7 +99,8 @@ class MathSelectable extends StatelessWidget {
     }
 
     final theme = Theme.of(context);
-    final selectionTheme = TextSelectionTheme.of(context);
+    // The following code adapts for Flutter's new theme system (https://github.com/flutter/flutter/pull/62014/)
+    // final selectionTheme = TextSelectionTheme.of(context);
 
     TextSelectionControls textSelectionControls;
     bool paintCursorAboveText;
@@ -117,15 +118,15 @@ class MathSelectable extends StatelessWidget {
         textSelectionControls = cupertinoTextSelectionControls;
         paintCursorAboveText = true;
         cursorOpacityAnimates = true;
-        if (theme.useTextSelectionTheme) {
-          cursorColor ??= selectionTheme.cursorColor ??
-              CupertinoTheme.of(context).primaryColor;
-          selectionColor = selectionTheme.selectionColor ??
-              CupertinoTheme.of(context).primaryColor;
-        } else {
+        // if (theme.useTextSelectionTheme) {
+        //   cursorColor ??= selectionTheme.cursorColor ??
+        //       CupertinoTheme.of(context).primaryColor;
+        //   selectionColor = selectionTheme.selectionColor ??
+        //       CupertinoTheme.of(context).primaryColor;
+        // } else {
           cursorColor ??= CupertinoTheme.of(context).primaryColor;
           selectionColor = theme.textSelectionColor;
-        }
+        // }
         cursorRadius ??= const Radius.circular(2.0);
         cursorOffset = Offset(
             iOSHorizontalOffset / MediaQuery.of(context).devicePixelRatio, 0);
@@ -139,15 +140,15 @@ class MathSelectable extends StatelessWidget {
         textSelectionControls = materialTextSelectionControls;
         paintCursorAboveText = false;
         cursorOpacityAnimates = false;
-        if (theme.useTextSelectionTheme) {
-          cursorColor ??=
-              selectionTheme.cursorColor ?? theme.colorScheme.primary;
-          selectionColor =
-              selectionTheme.selectionColor ?? theme.colorScheme.primary;
-        } else {
+        // if (theme.useTextSelectionTheme) {
+        //   cursorColor ??=
+        //       selectionTheme.cursorColor ?? theme.colorScheme.primary;
+        //   selectionColor =
+        //       selectionTheme.selectionColor ?? theme.colorScheme.primary;
+        // } else {
           cursorColor ??= theme.cursorColor;
           selectionColor = theme.textSelectionColor;
-        }
+        // }
         break;
     }
 
@@ -377,10 +378,6 @@ class __SelectableMathState extends State<_SelectableMath>
     );
   }
 
-  @override
-  bool handleVisible;
-
-  @override
   bool toolbarVisible = false;
 
   @override
@@ -400,7 +397,7 @@ class __SelectableMathState extends State<_SelectableMath>
   }
 
   @override
-  bool get pasteEnabled => true;
+  bool get pasteEnabled => false;
 
   @override
   double get preferredLineHeight => widget.options.fontSize;
