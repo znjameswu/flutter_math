@@ -27,6 +27,7 @@ class MathView extends StatelessWidget {
 
   factory MathView.tex(
     String expression, {
+    Key key,
     Options options = Options.displayOptions,
     Settings settings = const Settings(),
     OnErrorFallback onErrorFallback,
@@ -35,17 +36,20 @@ class MathView extends StatelessWidget {
       final ast =
           SyntaxTree(greenRoot: TexParser(expression, settings).parse());
       return MathView(
+        key: key,
         ast: ast,
         options: options,
         onErrorFallback: onErrorFallback,
       );
     } on ParseError catch (e) {
       return MathView(
+        key: key,
         parseError: 'Parse Error: ${e.message}',
         onErrorFallback: onErrorFallback,
       );
     } on dynamic catch (e) {
       return MathView(
+        key: key,
         parseError: e.toString(),
         onErrorFallback: onErrorFallback,
       );

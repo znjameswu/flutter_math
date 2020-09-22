@@ -59,7 +59,7 @@ class MathSelectable extends StatelessWidget {
     Options options = Options.displayOptions,
     Settings settings = const Settings(),
     TextSelectionControls textSelectionControls,
-    OnErrorFallback onErrorFallback,
+    OnErrorFallback onErrorFallback = defaultOnErrorFallback,
   }) {
     try {
       final ast =

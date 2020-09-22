@@ -22,6 +22,7 @@ typedef OnErrorFallback = Widget Function(String errmsg);
 class FlutterMath {
   static Widget fromTexString(
     String expression, {
+    Key key,
     Options options = Options.displayOptions,
     Settings settings = const Settings(),
     FlutterMathMode mode = FlutterMathMode.view,
@@ -29,6 +30,7 @@ class FlutterMath {
   }) =>
       MathView.tex(
         expression,
+        key: key,
         options: options,
         settings: settings,
         onErrorFallback: onErrorFallback,
