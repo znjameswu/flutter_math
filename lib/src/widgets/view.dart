@@ -44,7 +44,7 @@ class MathView extends StatelessWidget {
     } on ParseError catch (e) {
       return MathView(
         key: key,
-        parseError: 'Parse Error: ${e.message}',
+        parseError: 'Parser Error: ${e.message}',
         onErrorFallback: onErrorFallback,
       );
     } on dynamic catch (e) {

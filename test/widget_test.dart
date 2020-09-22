@@ -18,7 +18,7 @@ void main() {
       expect(
           (finder.evaluate().single.widget as Text)
               .data
-              .startsWith('parser error'),
+              .startsWith('Parser Error'),
           isTrue);
     });
     testWidgets('Should show onErrorFallback widget', (tester) async {
