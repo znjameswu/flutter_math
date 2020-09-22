@@ -17,15 +17,6 @@ import 'syntax_tree.dart';
 /// [Options] is immutable. Each modification returns a new instance of
 /// [Options].
 class Options {
-  /// Basic size multiplier
-  ///
-  /// This parameter will resize every object in the equation, including those
-  /// with sizes expressed in absolute units. Currently there is no good way of
-  /// precisely translating Flutter's logical pixels to real-world absolute
-  /// units such as mm and inch. So you can play with this parameter to find a
-  /// good fit for your UI.
-  final double baseSizeMultiplier;
-
   /// The style used to render the math node
   final MathStyle style;
 
@@ -65,10 +56,13 @@ class Options {
   /// Font size under current size
   ///
   /// This is the font size passed to Flutter's [Text] widget.
-  double get fontSize => 1.0.cssEm.toLpUnder(this);
+  final double fontSize;
 
-  const Options({
-    this.baseSizeMultiplier = 1,
+  final double logicalPpi;
+
+  const Options._({
+    @required this.fontSize,
+    @required this.logicalPpi,
     @required this.style,
     this.color = Colors.black,
     this.sizeUnderTextStyle = SizeMode.normalsize,
@@ -78,13 +72,60 @@ class Options {
     // @required this.minRuleThickness,
   });
 
+  factory Options({
+    MathStyle style = MathStyle.display,
+    Color color = Colors.black,
+    SizeMode sizeUnderTextStyle = SizeMode.normalsize,
+    FontOptions textFontOptions,
+    FontOptions mathFontOptions,
+    double fontSize,
+    double logicalPpi,
+    double baseSizeMultiplier = 1.0,
+    // @required this.maxSize,
+    // @required this.minRuleThickness,
+  }) {
+    final effectiveFontSize = fontSize ??
+        (logicalPpi == null
+            ? _defaultPtPerEm / Unit.lp.toPt
+            : defaultFontSizeFor(logicalPpi: logicalPpi));
+    final effectiveLogicalPPI =
+        logicalPpi ?? defaultLogicalPpiFor(fontSize: effectiveFontSize);
+    return Options._(
+      fontSize: effectiveFontSize * baseSizeMultiplier,
+      logicalPpi: effectiveLogicalPPI * baseSizeMultiplier,
+      style: style,
+      color: color,
+      sizeUnderTextStyle: sizeUnderTextStyle,
+      mathFontOptions: mathFontOptions,
+      textFontOptions: textFontOptions,
+    );
+  }
+
+  static const _defaultLpPerPt = 72.27 / 160;
+
+  static const _defaultPtPerEm = 10;
+
+  static const defaultLogicalPpi = 72.27 / _defaultLpPerPt;
+
+  static const defaultFontSize = _defaultPtPerEm / _defaultLpPerPt;
+
+  static double defaultLogicalPpiFor({double fontSize}) =>
+      fontSize * Unit.inches.toPt / _defaultPtPerEm;
+
+  static double defaultFontSizeFor({double logicalPpi}) =>
+      _defaultPtPerEm / Unit.inches.toPt * logicalPpi;
+
   /// Default options for displayed equations
-  static const displayOptions = Options(
+  static const displayOptions = Options._(
+    fontSize: defaultFontSize,
+    logicalPpi: defaultLogicalPpi,
     style: MathStyle.display,
   );
 
   /// Default options for in-line equations
-  static const textOptions = Options(
+  static const textOptions = Options._(
+    fontSize: defaultFontSize,
+    logicalPpi: defaultLogicalPpi,
     style: MathStyle.text,
   );
 
@@ -157,7 +198,6 @@ class Options {
 
   /// Utility method copyWith
   Options copyWith({
-    double baseSizeMultiplier,
     MathStyle style,
     Color color,
     SizeMode sizeUnderTextStyle,
@@ -166,8 +206,9 @@ class Options {
     // double maxSize,
     // num minRuleThickness,
   }) =>
-      Options(
-        baseSizeMultiplier: baseSizeMultiplier ?? this.baseSizeMultiplier,
+      Options._(
+        fontSize: this.fontSize,
+        logicalPpi: this.logicalPpi,
         style: style ?? this.style,
         color: color ?? this.color,
         sizeUnderTextStyle: sizeUnderTextStyle ?? this.sizeUnderTextStyle,
