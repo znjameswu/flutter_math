@@ -402,7 +402,7 @@ abstract class SlotableNode<T extends EquationRowNode>
 
   @override
   int computeWidth() =>
-      children.map((child) => child?.capturedCursor ?? -1).sum() + 1;
+      children.map((child) => child?.capturedCursor ?? 0).sum() + 1;
 
   @override
   List<int> computeChildPositions() {
@@ -410,7 +410,7 @@ abstract class SlotableNode<T extends EquationRowNode>
     final result = <int>[];
     for (final child in children) {
       result.add(curPos);
-      curPos += child?.capturedCursor ?? -1;
+      curPos += child?.capturedCursor ?? 0;
     }
     return result;
   }
