@@ -1,15 +1,18 @@
+import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
 import '../render/layout/line.dart';
 import '../render/layout/line_editable.dart';
 import '../utils/iterable_extensions.dart';
 import '../utils/num_extension.dart';
+import '../widgets/flutter_math.dart';
 import 'nodes/space.dart';
 import 'nodes/sqrt.dart';
-import 'nodes/symbol.dart';
 import 'options.dart';
 import 'spacing.dart';
 import 'types.dart';
@@ -57,7 +60,7 @@ class SyntaxTree {
     final res = <GreenNode>[];
     while (true) {
       res.add(curr.value);
-      final next = curr.children.firstWhere((child) =>
+      final next = curr.children.firstWhereOrNull((child) =>
           child.range.start <= position && child.range.end >= position);
       if (next == null) break;
       curr = next;
@@ -68,13 +71,29 @@ class SyntaxTree {
   EquationRowNode findNodesManagesPosition(int position) {
     var curr = root;
     while (true) {
-      final next = curr.children.firstWhere((child) =>
-          child.range.start <= position && child.range.end >= position);
+      final next = curr.children.firstWhereOrNull(
+        (child) => child.range.start <= position && child.range.end >= position,
+      );
       if (next == null) break;
       curr = next;
     }
     // assert(curr.value is EquationRowNode);
     return curr.value as EquationRowNode;
+  }
+
+  EquationRowNode findLowestCommonRowNode(int position1, int position2) {
+    final nodes1 = findNodesAtPosition(position1);
+    final nodes2 = findNodesAtPosition(position2);
+    for (var index = math.min(nodes1.length, nodes2.length) - 1;
+        index >= 0;
+        index--) {
+      final node1 = nodes1[index];
+      final node2 = nodes2[index];
+      if (node1 == node2 && node1 is EquationRowNode) {
+        return node1;
+      }
+    }
+    return greenRoot;
   }
 
   // Build widget tree
@@ -120,8 +139,8 @@ class SyntaxNode {
   }
 
   /// [GreenNode.getRange]
-  NodeRange _range;
-  NodeRange get range => _range ??= value.getRange(pos);
+  TextRange _range;
+  TextRange get range => _range ??= value.getRange(pos);
 
   /// [GreenNode.editingWidth]
   int get width => value.editingWidth;
@@ -173,43 +192,43 @@ class SyntaxNode {
   }
 }
 
-/// The range of a node used for hit-testing.
-///
-/// Used only for editing functionalities. Not to be used in parser.
-///
-/// The [NodeRange] is a closed interval where the cursor whose position falls
-/// inside this interval will be captured by the corresponding node. If the node
-/// only captures 1 cursor position, then [start] == [end]. If the node does not
-/// capture cursor at all (e.g. [SymbolNode]), then [start] > [end]
-///
-/// The position of a cursor is defined as number of "Right" keystrokes needed
-/// to move the cursor from the starting position to the current position.
-class NodeRange {
-  /// Number of "Right" keystrokes needed to move cursor from starting position
-  /// of parent node to the leftmost position of this node.
-  final int start;
+// /// The range of a node used for hit-testing.
+// ///
+// /// Used only for editing functionalities. Not to be used in parser.
+// ///
+// /// The [NodeRange] is a closed interval where the cursor whose position falls
+// /// inside this interval will be captured by the corresponding node. If the node
+// /// only captures 1 cursor position, then [start] == [end]. If the node does not
+// /// capture cursor at all (e.g. [SymbolNode]), then [start] > [end]
+// ///
+// /// The position of a cursor is defined as number of "Right" keystrokes needed
+// /// to move the cursor from the starting position to the current position.
+// class NodeRange {
+//   /// Number of "Right" keystrokes needed to move cursor from starting position
+//   /// of parent node to the leftmost position of this node.
+//   final int start;
 
-  /// Number of "Right" keystrokes needed to move cursor from starting position
-  /// of parent node to the leftmost position of the next sibling node.
-  final int end;
-  const NodeRange(
-    this.start,
-    this.end,
-  );
+//   /// Number of "Right" keystrokes needed to move cursor from starting position
+//   /// of parent node to the leftmost position of the next sibling node.
+//   final int end;
+//   const NodeRange(
+//     this.start,
+//     this.end,
+//   );
 
-  NodeRange copyWith({
-    int start,
-    int end,
-  }) =>
-      NodeRange(
-        start ?? this.start,
-        end ?? this.end,
-      );
+//   NodeRange copyWith({
+//     int start,
+//     int end,
+//   }) =>
+//       NodeRange(
+//         start ?? this.start,
+//         end ?? this.end,
+//       );
 
-  NodeRange operator +(int offset) => NodeRange(start + offset, end + offset);
+//   NodeRange operator +(int offset) => NodeRange(start + offset, end + offset);
 
-  bool contains(int pos) => pos >= start && pos <= end;
-}
+//   bool contains(int pos) => pos >= start && pos <= end;
+// }
 
 /// Node of Roslyn's Green Tree. Base class of any math nodes.
 ///
@@ -297,11 +316,12 @@ abstract class GreenNode {
   /// Number of cursor positions that can be captured within this node.
   ///
   /// By definition, [capturedCursor] = [editingWidth] - 1.
-  /// By definition, [NodeRange.end] - [NodeRange.start] = capturedCursor - 1.
+  /// By definition, [TextRange.end] - [TextRange.start] = capturedCursor - 1.
   int get capturedCursor => editingWidth - 1;
 
-  /// [NodeRange]
-  NodeRange getRange(int pos) => NodeRange(pos + 1, pos + capturedCursor);
+  /// [TextRange]
+  TextRange getRange(int pos) =>
+      TextRange(start: pos + 1, end: pos + capturedCursor);
 
   /// Position of child nodes.
   ///
@@ -351,7 +371,9 @@ abstract class ParentableNode<T extends GreenNode> extends GreenNode {
 }
 
 mixin PositionDependentMixin<T extends GreenNode> on ParentableNode<T> {
-  var range = const NodeRange(0, -1);
+  var range = const TextRange(start: 0, end: -1);
+
+  int get pos => range.start - 1;
 
   void updatePos(int pos) {
     range = getRange(pos);
@@ -570,43 +592,71 @@ class EquationRowNode extends ParentableNode<GreenNode>
       growable: false,
     );
 
-    // Each EquationRow will filter out unrelated selection changes (changes
-    // happen entirely outside the range of this EquationRow)
-    final widget = ProxyProvider<TextSelection, TextSelection>(
-      create: (_) => const TextSelection.collapsed(offset: -1),
-      update: (context, selection, _) => selection.copyWith(
-        baseOffset: selection.baseOffset.clampInt(range.start, range.end),
-        extentOffset: selection.extentOffset.clampInt(range.start, range.end),
-      ),
-      // Selector translates global cursor position to local LineElement index
-      // Will only update Line when selection range actually changes
-      child: Selector<TextSelection, TextSelection>(
-        selector: (context, selection) {
-          final start = selection.start - range.start + 1;
-          final end = selection.end - range.start + 1;
-          return TextSelection(
-            baseOffset: start < 1
+    final widget = Consumer<FlutterMathMode>(builder: (context, mode, child) {
+      if (mode == FlutterMathMode.view) {
+        return Line(
+          key: _key,
+          children: lineChildren,
+        );
+      }
+      // Each EquationRow will filter out unrelated selection changes (changes
+      // happen entirely outside the range of this EquationRow)
+      return ProxyProvider<TextSelection, TextSelection>(
+        create: (_) => const TextSelection.collapsed(offset: -1),
+        update: (context, selection, _) => selection.copyWith(
+          baseOffset:
+              selection.baseOffset.clampInt(range.start - 1, range.end + 1),
+          extentOffset:
+              selection.extentOffset.clampInt(range.start - 1, range.end + 1),
+        ),
+        // Selector translates global cursor position to local caret index
+        // Will only update Line when selection range actually changes
+        child: Selector2<TextSelection, Tuple2<LayerLink, LayerLink>,
+            Tuple3<TextSelection, LayerLink, LayerLink>>(
+          selector: (context, selection, handleLayerLinks) {
+            final start = selection.start - range.start + 1;
+            final end = selection.end - range.start + 1;
+
+            final caretStart = start < 1
                 ? -1
                 : start > capturedCursor
                     ? caretPositions.length
-                    : caretPositions.indexWhere((pos) => pos >= start),
-            extentOffset: end > capturedCursor
+                    : caretPositions.indexWhere((pos) => pos >= start);
+
+            final caretEnd = end > capturedCursor
                 ? caretPositions.length
                 : end < 1
                     ? -1
-                    : caretPositions.lastIndexWhere((pos) => pos <= end),
-          );
-        },
-        builder: (context, selection, _) => EditableLine(
-          key: _key,
-          children: lineChildren,
-          node: this,
-          preferredLineHeight: options.fontSize,
-          selection: selection,
-          selectionColor: Theme.of(context).textSelectionColor,
+                    : caretPositions.lastIndexWhere((pos) => pos <= end);
+
+            final caretSelection = selection.baseOffset <=
+                    selection.extentOffset
+                ? TextSelection(baseOffset: caretStart, extentOffset: caretEnd)
+                : TextSelection(baseOffset: caretEnd, extentOffset: caretStart);
+
+            final startHandleLayerLink =
+                caretPositions.contains(start) ? handleLayerLinks.item1 : null;
+            final endHandleLayerLink =
+                caretPositions.contains(end) ? handleLayerLinks.item2 : null;
+            return Tuple3(
+              caretSelection,
+              startHandleLayerLink,
+              endHandleLayerLink,
+            );
+          },
+          builder: (context, conf, _) => EditableLine(
+            key: _key,
+            children: lineChildren,
+            node: this,
+            preferredLineHeight: options.fontSize,
+            selection: conf.item1,
+            selectionColor: Theme.of(context).textSelectionColor,
+            startHandleLayerLink: conf.item2,
+            endHandleLayerLink: conf.item3,
+          ),
         ),
-      ),
-    );
+      );
+    });
 
     return BuildResult(
       options: options,

@@ -39,7 +39,7 @@ class MinDimension extends SingleChildRenderObjectWidget {
         ..bottomPadding = bottomPadding;
 }
 
-class RenderMinDimension extends RenderProxyBox {
+class RenderMinDimension extends RenderShiftedBox {
   RenderMinDimension({
     RenderBox child,
     double minHeight = 0,
@@ -51,6 +51,11 @@ class RenderMinDimension extends RenderProxyBox {
         _topPadding = topPadding,
         _bottomPadding = bottomPadding,
         super(child);
+
+  // @override
+  // void setupParentData(RenderObject child) {
+  //   if (child.parentData is! BoxParentData) child.parentData = BoxParentData();
+  // }
 
   double get minHeight => _minHeight;
   double _minHeight;

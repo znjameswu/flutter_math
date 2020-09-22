@@ -1,10 +1,7 @@
-import 'dart:math' as math;
-
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import '../utils/render_box_offset.dart';
-import 'custom_layout.dart';
 
 class ResetDimension extends SingleChildRenderObjectWidget {
   final double height;
@@ -40,7 +37,7 @@ class ResetDimension extends SingleChildRenderObjectWidget {
         ..horizontalAlignment = horizontalAlignment;
 }
 
-class RenderResetDimension extends RenderProxyBox {
+class RenderResetDimension extends RenderShiftedBox {
   RenderResetDimension({
     RenderBox child,
     double layoutHeight,
@@ -52,6 +49,11 @@ class RenderResetDimension extends RenderProxyBox {
         _layoutWidth = layoutWidth,
         _horizontalAlignment = horizontalAlignment,
         super(child);
+
+  // @override
+  // void setupParentData(RenderObject child) {
+  //   if (child.parentData is! BoxParentData) child.parentData = BoxParentData();
+  // }
 
   double get layoutHeight => _layoutHeight;
   double _layoutHeight;
@@ -152,8 +154,6 @@ class RenderResetDimension extends RenderProxyBox {
     size = constraints.constrain(Size(width, height + depth));
   }
 }
-
-
 
 // class ResetDimensionLayoutDelegate extends IntrinsicLayoutDelegate<int> {
 //   final double height;

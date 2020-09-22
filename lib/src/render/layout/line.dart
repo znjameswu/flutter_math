@@ -313,7 +313,7 @@ class RenderLine extends RenderBox
   }
 
   @protected
-  List<double> caretPositions;
+  List<double> caretOffsets;
 
   @override
   void performLayout() {
@@ -373,7 +373,7 @@ class RenderLine extends RenderBox
     var mainPos = 0.0;
     var lastColPosition = mainPos;
     final colWidths = <double>[];
-    caretPositions = [mainPos];
+    caretOffsets = [mainPos];
     while (child != null) {
       final childParentData = child.parentData as LineParentData;
       if (childParentData.alignerOrSpacer) {
@@ -385,7 +385,7 @@ class RenderLine extends RenderBox
           Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
       mainPos += child.size.width + childParentData.trailingMargin;
 
-      caretPositions.add(mainPos);
+      caretOffsets.add(mainPos);
       child = childParentData.nextSibling;
     }
 
@@ -447,7 +447,7 @@ class RenderLine extends RenderBox
     // Fourth pass, determine position for each children
     child = firstChild;
     mainPos = 0.0;
-    caretPositions
+    caretOffsets
       ..clear()
       ..add(mainPos);
     while (child != null) {
@@ -456,7 +456,7 @@ class RenderLine extends RenderBox
           Offset(mainPos, maxHeightAboveBaseline - child.layoutHeight);
       mainPos += child.size.width + childParentData.trailingMargin;
 
-      caretPositions.add(mainPos);
+      caretOffsets.add(mainPos);
       child = childParentData.nextSibling;
     }
     size = constraints.constrain(
