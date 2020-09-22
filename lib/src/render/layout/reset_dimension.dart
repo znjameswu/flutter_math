@@ -1,5 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/render/constants.dart';
 
 import '../utils/render_box_offset.dart';
 
@@ -50,10 +51,6 @@ class RenderResetDimension extends RenderShiftedBox {
         _horizontalAlignment = horizontalAlignment,
         super(child);
 
-  // @override
-  // void setupParentData(RenderObject child) {
-  //   if (child.parentData is! BoxParentData) child.parentData = BoxParentData();
-  // }
 
   double get layoutHeight => _layoutHeight;
   double _layoutHeight;
@@ -127,7 +124,7 @@ class RenderResetDimension extends RenderShiftedBox {
 
   @override
   void performLayout() {
-    child.layout(constraints, parentUsesSize: true);
+    child.layout(infiniteConstraint, parentUsesSize: true);
     final childHeight = child.getDistanceToBaseline(TextBaseline.alphabetic);
     final childDepth = child.size.height - childHeight;
     final childWidth = child.size.width;
@@ -151,102 +148,6 @@ class RenderResetDimension extends RenderShiftedBox {
         break;
     }
     child.offset = Offset(dx, height - childHeight);
-    size = constraints.constrain(Size(width, height + depth));
+    size = Size(width, height + depth);
   }
 }
-
-// class ResetDimensionLayoutDelegate extends IntrinsicLayoutDelegate<int> {
-//   final double height;
-//   final double depth;
-//   final double width;
-//   final double minTopPadding;
-//   final double minBottomPadding;
-//   final CrossAxisAlignment alignment;
-//   ResetDimensionLayoutDelegate({
-//     Key key,
-//     @required this.height,
-//     @required this.depth,
-//     this.width,
-//     this.minTopPadding,
-//     this.minBottomPadding,
-//     this.alignment,
-//   });
-
-//   var distanceToBaseline = 0.0;
-
-//   @override
-//   double computeDistanceToActualBaseline(
-//           TextBaseline baseline, Map<int, RenderBox> childrenTable) =>
-//       distanceToBaseline;
-
-//   @override
-//   AxisConfiguration<int> performIntrinsicLayout({
-//     Axis layoutDirection,
-//     double Function(RenderBox child) childSize,
-//     Map<int, RenderBox> childrenTable,
-//     bool isComputingIntrinsics,
-//   }) {
-//     if (layoutDirection == Axis.horizontal) {
-//       final childWidth = childSize(childrenTable[0]);
-//       final finalWidth = width ?? childWidth;
-//       var offset = 0.0;
-//       switch (alignment) {
-//         case CrossAxisAlignment.start:
-//           break;
-//         case CrossAxisAlignment.end:
-//           offset = finalWidth - childWidth;
-//           break;
-//         case CrossAxisAlignment.center:
-//         case CrossAxisAlignment.stretch:
-//         case CrossAxisAlignment.baseline:
-//         default:
-//           offset = (finalWidth - childWidth) / 2;
-//           break;
-//       }
-//       return AxisConfiguration(
-//         size: finalWidth,
-//         offsetTable: {0: offset},
-//       );
-//     } else {
-//       final childHeight = (isComputingIntrinsics
-//           ? childSize(childrenTable[0])
-//           : childrenTable[0].layoutHeight);
-//       final childDepth = childSize(childrenTable[0]) - childHeight;
-
-//       var finalHeight = 0.0;
-//       if (height != null && minTopPadding != null) {
-//         finalHeight = math.max(
-//           height,
-//           minTopPadding + childHeight,
-//         );
-//       } else {
-//         finalHeight = height ?? ((minTopPadding ?? 0.0) + childHeight);
-//       }
-//       // final finalHeight = math.max(
-//       //   height ?? childHeight,
-//       //   (minTopPadding ?? -double.infinity) + childHeight,
-//       // );
-//       var finalDepth = 0.0;
-//       if (depth != null && minBottomPadding != null) {
-//         finalDepth = math.max(
-//           depth,
-//           minBottomPadding + childDepth,
-//         );
-//       } else {
-//         finalDepth = depth ?? ((minBottomPadding ?? 0.0) + childDepth);
-//       }
-//       // final finalDepth = math.max(
-//       //   depth ?? childDepth,
-//       //   (minBottomPadding ?? -double.infinity) + childDepth,
-//       // );
-
-//       distanceToBaseline = finalHeight;
-//       return AxisConfiguration(
-//         size: finalHeight + finalDepth,
-//         offsetTable: {
-//           0: finalHeight - childHeight,
-//         },
-//       );
-//     }
-//   }
-// }

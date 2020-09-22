@@ -52,11 +52,6 @@ class RenderMinDimension extends RenderShiftedBox {
         _bottomPadding = bottomPadding,
         super(child);
 
-  // @override
-  // void setupParentData(RenderObject child) {
-  //   if (child.parentData is! BoxParentData) child.parentData = BoxParentData();
-  // }
-
   double get minHeight => _minHeight;
   double _minHeight;
   set minHeight(double value) {
