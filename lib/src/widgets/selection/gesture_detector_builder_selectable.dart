@@ -36,7 +36,7 @@ class MathSelectableSelectionGestureDetectorBuilder
 
   @override
   void onSingleTapUp(TapUpDetails details) {
-    delegate.hideToolbar();
+    delegate.hide();
     if (delegate.selectionEnabled) {
       switch (Theme.of(delegate.context).platform) {
         case TargetPlatform.iOS:

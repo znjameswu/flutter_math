@@ -321,6 +321,12 @@ class __SelectableMathState extends State<_SelectableMath>
   }
 
   @override
+  void hide() {
+    toolbarVisible = false;
+    _selectionOverlay?.hide();
+  }
+
+  @override
   void initState() {
     super.initState();
     controller = MathController(

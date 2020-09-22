@@ -26,6 +26,8 @@ abstract class MathSelectionManager implements TextSelectionDelegate {
 
   void hideToolbar();
 
+  void hide();
+
   MathController controller;
 
   double get preferredLineHeight;
