@@ -253,7 +253,7 @@ class RenderEditableLine extends RenderLine {
           context.pushLayer(
             LeaderLayer(
               link: endHandleLayerLink,
-              offset: Offset(endOffset, size.height),
+              offset: Offset(endOffset, size.height) + offset,
             ),
             emptyPaintFunction,
             Offset.zero,
