@@ -214,9 +214,14 @@ class RenderEditableLine extends RenderLine {
   }
 
   @override
+  bool hitTestSelf(Offset position) => true;
+
+  @override
   void paint(PaintingContext context, Offset offset) {
     // Only paint selection/hinting if the part of the selection is in range
     if (_selection.end >= 0 && _selection.start <= childCount) {
+      final startOffset = caretOffsets[math.max(0, selection.start)];
+      final endOffset = caretOffsets[math.min(childCount, selection.end)];
       if (_selection.isCollapsed) {
         if (_hintingColor != null) {
           // Paint hinting background if selection is collapsed
@@ -229,36 +234,34 @@ class RenderEditableLine extends RenderLine {
         }
       } else {
         // Paint selection if not collapsed
-        final startOffset = caretOffsets[math.max(0, selection.start)];
-        final endOffset = caretOffsets[math.min(childCount, selection.end)];
-
         context.canvas.drawRect(
           Rect.fromLTRB(startOffset, 0, endOffset, size.height).shift(offset),
           Paint()
             ..style = PaintingStyle.fill
             ..color = _selectionColor,
         );
+      }
 
-        if (startHandleLayerLink != null) {
-          context.pushLayer(
-            LeaderLayer(
-              link: startHandleLayerLink,
-              offset: Offset(startOffset, size.height) + offset,
-            ),
-            emptyPaintFunction,
-            Offset.zero,
-          );
-        }
-        if (endHandleLayerLink != null) {
-          context.pushLayer(
-            LeaderLayer(
-              link: endHandleLayerLink,
-              offset: Offset(endOffset, size.height) + offset,
-            ),
-            emptyPaintFunction,
-            Offset.zero,
-          );
-        }
+      // Whatever which case, we need to mark the layer link.
+      if (startHandleLayerLink != null) {
+        context.pushLayer(
+          LeaderLayer(
+            link: startHandleLayerLink,
+            offset: Offset(startOffset, size.height) + offset,
+          ),
+          emptyPaintFunction,
+          Offset.zero,
+        );
+      }
+      if (endHandleLayerLink != null) {
+        context.pushLayer(
+          LeaderLayer(
+            link: endHandleLayerLink,
+            offset: Offset(endOffset, size.height) + offset,
+          ),
+          emptyPaintFunction,
+          Offset.zero,
+        );
       }
     }
 
