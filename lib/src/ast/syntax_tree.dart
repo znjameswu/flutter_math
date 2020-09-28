@@ -629,10 +629,13 @@ class EquationRowNode extends ParentableNode<GreenNode>
                     ? -1
                     : caretPositions.lastIndexWhere((pos) => pos <= end);
 
-            final caretSelection = selection.baseOffset <=
-                    selection.extentOffset
-                ? TextSelection(baseOffset: caretStart, extentOffset: caretEnd)
-                : TextSelection(baseOffset: caretEnd, extentOffset: caretStart);
+            final caretSelection = caretStart <= caretEnd
+                ? selection.baseOffset <= selection.extentOffset
+                    ? TextSelection(
+                        baseOffset: caretStart, extentOffset: caretEnd)
+                    : TextSelection(
+                        baseOffset: caretEnd, extentOffset: caretStart)
+                : const TextSelection.collapsed(offset: -1);
 
             final startHandleLayerLink =
                 caretPositions.contains(start) ? handleLayerLinks.item1 : null;
