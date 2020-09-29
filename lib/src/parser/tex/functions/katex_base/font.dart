@@ -55,7 +55,7 @@ GreenNode _fontHandler(TexParser parser, FunctionContext context) {
   return StyleNode(
     children: body.expandEquationRow(),
     optionsDiff: OptionsDiff(
-      mathFontOptions: fontOptionsTable[func.substring(1)],
+      mathFontOptions: texMathFontOptions[func],
     ),
   );
 }
@@ -68,7 +68,7 @@ GreenNode _boldSymbolHandler(TexParser parser, FunctionContext context) {
   return StyleNode(
     children: body.expandEquationRow(),
     optionsDiff: OptionsDiff(
-      mathFontOptions: fontOptionsTable['boldsymbol'],
+      mathFontOptions: texMathFontOptions['\\boldsymbol'],
     ),
   );
 }
@@ -76,12 +76,12 @@ GreenNode _boldSymbolHandler(TexParser parser, FunctionContext context) {
 GreenNode _textFontHandler(TexParser parser, FunctionContext context) {
   final body = parser.parseExpression(
       breakOnInfix: true, breakOnTokenText: context.breakOnTokenText);
-  final style = 'math${context.funcName.substring(1)}';
+  final style = '\\math${context.funcName.substring(1)}';
 
   return StyleNode(
     children: body,
     optionsDiff: OptionsDiff(
-      mathFontOptions: fontOptionsTable[style],
+      mathFontOptions: texMathFontOptions[style],
     ),
   );
 }

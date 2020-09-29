@@ -305,11 +305,13 @@ class FontOptions {
     String fontFamily,
     FontWeight fontWeight,
     FontStyle fontShape,
+    List<FontOptions> fallback,
   }) =>
       FontOptions(
         fontFamily: fontFamily ?? this.fontFamily,
         fontWeight: fontWeight ?? this.fontWeight,
         fontShape: fontShape ?? this.fontShape,
+        fallback: fallback ?? this.fallback,
       );
 
   /// Merge a font difference into current font
@@ -329,7 +331,8 @@ class FontOptions {
     return o is FontOptions &&
         o.fontFamily == fontFamily &&
         o.fontWeight == fontWeight &&
-        o.fontShape == fontShape;
+        o.fontShape == fontShape &&
+        listEquals(o.fallback, fallback);
   }
 
   @override

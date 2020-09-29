@@ -38,7 +38,7 @@ GreenNode _operatorNameHandler(TexParser parser, FunctionContext context) {
   name = StyleNode(
     children: name.expandEquationRow(),
     optionsDiff: OptionsDiff(
-      mathFontOptions: fontOptionsTable['mathrm'],
+      mathFontOptions: texMathFontOptions['\\mathrm'],
     ),
   );
 

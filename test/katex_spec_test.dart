@@ -46,6 +46,7 @@ import 'package:flutter_math/src/ast/nodes/style.dart';
 import 'package:flutter_math/src/ast/size.dart';
 import 'package:flutter_math/src/parser/tex/colors.dart';
 import 'package:flutter_math/src/parser/tex/font.dart';
+import 'package:flutter_math/src/parser/tex/functions/katex_base.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helper.dart';
@@ -1636,15 +1637,15 @@ void main() {
     test("should produce the correct fonts", () {
       final mathbbParse = getParsed(r'\mathbb x').children[0] as StyleNode;
       expect(
-          mathbbParse.optionsDiff.mathFontOptions, fontOptionsTable["mathbb"]);
+          mathbbParse.optionsDiff.mathFontOptions, texMathFontOptions["\\mathbb"]);
 
       final mathrmParse = getParsed(r'\mathrm x').children[0] as StyleNode;
       expect(
-          mathrmParse.optionsDiff.mathFontOptions, fontOptionsTable["mathrm"]);
+          mathrmParse.optionsDiff.mathFontOptions, texMathFontOptions["\\mathrm"]);
 
       final mathitParse = getParsed(r'\mathit x').children[0] as StyleNode;
       expect(
-          mathitParse.optionsDiff.mathFontOptions, fontOptionsTable["mathit"]);
+          mathitParse.optionsDiff.mathFontOptions, texMathFontOptions["\\mathit"]);
 
       // final mathnormalParse =
       //     getParsed(r'\mathnormal x').children[0] as StyleNode;
@@ -1653,11 +1654,11 @@ void main() {
 
       final mathcalParse = getParsed(r'\mathcal C').children[0] as StyleNode;
       expect(mathcalParse.optionsDiff.mathFontOptions,
-          fontOptionsTable["mathcal"]);
+       texMathFontOptions["\\mathcal"]);
 
       final mathfrakParse = getParsed(r'\mathfrak C').children[0] as StyleNode;
       expect(mathfrakParse.optionsDiff.mathFontOptions,
-          fontOptionsTable["mathfrak"]);
+       texMathFontOptions["\\mathfrak"]);
     });
 
     // TODO
@@ -1680,7 +1681,7 @@ void main() {
       expect(colorMathbbParse.optionsDiff.color, colorByName["blue"]);
       expect(colorMathbbParse.children.length, 1);
       final body = colorMathbbParse.children[0] as StyleNode;
-      expect(body.optionsDiff.mathFontOptions, fontOptionsTable["mathbb"]);
+      expect(body.optionsDiff.mathFontOptions, texMathFontOptions["\\mathbb"]);
     });
 
     test("should not parse a series of font commands", () {
@@ -1689,12 +1690,12 @@ void main() {
 
     test("should nest fonts correctly", () {
       final bf = getParsed(r'\mathbf{a\mathrm{b}c}').children[0] as StyleNode;
-      expect(bf.optionsDiff.mathFontOptions, fontOptionsTable["mathbf"]);
+      expect(bf.optionsDiff.mathFontOptions, texMathFontOptions["\\mathbf"]);
       expect(bf.children.length, 3);
       expect((bf.children[0] as SymbolNode).symbol, "a");
       expect(bf.children[1], isA<StyleNode>());
       expect((bf.children[1] as StyleNode).optionsDiff.mathFontOptions,
-          fontOptionsTable["mathrm"]);
+          texMathFontOptions["\\mathrm"]);
       expect((bf.children[2] as SymbolNode).symbol, "c");
     });
 

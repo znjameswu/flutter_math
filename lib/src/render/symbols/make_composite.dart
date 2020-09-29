@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/parser/tex/functions/katex_base.dart';
 
 import '../../ast/nodes/over.dart';
 import '../../ast/nodes/style.dart';
@@ -113,12 +114,12 @@ BuildResult makeDecoratedEqualSymbol(
     case '\u225D':
       decoratorSymbols = ['d', 'e', 'f'];
       decoratorSize = SizeMode.tiny;
-      decoratorFont = fontOptionsTable['mathrm'];
+      decoratorFont = texMathFontOptions['\\mathrm'];
       break;
     case '\u225E':
       decoratorSymbols = ['m'];
       decoratorSize = SizeMode.tiny;
-      decoratorFont = fontOptionsTable['mathrm'];
+      decoratorFont = texMathFontOptions['\\mathrm'];
       break;
     case '\u225F':
       decoratorSymbols = ['?'];

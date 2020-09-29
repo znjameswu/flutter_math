@@ -27,58 +27,124 @@ import 'dart:ui';
 
 import '../../ast/options.dart';
 
-Map<String, FontOptions> _fontOptionsTable;
-Map<String, FontOptions> get fontOptionsTable {
-  if (_fontOptionsTable != null) return _fontOptionsTable;
-  _fontOptionsTable = {};
-  _fontOptionsEntries.forEach((key, value) {
-    for (final name in key) {
-      _fontOptionsTable[name] = value;
-    }
-  });
-  return _fontOptionsTable;
-}
+// Map<String, FontOptions> _fontOptionsTable;
+// Map<String, FontOptions> get fontOptionsTable {
+//   if (_fontOptionsTable != null) return _fontOptionsTable;
+//   _fontOptionsTable = {};
+//   _fontOptionsEntries.forEach((key, value) {
+//     for (final name in key) {
+//       _fontOptionsTable[name] = value;
+//     }
+//   });
+//   return _fontOptionsTable;
+// }
 
-const _fontOptionsEntries = {
-  // Text font weights.
-  ['textbf']: FontOptions(
-    fontWeight: FontWeight.bold,
-  ),
+// const _fontOptionsEntries = {
+//   // Text font weights.
+//   ['textbf']: FontOptions(
+//     fontWeight: FontWeight.bold,
+//   ),
 
-  // Text font shapes.
-  ['textit']: FontOptions(
-    fontShape: FontStyle.italic,
-  ),
+//   // Text font shapes.
+//   ['textit']: FontOptions(
+//     fontShape: FontStyle.italic,
+//   ),
 
-  // Text font families.
-  ['textrm']: FontOptions(fontFamily: 'Main'),
+//   // Text font families.
+//   ['textrm']: FontOptions(fontFamily: 'Main'),
 
-  ['textsf']: FontOptions(fontFamily: 'SansSerif'),
+//   ['textsf']: FontOptions(fontFamily: 'SansSerif'),
 
-  ['texttt']: FontOptions(fontFamily: 'Typewriter'),
+//   ['texttt']: FontOptions(fontFamily: 'Typewriter'),
 
+//   // Math fonts.
+//   ['mathdefault']: FontOptions(
+//     fontFamily: 'Math',
+//     fontShape: FontStyle.italic,
+//   ),
+
+//   ['mathit']: FontOptions(
+//     fontFamily: 'Main',
+//     fontShape: FontStyle.italic,
+//   ),
+
+//   ['mathrm']: FontOptions(
+//     fontFamily: 'Main',
+//     fontShape: FontStyle.normal,
+//   ),
+
+//   ['mathbf']: FontOptions(
+//     fontFamily: 'Main',
+//     fontWeight: FontWeight.bold,
+//   ),
+
+//   ['boldsymbol']: FontOptions(
+//     fontFamily: 'Math',
+//     fontWeight: FontWeight.bold,
+//     fontShape: FontStyle.italic,
+//     fallback: [
+//       FontOptions(
+//         fontFamily: 'Math',
+//         fontWeight: FontWeight.bold,
+//       )
+//     ],
+//   ),
+
+//   ['amsrm']: FontOptions(fontFamily: 'AMS'),
+
+//   ['mathbb', 'textbb']: FontOptions(fontFamily: 'AMS'),
+
+//   ['mathcal']: FontOptions(fontFamily: 'Caligraphic'),
+
+//   ['mathfrak', 'textfrak']: FontOptions(fontFamily: 'Fraktur'),
+
+//   ['mathtt']: FontOptions(fontFamily: 'Typewriter'),
+
+//   ['mathscr', 'textscr']: FontOptions(fontFamily: 'Script'),
+
+//   ['mathsf', 'textsf']: FontOptions(fontFamily: 'SansSerif'),
+
+//   ['mathboldsf', 'textboldsf']: FontOptions(
+//     fontFamily: 'SansSerif',
+//     fontWeight: FontWeight.bold,
+//   ),
+
+//   ['mathitsf', 'textitsf']: FontOptions(
+//     fontFamily: 'SansSerif',
+//     fontShape: FontStyle.italic,
+//   ),
+
+//   ['mainrm']: FontOptions(
+//     fontFamily: 'Main',
+//     fontShape: FontStyle.normal,
+//   ),
+// };
+
+// const fontFamilyFallback = ['Main', 'Times New Roman', 'serif'];
+
+const texMathFontOptions = {
   // Math fonts.
-  ['mathdefault']: FontOptions(
-    fontFamily: 'Math',
-    fontShape: FontStyle.italic,
-  ),
+  // 'mathdefault': FontOptions(
+  //   fontFamily: 'Math',
+  //   fontShape: FontStyle.italic,
+  // ),
 
-  ['mathit']: FontOptions(
+  '\\mathit': FontOptions(
     fontFamily: 'Main',
     fontShape: FontStyle.italic,
   ),
 
-  ['mathrm']: FontOptions(
+  '\\mathrm': FontOptions(
     fontFamily: 'Main',
     fontShape: FontStyle.normal,
   ),
 
-  ['mathbf']: FontOptions(
+  '\\mathbf': FontOptions(
     fontFamily: 'Main',
     fontWeight: FontWeight.bold,
   ),
 
-  ['boldsymbol']: FontOptions(
+  '\\boldsymbol': FontOptions(
     fontFamily: 'Math',
     fontWeight: FontWeight.bold,
     fontShape: FontStyle.italic,
@@ -90,34 +156,26 @@ const _fontOptionsEntries = {
     ],
   ),
 
-  ['amsrm']: FontOptions(fontFamily: 'AMS'),
+  '\\mathbb': FontOptions(fontFamily: 'AMS'),
 
-  ['mathbb', 'textbb']: FontOptions(fontFamily: 'AMS'),
+  '\\mathcal': FontOptions(fontFamily: 'Caligraphic'),
 
-  ['mathcal']: FontOptions(fontFamily: 'Caligraphic'),
+  '\\mathfrak': FontOptions(fontFamily: 'Fraktur'),
 
-  ['mathfrak', 'textfrak']: FontOptions(fontFamily: 'Fraktur'),
+  '\\mathtt': FontOptions(fontFamily: 'Typewriter'),
 
-  ['mathtt']: FontOptions(fontFamily: 'Typewriter'),
+  '\\mathscr': FontOptions(fontFamily: 'Script'),
 
-  ['mathscr', 'textscr']: FontOptions(fontFamily: 'Script'),
-
-  ['mathsf', 'textsf']: FontOptions(fontFamily: 'SansSerif'),
-
-  ['mathboldsf', 'textboldsf']: FontOptions(
-    fontFamily: 'SansSerif',
-    fontWeight: FontWeight.bold,
-  ),
-
-  ['mathitsf', 'textitsf']: FontOptions(
-    fontFamily: 'SansSerif',
-    fontShape: FontStyle.italic,
-  ),
-
-  ['mainrm']: FontOptions(
-    fontFamily: 'Main',
-    fontShape: FontStyle.normal,
-  ),
+  '\\mathsf': FontOptions(fontFamily: 'SansSerif'),
 };
 
-const fontFamilyFallback = ['Main', 'Times New Roman', 'serif'];
+const texTextFontOptions = {
+  '\\textrm': PartialFontOptions(fontFamily: 'Main'),
+  '\\textsf': PartialFontOptions(fontFamily: 'SansSerif'),
+  '\\texttt': PartialFontOptions(fontFamily: 'Typewriter'),
+  '\\textnormal': PartialFontOptions(fontFamily: 'Main'),
+  '\\textbf': PartialFontOptions(fontWeight: FontWeight.bold),
+  '\\textmd': PartialFontOptions(fontWeight: FontWeight.normal),
+  '\\textit': PartialFontOptions(fontShape: FontStyle.italic),
+  '\\textup': PartialFontOptions(fontShape: FontStyle.normal),
+};
