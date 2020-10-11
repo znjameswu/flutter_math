@@ -17,17 +17,21 @@ class StaticEncodeResult extends EncodeResult {
   String stringify(EncodeConf conf) => string;
 }
 
-class UnknownNodeEncodeResult extends EncodeResult {
-  final Type type;
-  final String placeHolder;
+class NonStrictEncodeResult extends EncodeResult {
+  final String errorCode;
+  final String errorMsg;
+  final EncodeResult placeHolder;
 
-  const UnknownNodeEncodeResult(this.type, this.placeHolder);
+  const NonStrictEncodeResult(
+    this.errorCode,
+    this.errorMsg, [
+    this.placeHolder = const StaticEncodeResult(''),
+  ]);
 
   @override
   String stringify(EncodeConf conf) {
-    conf.reportNonstrict('unknown node type',
-        'Unknown node of type $type encountered during encoding');
-    return placeHolder;
+    conf.reportNonstrict(errorCode, errorMsg);
+    return placeHolder.stringify(conf);
   }
 }
 
