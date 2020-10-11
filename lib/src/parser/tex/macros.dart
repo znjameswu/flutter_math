@@ -23,11 +23,11 @@
 
 //ignore_for_file: prefer_single_quotes
 //ignore_for_file: lines_longer_than_80_chars
-import 'dart:developer';
 
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../font/metrics/font_metrics_data.dart';
+import '../../utils/log.dart';
 
 import 'functions.dart';
 import 'macro_expander.dart';
@@ -362,18 +362,18 @@ final Map<String, MacroDefinition> builtinMacros = {
 // terminal (console) tools
   '\\message': MacroDefinition.fromCtxString((context) {
     final arg = context.consumeArgs(1)[0];
-    log(arg.reversed.map((token) => token.text).join(""));
+    info(arg.reversed.map((token) => token.text).join(""));
     return '';
   }),
   '\\errmessage': MacroDefinition.fromCtxString((context) {
     final arg = context.consumeArgs(1)[0];
-    log(arg.reversed.map((token) => token.text).join(""));
+    error(arg.reversed.map((token) => token.text).join(""));
     return '';
   }),
   '\\show': MacroDefinition.fromCtxString((context) {
     final tok = context.popToken();
     final name = tok.text;
-    log('$tok, ${context.macros.get(name)}, ${functions[name]},'
+    info('$tok, ${context.macros.get(name)}, ${functions[name]},'
         '${texSymbolCommandConfigs[Mode.math][name]}, ${texSymbolCommandConfigs[Mode.text][name]}');
     return '';
   }),

@@ -21,8 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'dart:developer';
-
+import '../../utils/log.dart';
 import 'macros.dart';
 import 'parse_error.dart';
 import 'parser.dart';
@@ -83,10 +82,9 @@ class Settings {
   ;
 
   void reportNonstrict(String errorCode, String errorMsg, [Token token]) {
-    var strict = this.strict;
-    if (this.strictFun != null) {
-      strict = this.strictFun(errorCode, errorMsg, token);
-    }
+    final strict = this.strict != Strict.function
+        ? this.strict
+        : (strictFun?.call(errorCode, errorMsg, token) ?? Strict.warn);
     switch (strict) {
       case Strict.ignore:
         return;
@@ -96,12 +94,12 @@ class Settings {
             '$errorMsg [$errorCode]',
             token);
       case Strict.warn:
-        log("LaTeX-incompatible input and strict mode is set to 'warn': "
+        warn("LaTeX-incompatible input and strict mode is set to 'warn': "
             '$errorMsg [$errorCode]');
         break;
-      case Strict.function:
-        log("Illegal return value 'function' from strictFun on case: "
-            '$errorMsg [$errorCode]');
+      default:
+        warn('LaTeX-incompatible input and strict mode is set to '
+            "unrecognized '$strict': $errorMsg [$errorCode]");
     }
   }
 
@@ -120,11 +118,11 @@ class Settings {
       case Strict.error:
         return true;
       case Strict.warn:
-        log("LaTeX-incompatible input and strict mode is set to 'warn': "
+        warn("LaTeX-incompatible input and strict mode is set to 'warn': "
             '$errorMsg [$errorCode]');
         return false;
       default:
-        log('LaTeX-incompatible input and strict mode is set to '
+        warn('LaTeX-incompatible input and strict mode is set to '
             "unrecognized '$strict': $errorMsg [$errorCode]");
         return false;
     }
