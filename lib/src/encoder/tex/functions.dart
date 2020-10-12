@@ -24,7 +24,7 @@ import '../optimization.dart';
 import 'encoder.dart';
 
 part 'functions/accent.dart';
-part 'functions/accent_under.dart';
+// part 'functions/accent_under.dart';
 part 'functions/frac.dart';
 part 'functions/style.dart';
 part 'functions/symbol.dart';
