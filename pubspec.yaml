@@ -1,6 +1,6 @@
 name: flutter_math
 description: Fast and high-quality TeX math equation rendering with pure Dart & Flutter. 
-version: 0.1.8+1
+version: 0.1.8+2
 author: znjameswu <znjameswu@gmail.com>
 homepage: https://github.com/znjameswu/flutter_math
 repository: https://github.com/znjameswu/flutter_math
@@ -14,10 +14,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^0.18.0
-  provider: ^4.3.2
+  flutter_svg: ^0.19.0
+  provider: ^4.3.2+2
   tuple: ^1.0.3
-  meta: ^1.1.8
+  meta: ^1.2.3
 
 dev_dependencies:
   flutter_test:

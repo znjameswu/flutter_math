@@ -14,9 +14,9 @@ dependencies:
     sdk: flutter
   flutter_math:
     path: ../
-  provider:
-  flutter_tex:
-  google_fonts:
+  provider: any
+  flutter_tex: ^3.6.7+9
+  google_fonts: ^1.1.0
 
 
   cupertino_icons: ^0.1.3
