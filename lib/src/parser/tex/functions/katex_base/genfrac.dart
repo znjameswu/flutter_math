@@ -187,15 +187,26 @@ GreenNode _genfracHandler(TexParser parser, FunctionContext context) {
   final numer = parser.parseArgNode(mode: Mode.math, optional: false);
   final denom = parser.parseArgNode(mode: Mode.math, optional: false);
 
+  final leftDelimNode = leftDelimArg is EquationRowNode
+      ? leftDelimArg.children.length == 1
+          ? leftDelimArg.children.first
+          : null
+      : leftDelimArg;
+  final rightDelimNode = rightDelimArg is EquationRowNode
+      ? rightDelimArg.children.length == 1
+          ? rightDelimArg.children.first
+          : null
+      : rightDelimArg;
+
   final leftDelim =
-      (leftDelimArg is SymbolNode && leftDelimArg.atomType == AtomType.open)
-          ? leftDelimArg.symbol
+      (leftDelimNode is SymbolNode && leftDelimNode.atomType == AtomType.open)
+          ? leftDelimNode.symbol
           : null;
 
-  final rightDelim =
-      (rightDelimArg is SymbolNode && rightDelimArg.atomType == AtomType.close)
-          ? rightDelimArg.symbol
-          : null;
+  final rightDelim = (rightDelimNode is SymbolNode &&
+          rightDelimNode.atomType == AtomType.close)
+      ? rightDelimNode.symbol
+      : null;
 
   int style;
   if (styleArg.expandEquationRow().isNotEmpty) {
