@@ -73,11 +73,11 @@ class Settings {
     this.throwOnError = true,
     this.macros = const {},
     this.maxExpand = 1000,
-    this.strict = Strict.warn,
+    Strict strict = Strict.warn,
     this.strictFun,
     this.globalGroup = false,
     this.colorIsTextColor = false,
-  })
+  }) : this.strict = strictFun == null ? strict : Strict.function
   //: assert(strict != Strict.function || strictFun != null) // This line causes analyzer error
   ;
 

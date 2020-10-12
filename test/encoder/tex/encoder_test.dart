@@ -34,15 +34,16 @@ void main() {
     });
 
     test('empty math param', () {
-      final result =
-          TexCommandEncodeResult(command: '\\frac', args: <dynamic>[]);
+      final result = TexCommandEncodeResult(
+          command: '\\frac',
+          args: <dynamic>[EquationRowNode.empty(), EquationRowNode.empty()]);
       expect(result.stringify(TexEncodeConf.mathConf), '\\frac{}{}');
     });
 
     test('single char math param', () {
       final result =
           TexCommandEncodeResult(command: '\\frac', args: <dynamic>['1', '2']);
-      expect(result.stringify(TexEncodeConf.mathConf), '\\frac 1 2');
+      expect(result.stringify(TexEncodeConf.mathConf), '\\frac{1}{2}');
     });
   });
 }
