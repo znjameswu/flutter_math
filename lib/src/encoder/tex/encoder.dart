@@ -191,8 +191,13 @@ class EquationRowTexEncodeResult extends EncodeResult {
 
   @override
   String stringify(TexEncodeConf conf) {
-    final content =
-        children.map((dynamic child) => _handleArg(child, conf.ord())).join();
+    final content = Iterable.generate(children.length, (index) {
+      final dynamic child = children[index];
+      if (index == children.length - 1 && child is InfixCommandEncodeResult) {
+        return _handleArg(child, conf.param());
+      }
+      return _handleArg(child, conf.ord());
+    }).join();
     if (conf.removeRowBracket == true) {
       return content;
     } else {
@@ -227,5 +232,29 @@ class ModeDependentEncodeResult extends EncodeResult {
     if (arg is GreenNode) return arg.encodeTeX(conf: conf);
     if (arg is EncodeResult) return arg.stringify(conf);
     return arg.toString();
+  }
+}
+
+class InfixCommandEncodeResult extends EncodeResult {
+  final String command;
+
+  final List<dynamic> children;
+
+  const InfixCommandEncodeResult({this.command, this.children});
+
+  @override
+  String stringify(TexEncodeConf conf) {
+    final content = Iterable.generate(children.length, (index) {
+      final dynamic child = children[index];
+      if (index == children.length - 1 && child is InfixCommandEncodeResult) {
+        return _handleArg(child, conf.param());
+      }
+      return _handleArg(child, conf.ord());
+    }).join();
+    if (conf.removeRowBracket == true) {
+      return '$command $content';
+    } else {
+      return '{$command $content}';
+    }
   }
 }

@@ -270,6 +270,25 @@ class OptionsDiff {
     this.textFontOptions,
     this.mathFontOptions,
   });
+
+  /// Whether this diff has no effect
+  bool get isEmpty =>
+      style == null &&
+      color == null &&
+      size == null &&
+      textFontOptions == null &&
+      mathFontOptions == null;
+
+  /// Strip the style change
+  OptionsDiff removeStyle() {
+    if (style == null) return this;
+    return OptionsDiff(
+      color: this.color,
+      size: this.size,
+      textFontOptions: this.textFontOptions,
+      mathFontOptions: this.mathFontOptions,
+    );
+  }
 }
 
 /// Options for font selection
@@ -343,7 +362,7 @@ class FontOptions {
 /// Difference between the current [FontOptions] and the desired [FontOptions]
 ///
 /// This is used to declaratively describe the modifications to [FontOptions]
-class PartialFontOptions extends FontOptions {
+class PartialFontOptions {
   /// Override font family
   final String fontFamily;
 
@@ -358,4 +377,18 @@ class PartialFontOptions extends FontOptions {
     this.fontWeight,
     this.fontShape,
   });
+
+  @override
+  bool operator ==(Object o) {
+    if (identical(this, o)) return true;
+
+    return o is PartialFontOptions &&
+        o.fontFamily == fontFamily &&
+        o.fontWeight == fontWeight &&
+        o.fontShape == fontShape;
+  }
+
+  @override
+  int get hashCode =>
+      hashValues(fontFamily.hashCode, fontWeight.hashCode, fontShape.hashCode);
 }

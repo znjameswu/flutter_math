@@ -1,7 +1,5 @@
 library tex_encoder_functions;
 
-import 'package:flutter_math/src/utils/alpha_numeric.dart';
-
 import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/frac.dart';
 import '../../ast/nodes/left_right.dart';
@@ -17,6 +15,7 @@ import '../../parser/tex/accents.dart';
 import '../../parser/tex/font.dart';
 import '../../parser/tex/functions.dart';
 import '../../parser/tex/symbols.dart';
+import '../../utils/alpha_numeric.dart';
 import '../../utils/iterable_extensions.dart';
 import '../../utils/unicode_literal.dart';
 import '../encoder.dart';
@@ -35,11 +34,12 @@ const Map<Type, EncoderFun> encoderFunctions = {
   // AccentNode: _accentEncoder,
   // FracNode: _fracEncoder,
   SymbolNode: _symbolEncoder,
-  // StyleNode: _styleEncoder,
+  StyleNode: _styleEncoder,
 };
 
 EncodeResult _equationRowNodeEncoderFun(GreenNode node) =>
-    EquationRowTexEncodeResult(node.children);
+    EquationRowTexEncodeResult(
+        node.children.map(encodeTex).toList(growable: false));
 
 final optimizationEntries = <OptimizationEntry>[
   // ..._fracOptimizationEntries,

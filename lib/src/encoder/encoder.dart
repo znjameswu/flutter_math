@@ -28,6 +28,12 @@ class NonStrictEncodeResult extends EncodeResult {
     this.placeHolder = const StaticEncodeResult(''),
   ]);
 
+  NonStrictEncodeResult.string(
+    this.errorCode,
+    this.errorMsg, [
+    String placeHolder = '',
+  ]) : this.placeHolder = StaticEncodeResult(placeHolder);
+
   @override
   String stringify(EncodeConf conf) {
     conf.reportNonstrict(errorCode, errorMsg);
