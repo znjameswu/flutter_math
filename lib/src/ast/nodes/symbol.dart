@@ -16,8 +16,10 @@ class SymbolNode extends LeafNode {
   final String symbol;
   final bool variantForm;
   AtomType _atomType;
-  AtomType get atomType => _atomType ??=
+  AtomType get atomType => _atomType ??= overrideAtomType ??
       getDefaultAtomTypeForSymbol(symbol, variantForm: variantForm, mode: mode);
+
+  final AtomType overrideAtomType;
   final FontOptions overrideFont;
 
   final Mode mode;
@@ -27,11 +29,10 @@ class SymbolNode extends LeafNode {
   SymbolNode({
     @required this.symbol,
     this.variantForm = false,
-    AtomType atomType,
+    this.overrideAtomType,
     this.overrideFont,
     this.mode = Mode.math,
-  })  : assert(symbol.isNotEmpty),
-        _atomType = atomType;
+  }) : assert(symbol.isNotEmpty);
 
   @override
   BuildResult buildWidget(
@@ -118,7 +119,7 @@ class SymbolNode extends LeafNode {
       SymbolNode(
         symbol: symbol ?? this.symbol,
         variantForm: variantForm ?? this.variantForm,
-        atomType: _atomType ?? this._atomType,
+        overrideAtomType: _atomType ?? this._atomType,
         overrideFont: overrideFont ?? this.overrideFont,
         mode: mode ?? this.mode,
       );

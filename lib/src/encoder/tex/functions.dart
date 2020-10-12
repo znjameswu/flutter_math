@@ -1,5 +1,7 @@
 library tex_encoder_functions;
 
+import 'package:flutter_math/src/utils/alpha_numeric.dart';
+
 import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/frac.dart';
 import '../../ast/nodes/left_right.dart';
@@ -32,7 +34,7 @@ const Map<Type, EncoderFun> encoderFunctions = {
   EquationRowNode: _equationRowNodeEncoderFun,
   // AccentNode: _accentEncoder,
   // FracNode: _fracEncoder,
-  // SymbolNode: _symbolEncoder,
+  SymbolNode: _symbolEncoder,
   // StyleNode: _styleEncoder,
 };
 

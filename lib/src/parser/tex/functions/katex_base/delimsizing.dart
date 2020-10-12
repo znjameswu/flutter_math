@@ -185,7 +185,7 @@ GreenNode _delimSizeHandler(TexParser parser, FunctionContext context) {
           height: Measurement.zero, width: Measurement.zero, mode: Mode.math)
       : SymbolNode(
           symbol: delim,
-          atomType: _delimiterTypes[context.funcName],
+          overrideAtomType: _delimiterTypes[context.funcName],
           overrideFont: FontOptions(
               fontFamily: 'Size${_delimiterSizes[context.funcName]}'),
         );
