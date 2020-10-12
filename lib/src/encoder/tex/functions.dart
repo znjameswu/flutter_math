@@ -31,7 +31,7 @@ part 'functions/symbol.dart';
 
 const Map<Type, EncoderFun> encoderFunctions = {
   EquationRowNode: _equationRowNodeEncoderFun,
-  // AccentNode: _accentEncoder,
+  AccentNode: _accentEncoder,
   FracNode: _fracEncoder,
   SymbolNode: _symbolEncoder,
   StyleNode: _styleEncoder,

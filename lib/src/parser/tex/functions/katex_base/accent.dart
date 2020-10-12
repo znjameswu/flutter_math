@@ -74,112 +74,38 @@ const _accentEntries = {
   ),
 };
 
-const _nonStretchyAccents = {
-  '\\acute',
-  '\\grave',
-  '\\ddot',
-  '\\tilde',
-  '\\bar',
-  '\\breve',
-  '\\check',
-  '\\hat',
-  '\\vec',
-  '\\dot',
-  '\\mathring',
-};
-
-const _shiftyAccents = {
-  '\\widehat',
-  '\\widetilde',
-  '\\widecheck',
-};
-
-const _accentCommandMapping = {
-  '\\acute': '\u00B4',
-  '\\grave': '\u0060',
-  '\\ddot': '\u00A8',
-  '\\tilde': '\u007E',
-  '\\bar': '\u00AF',
-  '\\breve': '\u02D8',
-  '\\check': '\u02C7',
-  '\\hat': '\u005E',
-  '\\vec': '\u2192',
-  '\\dot': '\u02D9',
-  '\\mathring': '\u02da',
-  '\\widecheck': '\u02c7',
-  '\\widehat': '\u005e',
-  '\\widetilde': '\u007e',
-  '\\overrightarrow': '\u2192',
-  '\\overleftarrow': '\u2190',
-  '\\Overrightarrow': '\u21d2',
-  '\\overleftrightarrow': '\u2194',
-  // '\\overgroup': '\u',
-  // '\\overlinesegment': '\u',
-  '\\overleftharpoon': '\u21bc',
-  '\\overrightharpoon': '\u21c0',
-  "\\'": '\u00b4',
-  '\\`': '\u0060',
-  '\\^': '\u005e',
-  '\\~': '\u007e',
-  '\\=': '\u00af',
-  '\\u': '\u02d8',
-  '\\.': '\u02d9',
-  '\\"': '\u00a8',
-  '\\r': '\u02da',
-  '\\H': '\u02dd',
-  '\\v': '\u02c7',
-  // '\\textcircled': '\u',
-
-  '\\overline': '\u00AF',
-};
-
 GreenNode _accentHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: Mode.math, optional: false);
 
-  final isStretchy = !_nonStretchyAccents.contains(context.funcName);
-  final isShifty = !isStretchy || _shiftyAccents.contains(context.funcName);
+  final isStretchy = !nonStretchyAccents.contains(context.funcName);
+  final isShifty = !isStretchy || shiftyAccents.contains(context.funcName);
 
   return AccentNode(
     base: base.wrapWithEquationRow(),
-    label: _accentCommandMapping[context.funcName],
+    label: accentCommandMapping[context.funcName],
     isStretchy: isStretchy,
     isShifty: isShifty,
   );
 }
 
-const _textUnicodeAccentMapping = {
-  '\\`': '\u0300',
-  '\\"': '\u0308',
-  '\\~': '\u0303',
-  '\\=': '\u0304',
-  "\\'": '\u0301',
-  '\\u': '\u0306',
-  '\\v': '\u030c',
-  '\\^': '\u0302',
-  '\\.': '\u0307',
-  '\\r': '\u030a',
-  '\\H': '\u030b',
-  // '\\textcircled': '\u',
-};
-
 GreenNode _textAccentHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: null, optional: false);
   if (base is SymbolNode) {
     return base.copyWith(
-      symbol: base.symbol + _textUnicodeAccentMapping[context.funcName],
+      symbol: base.symbol + textUnicodeAccentMapping[context.funcName],
     );
   }
   if (base is EquationRowNode && base.children.length == 1) {
     final node = base.children[0];
     if (node is SymbolNode) {
       return node.copyWith(
-        symbol: node.symbol + _textUnicodeAccentMapping[context.funcName],
+        symbol: node.symbol + textUnicodeAccentMapping[context.funcName],
       );
     }
   }
   return AccentNode(
     base: base.wrapWithEquationRow(),
-    label: _accentCommandMapping[context.funcName],
+    label: accentCommandMapping[context.funcName],
     isStretchy: false,
     isShifty: true,
   );
