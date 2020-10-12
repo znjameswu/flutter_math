@@ -122,46 +122,43 @@ class MatrixNode extends SlotableNode {
   }
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
       Options options, List<BuildResult> childBuildResults) {
     assert(childBuildResults.length == rows * cols);
     // Flutter's Table does not provide fine-grained control of borders
-    return [
-      BuildResult(
-        options: options,
-        italic: 0.0,
-        widget: ShiftBaseline(
-          relativePos: 0.5,
-          offset: options.fontMetrics.axisHeight.cssEm.toLpUnder(options),
-          child: CustomLayout<int>(
-            delegate: MatrixLayoutDelegate(
-              rows: rows,
-              cols: cols,
-              ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
-                  .toLpUnder(options),
-              arrayskip: arrayStretch * 12.0.pt.toLpUnder(options),
-              rowSpacings: rowSpacings
-                  .map((e) => e?.toLpUnder(options) ?? 0.0)
-                  .toList(growable: false),
-              hLines: hLines,
-              hskipBeforeAndAfter: hskipBeforeAndAfter,
-              arraycolsep: isSmall
-                  ? (5 / 18)
-                      .cssEm
-                      .toLpUnder(options.havingStyle(MathStyle.script))
-                  : 5.0.pt.toLpUnder(options),
-              vLines: vLines,
-              columnAligns: columnAligns,
-            ),
-            children: childBuildResults
-                .mapIndexed((result, index) =>
-                    CustomLayoutId(id: index, child: result?.widget))
-                .where((element) => element.child != null)
+    return BuildResult(
+      options: options,
+      widget: ShiftBaseline(
+        relativePos: 0.5,
+        offset: options.fontMetrics.axisHeight.cssEm.toLpUnder(options),
+        child: CustomLayout<int>(
+          delegate: MatrixLayoutDelegate(
+            rows: rows,
+            cols: cols,
+            ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
+                .toLpUnder(options),
+            arrayskip: arrayStretch * 12.0.pt.toLpUnder(options),
+            rowSpacings: rowSpacings
+                .map((e) => e?.toLpUnder(options) ?? 0.0)
                 .toList(growable: false),
+            hLines: hLines,
+            hskipBeforeAndAfter: hskipBeforeAndAfter,
+            arraycolsep: isSmall
+                ? (5 / 18)
+                    .cssEm
+                    .toLpUnder(options.havingStyle(MathStyle.script))
+                : 5.0.pt.toLpUnder(options),
+            vLines: vLines,
+            columnAligns: columnAligns,
           ),
+          children: childBuildResults
+              .mapIndexed((result, index) =>
+                  CustomLayoutId(id: index, child: result?.widget))
+              .where((element) => element.child != null)
+              .toList(growable: false),
         ),
       ),
-    ];
+    );
   }
 
   @override
@@ -255,8 +252,8 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
     @required this.arraycolsep,
     @required this.vLines,
     @required this.columnAligns,
-  })  : vLinePos = List.filled(cols + 1, 0.0),
-        hLinePos = List.filled(rows + 1, 0.0);
+  })  : vLinePos = List.filled(cols + 1, 0.0, growable: false),
+        hLinePos = List.filled(rows + 1, 0.0, growable: false);
 
   final List<double> hLinePos;
 
@@ -285,7 +282,7 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
       }, growable: false);
 
       // Calculate width for each column
-      final colWidths = List.filled(cols, 0.0);
+      final colWidths = List.filled(cols, 0.0, growable: false);
       for (var i = 0; i < cols; i++) {
         for (var j = 0; j < rows; j++) {
           colWidths[i] = math.max(

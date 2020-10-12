@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../../render/layout/reset_dimension.dart';
+import '../../render/layout/min_dimension.dart';
 import '../../render/layout/vlist.dart';
 import '../options.dart';
 import '../size.dart';
@@ -21,32 +21,30 @@ class UnderNode extends SlotableNode {
 
   // KaTeX's corresponding code is in /src/functions/utils/assembleSubSup.js
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
       Options options, List<BuildResult> childBuildResults) {
     final spacing = options.fontMetrics.bigOpSpacing5.cssEm.toLpUnder(options);
-    return [
-      BuildResult(
-        italic: 0.0,
-        options: options,
-        widget: Padding(
-          padding: EdgeInsets.only(bottom: spacing),
-          child: VList(
-            baselineReferenceWidgetIndex: 0,
-            children: <Widget>[
-              childBuildResults[0].widget,
-              // TexBook Rule 13a
-              ResetDimension(
-                height:
-                    options.fontMetrics.bigOpSpacing4.cssEm.toLpUnder(options),
-                minTopPadding:
-                    options.fontMetrics.bigOpSpacing2.cssEm.toLpUnder(options),
-                child: childBuildResults[1].widget,
-              ),
-            ],
-          ),
+    return BuildResult(
+      italic: 0.0,
+      options: options,
+      widget: Padding(
+        padding: EdgeInsets.only(bottom: spacing),
+        child: VList(
+          baselineReferenceWidgetIndex: 0,
+          children: <Widget>[
+            childBuildResults[0].widget,
+            // TexBook Rule 13a
+            MinDimension(
+              minHeight:
+                  options.fontMetrics.bigOpSpacing4.cssEm.toLpUnder(options),
+              topPadding:
+                  options.fontMetrics.bigOpSpacing2.cssEm.toLpUnder(options),
+              child: childBuildResults[1].widget,
+            ),
+          ],
         ),
-      )
-    ];
+      ),
+    );
   }
 
   @override

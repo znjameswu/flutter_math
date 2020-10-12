@@ -1,28 +1,36 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import '../ast/syntax_tree.dart';
+import '../utils/text_extension.dart';
 
-class FlutterMathController extends ChangeNotifier {
-  FlutterMathController({SyntaxTree ast, dynamic error})
-      : _error = error,
-        _ast = ast;
+class MathController extends ChangeNotifier {
+  MathController({
+    SyntaxTree ast,
+    TextSelection selection = const TextSelection.collapsed(offset: -1),
+  })  : _ast = ast,
+        _selection = selection;
 
   SyntaxTree _ast;
   SyntaxTree get ast => _ast;
   set ast(SyntaxTree value) {
-    _ast = value;
-    notifyListeners();
-    // _error = null;
+    if (_ast != value) {
+      _ast = value;
+      _selection = const TextSelection.collapsed(offset: -1);
+      notifyListeners();
+    }
   }
 
-  dynamic get error => _error;
-  dynamic _error;
-  set error(dynamic value) {
-    _error = value;
-    _ast = null;
+  TextSelection get selection => _selection;
+  TextSelection _selection;
+  set selection(TextSelection value) {
+    if (_selection != value) {
+      _selection = sanitizeSelection(ast, value);
+      notifyListeners();
+    }
   }
-  // TextSelection _selection =
-  //  const TextSelection.collapsed(offset: 0, affinity: TextAffinity.upstream);
-  // TextSelection get selection => _selection;
 
+  TextSelection sanitizeSelection(SyntaxTree ast, TextSelection selection) {
+    if (selection.end <= 0) return selection;
+    return selection.constrainedBy(ast.root.range);
+  }
 }

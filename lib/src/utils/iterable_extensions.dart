@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+T orNull<T>() => null;
+
 extension NumIterableExtension<T extends num> on Iterable<T> {
   T sum() => this.isEmpty ? 0 as T : this.reduce((a, b) => a + b as T);
   T max() => this.isEmpty ? null : this.reduce(math.max);
@@ -10,7 +12,7 @@ extension NullableListGetterExt<T> on Iterable<T> {
   T get firstOrNull => this.isEmpty ? null : this.first;
   T get lastOrNull => this.isEmpty ? null : this.last;
   T firstWhereOrNull(bool Function(T element) f) =>
-      this.firstWhere(f, orElse: () => null);
+      this.firstWhere(f, orElse: orNull);
 }
 
 extension IterableExtension<T> on Iterable<T> {

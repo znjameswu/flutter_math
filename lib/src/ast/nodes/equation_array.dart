@@ -30,31 +30,27 @@ class EquationArrayNode extends SlotableNode {
             (rowSpacings ?? []).extendToByFill(body.length, Measurement.zero);
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
           Options options, List<BuildResult> childBuildResults) =>
-      [
-        BuildResult(
-          options: options,
-          italic: 0.0,
-          widget: ShiftBaseline(
-            relativePos: 0.5,
-            offset: options.fontMetrics.axisHeight.cssEm.toLpUnder(options),
-            child: EqnArray(
-              ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
-                  .toLpUnder(options),
-              jotSize: addJot ? 3.0.pt.toLpUnder(options) : 0.0,
-              arrayskip: 12.0.pt.toLpUnder(options) * arrayStretch,
-              hlines: hlines,
-              rowSpacings: rowSpacings
-                  .map((e) => e.toLpUnder(options))
-                  .toList(growable: false),
-              children: childBuildResults
-                  .map((e) => e.widget)
-                  .toList(growable: false),
-            ),
+      BuildResult(
+        options: options,
+        widget: ShiftBaseline(
+          relativePos: 0.5,
+          offset: options.fontMetrics.axisHeight.cssEm.toLpUnder(options),
+          child: EqnArray(
+            ruleThickness: options.fontMetrics.defaultRuleThickness.cssEm
+                .toLpUnder(options),
+            jotSize: addJot ? 3.0.pt.toLpUnder(options) : 0.0,
+            arrayskip: 12.0.pt.toLpUnder(options) * arrayStretch,
+            hlines: hlines,
+            rowSpacings: rowSpacings
+                .map((e) => e.toLpUnder(options))
+                .toList(growable: false),
+            children:
+                childBuildResults.map((e) => e.widget).toList(growable: false),
           ),
-        )
-      ];
+        ),
+      );
 
   @override
   List<Options> computeChildOptions(Options options) =>

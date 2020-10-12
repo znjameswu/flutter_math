@@ -132,16 +132,19 @@ Widget makeChar(String character, FontOptions font,
   final charWidget = ResetDimension(
     height: characterMetrics?.height?.cssEm?.toLpUnder(options),
     depth: characterMetrics?.depth?.cssEm?.toLpUnder(options),
-    child: Text(
-      character,
-      style: TextStyle(
-        fontFamily: 'packages/flutter_math/KaTeX_${font.fontFamily}',
-        fontWeight: font.fontWeight,
-        fontStyle: font.fontShape,
-        fontSize: 1.0.cssEm.toLpUnder(options),
-        color: options.color,
+    child: RichText(
+      text: TextSpan(
+        text: character,
+        style: TextStyle(
+          fontFamily: 'packages/flutter_math/KaTeX_${font.fontFamily}',
+          fontWeight: font.fontWeight,
+          fontStyle: font.fontShape,
+          fontSize: 1.0.cssEm.toLpUnder(options),
+          color: options.color,
+        ),
       ),
-      textScaleFactor: 1.0,
+      softWrap: false,
+      overflow: TextOverflow.visible,
     ),
   );
   if (needItalic) {
@@ -150,9 +153,8 @@ Widget makeChar(String character, FontOptions font,
       padding: EdgeInsets.only(right: italic),
       child: charWidget,
     );
-  } else {
-    return charWidget;
   }
+  return charWidget;
 }
 
 CharacterMetrics lookupChar(String char, FontOptions font, Mode mode) =>

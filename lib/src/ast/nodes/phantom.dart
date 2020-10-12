@@ -25,11 +25,11 @@ class PhantomNode extends LeafNode {
   });
 
   @override
-  List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults) {
+  BuildResult buildWidget(
+      Options options, List<BuildResult> childBuildResults) {
     final phantomRedNode =
         SyntaxNode(parent: null, value: phantomChild, pos: 0);
-    final phantomResult = phantomRedNode.buildWidget(options)[0];
+    final phantomResult = phantomRedNode.buildWidget(options);
     Widget widget = Opacity(
       opacity: 0.0,
       child: phantomResult.widget,
@@ -40,13 +40,11 @@ class PhantomNode extends LeafNode {
       depth: zeroDepth ? 0 : null,
       child: widget,
     );
-    return [
-      BuildResult(
-        widget: widget,
-        options: options,
-        italic: phantomResult.italic,
-      ),
-    ];
+    return BuildResult(
+      options: options,
+      italic: phantomResult.italic,
+      widget: widget,
+    );
   }
 
   @override

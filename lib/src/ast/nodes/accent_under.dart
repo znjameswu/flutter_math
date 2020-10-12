@@ -22,52 +22,50 @@ class AccentUnderNode extends SlotableNode {
   });
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
           Options options, List<BuildResult> childBuildResults) =>
-      [
-        BuildResult(
-          options: options,
-          italic: childBuildResults[0].italic,
-          skew: childBuildResults[0].skew,
-          widget: VList(
-            baselineReferenceWidgetIndex: 0,
-            children: <Widget>[
-              VListElement(
-                trailingMargin:
-                    label == '\u007e' ? 0.12.cssEm.toLpUnder(options) : 0.0,
-                // Special case for \utilde
-                child: childBuildResults[0].widget,
+      BuildResult(
+        options: options,
+        italic: childBuildResults[0].italic,
+        skew: childBuildResults[0].skew,
+        widget: VList(
+          baselineReferenceWidgetIndex: 0,
+          children: <Widget>[
+            VListElement(
+              trailingMargin:
+                  label == '\u007e' ? 0.12.cssEm.toLpUnder(options) : 0.0,
+              // Special case for \utilde
+              child: childBuildResults[0].widget,
+            ),
+            VListElement(
+              customCrossSize: (width) => BoxConstraints(minWidth: width),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (label == '\u00AF') {
+                    final defaultRuleThickness = options
+                        .fontMetrics.defaultRuleThickness.cssEm
+                        .toLpUnder(options);
+                    return Padding(
+                      padding: EdgeInsets.only(top: 3 * defaultRuleThickness),
+                      child: Container(
+                        width: constraints.minWidth,
+                        height: defaultRuleThickness, // TODO minRuleThickness
+                        color: options.color,
+                      ),
+                    );
+                  } else {
+                    return strechySvgSpan(
+                      accentRenderConfigs[label].underImageName,
+                      constraints.minWidth,
+                      options,
+                    );
+                  }
+                },
               ),
-              VListElement(
-                customCrossSize: (width) => BoxConstraints(minWidth: width),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    if (label == '\u00AF') {
-                      final defaultRuleThickness = options
-                          .fontMetrics.defaultRuleThickness.cssEm
-                          .toLpUnder(options);
-                      return Padding(
-                        padding: EdgeInsets.only(top: 3 * defaultRuleThickness),
-                        child: Container(
-                          width: constraints.minWidth,
-                          height: defaultRuleThickness, // TODO minRuleThickness
-                          color: options.color,
-                        ),
-                      );
-                    } else {
-                      return strechySvgSpan(
-                        accentRenderConfigs[label].underImageName,
-                        constraints.minWidth,
-                        options,
-                      );
-                    }
-                  },
-                ),
-              )
-            ],
-          ),
-        )
-      ];
+            )
+          ],
+        ),
+      );
 
   @override
   List<Options> computeChildOptions(Options options) =>

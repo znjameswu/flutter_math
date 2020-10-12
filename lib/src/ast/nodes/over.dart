@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../../render/layout/reset_dimension.dart';
+import '../../render/layout/min_dimension.dart';
 import '../../render/layout/vlist.dart';
 import '../options.dart';
 import '../size.dart';
@@ -23,32 +23,29 @@ class OverNode extends SlotableNode {
 
   // KaTeX's corresponding code is in /src/functions/utils/assembleSubSup.js
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
       Options options, List<BuildResult> childBuildResults) {
     final spacing = options.fontMetrics.bigOpSpacing5.cssEm.toLpUnder(options);
-    return [
-      BuildResult(
-        italic: 0.0,
-        options: options,
-        widget: Padding(
-          padding: EdgeInsets.only(top: spacing),
-          child: VList(
-            baselineReferenceWidgetIndex: 1,
-            children: <Widget>[
-              // TexBook Rule 13a
-              ResetDimension(
-                depth:
-                    options.fontMetrics.bigOpSpacing3.cssEm.toLpUnder(options),
-                minBottomPadding:
-                    options.fontMetrics.bigOpSpacing1.cssEm.toLpUnder(options),
-                child: childBuildResults[1].widget,
-              ),
-              childBuildResults[0].widget,
-            ],
-          ),
+    return BuildResult(
+      options: options,
+      widget: Padding(
+        padding: EdgeInsets.only(top: spacing),
+        child: VList(
+          baselineReferenceWidgetIndex: 1,
+          children: <Widget>[
+            // TexBook Rule 13a
+            MinDimension(
+              minDepth:
+                  options.fontMetrics.bigOpSpacing3.cssEm.toLpUnder(options),
+              bottomPadding:
+                  options.fontMetrics.bigOpSpacing1.cssEm.toLpUnder(options),
+              child: childBuildResults[1].widget,
+            ),
+            childBuildResults[0].widget,
+          ],
         ),
-      )
-    ];
+      ),
+    );
   }
 
   @override

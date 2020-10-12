@@ -30,30 +30,27 @@ class FracNode extends SlotableNode {
   List<EquationRowNode> computeChildren() => [numerator, denominator];
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
           Options options, List<BuildResult> childBuildResults) =>
-      [
-        BuildResult(
-          options: options,
-          widget: CustomLayout(
-            delegate: FracLayoutDelegate(
-              barSize: barSize,
-              options: options,
-            ),
-            children: <Widget>[
-              CustomLayoutId(
-                id: _FracPos.numer,
-                child: childBuildResults[0].widget,
-              ),
-              CustomLayoutId(
-                id: _FracPos.denom,
-                child: childBuildResults[1].widget,
-              ),
-            ],
+      BuildResult(
+        options: options,
+        widget: CustomLayout(
+          delegate: FracLayoutDelegate(
+            barSize: barSize,
+            options: options,
           ),
-          italic: 0.0,
-        )
-      ];
+          children: <Widget>[
+            CustomLayoutId(
+              id: _FracPos.numer,
+              child: childBuildResults[0].widget,
+            ),
+            CustomLayoutId(
+              id: _FracPos.denom,
+              child: childBuildResults[1].widget,
+            ),
+          ],
+        ),
+      );
 
   @override
   List<Options> computeChildOptions(Options options) => [
@@ -162,14 +159,12 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
       final xi8 = metrics.defaultRuleThickness.cssEm.toLpUnder(options);
       theta = barSize?.toLpUnder(options) ?? xi8;
       // Rule 15b
-      var u = (options.style.index < MathStyle.text.index
+      var u = (options.style > MathStyle.text
               ? metrics.num1
               : (theta != 0 ? metrics.num2 : metrics.num3))
           .cssEm
           .toLpUnder(options);
-      var v = (options.style.index < MathStyle.text.index
-              ? metrics.denom1
-              : metrics.denom2)
+      var v = (options.style > MathStyle.text ? metrics.denom1 : metrics.denom2)
           .cssEm
           .toLpUnder(options);
 
@@ -179,8 +174,7 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
       final dz = isComputingIntrinsics ? 0.0 : denom.layoutDepth;
       if (theta == 0) {
         // Rule 15c
-        final phi =
-            options.style.index < MathStyle.text.index ? 7 * xi8 : 3 * xi8;
+        final phi = options.style > MathStyle.text ? 7 * xi8 : 3 * xi8;
         final psi = (u - dx) - (hz - v);
         if (psi < phi) {
           u += 0.5 * (phi - psi);
@@ -188,8 +182,7 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
         }
       } else {
         // Rule 15d
-        final phi =
-            options.style.index < MathStyle.text.index ? 3 * theta : theta;
+        final phi = options.style > MathStyle.text ? 3 * theta : theta;
         a = metrics.axisHeight.cssEm.toLpUnder(options);
         if (u - dx - a - 0.5 * theta < phi) {
           u = phi + dx + a + 0.5 * theta;

@@ -123,7 +123,7 @@ class TexParser {
               funcName: lex.text,
               breakOnTokenText: breakOnTokenText,
               token: lex,
-              infixExistingArguments: List.from(body, growable: false),
+              infixExistingArguments: List.of(body, growable: false),
             ),
           );
           body.clear();

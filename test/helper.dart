@@ -18,6 +18,7 @@ void testTexToMatchGoldenFile(
     tester.binding.window.physicalSizeTestValue =
         Size(500 * scale, 300 * scale);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
+    final key = GlobalKey();
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -27,6 +28,7 @@ void testTexToMatchGoldenFile(
                 padding: const EdgeInsets.all(8.0),
                 child: FlutterMath.fromTexString(
                   expression,
+                  key: key,
                   options: Options(
                     style: MathStyle.display,
                     baseSizeMultiplier: scale,
@@ -42,7 +44,7 @@ void testTexToMatchGoldenFile(
     await tester.pumpAndSettle();
     if (Platform.isWindows) {
       // Android-specific code
-      await expectLater(find.byType(FlutterMath),
+      await expectLater(find.byKey(key),
           matchesGoldenFile(location ?? 'golden/${description.hashCode}.png'));
     }
   });
@@ -83,6 +85,7 @@ void testTexToRenderLike(
     String description, String expression1, String expression2,
     [Settings settings = strictSettings]) {
   testWidgets(description, (WidgetTester tester) async {
+    final key = GlobalKey();
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -92,6 +95,7 @@ void testTexToRenderLike(
                 padding: const EdgeInsets.all(8.0),
                 child: FlutterMath.fromTexString(
                   expression1,
+                  key: key,
                   options: Options(
                     style: MathStyle.display,
                   ),
@@ -106,11 +110,12 @@ void testTexToRenderLike(
     if (Platform.isWindows) {
       // Android-specific code
       await expectLater(
-          find.byType(FlutterMath),
+          find.byKey(key),
           matchesGoldenFile(
               'golden/temp/${(description + expression1 + expression2).hashCode}.png'));
     }
 
+    final key2= GlobalKey();
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -120,6 +125,7 @@ void testTexToRenderLike(
                 padding: const EdgeInsets.all(8.0),
                 child: FlutterMath.fromTexString(
                   expression2,
+                  key: key2,
                   options: Options(
                     style: MathStyle.display,
                   ),
@@ -134,7 +140,7 @@ void testTexToRenderLike(
     if (Platform.isWindows) {
       // Android-specific code
       await expectLater(
-          find.byType(FlutterMath),
+          find.byKey(key2),
           matchesGoldenFile(
               'golden/temp/${(description + expression1 + expression2).hashCode}.png'));
     }

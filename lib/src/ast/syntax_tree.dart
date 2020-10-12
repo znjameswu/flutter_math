@@ -1,12 +1,18 @@
+import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
 import '../render/layout/line.dart';
+import '../render/layout/line_editable.dart';
 import '../utils/iterable_extensions.dart';
+import '../utils/num_extension.dart';
+import '../widgets/flutter_math.dart';
 import 'nodes/space.dart';
 import 'nodes/sqrt.dart';
-import 'nodes/symbol.dart';
 import 'options.dart';
 import 'spacing.dart';
 import 'types.dart';
@@ -16,7 +22,7 @@ import 'types.dart';
 /// [Description of Roslyn's Red-Green Tree](https://docs.microsoft.com/en-us/archive/blogs/ericlippert/persistence-facades-and-roslyns-red-green-trees)
 class SyntaxTree {
   /// Root of the green tree
-  final GreenNode greenRoot;
+  final EquationRowNode greenRoot;
 
   SyntaxTree({
     @required this.greenRoot,
@@ -36,7 +42,7 @@ class SyntaxTree {
       return this;
     }
     if (identical(pos, root)) {
-      return SyntaxTree(greenRoot: newNode);
+      return SyntaxTree(greenRoot: newNode.wrapWithEquationRow());
     }
     if (pos.parent == null) {
       throw ArgumentError(
@@ -49,9 +55,50 @@ class SyntaxTree {
             .toList(growable: false)));
   }
 
+  List<GreenNode> findNodesAtPosition(int position) {
+    var curr = root;
+    final res = <GreenNode>[];
+    while (true) {
+      res.add(curr.value);
+      final next = curr.children.firstWhereOrNull((child) =>
+          child.range.start <= position && child.range.end >= position);
+      if (next == null) break;
+      curr = next;
+    }
+    return res;
+  }
+
+  EquationRowNode findNodesManagesPosition(int position) {
+    var curr = root;
+    while (true) {
+      final next = curr.children.firstWhereOrNull(
+        (child) => child.range.start <= position && child.range.end >= position,
+      );
+      if (next == null) break;
+      curr = next;
+    }
+    // assert(curr.value is EquationRowNode);
+    return curr.value as EquationRowNode;
+  }
+
+  EquationRowNode findLowestCommonRowNode(int position1, int position2) {
+    final nodes1 = findNodesAtPosition(position1);
+    final nodes2 = findNodesAtPosition(position2);
+    for (var index = math.min(nodes1.length, nodes2.length) - 1;
+        index >= 0;
+        index--) {
+      final node1 = nodes1[index];
+      final node2 = nodes2[index];
+      if (node1 == node2 && node1 is EquationRowNode) {
+        return node1;
+      }
+    }
+    return greenRoot;
+  }
+
   // Build widget tree
   Widget buildWidget([Options options = Options.displayOptions]) =>
-      root.buildWidget(options)[0].widget;
+      root.buildWidget(options).widget;
 }
 
 /// Red Node. Immutable facade for math nodes.
@@ -92,8 +139,8 @@ class SyntaxNode {
   }
 
   /// [GreenNode.getRange]
-  NodeRange _range;
-  NodeRange get range => _range ??= value.getRange(pos);
+  TextRange _range;
+  TextRange get range => _range ??= value.getRange(pos);
 
   /// [GreenNode.editingWidth]
   int get width => value.editingWidth;
@@ -109,7 +156,7 @@ class SyntaxNode {
   /// - If [GreenNode.shouldRebuildWidget], force rebuild
   /// - Call [buildWidget] on [children]. If the results are identical to the
   /// results returned by [buildWidget] called last time, then bypass.
-  List<BuildResult> buildWidget(Options options) {
+  BuildResult buildWidget(Options options) {
     if (value is PositionDependentMixin) {
       (value as PositionDependentMixin).updatePos(pos);
     }
@@ -133,11 +180,11 @@ class SyntaxNode {
             value.buildWidget(options, newChildBuildResults));
   }
 
-  List<List<BuildResult>> _buildChildWidgets(List<Options> childOptions) {
+  List<BuildResult> _buildChildWidgets(List<Options> childOptions) {
     assert(children.length == childOptions.length);
     if (children.isEmpty) return const [];
     final result =
-        List<List<BuildResult>>.filled(children.length, null, growable: false);
+        List<BuildResult>.filled(children.length, null, growable: false);
     for (var i = 0; i < children.length; i++) {
       result[i] = children[i]?.buildWidget(childOptions[i]);
     }
@@ -145,43 +192,43 @@ class SyntaxNode {
   }
 }
 
-/// The range of a node used for hit-testing.
-///
-/// Used only for editing functionalities. Not to be used in parser.
-///
-/// The [NodeRange] is a closed interval where the cursor whose position falls
-/// inside this interval will be captured by the corresponding node. If the node
-/// only captures 1 cursor position, then [start] == [end]. If the node does not
-/// capture cursor at all (e.g. [SymbolNode]), then [start] > [end]
-///
-/// The position of a cursor is defined as number of "Right" keystrokes needed
-/// to move the cursor from the starting position to the current position.
-class NodeRange {
-  /// Number of "Right" keystrokes needed to move cursor from starting position
-  /// of parent node to the leftmost position of this node.
-  final int start;
+// /// The range of a node used for hit-testing.
+// ///
+// /// Used only for editing functionalities. Not to be used in parser.
+// ///
+// /// The [NodeRange] is a closed interval where the cursor whose position falls
+// /// inside this interval will be captured by the corresponding node. If the node
+// /// only captures 1 cursor position, then [start] == [end]. If the node does not
+// /// capture cursor at all (e.g. [SymbolNode]), then [start] > [end]
+// ///
+// /// The position of a cursor is defined as number of "Right" keystrokes needed
+// /// to move the cursor from the starting position to the current position.
+// class NodeRange {
+//   /// Number of "Right" keystrokes needed to move cursor from starting position
+//   /// of parent node to the leftmost position of this node.
+//   final int start;
 
-  /// Number of "Right" keystrokes needed to move cursor from starting position
-  /// of parent node to the leftmost position of the next sibling node.
-  final int end;
-  const NodeRange(
-    this.start,
-    this.end,
-  );
+//   /// Number of "Right" keystrokes needed to move cursor from starting position
+//   /// of parent node to the leftmost position of the next sibling node.
+//   final int end;
+//   const NodeRange(
+//     this.start,
+//     this.end,
+//   );
 
-  NodeRange copyWith({
-    int start,
-    int end,
-  }) =>
-      NodeRange(
-        start ?? this.start,
-        end ?? this.end,
-      );
+//   NodeRange copyWith({
+//     int start,
+//     int end,
+//   }) =>
+//       NodeRange(
+//         start ?? this.start,
+//         end ?? this.end,
+//       );
 
-  NodeRange operator +(int offset) => NodeRange(start + offset, end + offset);
+//   NodeRange operator +(int offset) => NodeRange(start + offset, end + offset);
 
-  bool contains(int pos) => pos >= start && pos <= end;
-}
+//   bool contains(int pos) => pos >= start && pos <= end;
+// }
 
 /// Node of Roslyn's Green Tree. Base class of any math nodes.
 ///
@@ -238,8 +285,7 @@ abstract class GreenNode {
   ///
   /// Please ensure [children] works in the same order as [updateChildren],
   /// [computeChildOptions], and [buildWidget].
-  List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults);
+  BuildResult buildWidget(Options options, List<BuildResult> childBuildResults);
 
   /// Whether the specific [Options] parameters that this node directly depends
   /// upon have changed.
@@ -270,11 +316,12 @@ abstract class GreenNode {
   /// Number of cursor positions that can be captured within this node.
   ///
   /// By definition, [capturedCursor] = [editingWidth] - 1.
-  /// By definition, [NodeRange.end] - [NodeRange.start] = capturedCursor - 1.
+  /// By definition, [TextRange.end] - [TextRange.start] = capturedCursor - 1.
   int get capturedCursor => editingWidth - 1;
 
-  /// [NodeRange]
-  NodeRange getRange(int pos) => NodeRange(pos + 1, pos + capturedCursor);
+  /// [TextRange]
+  TextRange getRange(int pos) =>
+      TextRange(start: pos + 1, end: pos + capturedCursor);
 
   /// Position of child nodes.
   ///
@@ -292,8 +339,8 @@ abstract class GreenNode {
   AtomType get rightType;
 
   Options _oldOptions;
-  List<BuildResult> _oldBuildResult;
-  List<List<BuildResult>> _oldChildBuildResults;
+  BuildResult _oldBuildResult;
+  List<BuildResult> _oldChildBuildResults;
 
   Map<String, Object> toJson() => {
         'type': runtimeType.toString(),
@@ -324,7 +371,9 @@ abstract class ParentableNode<T extends GreenNode> extends GreenNode {
 }
 
 mixin PositionDependentMixin<T extends GreenNode> on ParentableNode<T> {
-  var range = const NodeRange(0, -1);
+  var range = const TextRange(start: 0, end: -1);
+
+  int get pos => range.start - 1;
 
   void updatePos(int pos) {
     range = getRange(pos);
@@ -340,8 +389,8 @@ mixin PositionDependentMixin<T extends GreenNode> on ParentableNode<T> {
 /// Depending on node type, some [SlotableNode] can have nulls inside their
 /// children list. When null is allowed, it usually means that node will have
 /// different layout slot logic depending on non-null children number.
-abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
-    with PositionDependentMixin {
+abstract class SlotableNode<T extends EquationRowNode>
+    extends ParentableNode<T> {
   List<T> _children;
   @override
   List<T> get children => _children ??= computeChildren();
@@ -352,21 +401,8 @@ abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
   List<T> computeChildren();
 
   @override
-  List<BuildResult> buildWidget(
-          Options options, List<List<BuildResult>> childBuildResults) =>
-      buildSlotableWidget(
-          options, childBuildResults.map((e) => e?.firstOrNull).toList());
-
-  /// Build widget for [SlotableNode]. Abstract
-  ///
-  /// This is a utility override that helps with unwrapping build result from
-  /// children.
-  List<BuildResult> buildSlotableWidget(
-      Options options, List<BuildResult> childBuildResults);
-
-  @override
   int computeWidth() =>
-      children.map((child) => child?.capturedCursor ?? -1).sum() + 1;
+      children.map((child) => child?.capturedCursor ?? 0).sum() + 1;
 
   @override
   List<int> computeChildPositions() {
@@ -374,7 +410,7 @@ abstract class SlotableNode<T extends EquationRowNode> extends ParentableNode<T>
     final result = <int>[];
     for (final child in children) {
       result.add(curPos);
-      curPos += child?.capturedCursor ?? -1;
+      curPos += child?.capturedCursor ?? 0;
     }
     return result;
   }
@@ -402,9 +438,17 @@ abstract class TransparentNode extends ParentableNode<GreenNode> {
   }
 
   @override
-  List<BuildResult> buildWidget(
-          Options options, List<List<BuildResult>> childBuildResults) =>
-      childBuildResults.expand((element) => element).toList();
+  BuildResult buildWidget(
+          Options options, List<BuildResult> childBuildResults) =>
+      BuildResult(
+        widget: const Text('This widget should not appear. '
+            'It means one of FlutterMath\'s AST nodes '
+            'forgot to handle the case for TransparentNodes'),
+        options: options,
+        results: childBuildResults
+            .expand((result) => result.results ?? [result])
+            .toList(growable: false),
+      );
 
   List<GreenNode> _flattenedChildList;
 
@@ -435,25 +479,25 @@ class EquationRowNode extends ParentableNode<GreenNode>
   @override
   final List<GreenNode> children;
 
+  GlobalKey _key;
+  GlobalKey get key => _key;
+
   @override
   int computeWidth() => children.map((child) => child.editingWidth).sum() + 2;
 
   @override
   List<int> computeChildPositions() {
     var curPos = 1;
-    final result = <int>[];
-    for (final child in children) {
-      result.add(curPos);
-      curPos += child.editingWidth;
-    }
-    return result;
+    return List.generate(children.length, (index) {
+      final pos = curPos;
+      curPos += children[index].editingWidth;
+      return pos;
+    }, growable: false);
   }
 
   EquationRowNode({@required this.children, this.overrideType})
       : assert(children != null),
-        assert(children.every((child) => child != null))
-  // assert(children.every((child) => child is! EquationRowNode))
-  ;
+        assert(children.every((child) => child != null));
 
   factory EquationRowNode.empty() => EquationRowNode(children: []);
 
@@ -464,13 +508,26 @@ class EquationRowNode extends ParentableNode<GreenNode>
       .toList(growable: false);
   List<GreenNode> _flattenedChildList;
 
+  List<int> _caretPositions;
+  List<int> get caretPositions => _caretPositions ??= computeCaretPositions();
+  List<int> computeCaretPositions() {
+    var curPos = 1;
+    return List.generate(flattenedChildList.length, (index) {
+      final pos = curPos;
+      curPos += flattenedChildList[index].editingWidth;
+      return pos;
+    })
+      ..add(curPos);
+  }
+
   @override
-  List<BuildResult> buildWidget(
-      Options options, List<List<BuildResult>> childBuildResults) {
-    final flattenedBuildResults =
-        childBuildResults.expand((element) => element).toList();
+  BuildResult buildWidget(
+      Options options, List<BuildResult> childBuildResults) {
+    final flattenedBuildResults = childBuildResults
+        .expand((result) => result.results ?? [result])
+        .toList(growable: false);
     final flattenedChildOptions =
-        flattenedBuildResults.map((e) => e.options).toList();
+        flattenedBuildResults.map((e) => e.options).toList(growable: false);
     // assert(flattenedChildList.length == actualChildWidgets.length);
 
     // We need to calculate spacings between nodes
@@ -521,28 +578,94 @@ class EquationRowNode extends ParentableNode<GreenNode>
       }
     });
 
-    return [
-      BuildResult(
-        options: options,
-        widget: Line(
-          children: <Widget>[
-            for (var i = 0; i < flattenedBuildResults.length; i++)
-              LineElement(
-                child: flattenedBuildResults[i].widget,
-                canBreakBefore: false, // TODO
-                alignerOrSpacer: flattenedChildList[i] is SpaceNode &&
-                    (flattenedChildList[i] as SpaceNode).alignerOrSpacer,
-                // trailingMargin: spacings[i],
-                trailingMargin: childSpacingConfs[i].spacingAfter,
-              )
-          ],
+    _key = GlobalKey();
+
+    final lineChildren = List.generate(
+      flattenedBuildResults.length,
+      (index) => LineElement(
+        child: flattenedBuildResults[index].widget,
+        canBreakBefore: false, // TODO
+        alignerOrSpacer: flattenedChildList[index] is SpaceNode &&
+            (flattenedChildList[index] as SpaceNode).alignerOrSpacer,
+        trailingMargin: childSpacingConfs[index].spacingAfter,
+      ),
+      growable: false,
+    );
+
+    final widget = Consumer<FlutterMathMode>(builder: (context, mode, child) {
+      if (mode == FlutterMathMode.view) {
+        return Line(
+          key: _key,
+          children: lineChildren,
+        );
+      }
+      // Each EquationRow will filter out unrelated selection changes (changes
+      // happen entirely outside the range of this EquationRow)
+      return ProxyProvider<TextSelection, TextSelection>(
+        create: (_) => const TextSelection.collapsed(offset: -1),
+        update: (context, selection, _) => selection.copyWith(
+          baseOffset:
+              selection.baseOffset.clampInt(range.start - 1, range.end + 1),
+          extentOffset:
+              selection.extentOffset.clampInt(range.start - 1, range.end + 1),
         ),
-        italic: flattenedBuildResults.lastOrNull?.italic ?? 0.0,
-        skew: flattenedBuildResults.length == 1
-            ? flattenedBuildResults.first.italic
-            : 0.0,
-      )
-    ];
+        // Selector translates global cursor position to local caret index
+        // Will only update Line when selection range actually changes
+        child: Selector2<TextSelection, Tuple2<LayerLink, LayerLink>,
+            Tuple3<TextSelection, LayerLink, LayerLink>>(
+          selector: (context, selection, handleLayerLinks) {
+            final start = selection.start - range.start + 1;
+            final end = selection.end - range.start + 1;
+
+            final caretStart = start < 1
+                ? -1
+                : start > capturedCursor
+                    ? caretPositions.length
+                    : caretPositions.indexWhere((pos) => pos >= start);
+
+            final caretEnd = end > capturedCursor
+                ? caretPositions.length
+                : end < 1
+                    ? -1
+                    : caretPositions.lastIndexWhere((pos) => pos <= end);
+
+            final caretSelection = selection.baseOffset <=
+                    selection.extentOffset
+                ? TextSelection(baseOffset: caretStart, extentOffset: caretEnd)
+                : TextSelection(baseOffset: caretEnd, extentOffset: caretStart);
+
+            final startHandleLayerLink =
+                caretPositions.contains(start) ? handleLayerLinks.item1 : null;
+            final endHandleLayerLink =
+                caretPositions.contains(end) ? handleLayerLinks.item2 : null;
+            return Tuple3(
+              caretSelection,
+              startHandleLayerLink,
+              endHandleLayerLink,
+            );
+          },
+          builder: (context, conf, _) => EditableLine(
+            key: _key,
+            children: lineChildren,
+            node: this,
+            preferredLineHeight: options.fontSize,
+            selection: conf.item1,
+            selectionColor: Theme.of(context).textSelectionColor,
+            startHandleLayerLink: conf.item2,
+            endHandleLayerLink: conf.item3,
+          ),
+        ),
+      );
+    });
+
+    return BuildResult(
+      options: options,
+      italic: flattenedBuildResults.lastOrNull?.italic ?? 0.0,
+      skew: flattenedBuildResults.length == 1
+          ? flattenedBuildResults.first.italic
+          : 0.0,
+      widget: widget,
+    );
   }
 
   @override
@@ -683,8 +806,8 @@ class TemporaryNode extends LeafNode {
   Mode get mode => Mode.math;
 
   @override
-  List<BuildResult> buildWidget(
-          Options options, List<List<BuildResult>> childBuildResults) =>
+  BuildResult buildWidget(
+          Options options, List<BuildResult> childBuildResults) =>
       throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
@@ -709,11 +832,13 @@ class BuildResult {
   final Options options;
   final double italic;
   final double skew;
+  final List<BuildResult> results;
   const BuildResult({
     @required this.widget,
     @required this.options,
-    @required this.italic,
+    this.italic = 0.0,
     this.skew = 0.0,
+    this.results,
   });
 }
 

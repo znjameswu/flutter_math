@@ -65,9 +65,9 @@ class RenderShiftBaseline extends RenderProxyBox {
     if (child != null) {
       // assert(!debugNeedsLayout);
       final childBaselineDistance =
-          child.computeDistanceToActualBaseline(baseline);
+          child.getDistanceToActualBaseline(baseline) ?? _height;
       //ignore: avoid_returning_null
-      if (childBaselineDistance == null) return null;
+      // if (childBaselineDistance == null) return null;
       return childBaselineDistance + offset;
     } else {
       return super.computeDistanceToActualBaseline(baseline);

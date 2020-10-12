@@ -1,0 +1,79 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'gesture_detector_builder.dart';
+import 'selection_manager.dart';
+
+class MathSelectableSelectionGestureDetectorBuilder
+    extends MathSelectionGestureDetectorBuilder {
+  MathSelectableSelectionGestureDetectorBuilder({
+    @required MathSelectionManager delegate,
+  }) : super(delegate: delegate);
+
+  @override
+  void onForcePressStart(ForcePressDetails details) {
+    super.onForcePressStart(details);
+    if (delegate.selectionEnabled && shouldShowSelectionToolbar) {
+      delegate.showToolbar();
+    }
+  }
+
+  @override
+  void onForcePressEnd(ForcePressDetails details) {
+    // Not required.
+  }
+
+  @override
+  void onSingleLongTapMoveUpdate(LongPressMoveUpdateDetails details) {
+    if (delegate.selectionEnabled) {
+      delegate.handleSelectionChanged(
+        delegate.getWordsRangeInRange(
+            from: details.globalPosition - details.offsetFromOrigin,
+            to: details.globalPosition),
+        SelectionChangedCause.longPress,
+      );
+    }
+  }
+
+  @override
+  void onSingleTapUp(TapUpDetails details) {
+    delegate.hide();
+    if (delegate.selectionEnabled) {
+      switch (Theme.of(delegate.context).platform) {
+        case TargetPlatform.iOS:
+        case TargetPlatform.macOS:
+          delegate.selectPositionAt(
+            from: lastTapDownPosition,
+            cause: SelectionChangedCause.tap,
+          );
+          // Should select word edge here, but not supporting now
+          break;
+        case TargetPlatform.android:
+        case TargetPlatform.fuchsia:
+        case TargetPlatform.linux:
+        case TargetPlatform.windows:
+          delegate.selectPositionAt(
+            from: lastTapDownPosition,
+            cause: SelectionChangedCause.tap,
+          );
+          break;
+      }
+    }
+    // if (_state.widget.onTap != null)
+    //   _state.widget.onTap();
+  }
+
+  @override
+  void onSingleLongTapStart(LongPressStartDetails details) {
+    if (delegate.selectionEnabled) {
+      delegate.handleSelectionChanged(
+        delegate.getWordRangeAtPoint(details.globalPosition),
+        SelectionChangedCause.longPress,
+      );
+
+      Feedback.forLongPress(delegate.context);
+
+      // renderEditable.selectWord(cause: SelectionChangedCause.longPress);
+      // Feedback.forLongPress(_state.context);
+    }
+  }
+}

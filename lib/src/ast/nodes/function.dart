@@ -16,25 +16,23 @@ class FunctionNode extends SlotableNode {
         assert(argument != null);
 
   @override
-  List<BuildResult> buildSlotableWidget(
+  BuildResult buildWidget(
           Options options, List<BuildResult> childBuildResults) =>
-      [
-        BuildResult(
-            widget: Line(children: [
-              LineElement(
-                trailingMargin: getSpacingSize(
-                        AtomType.op, argument.leftType, options.style)
+      BuildResult(
+        options: options,
+        widget: Line(children: [
+          LineElement(
+            trailingMargin:
+                getSpacingSize(AtomType.op, argument.leftType, options.style)
                     .toLpUnder(options),
-                child: childBuildResults[0].widget,
-              ),
-              LineElement(
-                trailingMargin: 0.0,
-                child: childBuildResults[1].widget,
-              ),
-            ]),
-            options: options,
-            italic: 0.0)
-      ];
+            child: childBuildResults[0].widget,
+          ),
+          LineElement(
+            trailingMargin: 0.0,
+            child: childBuildResults[1].widget,
+          ),
+        ]),
+      );
 
   @override
   List<Options> computeChildOptions(Options options) =>
