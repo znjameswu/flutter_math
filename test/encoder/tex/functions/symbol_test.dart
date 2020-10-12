@@ -1,13 +1,13 @@
+import 'package:flutter_test/flutter_test.dart';
+
 import 'package:flutter_math/src/ast/nodes/symbol.dart';
 import 'package:flutter_math/src/ast/syntax_tree.dart';
 import 'package:flutter_math/src/ast/types.dart';
+import 'package:flutter_math/src/encoder/tex/encoder.dart';
 import 'package:flutter_math/src/parser/tex/parser.dart';
 import 'package:flutter_math/src/parser/tex/settings.dart';
-import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_math/src/encoder/tex/encoder.dart';
-
-String recode(String tex, [Mode mode = Mode.math]) {
+String recodeTexSymbol(String tex, [Mode mode = Mode.math]) {
   if (mode == Mode.text) {
     tex = '\\text{$tex}';
   }
@@ -22,15 +22,15 @@ String recode(String tex, [Mode mode = Mode.math]) {
 void main() {
   group('symbol encoding test', () {
     test('base math symbols', () {
-      expect(recode('a'), 'a');
-      expect(recode('0'), '0');
-      expect(recode('\\pm'), '\\pm');
+      expect(recodeTexSymbol('a'), 'a');
+      expect(recodeTexSymbol('0'), '0');
+      expect(recodeTexSymbol('\\pm'), '\\pm');
     });
 
     test('base text symbols', () {
-      expect(recode('a'), 'a');
-      expect(recode('0'), '0');
-      expect(recode('\\dag'), '\\dag');
+      expect(recodeTexSymbol('a'), 'a');
+      expect(recodeTexSymbol('0'), '0');
+      expect(recodeTexSymbol('\\dag'), '\\dag');
     });
   });
 }

@@ -32,7 +32,7 @@ part 'functions/symbol.dart';
 const Map<Type, EncoderFun> encoderFunctions = {
   EquationRowNode: _equationRowNodeEncoderFun,
   // AccentNode: _accentEncoder,
-  // FracNode: _fracEncoder,
+  FracNode: _fracEncoder,
   SymbolNode: _symbolEncoder,
   StyleNode: _styleEncoder,
 };
@@ -41,6 +41,6 @@ EncodeResult _equationRowNodeEncoderFun(GreenNode node) =>
     EquationRowTexEncodeResult(
         node.children.map(encodeTex).toList(growable: false));
 
-final optimizationEntries = <OptimizationEntry>[
-  // ..._fracOptimizationEntries,
+final optimizationEntries = [
+  ..._fracOptimizationEntries,
 ]..sortBy<num>((entry) => -entry.priority);
