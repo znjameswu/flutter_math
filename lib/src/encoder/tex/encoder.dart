@@ -193,7 +193,7 @@ class EquationRowTexEncodeResult extends EncodeResult {
   String stringify(TexEncodeConf conf) {
     final content = Iterable.generate(children.length, (index) {
       final dynamic child = children[index];
-      if (index == children.length - 1 && child is InfixCommandEncodeResult) {
+      if (index == children.length - 1 && child is TexModeCommandEncodeResult) {
         return _handleArg(child, conf.param());
       }
       return _handleArg(child, conf.ord());
@@ -235,18 +235,18 @@ class ModeDependentEncodeResult extends EncodeResult {
   }
 }
 
-class InfixCommandEncodeResult extends EncodeResult {
+class TexModeCommandEncodeResult extends EncodeResult {
   final String command;
 
   final List<dynamic> children;
 
-  const InfixCommandEncodeResult({this.command, this.children});
+  const TexModeCommandEncodeResult({this.command, this.children});
 
   @override
   String stringify(TexEncodeConf conf) {
     final content = Iterable.generate(children.length, (index) {
       final dynamic child = children[index];
-      if (index == children.length - 1 && child is InfixCommandEncodeResult) {
+      if (index == children.length - 1 && child is TexModeCommandEncodeResult) {
         return _handleArg(child, conf.param());
       }
       return _handleArg(child, conf.ord());

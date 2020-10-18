@@ -10,7 +10,7 @@ EncodeResult _optionsDiffEncode(OptionsDiff diff, List<dynamic> children) {
 
   if (diff.size != null) {
     final sizeCommand = _sizeCommands[diff.size];
-    res = InfixCommandEncodeResult(
+    res = TexModeCommandEncodeResult(
       command: sizeCommand ?? '\\tiny',
       children: <dynamic>[res],
     );
@@ -26,7 +26,7 @@ EncodeResult _optionsDiffEncode(OptionsDiff diff, List<dynamic> children) {
 
   if (diff.style != null) {
     final styleCommand = _styleCommands[diff.style];
-    res = InfixCommandEncodeResult(
+    res = TexModeCommandEncodeResult(
       command: styleCommand ?? _styleCommands[diff.style.uncramp()],
       children: <dynamic>[res],
     );
