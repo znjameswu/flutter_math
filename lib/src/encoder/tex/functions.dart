@@ -38,7 +38,7 @@ const Map<Type, EncoderFun> encoderFunctions = {
   EquationRowNode: _equationRowNodeEncoderFun,
   AccentNode: _accentEncoder,
   AccentUnderNode: _accentUnderEncoder,
-  StretchyOpNode: _leftRightEncoder,
+  StretchyOpNode: _stretchyOpEncoder,
   FracNode: _fracEncoder,
   SymbolNode: _symbolEncoder,
   StyleNode: _styleEncoder,

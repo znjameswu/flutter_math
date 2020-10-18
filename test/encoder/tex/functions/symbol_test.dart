@@ -16,7 +16,9 @@ String recodeTexSymbol(String tex, [Mode mode = Mode.math]) {
     node = node.children.first;
   }
   assert(node is SymbolNode);
-  return node.encodeTeX();
+  return node.encodeTeX(
+    conf: mode == Mode.math ? TexEncodeConf.mathConf : TexEncodeConf.textConf,
+  );
 }
 
 void main() {
@@ -28,9 +30,17 @@ void main() {
     });
 
     test('base text symbols', () {
-      expect(recodeTexSymbol('a'), 'a');
-      expect(recodeTexSymbol('0'), '0');
-      expect(recodeTexSymbol('\\dag'), '\\dag');
+      expect(recodeTexSymbol('a', Mode.text), 'a');
+      expect(recodeTexSymbol('0', Mode.text), '0');
+      expect(recodeTexSymbol('\\dag', Mode.text), '\\dag');
+    });
+
+    test('escaped math symbols', () {
+      expect(recodeTexSymbol('\\{'), '\\{');
+      expect(recodeTexSymbol('\\}'), '\\}');
+      expect(recodeTexSymbol('\\&'), '\\&');
+      expect(recodeTexSymbol('\\#'), '\\#');
+      expect(recodeTexSymbol('\\_'), '\\_');
     });
   });
 }
