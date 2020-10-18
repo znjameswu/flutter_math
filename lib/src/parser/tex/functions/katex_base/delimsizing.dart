@@ -93,7 +93,7 @@ const _delimiterSizes = {
   '\\Bigg': 4,
 };
 
-const _delimiterCommands = [
+const delimiterCommands = [
   '(',
   '\\lparen',
   ')',
@@ -149,7 +149,7 @@ const _delimiterCommands = [
   '.',
 ];
 
-final _delimiterSymbols = _delimiterCommands
+final _delimiterSymbols = delimiterCommands
     .map((command) => texSymbolCommandConfigs[Mode.math][command])
     .toList();
 
