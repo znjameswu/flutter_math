@@ -140,8 +140,8 @@ class TexCommandEncodeResult extends EncodeResult {
   int get numOptionalArgs => _numOptionalArgs ??= spec.numOptionalArgs;
 
   List<Mode> _argModes;
-  List<Mode> get argModes => _argModes ??=
-      spec.argModes ?? List.filled(numArgs, null, growable: false);
+  List<Mode> get argModes => _argModes ??= spec.argModes ??
+      List.filled(numArgs + numOptionalArgs, null, growable: false);
 
   TexCommandEncodeResult({
     @required this.command,
@@ -163,7 +163,7 @@ class TexCommandEncodeResult extends EncodeResult {
           'Math-only command $command occured in text encoding environment');
     }
     final argString = Iterable.generate(
-      numArgs,
+      numArgs + numOptionalArgs,
       (index) {
         final mode = argModes[index] ?? conf.mode;
         final string = _handleArg(args[index],

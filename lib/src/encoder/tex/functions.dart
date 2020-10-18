@@ -1,5 +1,7 @@
 library tex_encoder_functions;
 
+import 'package:flutter_math/src/ast/nodes/stretchy_op.dart';
+
 import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/accent_under.dart';
 import '../../ast/nodes/frac.dart';
@@ -27,6 +29,8 @@ import 'encoder.dart';
 part 'functions/accent.dart';
 part 'functions/accent_under.dart';
 part 'functions/frac.dart';
+part 'functions/left_right.dart';
+part 'functions/stretchy_op.dart';
 part 'functions/style.dart';
 part 'functions/symbol.dart';
 
@@ -34,6 +38,7 @@ const Map<Type, EncoderFun> encoderFunctions = {
   EquationRowNode: _equationRowNodeEncoderFun,
   AccentNode: _accentEncoder,
   AccentUnderNode: _accentUnderEncoder,
+  StretchyOpNode: _leftRightEncoder,
   FracNode: _fracEncoder,
   SymbolNode: _symbolEncoder,
   StyleNode: _styleEncoder,
