@@ -1,10 +1,10 @@
 library tex_encoder_functions;
 
-
 import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/accent_under.dart';
 import '../../ast/nodes/frac.dart';
 import '../../ast/nodes/left_right.dart';
+import '../../ast/nodes/sqrt.dart';
 import '../../ast/nodes/stretchy_op.dart';
 import '../../ast/nodes/style.dart';
 import '../../ast/nodes/symbol.dart';
@@ -30,6 +30,7 @@ part 'functions/accent.dart';
 part 'functions/accent_under.dart';
 part 'functions/frac.dart';
 part 'functions/left_right.dart';
+part 'functions/sqrt.dart';
 part 'functions/stretchy_op.dart';
 part 'functions/style.dart';
 part 'functions/symbol.dart';
@@ -40,6 +41,7 @@ const Map<Type, EncoderFun> encoderFunctions = {
   AccentUnderNode: _accentUnderEncoder,
   FracNode: _fracEncoder,
   LeftRightNode: _leftRightEncoder,
+  SqrtNode: _sqrtEncoder,
   StretchyOpNode: _stretchyOpEncoder,
   SymbolNode: _symbolEncoder,
   StyleNode: _styleEncoder,
