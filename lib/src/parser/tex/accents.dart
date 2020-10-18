@@ -71,3 +71,14 @@ const textUnicodeAccentMapping = {
   '\\H': '\u030b',
   // '\\textcircled': '\u',
 };
+
+const accentUnderMapping = {
+  '\\underleftarrow': '\u2190',
+  '\\underrightarrow': '\u2192',
+  '\\underleftrightarrow': '\u2194',
+  '\\undergroup': '\u23e0',
+  // '\\underlinesegment',
+  '\\utilde': '\u007e',
+
+  '\\underline': '\u00af'
+};

@@ -1,6 +1,7 @@
 library tex_encoder_functions;
 
 import '../../ast/nodes/accent.dart';
+import '../../ast/nodes/accent_under.dart';
 import '../../ast/nodes/frac.dart';
 import '../../ast/nodes/left_right.dart';
 import '../../ast/nodes/style.dart';
@@ -24,7 +25,7 @@ import '../optimization.dart';
 import 'encoder.dart';
 
 part 'functions/accent.dart';
-// part 'functions/accent_under.dart';
+part 'functions/accent_under.dart';
 part 'functions/frac.dart';
 part 'functions/style.dart';
 part 'functions/symbol.dart';
@@ -32,6 +33,7 @@ part 'functions/symbol.dart';
 const Map<Type, EncoderFun> encoderFunctions = {
   EquationRowNode: _equationRowNodeEncoderFun,
   AccentNode: _accentEncoder,
+  AccentUnderNode: _accentUnderEncoder,
   FracNode: _fracEncoder,
   SymbolNode: _symbolEncoder,
   StyleNode: _styleEncoder,
