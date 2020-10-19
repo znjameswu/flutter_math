@@ -1,3 +1,7 @@
+## [0.1.8+2] - 2020/10/12
+
+- Bump dependencies and remove `pubspec.lock` from the package.
+
 ## [0.1.8+1] - 2020/9/3
 - More documentations.
 ## [0.1.8] - 2020/9/3
