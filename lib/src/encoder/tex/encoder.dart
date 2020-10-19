@@ -124,6 +124,8 @@ String _handleArg(dynamic arg, EncodeConf conf) {
   return arg.toString();
 }
 
+String _wrapArg(String arg) => arg.length == 1 ? arg : '{$arg}';
+
 class TexCommandEncodeResult extends EncodeResult {
   final String command;
 
@@ -171,6 +173,7 @@ class TexCommandEncodeResult extends EncodeResult {
         if (index < numOptionalArgs) {
           return string.isEmpty ? '' : '[$string]';
         } else {
+          // if (string.length == 1) return string;
           return '{$string}'; // TODO optimize
         }
       },
@@ -181,6 +184,24 @@ class TexCommandEncodeResult extends EncodeResult {
     } else {
       return '$command $argString';
     }
+  }
+}
+
+extension TexEncoderJoinerExt on Iterable<String> {
+  String texJoin() {
+    final iterator = this.iterator..moveNext();
+    final length = this.length;
+    return Iterable.generate(length, (index) {
+      if (index == length - 1) return iterator.current;
+      final current = iterator.current;
+      final next = (iterator..moveNext()).current;
+      if (current.length == 1 ||
+          (next.isNotEmpty && (next[0] == '\\' || next[0] == '\{')) ||
+          (current.isNotEmpty && current[current.length - 1] == '\}')) {
+        return current;
+      }
+      return '$current ';
+    }).join();
   }
 }
 
@@ -256,5 +277,55 @@ class TexModeCommandEncodeResult extends EncodeResult {
     } else {
       return '{$command $content}';
     }
+  }
+}
+
+class TexMultiscriptEncodeResult extends EncodeResult {
+  final dynamic base;
+  final dynamic sub;
+  final dynamic sup;
+  final dynamic presub;
+  final dynamic presup;
+
+  const TexMultiscriptEncodeResult({
+    @required this.base,
+    this.sub,
+    this.sup,
+    this.presub,
+    this.presup,
+  });
+
+  @override
+  String stringify(TexEncodeConf conf) {
+    if (conf.mode != Mode.math) {
+      conf.reportNonstrict('command mode mismatch',
+          'Sub/sup scripts occured in text encoding environment');
+    }
+    if (presub != null || presup != null) {
+      conf.reportNonstrict(
+        'imprecise encoding',
+        'Prescripts are not supported in vanilla KaTeX',
+      );
+    }
+    return [
+      if (presub != null || presup != null) '{}',
+      if (presub != null) ...[
+        '_',
+        _wrapArg(_handleArg(presub, conf.param())),
+      ],
+      if (presup != null) ...[
+        '^',
+        _wrapArg(_handleArg(presup, conf.param())),
+      ],
+      _wrapArg(_handleArg(base, conf.param())),
+      if (sub != null) ...[
+        '_',
+        _wrapArg(_handleArg(sub, conf.param())),
+      ],
+      if (sup != null) ...[
+        '^',
+        _wrapArg(_handleArg(sup, conf.param())),
+      ],
+    ].texJoin();
   }
 }
