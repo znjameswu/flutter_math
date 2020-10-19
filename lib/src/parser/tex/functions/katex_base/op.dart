@@ -59,53 +59,11 @@ const _opEntries = {
   //   numArgs: 1,
   //   handler: _mathopHandler,
   // ),
-  [
-    '\\arcsin',
-    '\\arccos',
-    '\\arctan',
-    '\\arctg',
-    '\\arcctg',
-    '\\arg',
-    '\\ch',
-    '\\cos',
-    '\\cosec',
-    '\\cosh',
-    '\\cot',
-    '\\cotg',
-    '\\coth',
-    '\\csc',
-    '\\ctg',
-    '\\cth',
-    '\\deg',
-    '\\dim',
-    '\\exp',
-    '\\hom',
-    '\\ker',
-    '\\lg',
-    '\\ln',
-    '\\log',
-    '\\sec',
-    '\\sin',
-    '\\sinh',
-    '\\sh',
-    '\\tan',
-    '\\tanh',
-    '\\tg',
-    '\\th',
-  ]: FunctionSpec(
+  mathFunctions: FunctionSpec(
     numArgs: 0,
     handler: _mathFunctionHandler,
   ),
-  [
-    '\\det',
-    '\\gcd',
-    '\\inf',
-    '\\lim',
-    '\\max',
-    '\\min',
-    '\\Pr',
-    '\\sup',
-  ]: FunctionSpec(
+  mathLimits: FunctionSpec(
     numArgs: 0,
     handler: _mathLimitsHandler,
   ),
@@ -225,6 +183,41 @@ GreenNode _bigOpHandler(TexParser parser, FunctionContext context) {
 //   return _parseMathFunction(fName, parser, context);
 // }
 
+const mathFunctions = [
+  '\\arcsin',
+  '\\arccos',
+  '\\arctan',
+  '\\arctg',
+  '\\arcctg',
+  '\\arg',
+  '\\ch',
+  '\\cos',
+  '\\cosec',
+  '\\cosh',
+  '\\cot',
+  '\\cotg',
+  '\\coth',
+  '\\csc',
+  '\\ctg',
+  '\\cth',
+  '\\deg',
+  '\\dim',
+  '\\exp',
+  '\\hom',
+  '\\ker',
+  '\\lg',
+  '\\ln',
+  '\\log',
+  '\\sec',
+  '\\sin',
+  '\\sinh',
+  '\\sh',
+  '\\tan',
+  '\\tanh',
+  '\\tg',
+  '\\th',
+];
+
 GreenNode _mathFunctionHandler(TexParser parser, FunctionContext context) =>
     _parseMathFunction(
       stringToNode(context.funcName.substring(1), Mode.text),
@@ -232,6 +225,17 @@ GreenNode _mathFunctionHandler(TexParser parser, FunctionContext context) =>
       context,
       defaultLimits: false,
     );
+
+const mathLimits = [
+  '\\det',
+  '\\gcd',
+  '\\inf',
+  '\\lim',
+  '\\max',
+  '\\min',
+  '\\Pr',
+  '\\sup',
+];
 
 GreenNode _mathLimitsHandler(TexParser parser, FunctionContext context) =>
     _parseMathFunction(

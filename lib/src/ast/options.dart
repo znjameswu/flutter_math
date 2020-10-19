@@ -289,6 +289,16 @@ class OptionsDiff {
       mathFontOptions: this.mathFontOptions,
     );
   }
+
+  OptionsDiff removeMathFont() {
+    if (mathFontOptions == null) return this;
+    return OptionsDiff(
+      color: this.color,
+      size: this.size,
+      style: this.style,
+      textFontOptions: this.textFontOptions,
+    );
+  }
 }
 
 /// Options for font selection

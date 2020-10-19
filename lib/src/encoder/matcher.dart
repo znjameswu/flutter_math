@@ -8,6 +8,21 @@ abstract class Matcher {
 
   int get specificity;
   bool match(GreenNode node);
+
+  Matcher or(Matcher other) {}
+}
+
+class OrMatcher extends Matcher {
+  final Matcher matcher1;
+  final Matcher matcher2;
+
+  const OrMatcher(this.matcher1, this.matcher2);
+
+  @override
+  bool match(GreenNode node) => matcher1.match(node) || matcher2.match(node);
+
+  @override
+  int get specificity => math.min(matcher1.specificity, matcher2.specificity);
 }
 
 class NullMatcher extends Matcher {

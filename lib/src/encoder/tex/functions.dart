@@ -3,13 +3,16 @@ library tex_encoder_functions;
 import '../../ast/nodes/accent.dart';
 import '../../ast/nodes/accent_under.dart';
 import '../../ast/nodes/frac.dart';
+import '../../ast/nodes/function.dart';
 import '../../ast/nodes/left_right.dart';
 import '../../ast/nodes/multiscripts.dart';
 import '../../ast/nodes/nary_op.dart';
+import '../../ast/nodes/over.dart';
 import '../../ast/nodes/sqrt.dart';
 import '../../ast/nodes/stretchy_op.dart';
 import '../../ast/nodes/style.dart';
 import '../../ast/nodes/symbol.dart';
+import '../../ast/nodes/under.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/style.dart';
@@ -31,6 +34,7 @@ import 'encoder.dart';
 part 'functions/accent.dart';
 part 'functions/accent_under.dart';
 part 'functions/frac.dart';
+part 'functions/function.dart';
 part 'functions/left_right.dart';
 part 'functions/multiscripts.dart';
 part 'functions/nary.dart';
@@ -44,6 +48,7 @@ const Map<Type, EncoderFun> encoderFunctions = {
   AccentNode: _accentEncoder,
   AccentUnderNode: _accentUnderEncoder,
   FracNode: _fracEncoder,
+  FunctionNode: _functionEncoder,
   LeftRightNode: _leftRightEncoder,
   MultiscriptsNode: _multisciprtsEncoder,
   NaryOperatorNode: _naryEncoder,
@@ -59,4 +64,5 @@ EncodeResult _equationRowNodeEncoderFun(GreenNode node) =>
 
 final optimizationEntries = [
   ..._fracOptimizationEntries,
+  ..._functionOptimizationEntries,
 ]..sortBy<num>((entry) => -entry.priority);
