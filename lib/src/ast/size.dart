@@ -60,10 +60,26 @@ extension UnitExt on Unit {
   };
   double get toPt => _ptPerUnit[this];
 
-  // Beware of null exceptions
-  // double get toLp => lpPerUnit[this.index];
-  // static Map<Unit, double> lpPerUnit = _ptPerUnit
-  //     .map((key, value) => MapEntry(key, value / _ptPerUnit[Unit.lp]));
+  String get name => const {
+        Unit.pt: 'pt',
+        Unit.mm: 'mm',
+        Unit.cm: 'cm',
+        Unit.inches: 'inches',
+        Unit.bp: 'bp',
+        Unit.pc: 'pc',
+        Unit.dd: 'dd',
+        Unit.cc: 'cc',
+        Unit.nd: 'nd',
+        Unit.nc: 'nc',
+        Unit.sp: 'sp',
+        Unit.px: 'px',
+        Unit.ex: 'ex',
+        Unit.em: 'em',
+        Unit.mu: 'mu',
+        Unit.lp: 'lp',
+        Unit.cssEm: 'cssEm',
+      }[this];
+
   static Unit parse(String unit) => unit.parseUnit();
 }
 
@@ -126,6 +142,11 @@ class Measurement {
   }
 
   double toCssEmUnder(Options options) => toLpUnder(options) / options.fontSize;
+
+  @override
+  String toString() {
+    return '$value${unit.name}';
+  }
 
   static const zero = Measurement(value: 0, unit: Unit.pt);
 }

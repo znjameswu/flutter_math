@@ -17,6 +17,6 @@ GreenNode _charHandler(TexParser parser, FunctionContext context) {
   return SymbolNode(
     symbol: String.fromCharCode(code),
     mode: parser.mode,
-    atomType: AtomType.ord,
+    overrideAtomType: AtomType.ord,
   );
 }

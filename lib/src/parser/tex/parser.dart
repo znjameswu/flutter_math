@@ -265,7 +265,7 @@ class TexParser {
               mode: mode,
               symbol: primeCommand.symbol,
               variantForm: primeCommand.variantForm,
-              atomType: primeCommand.type,
+              overrideAtomType: primeCommand.type,
               overrideFont: primeCommand.font,
             ),
           ];
@@ -276,7 +276,7 @@ class TexParser {
                 mode: mode,
                 symbol: primeCommand.symbol,
                 variantForm: primeCommand.variantForm,
-                atomType: primeCommand.type,
+                overrideAtomType: primeCommand.type,
                 overrideFont: primeCommand.font,
               ),
             );
@@ -771,7 +771,7 @@ class TexParser {
         mode: mode,
         symbol: symbolCommandConfig.symbol + combiningMarks,
         variantForm: symbolCommandConfig.variantForm,
-        atomType: symbolCommandConfig.type,
+        overrideAtomType: symbolCommandConfig.type,
         overrideFont: symbolCommandConfig.font,
       );
     } else if (text.isNotEmpty && text.codeUnitAt(0) >= 0x80) {
@@ -786,7 +786,7 @@ class TexParser {
             'Unicode text character "${text[0]} used in math mode"', nucleus);
       }
       symbol =
-          SymbolNode(symbol: text + combiningMarks, atomType: AtomType.ord);
+          SymbolNode(symbol: text + combiningMarks, overrideAtomType: AtomType.ord);
     } else {
       return null;
     }

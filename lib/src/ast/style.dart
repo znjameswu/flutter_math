@@ -21,6 +21,7 @@ enum MathStyleDiff {
   fracDen,
   cramp,
   text,
+  uncramp,
 }
 
 MathStyle parseMathStyle(String string) => const {
@@ -51,6 +52,7 @@ extension MathStyleExt on MathStyle {
     [3, 3, 5, 5, 7, 7, 7, 7], //fracDen
     [1, 1, 3, 3, 5, 5, 7, 7], //cramp
     [0, 1, 2, 3, 2, 3, 2, 3], //text
+    [0, 0, 2, 2, 4, 4, 6, 6], //uncramp
   ];
   MathStyle sup() => this.reduce(MathStyleDiff.sup);
   MathStyle sub() => this.reduce(MathStyleDiff.sub);
@@ -58,6 +60,7 @@ extension MathStyleExt on MathStyle {
   MathStyle fracDen() => this.reduce(MathStyleDiff.fracDen);
   MathStyle cramp() => this.reduce(MathStyleDiff.cramp);
   MathStyle atLeastText() => this.reduce(MathStyleDiff.text);
+  MathStyle uncramp() => this.reduce(MathStyleDiff.uncramp);
 
   // MathStyle atLeastText() =>
   //     this.index > MathStyle.textCramped.index ? this : MathStyle.text;

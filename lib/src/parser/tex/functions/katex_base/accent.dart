@@ -74,7 +74,7 @@ const _accentEntries = {
   ),
 };
 
-const _nonStretchyAccents = {
+const nonStretchyAccents = {
   '\\acute',
   '\\grave',
   '\\ddot',
@@ -88,13 +88,13 @@ const _nonStretchyAccents = {
   '\\mathring',
 };
 
-const _shiftyAccents = {
+const shiftyAccents = {
   '\\widehat',
   '\\widetilde',
   '\\widecheck',
 };
 
-const _accentCommandMapping = {
+const accentCommandMapping = {
   '\\acute': '\u00B4',
   '\\grave': '\u0060',
   '\\ddot': '\u00A8',
@@ -136,18 +136,18 @@ const _accentCommandMapping = {
 GreenNode _accentHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: Mode.math, optional: false);
 
-  final isStretchy = !_nonStretchyAccents.contains(context.funcName);
-  final isShifty = !isStretchy || _shiftyAccents.contains(context.funcName);
+  final isStretchy = !nonStretchyAccents.contains(context.funcName);
+  final isShifty = !isStretchy || shiftyAccents.contains(context.funcName);
 
   return AccentNode(
     base: base.wrapWithEquationRow(),
-    label: _accentCommandMapping[context.funcName],
+    label: accentCommandMapping[context.funcName],
     isStretchy: isStretchy,
     isShifty: isShifty,
   );
 }
 
-const _textUnicodeAccentMapping = {
+const textUnicodeAccentMapping = {
   '\\`': '\u0300',
   '\\"': '\u0308',
   '\\~': '\u0303',
@@ -161,25 +161,24 @@ const _textUnicodeAccentMapping = {
   '\\H': '\u030b',
   // '\\textcircled': '\u',
 };
-
 GreenNode _textAccentHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: null, optional: false);
   if (base is SymbolNode) {
     return base.copyWith(
-      symbol: base.symbol + _textUnicodeAccentMapping[context.funcName],
+      symbol: base.symbol + textUnicodeAccentMapping[context.funcName],
     );
   }
   if (base is EquationRowNode && base.children.length == 1) {
     final node = base.children[0];
     if (node is SymbolNode) {
       return node.copyWith(
-        symbol: node.symbol + _textUnicodeAccentMapping[context.funcName],
+        symbol: node.symbol + textUnicodeAccentMapping[context.funcName],
       );
     }
   }
   return AccentNode(
     base: base.wrapWithEquationRow(),
-    label: _accentCommandMapping[context.funcName],
+    label: accentCommandMapping[context.funcName],
     isStretchy: false,
     isShifty: true,
   );

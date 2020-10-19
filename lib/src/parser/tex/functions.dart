@@ -24,6 +24,7 @@
 import 'package:meta/meta.dart';
 
 import '../../ast/syntax_tree.dart';
+import '../../ast/types.dart';
 import 'functions/katex_base.dart';
 import 'functions/katex_ext.dart';
 import 'parser.dart';
@@ -47,22 +48,25 @@ typedef FunctionHandler<T extends GreenNode> = T Function(
 
 class FunctionSpec<T extends GreenNode> {
   final int numArgs;
-  // final List<ArgType> argTypes;
   final int greediness;
   final bool allowedInText;
   final bool allowedInMath;
   final int numOptionalArgs;
   final bool infix;
   final FunctionHandler<T> handler;
+
+  // Has no real usage during parsing. Serves as hint during encoding.
+  final List<Mode> argModes;
+
   const FunctionSpec({
     @required this.numArgs,
-    // this.argTypes = const [],
     this.greediness = 1,
     this.allowedInText = false,
     this.allowedInMath = true,
     this.numOptionalArgs = 0,
     this.infix = false,
-    this.handler,
+    @required this.handler,
+    this.argModes,
   });
 
   int get totalArgs => numArgs + numOptionalArgs;

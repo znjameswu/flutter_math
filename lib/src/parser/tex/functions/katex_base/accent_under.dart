@@ -36,7 +36,7 @@ const _accentUnderEntries = {
   ]: FunctionSpec(numArgs: 1, handler: _accentUnderHandler),
 };
 
-const _accentUnderMapping = {
+const accentUnderMapping = {
   '\\underleftarrow': '\u2190',
   '\\underrightarrow': '\u2192',
   '\\underleftrightarrow': '\u2194',
@@ -46,10 +46,11 @@ const _accentUnderMapping = {
 
   '\\underline': '\u00af'
 };
+
 GreenNode _accentUnderHandler(TexParser parser, FunctionContext context) {
   final base = parser.parseArgNode(mode: null, optional: false);
   return AccentUnderNode(
     base: base.wrapWithEquationRow(),
-    label: _accentUnderMapping[context.funcName],
+    label: accentUnderMapping[context.funcName],
   );
 }

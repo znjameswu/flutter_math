@@ -93,7 +93,7 @@ const _delimiterSizes = {
   '\\Bigg': 4,
 };
 
-const _delimiterCommands = [
+const delimiterCommands = [
   '(',
   '\\lparen',
   ')',
@@ -149,7 +149,7 @@ const _delimiterCommands = [
   '.',
 ];
 
-final _delimiterSymbols = _delimiterCommands
+final _delimiterSymbols = delimiterCommands
     .map((command) => texSymbolCommandConfigs[Mode.math][command])
     .toList();
 
@@ -185,7 +185,7 @@ GreenNode _delimSizeHandler(TexParser parser, FunctionContext context) {
           height: Measurement.zero, width: Measurement.zero, mode: Mode.math)
       : SymbolNode(
           symbol: delim,
-          atomType: _delimiterTypes[context.funcName],
+          overrideAtomType: _delimiterTypes[context.funcName],
           overrideFont: FontOptions(
               fontFamily: 'Size${_delimiterSizes[context.funcName]}'),
         );

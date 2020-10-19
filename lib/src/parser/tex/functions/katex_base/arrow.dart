@@ -41,7 +41,7 @@ const _arrowEntries = {
   )
 };
 
-const _arrowCommandMapping = {
+const arrowCommandMapping = {
   '\\xleftarrow': '\u2190',
   '\\xrightarrow': '\u2192',
   '\\xleftrightarrow': '\u2194',
@@ -79,6 +79,6 @@ GreenNode _arrowHandler(TexParser parser, FunctionContext context) {
   return StretchyOpNode(
     above: above.wrapWithEquationRow(),
     below: below?.wrapWithEquationRow(),
-    symbol: _arrowCommandMapping[context.funcName] ?? context.funcName,
+    symbol: arrowCommandMapping[context.funcName] ?? context.funcName,
   );
 }

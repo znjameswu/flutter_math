@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/parser/tex/functions/katex_base.dart';
 
 import '../../ast/nodes/over.dart';
 import '../../ast/nodes/style.dart';
@@ -138,7 +137,7 @@ BuildResult makeDecoratedEqualSymbol(
   );
 
   final proxyNode = OverNode(
-    base: SymbolNode(symbol: '=', mode: mode, atomType: type)
+    base: SymbolNode(symbol: '=', mode: mode, overrideAtomType: type)
         .wrapWithEquationRow(),
     above: decorator.wrapWithEquationRow(),
   );
