@@ -198,7 +198,7 @@ FunctionNode _parseMathFunction(
   }
 }
 
-const _singleCharBigOps = {
+const singleCharBigOps = {
   '\u220F': '\\prod',
   '\u2210': '\\coprod',
   '\u2211': '\\sum',
@@ -215,7 +215,7 @@ const _singleCharBigOps = {
 
 GreenNode _bigOpHandler(TexParser parser, FunctionContext context) {
   final fName = context.funcName.length == 1
-      ? _singleCharBigOps[context.funcName]
+      ? singleCharBigOps[context.funcName]
       : context.funcName;
   return _parseNaryOperator(fName, parser, context);
 }
@@ -241,7 +241,7 @@ GreenNode _mathLimitsHandler(TexParser parser, FunctionContext context) =>
       defaultLimits: true,
     );
 
-const _singleCharIntegrals = {
+const singleCharIntegrals = {
   '\u222b': '\\int',
   '\u222c': '\\iint',
   '\u222d': '\\iiint',
@@ -251,7 +251,7 @@ const _singleCharIntegrals = {
 };
 GreenNode _integralHandler(TexParser parser, FunctionContext context) {
   final fName = context.funcName.length == 1
-      ? _singleCharIntegrals[context.funcName]
+      ? singleCharIntegrals[context.funcName]
       : context.funcName;
   return _parseNaryOperator(fName, parser, context);
 }

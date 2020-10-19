@@ -5,6 +5,7 @@ import '../../ast/nodes/accent_under.dart';
 import '../../ast/nodes/frac.dart';
 import '../../ast/nodes/left_right.dart';
 import '../../ast/nodes/multiscripts.dart';
+import '../../ast/nodes/nary_op.dart';
 import '../../ast/nodes/sqrt.dart';
 import '../../ast/nodes/stretchy_op.dart';
 import '../../ast/nodes/style.dart';
@@ -32,6 +33,7 @@ part 'functions/accent_under.dart';
 part 'functions/frac.dart';
 part 'functions/left_right.dart';
 part 'functions/multiscripts.dart';
+part 'functions/nary.dart';
 part 'functions/sqrt.dart';
 part 'functions/stretchy_op.dart';
 part 'functions/style.dart';
@@ -44,6 +46,7 @@ const Map<Type, EncoderFun> encoderFunctions = {
   FracNode: _fracEncoder,
   LeftRightNode: _leftRightEncoder,
   MultiscriptsNode: _multisciprtsEncoder,
+  NaryOperatorNode: _naryEncoder,
   SqrtNode: _sqrtEncoder,
   StretchyOpNode: _stretchyOpEncoder,
   SymbolNode: _symbolEncoder,

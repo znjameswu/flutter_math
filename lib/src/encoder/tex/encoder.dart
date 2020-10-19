@@ -6,6 +6,7 @@ import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../parser/tex/functions.dart';
 import '../../parser/tex/settings.dart';
+import '../../utils/alpha_numeric.dart';
 import '../../utils/iterable_extensions.dart';
 import '../encoder.dart';
 import 'functions.dart';
@@ -124,7 +125,27 @@ String _handleArg(dynamic arg, EncodeConf conf) {
   return arg.toString();
 }
 
-String _wrapArg(String arg) => arg.length == 1 ? arg : '{$arg}';
+String _handleAndWrapArg(dynamic arg, EncodeConf conf) {
+  final string = _handleArg(arg, conf);
+  return string.length == 1 || _isSingleSymbol(arg) ? string : '{$string}';
+}
+
+bool _isSingleSymbol(dynamic arg) {
+  while (true) {
+    if (arg is TransparentTexEncodeResult && arg.children.length == 1) {
+      arg = arg.children.first;
+    } else if (arg is EquationRowTexEncodeResult && arg.children.length == 1) {
+      arg = arg.children.first;
+    } else if (arg is EquationRowNode && arg.children.length == 1) {
+      arg = arg.children.first;
+    } else {
+      break;
+    }
+  }
+  if (arg is String) return true;
+  if (arg is StaticEncodeResult) return true;
+  return false;
+}
 
 class TexCommandEncodeResult extends EncodeResult {
   final String command;
@@ -173,7 +194,7 @@ class TexCommandEncodeResult extends EncodeResult {
         if (index < numOptionalArgs) {
           return string.isEmpty ? '' : '[$string]';
         } else {
-          // if (string.length == 1) return string;
+          // if (string.length == 1 || _isSingleSymbol(args[index])) return string;
           return '{$string}'; // TODO optimize
         }
       },
@@ -196,7 +217,7 @@ extension TexEncoderJoinerExt on Iterable<String> {
       final current = iterator.current;
       final next = (iterator..moveNext()).current;
       if (current.length == 1 ||
-          (next.isNotEmpty && (next[0] == '\\' || next[0] == '\{')) ||
+          (next.isNotEmpty && !isAlphaNumericUnit(next[0]) && next[0] != '*') ||
           (current.isNotEmpty && current[current.length - 1] == '\}')) {
         return current;
       }
@@ -311,20 +332,20 @@ class TexMultiscriptEncodeResult extends EncodeResult {
       if (presub != null || presup != null) '{}',
       if (presub != null) ...[
         '_',
-        _wrapArg(_handleArg(presub, conf.param())),
+        _handleAndWrapArg(presub, conf.param()),
       ],
       if (presup != null) ...[
         '^',
-        _wrapArg(_handleArg(presup, conf.param())),
+        _handleAndWrapArg(presup, conf.param()),
       ],
-      _wrapArg(_handleArg(base, conf.param())),
+      _handleAndWrapArg(base, conf.param()),
       if (sub != null) ...[
         '_',
-        _wrapArg(_handleArg(sub, conf.param())),
+        _handleAndWrapArg(sub, conf.param()),
       ],
       if (sup != null) ...[
         '^',
-        _wrapArg(_handleArg(sup, conf.param())),
+        _handleAndWrapArg(sup, conf.param()),
       ],
     ].texJoin();
   }
