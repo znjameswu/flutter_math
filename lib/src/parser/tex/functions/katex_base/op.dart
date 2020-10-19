@@ -162,7 +162,7 @@ FunctionNode _parseMathFunction(
       EquationRowNode.empty();
   final limits = scriptsResult.limits ?? defaultLimits;
   final base = funcNameBase.wrapWithEquationRow();
-  if (scriptsResult.subscript == null && scriptsResult.subscript == null) {
+  if (scriptsResult.subscript == null && scriptsResult.superscript == null) {
     return FunctionNode(
       functionName: base,
       argument: arg,
