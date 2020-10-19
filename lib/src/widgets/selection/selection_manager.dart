@@ -75,7 +75,7 @@ abstract class MathSelectionManager implements TextSelectionDelegate {
   }
 
   Offset getLocalEndpointForPosition(int position) {
-    final node = controller.ast.findNodesManagesPosition(position);
+    final node = controller.ast.findNodeManagesPosition(position);
     var caretIndex = node.caretPositions
         .indexWhere((caretPosition) => caretPosition >= position);
     if (caretIndex == -1) {
@@ -128,16 +128,4 @@ abstract class MathSelectionManager implements TextSelectionDelegate {
 
   void bringIntoView(TextPosition position) {}
 
-  @override
-  TextEditingValue get textEditingValue => TextEditingValue(
-        text: _stubString,
-        selection:
-            TextSelection(baseOffset: 0, extentOffset: _stubString.length),
-      ); // TODO
-
-  set textEditingValue(TextEditingValue value) {
-    // do nothing
-  }
 }
-
-const _stubString = 'THIS IS A PLACEHOLDER VALUE FOR PROTOTYPING';

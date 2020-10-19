@@ -33,4 +33,7 @@ class MathController extends ChangeNotifier {
     if (selection.end <= 0) return selection;
     return selection.constrainedBy(ast.root.range);
   }
+
+  List<GreenNode> get selectedNodes =>
+      ast.findSelectedNodes(selection.start, selection.end);
 }

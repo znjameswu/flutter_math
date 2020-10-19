@@ -8,6 +8,7 @@ import 'package:tuple/tuple.dart';
 
 import '../ast/options.dart';
 import '../ast/syntax_tree.dart';
+import '../encoder/tex/encoder.dart';
 import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';
@@ -124,8 +125,8 @@ class MathSelectable extends StatelessWidget {
         //   selectionColor = selectionTheme.selectionColor ??
         //       CupertinoTheme.of(context).primaryColor;
         // } else {
-          cursorColor ??= CupertinoTheme.of(context).primaryColor;
-          selectionColor = theme.textSelectionColor;
+        cursorColor ??= CupertinoTheme.of(context).primaryColor;
+        selectionColor = theme.textSelectionColor;
         // }
         cursorRadius ??= const Radius.circular(2.0);
         cursorOffset = Offset(
@@ -146,8 +147,8 @@ class MathSelectable extends StatelessWidget {
         //   selectionColor =
         //       selectionTheme.selectionColor ?? theme.colorScheme.primary;
         // } else {
-          cursorColor ??= theme.cursorColor;
-          selectionColor = theme.textSelectionColor;
+        cursorColor ??= theme.cursorColor;
+        selectionColor = theme.textSelectionColor;
         // }
         break;
     }
@@ -419,4 +420,15 @@ class __SelectableMathState extends State<_SelectableMath>
 
   @override
   bool get selectionEnabled => true;
+
+  @override
+  TextEditingValue get textEditingValue {
+    final string = controller.selectedNodes.encodeTex();
+    return TextEditingValue(
+      text: string,
+      selection: TextSelection(baseOffset: 0, extentOffset: string.length),
+    );
+  }
+
+  set textEditingValue(TextEditingValue value) {}
 }

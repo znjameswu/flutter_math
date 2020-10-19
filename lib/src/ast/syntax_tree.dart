@@ -55,11 +55,11 @@ class SyntaxTree {
             .toList(growable: false)));
   }
 
-  List<GreenNode> findNodesAtPosition(int position) {
+  List<SyntaxNode> findNodesAtPosition(int position) {
     var curr = root;
-    final res = <GreenNode>[];
+    final res = <SyntaxNode>[];
     while (true) {
-      res.add(curr.value);
+      res.add(curr);
       final next = curr.children.firstWhereOrNull((child) =>
           child.range.start <= position && child.range.end >= position);
       if (next == null) break;
@@ -68,7 +68,7 @@ class SyntaxTree {
     return res;
   }
 
-  EquationRowNode findNodesManagesPosition(int position) {
+  EquationRowNode findNodeManagesPosition(int position) {
     var curr = root;
     while (true) {
       final next = curr.children.firstWhereOrNull(
@@ -82,18 +82,32 @@ class SyntaxTree {
   }
 
   EquationRowNode findLowestCommonRowNode(int position1, int position2) {
-    final nodes1 = findNodesAtPosition(position1);
-    final nodes2 = findNodesAtPosition(position2);
-    for (var index = math.min(nodes1.length, nodes2.length) - 1;
+    final redNodes1 = findNodesAtPosition(position1);
+    final redNodes2 = findNodesAtPosition(position2);
+    for (var index = math.min(redNodes1.length, redNodes2.length) - 1;
         index >= 0;
         index--) {
-      final node1 = nodes1[index];
-      final node2 = nodes2[index];
+      final node1 = redNodes1[index].value;
+      final node2 = redNodes2[index].value;
       if (node1 == node2 && node1 is EquationRowNode) {
         return node1;
       }
     }
     return greenRoot;
+  }
+
+  List<GreenNode> findSelectedNodes(int position1, int position2) {
+    final rowNode = findLowestCommonRowNode(position1, position2);
+
+    final localPos1 = position1 - rowNode.pos;
+    final localPos2 = position2 - rowNode.pos;
+    // final caretIndex1 = rowNode.caretPositions.slotFor(localPos1).floor();
+    // final caretIndex2 = rowNode.caretPositions.slotFor(localPos2).ceil();
+    // final selectedPos1 = rowNode.caretPositions[
+    //     caretIndex1.clampInt(0, rowNode.caretPositions.length - 1)];
+    // final selectedPos2 = rowNode.caretPositions[
+    //     caretIndex2.clampInt(0, rowNode.caretPositions.length - 1)];
+    return rowNode.clipChildrenBetween(localPos1, localPos2).children;
   }
 
   // Build widget tree
@@ -329,7 +343,8 @@ abstract class GreenNode {
   ///
   /// This method stores the layout strucuture for cursor in the editing mode.
   /// You should return positions of children assume this current node is placed
-  /// at the starting position.
+  /// at the starting position. It should be no shorter than [children]. It's
+  /// entirely optional to add extra hinting elements.
   List<int> get childPositions;
 
   /// [AtomType] observed from the left side.
@@ -422,19 +437,18 @@ abstract class SlotableNode<T extends EquationRowNode>
 /// [TransparentNode]s are only allowed to appear directly under
 /// [EquationRowNode]s and other [TransparentNode]s. And those nodes have to
 /// explicitly unwrap transparent nodes during building stage.
-abstract class TransparentNode extends ParentableNode<GreenNode> {
+abstract class TransparentNode extends ParentableNode<GreenNode>
+    with _ClipChildrenMixin {
   @override
   int computeWidth() => children.map((child) => child.editingWidth).sum();
 
   @override
   List<int> computeChildPositions() {
     var curPos = 0;
-    final result = <int>[];
-    for (final child in children) {
-      result.add(curPos);
-      curPos += child.editingWidth;
-    }
-    return result;
+    return List.generate(children.length + 1, (index) {
+      if (index == 0) return curPos;
+      return curPos += children[index - 1].editingWidth;
+    }, growable: false);
   }
 
   @override
@@ -472,7 +486,7 @@ abstract class TransparentNode extends ParentableNode<GreenNode> {
 /// [EquationRowNode] provides cursor-reachability and editability. It
 /// represents a collection of nodes that you can freely edit and navigate.
 class EquationRowNode extends ParentableNode<GreenNode>
-    with PositionDependentMixin {
+    with PositionDependentMixin, _ClipChildrenMixin {
   /// If non-null, the leftmost and rightmost [AtomType] will be overriden.
   final AtomType overrideType;
 
@@ -488,10 +502,9 @@ class EquationRowNode extends ParentableNode<GreenNode>
   @override
   List<int> computeChildPositions() {
     var curPos = 1;
-    return List.generate(children.length, (index) {
-      final pos = curPos;
-      curPos += children[index].editingWidth;
-      return pos;
+    return List.generate(children.length + 1, (index) {
+      if (index == 0) return curPos;
+      return curPos += children[index - 1].editingWidth;
     }, growable: false);
   }
 
@@ -512,13 +525,22 @@ class EquationRowNode extends ParentableNode<GreenNode>
   List<int> get caretPositions => _caretPositions ??= computeCaretPositions();
   List<int> computeCaretPositions() {
     var curPos = 1;
-    return List.generate(flattenedChildList.length, (index) {
-      final pos = curPos;
-      curPos += flattenedChildList[index].editingWidth;
-      return pos;
-    })
-      ..add(curPos);
+    return List.generate(flattenedChildList.length + 1, (index) {
+      if (index == 0) return curPos;
+      return curPos += flattenedChildList[index - 1].editingWidth;
+    }, growable: false);
   }
+
+  // int caretIndexForSelectionStart(int start) => start < 1
+  //     ? -1
+  //     : start > capturedCursor
+  //         ? caretPositions.length
+  //         : caretPositions.indexWhere((pos) => pos >= start);
+  // int caretIndexForSelectionEnd(int end) => end > capturedCursor
+  //     ? caretPositions.length
+  //     : end < 1
+  //         ? -1
+  //         : caretPositions.lastIndexWhere((pos) => pos <= end);
 
   @override
   BuildResult buildWidget(
@@ -614,20 +636,11 @@ class EquationRowNode extends ParentableNode<GreenNode>
         child: Selector2<TextSelection, Tuple2<LayerLink, LayerLink>,
             Tuple3<TextSelection, LayerLink, LayerLink>>(
           selector: (context, selection, handleLayerLinks) {
-            final start = selection.start - range.start + 1;
-            final end = selection.end - range.start + 1;
+            final start = selection.start - this.pos;
+            final end = selection.end - this.pos;
 
-            final caretStart = start < 1
-                ? -1
-                : start > capturedCursor
-                    ? caretPositions.length
-                    : caretPositions.indexWhere((pos) => pos >= start);
-
-            final caretEnd = end > capturedCursor
-                ? caretPositions.length
-                : end < 1
-                    ? -1
-                    : caretPositions.lastIndexWhere((pos) => pos <= end);
+            final caretStart = caretPositions.slotFor(start).ceil();
+            final caretEnd = caretPositions.slotFor(end).floor();
 
             final caretSelection = caretStart <= caretEnd
                 ? selection.baseOffset <= selection.extentOffset
@@ -703,6 +716,45 @@ class EquationRowNode extends ParentableNode<GreenNode>
         overrideType: overrideType ?? this.overrideType,
         children: children ?? this.children,
       );
+}
+
+mixin _ClipChildrenMixin on ParentableNode {
+  GreenNode clipChildrenBetween(int pos1, int pos2) {
+    final childIndex1 = childPositions.slotFor(pos1);
+    final childIndex2 = childPositions.slotFor(pos2);
+    final childIndex1Floor = childIndex1.floor();
+    final childIndex1Ceil = childIndex1.ceil();
+    final childIndex2Floor = childIndex2.floor();
+    final childIndex2Ceil = childIndex2.ceil();
+    GreenNode head;
+    GreenNode tail;
+    if (childIndex1Floor != childIndex1 && childIndex1Floor >= 0) {
+      final child = children[childIndex1Floor];
+      if (child is TransparentNode) {
+        head = child.clipChildrenBetween(
+            pos1 - childPositions[childIndex1Floor],
+            pos2 - childPositions[childIndex1Floor]);
+      } else {
+        head = child;
+      }
+    }
+    if (childIndex2Ceil != childIndex2 &&
+        childIndex2Floor <= children.length - 1) {
+      final child = children[childIndex2Floor];
+      if (child is TransparentNode) {
+        tail = child.clipChildrenBetween(
+            pos1 - childPositions[childIndex2Floor],
+            pos2 - childPositions[childIndex2Floor]);
+      } else {
+        tail = child;
+      }
+    }
+    return this.updateChildren([
+      if (head != null) head,
+      for (var i = childIndex1Ceil; i < childIndex2Floor; i++) children[i],
+      if (tail != null) tail,
+    ]);
+  }
 }
 
 extension GreenNodeWrappingExt on GreenNode {
