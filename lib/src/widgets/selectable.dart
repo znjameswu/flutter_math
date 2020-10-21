@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -8,16 +9,15 @@ import 'package:tuple/tuple.dart';
 
 import '../ast/options.dart';
 import '../ast/syntax_tree.dart';
-import '../encoder/tex/encoder.dart';
 import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';
-import '../render/layout/line_editable.dart';
 import 'controller.dart';
 import 'flutter_math.dart';
-import 'selection/gesture_detector_builder_selectable.dart';
-import 'selection/overlay.dart';
+import 'selection/focus_manager.dart';
+import 'selection/overlay_manager.dart';
 import 'selection/selection_manager.dart';
+import 'selection/web_selection_manager.dart';
 
 const defaultSelection = TextSelection.collapsed(offset: -1);
 
@@ -33,7 +33,22 @@ class MathSelectable extends StatelessWidget {
     this.parseError,
     this.style,
     this.textSelectionControls,
-  }) : super(key: key);
+    this.showCursor = false,
+    this.autofocus = false,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.cursorWidth = 2.0,
+    this.cursorHeight,
+    ToolbarOptions toolbarOptions,
+    this.enableInteractiveSelection = true,
+  })  : assert(showCursor != null),
+        assert(autofocus != null),
+        assert(dragStartBehavior != null),
+        toolbarOptions = toolbarOptions ??
+            const ToolbarOptions(
+              selectAll: true,
+              copy: true,
+            ),
+        super(key: key);
 
   final SyntaxTree ast;
 
@@ -53,7 +68,19 @@ class MathSelectable extends StatelessWidget {
 
   final TextSelectionControls textSelectionControls;
 
-  // final ToolbarOptions toolbarOptions;
+  final bool showCursor;
+
+  final bool autofocus;
+
+  final DragStartBehavior dragStartBehavior;
+
+  final double cursorWidth;
+
+  final double cursorHeight;
+
+  final bool enableInteractiveSelection;
+
+  final ToolbarOptions toolbarOptions;
 
   factory MathSelectable.tex(
     String expression, {
@@ -88,15 +115,9 @@ class MathSelectable extends StatelessWidget {
     }
   }
 
-  @override
   Widget build(BuildContext context) {
     if (parseError != null) {
       return onErrorFallback(parseError);
-    }
-    try {
-      final child = ast.buildWidget(options);
-    } on dynamic catch (err) {
-      return onErrorFallback(err.toString());
     }
 
     final theme = Theme.of(context);
@@ -153,9 +174,9 @@ class MathSelectable extends StatelessWidget {
         break;
     }
 
-    var effectiveTextStyle = this.style;
-    if (this.style == null || this.style.inherit) {
-      effectiveTextStyle = DefaultTextStyle.of(context).style.merge(this.style);
+    var effectiveTextStyle = style;
+    if (style == null || style.inherit) {
+      effectiveTextStyle = DefaultTextStyle.of(context).style.merge(style);
     }
     if (MediaQuery.boldTextOverride(context)) {
       effectiveTextStyle = effectiveTextStyle
@@ -177,7 +198,7 @@ class MathSelectable extends StatelessWidget {
 }
 
 class _SelectableMath extends StatefulWidget {
-  const _SelectableMath({
+  _SelectableMath({
     Key key,
     @required this.ast,
     @required this.cursorColor,
@@ -213,54 +234,43 @@ class _SelectableMath extends StatefulWidget {
 }
 
 class __SelectableMathState extends State<_SelectableMath>
-    with AutomaticKeepAliveClientMixin, MathSelectionManager {
-  final _toolbarLayerLink = LayerLink();
-  final _startHandleLayerLink = LayerLink();
-  final _endHandleLayerLink = LayerLink();
+    with
+        AutomaticKeepAliveClientMixin,
+        FocusManagerMixin,
+        MathSelectionManagerMixin,
+        MathSelectionOverlayManager
+        // WebSelectionManagerMixin 
+        {
+  TextSelectionControls get textSelectionControls =>
+      widget.textSelectionControls;
 
   FocusNode _focusNode;
   FocusNode get focusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
 
-  bool get _hasFocus => focusNode.hasFocus;
-
   MathController controller;
 
-  MathSelectionOverlay _selectionOverlay;
+  @override
+  void initState() {
+    controller = MathController(ast: widget.ast);
+    super.initState();
+  }
 
-  MathSelectableSelectionGestureDetectorBuilder
-      _selectionGestureDetectorBuilder;
-
-  void handleSelectionChanged(
-      TextSelection selection, SelectionChangedCause cause,
-      {bool rebuildOverlay = true}) {
-    super.handleSelectionChanged(selection, cause);
-    if (!_hasFocus) {
-      focusNode.requestFocus();
+  @override
+  void didUpdateWidget(covariant _SelectableMath oldWidget) {
+    if (widget.ast != controller.ast) {
+      controller = MathController(ast: widget.ast);
     }
+    super.didUpdateWidget(oldWidget);
+  }
 
-    if (rebuildOverlay) {
-      _selectionOverlay?.hide();
-      _selectionOverlay = null;
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
-      if (widget.textSelectionControls != null) {
-        _selectionOverlay = MathSelectionOverlay(
-          manager: this,
-          toolbarLayerLink: _toolbarLayerLink,
-          startHandleLayerLink: _startHandleLayerLink,
-          endHandleLayerLink: _endHandleLayerLink,
-          onSelectionHandleTapped: () {
-            if (!controller.selection.isCollapsed) {
-              toolbarVisible ? hideToolbar() : showToolbar();
-            }
-          },
-          selectionControls: widget.textSelectionControls,
-        );
-        _selectionOverlay.handlesVisible = _shouldShowSelectionHandles(cause);
-        _selectionOverlay.showHandles();
-      }
-    } else {
-      _selectionOverlay?.update();
-    }
+  void onSelectionChanged(
+      TextSelection selection, SelectionChangedCause cause) {
     switch (Theme.of(context).platform) {
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
@@ -276,96 +286,17 @@ class __SelectableMathState extends State<_SelectableMath>
     }
   }
 
-  bool _shouldShowSelectionHandles(SelectionChangedCause cause) {
-    // When the text field is activated by something that doesn't trigger the
-    // selection overlay, we shouldn't show the handles either.
-    if (!_selectionGestureDetectorBuilder.shouldShowSelectionToolbar)
-      return false;
-
-    if (controller.selection.isCollapsed) return false;
-
-    if (cause == SelectionChangedCause.keyboard) return false;
-
-    if (cause == SelectionChangedCause.longPress) return true;
-
-    if (controller.ast.greenRoot.capturedCursor > 1) return true;
-
-    return false;
-  }
-
-  /// Shows the selection toolbar at the location of the current cursor.
-  ///
-  /// Returns `false` if a toolbar couldn't be shown, such as when the toolbar
-  /// is already shown, or when no text selection currently exists.
-  bool showToolbar() {
-    // Web is using native dom elements to enable clipboard functionality of the
-    // toolbar: copy, paste, select, cut. It might also provide additional
-    // functionality depending on the browser (such as translate). Due to this
-    // we should not show a Flutter toolbar for the editable text elements.
-    if (kIsWeb) {
-      return false;
-    }
-
-    if (_selectionOverlay == null || _selectionOverlay.toolbarIsVisible) {
-      return false;
-    }
-
-    _selectionOverlay.showToolbar();
-    toolbarVisible = true;
-    return true;
-  }
-
-  @override
-  void hideToolbar() {
-    toolbarVisible = false;
-    _selectionOverlay?.hideToolbar();
-  }
-
-  @override
-  void hide() {
-    toolbarVisible = false;
-    _selectionOverlay?.hide();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    controller = MathController(
-      ast: widget.ast,
-      selection: defaultSelection,
-    );
-    _selectionGestureDetectorBuilder =
-        MathSelectableSelectionGestureDetectorBuilder(delegate: this);
-  }
-
-  @override
-  void didUpdateWidget(covariant _SelectableMath oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    controller.ast = widget.ast;
-    _selectionOverlay?.update();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    _selectionOverlay?.dispose();
-    super.dispose();
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
 
-    final child = widget.ast.buildWidget(widget.options);
+    final child = controller.ast.buildWidget(widget.options);
 
-    return _selectionGestureDetectorBuilder.buildGestureDetector(
+    return selectionGestureDetectorBuilder.buildGestureDetector(
       child: MouseRegion(
         cursor: SystemMouseCursors.text,
         child: CompositedTransformTarget(
-          link: _toolbarLayerLink,
+          link: toolbarLayerLink,
           child: MultiProvider(
             providers: [
               Provider.value(value: FlutterMathMode.select),
@@ -375,7 +306,7 @@ class __SelectableMathState extends State<_SelectableMath>
                 update: (context, value, previous) => value.selection,
               ),
               Provider.value(
-                value: Tuple2(_startHandleLayerLink, _endHandleLayerLink),
+                value: Tuple2(startHandleLayerLink, endHandleLayerLink),
               ),
             ],
             child: child,
@@ -385,7 +316,8 @@ class __SelectableMathState extends State<_SelectableMath>
     );
   }
 
-  bool toolbarVisible = false;
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   bool get copyEnabled => true;
@@ -394,20 +326,7 @@ class __SelectableMathState extends State<_SelectableMath>
   bool get cutEnabled => false;
 
   @override
-  Rect getLocalEditingRegion() {
-    final root = widget.ast.greenRoot.key.currentContext.findRenderObject()
-        as RenderEditableLine;
-    return Rect.fromPoints(
-      Offset.zero,
-      root.size.bottomRight(Offset.zero),
-    );
-  }
-
-  @override
   bool get pasteEnabled => false;
-
-  @override
-  double get preferredLineHeight => widget.options.fontSize;
 
   @override
   bool get selectAllEnabled => true;
@@ -416,19 +335,11 @@ class __SelectableMathState extends State<_SelectableMath>
   bool get forcePressEnabled => widget.forcePressEnabled;
 
   @override
-  bool get hasFocus => focusNode.hasFocus;
-
-  @override
   bool get selectionEnabled => true;
 
   @override
-  TextEditingValue get textEditingValue {
-    final string = controller.selectedNodes.encodeTex();
-    return TextEditingValue(
-      text: string,
-      selection: TextSelection(baseOffset: 0, extentOffset: string.length),
-    );
-  }
+  double get preferredLineHeight => widget.options.fontSize;
 
-  set textEditingValue(TextEditingValue value) {}
+  @override
+  void bringIntoView(TextPosition position) {}
 }

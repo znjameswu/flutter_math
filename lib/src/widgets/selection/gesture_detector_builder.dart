@@ -1,12 +1,19 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
-import 'selection_manager.dart';
+
+import 'overlay_manager.dart';
+
+abstract class MathSelectionGestureDetectorBuilderDelegate {
+  bool get forcePressEnabled;
+
+  bool get selectionEnabled;
+}
 
 class MathSelectionGestureDetectorBuilder {
   MathSelectionGestureDetectorBuilder({
     @required this.delegate,
   });
-  final MathSelectionManager delegate;
+  final MathSelectionOverlayManager delegate;
 
   /// Whether to show the selection toolbar.
   ///
@@ -18,8 +25,6 @@ class MathSelectionGestureDetectorBuilder {
 
   @protected
   Offset lastTapDownPosition;
-
-
 
   /// Handler for [TextSelectionGestureDetector.onTapDown].
   ///

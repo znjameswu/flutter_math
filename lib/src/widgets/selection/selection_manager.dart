@@ -1,42 +1,28 @@
 import 'dart:math' as math;
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+
+import '../../encoder/tex/encoder.dart';
 
 import '../../render/layout/line_editable.dart';
 import '../../utils/render_box_extensions.dart';
 import '../controller.dart';
 
-abstract class MathSelectionManager implements TextSelectionDelegate {
-  // bool get toolbarVisible;
-  // set toolbarVisible(bool value);
 
-  // bool get handleVisible;
-  // set handleVisible(bool value);
+mixin MathSelectionManagerMixin<T extends StatefulWidget>
+    on State<T> implements TextSelectionDelegate {
+  MathController get controller;
 
-  BuildContext get context;
-
-  bool get hasFocus;
-
-  bool get forcePressEnabled;
-
-  bool get selectionEnabled;
-
-  bool showToolbar();
-
-  void hideToolbar();
-
-  void hide();
-
-  MathController controller;
-
-  double get preferredLineHeight;
+  void onSelectionChanged(TextSelection selection, SelectionChangedCause cause);
 
   @mustCallSuper
   void handleSelectionChanged(
       TextSelection selection, SelectionChangedCause cause,
       {bool rebuildOverlay = true}) {
     controller.selection = selection;
+    onSelectionChanged(selection, cause);
   }
 
   void selectPositionAt({
@@ -120,12 +106,23 @@ abstract class MathSelectionManager implements TextSelectionDelegate {
     }
   }
 
-  Rect getLocalEditingRegion();
+  Rect getLocalEditingRegion() {
+    final root = controller.ast.greenRoot.key.currentContext.findRenderObject()
+        as RenderEditableLine;
+    return Rect.fromPoints(
+      Offset.zero,
+      root.size.bottomRight(Offset.zero),
+    );
+  }
 
-  bool handleKeyEvents(RawKeyEvent key) => false;
+  @override
+  TextEditingValue get textEditingValue {
+    final string = controller.selectedNodes.encodeTex();
+    return TextEditingValue(
+      text: string,
+      selection: TextSelection(baseOffset: 0, extentOffset: string.length),
+    );
+  }
 
-  // Following are overrides from TextSelectionDelegate
-
-  void bringIntoView(TextPosition position) {}
-
+  set textEditingValue(TextEditingValue value) {}
 }

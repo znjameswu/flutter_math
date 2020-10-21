@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../ast/syntax_tree.dart';
 import 'handle_overlay.dart';
-import 'selection_manager.dart';
+import 'overlay_manager.dart';
 
 enum MathSelectionHandlePosition { start, end }
 
@@ -59,7 +59,7 @@ class MathSelectionOverlay {
 
   /// The delegate for manipulating the current selection in the owning
   /// text field.
-  final MathSelectionManager manager;
+  final MathSelectionOverlayManager manager;
 
   /// Determines the way that drag start behavior is handled.
   ///

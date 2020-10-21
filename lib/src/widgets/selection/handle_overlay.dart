@@ -7,7 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import 'overlay.dart';
-import 'selection_manager.dart';
+import 'overlay_manager.dart';
 
 class MathSelectionHandleOverlay extends StatefulWidget {
   MathSelectionHandleOverlay({
@@ -25,7 +25,7 @@ class MathSelectionHandleOverlay extends StatefulWidget {
   }) : super(key: key);
 
   // final SyntaxTree ast;
-  final MathSelectionManager manager;
+  final MathSelectionOverlayManager manager;
   final TextSelection selection;
   final MathSelectionHandlePosition position;
   final LayerLink startHandleLayerLink;
@@ -44,8 +44,7 @@ class MathSelectionHandleOverlay extends StatefulWidget {
       _MathSelectionHandleOverlayState();
 }
 
-class _MathSelectionHandleOverlayState
-    extends State<MathSelectionHandleOverlay>
+class _MathSelectionHandleOverlayState extends State<MathSelectionHandleOverlay>
     with SingleTickerProviderStateMixin {
   Offset _dragPosition;
 
