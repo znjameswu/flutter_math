@@ -15,7 +15,7 @@ dependencies:
   flutter_math:
     path: ../
   provider: any
-  flutter_tex: ^3.6.7+9
+  flutter_tex: ^3.6.7+10
   google_fonts: ^1.1.0
 
 

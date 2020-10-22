@@ -59,7 +59,7 @@ class DemoPage extends StatelessWidget {
                             padding: EdgeInsets.all(10),
                             child: Consumer<TextEditingController>(
                               builder: (context, controller, _) =>
-                                  FlutterMath.fromTexString(
+                                  MathSelectable.tex(
                                 controller.value.text,
                                 options: Options(
                                   style: MathStyle.display,
