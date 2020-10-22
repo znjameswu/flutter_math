@@ -21,7 +21,7 @@ import 'selection/web_selection_manager.dart';
 
 const defaultSelection = TextSelection.collapsed(offset: -1);
 
-class MathSelectable extends StatelessWidget {
+class MathSelectable extends StatefulWidget {
   const MathSelectable({
     Key key,
     this.ast,
@@ -68,6 +68,8 @@ class MathSelectable extends StatelessWidget {
 
   final TextSelectionControls textSelectionControls;
 
+  final ToolbarOptions toolbarOptions;
+
   final bool showCursor;
 
   final bool autofocus;
@@ -79,8 +81,6 @@ class MathSelectable extends StatelessWidget {
   final double cursorHeight;
 
   final bool enableInteractiveSelection;
-
-  final ToolbarOptions toolbarOptions;
 
   factory MathSelectable.tex(
     String expression, {
@@ -115,9 +115,67 @@ class MathSelectable extends StatelessWidget {
     }
   }
 
+  @override
+  _MathSelectableState createState() => _MathSelectableState();
+}
+
+class _MathSelectableState extends State<MathSelectable>
+    with
+        AutomaticKeepAliveClientMixin,
+        FocusManagerMixin,
+        MathSelectionManagerMixin,
+        MathSelectionOverlayManager,
+        WebSelectionManagerMixin {
+  TextSelectionControls get textSelectionControls =>
+      widget.textSelectionControls;
+
+  FocusNode _focusNode;
+  FocusNode get focusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
+
+  MathController controller;
+
+  @override
+  void initState() {
+    controller = MathController(ast: widget.ast);
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(MathSelectable oldWidget) {
+    if (widget.ast != controller.ast) {
+      controller = MathController(ast: widget.ast);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  void onSelectionChanged(
+      TextSelection selection, SelectionChangedCause cause) {
+    switch (Theme.of(context).platform) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        if (cause == SelectionChangedCause.longPress) {
+          bringIntoView(selection.base);
+        }
+        return;
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+      // Do nothing.
+    }
+  }
+
   Widget build(BuildContext context) {
-    if (parseError != null) {
-      return onErrorFallback(parseError);
+    super.build(context); // See AutomaticKeepAliveClientMixin.
+
+    if (widget.parseError != null) {
+      return widget.onErrorFallback(widget.parseError);
     }
 
     final theme = Theme.of(context);
@@ -128,10 +186,10 @@ class MathSelectable extends StatelessWidget {
     bool paintCursorAboveText;
     bool cursorOpacityAnimates;
     Offset cursorOffset;
-    var cursorColor = this.cursorColor;
+    var cursorColor = widget.cursorColor;
     Color selectionColor;
-    var cursorRadius = this.cursorRadius;
-    bool forcePressEnabled;
+    var cursorRadius = widget.cursorRadius;
+    // bool forcePressEnabled;
 
     switch (theme.platform) {
       case TargetPlatform.iOS:
@@ -174,120 +232,15 @@ class MathSelectable extends StatelessWidget {
         break;
     }
 
-    var effectiveTextStyle = style;
-    if (style == null || style.inherit) {
-      effectiveTextStyle = DefaultTextStyle.of(context).style.merge(style);
+    var effectiveTextStyle = widget.style;
+    if (widget.style == null || widget.style.inherit) {
+      effectiveTextStyle =
+          DefaultTextStyle.of(context).style.merge(widget.style);
     }
     if (MediaQuery.boldTextOverride(context)) {
       effectiveTextStyle = effectiveTextStyle
           .merge(const TextStyle(fontWeight: FontWeight.bold));
     }
-
-    return _SelectableMath(
-      ast: ast,
-      cursorColor: cursorColor,
-      cursorRadius: cursorRadius,
-      focusNode: focusNode,
-      forcePressEnabled: forcePressEnabled,
-      options: options,
-      onErrorFallback: onErrorFallback,
-      parseError: parseError,
-      textSelectionControls: textSelectionControls,
-    );
-  }
-}
-
-class _SelectableMath extends StatefulWidget {
-  _SelectableMath({
-    Key key,
-    @required this.ast,
-    @required this.cursorColor,
-    @required this.cursorRadius,
-    @required this.focusNode,
-    @required this.forcePressEnabled,
-    @required this.options,
-    @required this.onErrorFallback,
-    @required this.parseError,
-    @required this.textSelectionControls,
-  }) : super(key: key);
-
-  final SyntaxTree ast;
-
-  final Color cursorColor;
-
-  final Radius cursorRadius;
-
-  final FocusNode focusNode;
-
-  final bool forcePressEnabled;
-
-  final Options options;
-
-  final OnErrorFallback onErrorFallback;
-
-  final dynamic parseError;
-
-  final TextSelectionControls textSelectionControls;
-
-  @override
-  __SelectableMathState createState() => __SelectableMathState();
-}
-
-class __SelectableMathState extends State<_SelectableMath>
-    with
-        AutomaticKeepAliveClientMixin,
-        FocusManagerMixin,
-        MathSelectionManagerMixin,
-        MathSelectionOverlayManager,
-        WebSelectionManagerMixin {
-  TextSelectionControls get textSelectionControls =>
-      widget.textSelectionControls;
-
-  FocusNode _focusNode;
-  FocusNode get focusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
-
-  MathController controller;
-
-  @override
-  void initState() {
-    controller = MathController(ast: widget.ast);
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant _SelectableMath oldWidget) {
-    if (widget.ast != controller.ast) {
-      controller = MathController(ast: widget.ast);
-    }
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  void onSelectionChanged(
-      TextSelection selection, SelectionChangedCause cause) {
-    switch (Theme.of(context).platform) {
-      case TargetPlatform.iOS:
-      case TargetPlatform.macOS:
-        if (cause == SelectionChangedCause.longPress) {
-          bringIntoView(selection.base);
-        }
-        return;
-      case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-      case TargetPlatform.linux:
-      case TargetPlatform.windows:
-      // Do nothing.
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context); // See AutomaticKeepAliveClientMixin.
 
     final child = controller.ast.buildWidget(widget.options);
 
@@ -331,7 +284,7 @@ class __SelectableMathState extends State<_SelectableMath>
   bool get selectAllEnabled => true;
 
   @override
-  bool get forcePressEnabled => widget.forcePressEnabled;
+  bool forcePressEnabled;
 
   @override
   bool get selectionEnabled => true;
