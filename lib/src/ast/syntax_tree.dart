@@ -10,7 +10,9 @@ import '../render/layout/line.dart';
 import '../render/layout/line_editable.dart';
 import '../utils/iterable_extensions.dart';
 import '../utils/num_extension.dart';
+import '../utils/wrapper.dart';
 import '../widgets/flutter_math.dart';
+import '../widgets/selectable.dart';
 import 'nodes/space.dart';
 import 'nodes/sqrt.dart';
 import 'options.dart';
@@ -660,16 +662,30 @@ class EquationRowNode extends ParentableNode<GreenNode>
               endHandleLayerLink,
             );
           },
-          builder: (context, conf, _) => EditableLine(
-            key: _key,
-            children: lineChildren,
-            node: this,
-            preferredLineHeight: options.fontSize,
-            selection: conf.item1,
-            selectionColor: Theme.of(context).textSelectionColor,
-            startHandleLayerLink: conf.item2,
-            endHandleLayerLink: conf.item3,
-          ),
+          builder: (context, conf, _) {
+            final value = Provider.of<SelectionStyle>(context);
+            return EditableLine(
+              key: _key,
+              children: lineChildren,
+              devicePixelRatio: MediaQuery.of(context).devicePixelRatio ?? 1.0,
+              node: this,
+              preferredLineHeight: options.fontSize,
+              cursorBlinkOpacityController:
+                  Provider.of<Wrapper<AnimationController>>(context).value,
+              selection: conf.item1,
+              startHandleLayerLink: conf.item2,
+              endHandleLayerLink: conf.item3,
+              cursorColor: value.cursorColor,
+              cursorOffset: value.cursorOffset,
+              cursorRadius: value.cursorRadius,
+              cursorWidth: value.cursorWidth,
+              cursorHeight: value.cursorHeight,
+              hintingColor: value.hintingColor,
+              paintCursorAboveText: value.paintCursorAboveText,
+              selectionColor: value.selectionColor,
+              showCursor: value.showCursor,
+            );
+          },
         ),
       );
     });
