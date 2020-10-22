@@ -728,7 +728,9 @@ mixin _ClipChildrenMixin on ParentableNode {
     final childIndex2Ceil = childIndex2.ceil();
     GreenNode head;
     GreenNode tail;
-    if (childIndex1Floor != childIndex1 && childIndex1Floor >= 0) {
+    if (childIndex1Floor != childIndex1 &&
+        childIndex1Floor >= 0 &&
+        childIndex1Floor <= children.length - 1) {
       final child = children[childIndex1Floor];
       if (child is TransparentNode) {
         head = child.clipChildrenBetween(
@@ -739,6 +741,7 @@ mixin _ClipChildrenMixin on ParentableNode {
       }
     }
     if (childIndex2Ceil != childIndex2 &&
+        childIndex2Floor >= 0 &&
         childIndex2Floor <= children.length - 1) {
       final child = children[childIndex2Floor];
       if (child is TransparentNode) {
