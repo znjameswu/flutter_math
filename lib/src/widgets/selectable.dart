@@ -238,9 +238,8 @@ class __SelectableMathState extends State<_SelectableMath>
         AutomaticKeepAliveClientMixin,
         FocusManagerMixin,
         MathSelectionManagerMixin,
-        MathSelectionOverlayManager
-        // WebSelectionManagerMixin 
-        {
+        MathSelectionOverlayManager,
+        WebSelectionManagerMixin {
   TextSelectionControls get textSelectionControls =>
       widget.textSelectionControls;
 
