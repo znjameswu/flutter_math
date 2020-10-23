@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
 import '../ast/options.dart';
+import '../ast/style.dart';
 import '../ast/syntax_tree.dart';
 import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
@@ -36,17 +37,23 @@ class MathSelectable extends StatelessWidget {
     this.dragStartBehavior = DragStartBehavior.start,
     this.enableInteractiveSelection = true,
     this.focusNode,
-    this.hintingColor,
+    this.mathStyle = MathStyle.display,
     @required this.onErrorFallback,
     @required this.options,
     this.parseError,
     this.showCursor = false,
-    this.style,
+    this.textScaleFactor,
     this.textSelectionControls,
+    this.textStyle,
     ToolbarOptions toolbarOptions,
-  })  : assert(showCursor != null),
+  })  : assert(ast != null || parseError != null),
         assert(autofocus != null),
+        assert(cursorWidth != null),
         assert(dragStartBehavior != null),
+        assert(enableInteractiveSelection != null),
+        assert(mathStyle != null || options != null),
+        assert(onErrorFallback != null),
+        assert(showCursor != null),
         toolbarOptions = toolbarOptions ??
             const ToolbarOptions(
               selectAll: true,
@@ -72,7 +79,7 @@ class MathSelectable extends StatelessWidget {
 
   final FocusNode focusNode;
 
-  final Color hintingColor;
+  final MathStyle mathStyle;
 
   final OnErrorFallback onErrorFallback;
 
@@ -82,9 +89,11 @@ class MathSelectable extends StatelessWidget {
 
   final bool showCursor;
 
-  final TextStyle style;
+  final double textScaleFactor;
 
   final TextSelectionControls textSelectionControls;
+
+  final TextStyle textStyle;
 
   final ToolbarOptions toolbarOptions;
 
@@ -126,9 +135,37 @@ class MathSelectable extends StatelessWidget {
       return onErrorFallback(parseError);
     }
 
+    var effectiveTextStyle = textStyle;
+    if (textStyle == null || textStyle.inherit) {
+      effectiveTextStyle = DefaultTextStyle.of(context).style.merge(textStyle);
+    }
+    if (MediaQuery.boldTextOverride(context)) {
+      effectiveTextStyle = effectiveTextStyle
+          .merge(const TextStyle(fontWeight: FontWeight.bold));
+    }
+
+    final textScaleFactor =
+        this.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
+
+    final options = this.options ??
+        Options(
+          style: mathStyle,
+          fontSize: effectiveTextStyle.fontSize * textScaleFactor,
+          mathFontOptions: effectiveTextStyle.fontWeight != FontWeight.normal
+              ? FontOptions(fontWeight: effectiveTextStyle.fontWeight)
+              : null,
+        );
+    
+    // A trial build to catch any potential build errors
+    try {
+      ast.buildWidget(options);
+    } on dynamic catch (e) {
+      return onErrorFallback(e.toString());
+    }
+
     final theme = Theme.of(context);
     // The following code adapts for Flutter's new theme system (https://github.com/flutter/flutter/pull/62014/)
-    // final selectionTheme = TextSelectionTheme.of(context);
+    final selectionTheme = TextSelectionTheme.of(context);
 
     var textSelectionControls = this.textSelectionControls;
     bool paintCursorAboveText;
@@ -146,15 +183,15 @@ class MathSelectable extends StatelessWidget {
         textSelectionControls ??= cupertinoTextSelectionControls;
         paintCursorAboveText = true;
         cursorOpacityAnimates = true;
-        // if (theme.useTextSelectionTheme) {
-        //   cursorColor ??= selectionTheme.cursorColor ??
-        //       CupertinoTheme.of(context).primaryColor;
-        //   selectionColor = selectionTheme.selectionColor ??
-        //       CupertinoTheme.of(context).primaryColor;
-        // } else {
-        cursorColor ??= CupertinoTheme.of(context).primaryColor;
-        selectionColor = theme.textSelectionColor;
-        // }
+        if (theme.useTextSelectionTheme) {
+          cursorColor ??= selectionTheme.cursorColor ??
+              CupertinoTheme.of(context).primaryColor;
+          selectionColor = selectionTheme.selectionColor ??
+              CupertinoTheme.of(context).primaryColor;
+        } else {
+          cursorColor ??= CupertinoTheme.of(context).primaryColor;
+          selectionColor = theme.textSelectionColor;
+        }
         cursorRadius ??= const Radius.circular(2.0);
         cursorOffset = Offset(
             iOSHorizontalOffset / MediaQuery.of(context).devicePixelRatio, 0);
@@ -168,53 +205,75 @@ class MathSelectable extends StatelessWidget {
         textSelectionControls ??= materialTextSelectionControls;
         paintCursorAboveText = false;
         cursorOpacityAnimates = false;
-        // if (theme.useTextSelectionTheme) {
-        //   cursorColor ??=
-        //       selectionTheme.cursorColor ?? theme.colorScheme.primary;
-        //   selectionColor =
-        //       selectionTheme.selectionColor ?? theme.colorScheme.primary;
-        // } else {
-        cursorColor ??= theme.cursorColor;
-        selectionColor = theme.textSelectionColor;
-        // }
+        if (theme.useTextSelectionTheme) {
+          cursorColor ??=
+              selectionTheme.cursorColor ?? theme.colorScheme.primary;
+          selectionColor =
+              selectionTheme.selectionColor ?? theme.colorScheme.primary;
+        } else {
+          cursorColor ??= theme.cursorColor;
+          selectionColor = theme.textSelectionColor;
+        }
         break;
     }
 
-    var effectiveTextStyle = style;
-    if (style == null || style.inherit) {
-      effectiveTextStyle = DefaultTextStyle.of(context).style.merge(style);
-    }
-    if (MediaQuery.boldTextOverride(context)) {
-      effectiveTextStyle = effectiveTextStyle
-          .merge(const TextStyle(fontWeight: FontWeight.bold));
-    }
+    
 
-    return _SelectableMath(
-      ast: ast,
-      autofocus: autofocus,
-      cursorColor: cursorColor,
-      cursorOffset: cursorOffset,
-      cursorOpacityAnimates: cursorOpacityAnimates,
-      cursorRadius: cursorRadius,
-      cursorWidth: cursorWidth,
-      cursorHeight: cursorHeight,
-      dragStartBehavior: dragStartBehavior,
-      enableInteractiveSelection: enableInteractiveSelection,
-      focusNode: focusNode,
-      forcePressEnabled: forcePressEnabled,
-      hintingColor: hintingColor,
-      onErrorFallback: onErrorFallback,
-      options: options,
-      paintCursorAboveText: paintCursorAboveText,
-      selectionColor: selectionColor,
-      showCursor: showCursor,
-      textSelectionControls: textSelectionControls,
-      toolbarOptions: toolbarOptions,
+    return RepaintBoundary(
+      child: _SelectableMath(
+        ast: ast,
+        autofocus: autofocus,
+        cursorColor: cursorColor,
+        cursorOffset: cursorOffset,
+        cursorOpacityAnimates: cursorOpacityAnimates,
+        cursorRadius: cursorRadius,
+        cursorWidth: cursorWidth,
+        cursorHeight: cursorHeight,
+        dragStartBehavior: dragStartBehavior,
+        enableInteractiveSelection: enableInteractiveSelection,
+        focusNode: focusNode,
+        forcePressEnabled: forcePressEnabled,
+        onErrorFallback: onErrorFallback,
+        options: options,
+        paintCursorAboveText: paintCursorAboveText,
+        selectionColor: selectionColor,
+        showCursor: showCursor,
+        textSelectionControls: textSelectionControls,
+        toolbarOptions: toolbarOptions,
+      ),
     );
   }
 }
 
 class _SelectableMath extends StatefulWidget {
+  const _SelectableMath({
+    Key key,
+    @required this.ast,
+    this.autofocus = false,
+    this.cursorColor,
+    this.cursorOffset,
+    this.cursorOpacityAnimates = false,
+    this.cursorRadius,
+    this.cursorWidth = 2.0,
+    this.cursorHeight,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.enableInteractiveSelection = true,
+    this.forcePressEnabled = false,
+    this.focusNode,
+    this.hintingColor,
+    this.onErrorFallback,
+    @required this.options,
+    this.paintCursorAboveText = false,
+    this.selectionColor,
+    this.showCursor = false,
+    this.textSelectionControls,
+    this.toolbarOptions,
+  })  : assert(ast != null),
+        assert(options != null),
+        assert(textSelectionControls != null),
+        assert(toolbarOptions != null),
+        super(key: key);
+
   final SyntaxTree ast;
 
   final bool autofocus;
@@ -254,30 +313,6 @@ class _SelectableMath extends StatefulWidget {
   final TextSelectionControls textSelectionControls;
 
   final ToolbarOptions toolbarOptions;
-
-  const _SelectableMath({
-    Key key,
-    this.ast,
-    this.autofocus,
-    this.cursorColor,
-    this.cursorOffset,
-    this.cursorOpacityAnimates,
-    this.cursorRadius,
-    this.cursorWidth,
-    this.cursorHeight,
-    this.dragStartBehavior,
-    this.enableInteractiveSelection,
-    this.forcePressEnabled,
-    this.focusNode,
-    this.hintingColor,
-    this.onErrorFallback,
-    this.options,
-    this.paintCursorAboveText,
-    this.selectionColor,
-    this.showCursor,
-    this.textSelectionControls,
-    this.toolbarOptions,
-  }) : super(key: key);
 
   @override
   __SelectableMathState createState() => __SelectableMathState();
