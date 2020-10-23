@@ -10,9 +10,8 @@ import '../../render/layout/line_editable.dart';
 import '../../utils/render_box_extensions.dart';
 import '../controller.dart';
 
-
-mixin MathSelectionManagerMixin<T extends StatefulWidget>
-    on State<T> implements TextSelectionDelegate {
+mixin MathSelectionManagerMixin<T extends StatefulWidget> on State<T>
+    implements TextSelectionDelegate {
   MathController get controller;
 
   void onSelectionChanged(TextSelection selection, SelectionChangedCause cause);
@@ -34,6 +33,16 @@ mixin MathSelectionManagerMixin<T extends StatefulWidget>
     final toPosition = to == null ? fromPosition : getPositionForOffset(to);
     handleSelectionChanged(
       TextSelection(baseOffset: fromPosition, extentOffset: toPosition),
+      cause,
+    );
+  }
+
+  void selectWordAt({
+    Offset offset,
+    SelectionChangedCause cause,
+  }) {
+    handleSelectionChanged(
+      getWordRangeAtPoint(offset),
       cause,
     );
   }

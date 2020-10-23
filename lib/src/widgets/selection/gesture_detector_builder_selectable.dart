@@ -66,9 +66,9 @@ class MathSelectableSelectionGestureDetectorBuilder
   @override
   void onSingleLongTapStart(LongPressStartDetails details) {
     if (delegate.selectionEnabled) {
-      delegate.handleSelectionChanged(
-        delegate.getWordRangeAtPoint(details.globalPosition),
-        SelectionChangedCause.longPress,
+      delegate.selectWordAt(
+        offset: details.globalPosition,
+        cause: SelectionChangedCause.longPress,
       );
 
       Feedback.forLongPress(delegate.context);

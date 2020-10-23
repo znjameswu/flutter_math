@@ -220,7 +220,7 @@ class MathSelectable extends StatelessWidget {
     
 
     return RepaintBoundary(
-      child: _SelectableMath(
+      child: InternalSelectableMath(
         ast: ast,
         autofocus: autofocus,
         cursorColor: cursorColor,
@@ -245,8 +245,8 @@ class MathSelectable extends StatelessWidget {
   }
 }
 
-class _SelectableMath extends StatefulWidget {
-  const _SelectableMath({
+class InternalSelectableMath extends StatefulWidget {
+  const InternalSelectableMath({
     Key key,
     @required this.ast,
     this.autofocus = false,
@@ -315,10 +315,10 @@ class _SelectableMath extends StatefulWidget {
   final ToolbarOptions toolbarOptions;
 
   @override
-  __SelectableMathState createState() => __SelectableMathState();
+  InternalSelectableMathState createState() => InternalSelectableMathState();
 }
 
-class __SelectableMathState extends State<_SelectableMath>
+class InternalSelectableMathState extends State<InternalSelectableMath>
     with
         AutomaticKeepAliveClientMixin,
         FocusManagerMixin,
@@ -346,7 +346,7 @@ class __SelectableMathState extends State<_SelectableMath>
   }
 
   @override
-  void didUpdateWidget(_SelectableMath oldWidget) {
+  void didUpdateWidget(InternalSelectableMath oldWidget) {
     if (widget.ast != controller.ast) {
       controller = MathController(ast: widget.ast);
     }

@@ -63,9 +63,9 @@ class MathSelectionGestureDetectorBuilder {
     assert(delegate.forcePressEnabled);
     _shouldShowSelectionToolbar = true;
     if (delegate.selectionEnabled) {
-      delegate.handleSelectionChanged(
-        delegate.getWordRangeAtPoint(details.globalPosition),
-        SelectionChangedCause.forcePress,
+      delegate.selectWordAt(
+        offset: details.globalPosition,
+        cause: SelectionChangedCause.forcePress,
       );
     }
   }
@@ -84,9 +84,9 @@ class MathSelectionGestureDetectorBuilder {
   @protected
   void onForcePressEnd(ForcePressDetails details) {
     assert(delegate.forcePressEnabled);
-    delegate.handleSelectionChanged(
-      delegate.getWordRangeAtPoint(details.globalPosition),
-      SelectionChangedCause.forcePress,
+    delegate.selectWordAt(
+      offset: details.globalPosition,
+      cause: SelectionChangedCause.forcePress,
     );
     if (shouldShowSelectionToolbar) {
       delegate.showToolbar();
