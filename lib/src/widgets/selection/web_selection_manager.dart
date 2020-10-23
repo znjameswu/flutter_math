@@ -55,6 +55,7 @@ mixin WebSelectionManagerMixin<T extends StatefulWidget>
   void dispose() {
     focusNode.removeListener(_handleFocusChange);
     controller.removeListener(_handleControllerChange);
+    _closeInputConnectionIfNeeded();
     super.dispose();
   }
 
