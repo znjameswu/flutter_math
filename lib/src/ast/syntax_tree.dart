@@ -52,8 +52,8 @@ class SyntaxTree {
     }
     return replaceNode(
         pos.parent,
-        pos.parent.value.updateChildren(pos.parent.value.children
-            .map((child) => identical(child, pos.value) ? newNode : child)
+        pos.parent.value.updateChildren(pos.parent.children
+            .map((child) => identical(child, pos) ? newNode : child.value)
             .toList(growable: false)));
   }
 
