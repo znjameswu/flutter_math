@@ -154,7 +154,8 @@ class MathSelectionGestureDetectorBuilder {
   @protected
   void onDoubleTapDown(TapDownDetails details) {
     if (delegate.selectionEnabled) {
-      // renderEditable.selectWord(cause: SelectionChangedCause.tap);
+      delegate.selectWordAt(
+          offset: details.globalPosition, cause: SelectionChangedCause.tap);
       if (shouldShowSelectionToolbar) delegate.showToolbar();
     }
   }

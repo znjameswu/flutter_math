@@ -4,7 +4,11 @@
 
 // The following tests are transformed from flutter/test/widgets/selectable_text_test.dart
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_math/src/render/layout/line_editable.dart';
 import 'package:flutter_math/src/widgets/selectable.dart';
 import 'package:flutter_math/src/widgets/selection/handle_overlay.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,6 +16,31 @@ import 'package:flutter_test/flutter_test.dart';
 import '../load_fonts.dart';
 
 void main() {
+  // Returns the first RenderEditable.
+  RenderEditableLine findRenderEditableLine(WidgetTester tester) {
+    final root = tester.renderObject(find.byType(InternalSelectableMath));
+    expect(root, isNotNull);
+
+    RenderEditableLine renderEditable;
+    void recursiveFinder(RenderObject child) {
+      if (child is RenderEditableLine) {
+        renderEditable = child;
+        return;
+      }
+      child.visitChildren(recursiveFinder);
+    }
+
+    root.visitChildren(recursiveFinder);
+    expect(renderEditable, isNotNull);
+    return renderEditable;
+  }
+
+  Offset textOffsetToCaretPosition(WidgetTester tester, int index) {
+    final renderLine = findRenderEditableLine(tester);
+    final endpoints = renderLine.getEndpointForCaretIndex(index);
+    return endpoints + const Offset(0.0, -2.0);
+  }
+
   setUpAll(loadKaTeXFonts);
   group('SelectableMath test', () {
     testWidgets('selection handles are rendered and not faded away',
@@ -20,7 +49,9 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MathSelectable.tex(testText),
+            child: Center(
+              child: MathSelectable.tex(testText),
+            ),
           ),
         ),
       );
@@ -51,365 +82,308 @@ void main() {
       expect(right.opacity.value, equals(1.0));
     });
 
-//   testWidgets('selection handles are rendered and not faded away', (WidgetTester tester) async {
-//     const String testText = 'lorem ipsum';
+    testWidgets('selection handles are rendered and not faded away',
+        (WidgetTester tester) async {
+      const testText = r'abcdef\frac{abc}{def}\sqrt[abc]{def}';
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: Center(
+              child: MathSelectable.tex(testText),
+            ),
+          ),
+        ),
+      );
 
-//     await tester.pumpWidget(
-//       const MaterialApp(
-//         home: Material(
-//           child: SelectableText(testText),
-//         ),
-//       ),
-//     );
+      final state = tester.state<InternalSelectableMathState>(
+          find.byType(InternalSelectableMath));
 
-//     final RenderEditable renderEditable =
-//         tester.state<EditableTextState>(find.byType(EditableText)).renderEditable;
+      // await tester.tapAt(const Offset(20, 10));
+      state.selectWordAt(
+          offset: const Offset(20, 10), cause: SelectionChangedCause.longPress);
+      await tester.pumpAndSettle();
 
-//     await tester.tapAt(const Offset(20, 10));
-//     renderEditable.selectWord(cause: SelectionChangedCause.longPress);
-//     await tester.pumpAndSettle();
+      final transitions = find
+          .descendant(
+            of: find.byWidgetPredicate(
+                (Widget w) => w.runtimeType == MathSelectionHandleOverlay),
+            matching: find.byType(FadeTransition),
+          )
+          .evaluate()
+          .map((Element e) => e.widget)
+          .cast<FadeTransition>()
+          .toList();
+      expect(transitions.length, 2);
+      final left = transitions[0];
+      final right = transitions[1];
 
-//     final List<Widget> transitions =
-//     find.byType(FadeTransition).evaluate().map((Element e) => e.widget).toList();
-//     expect(transitions.length, 2);
-//     final FadeTransition left = transitions[0] as FadeTransition;
-//     final FadeTransition right = transitions[1] as FadeTransition;
+      expect(left.opacity.value, equals(1.0));
+      expect(right.opacity.value, equals(1.0));
+    },
+        variant: const TargetPlatformVariant(
+            <TargetPlatform>{TargetPlatform.iOS, TargetPlatform.macOS}));
 
-//     expect(left.opacity.value, equals(1.0));
-//     expect(right.opacity.value, equals(1.0));
-//   }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.iOS,  TargetPlatform.macOS }));
+    testWidgets('Long press shows handles and toolbar',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: Center(
+              child: MathSelectable.tex('abc def ghi'),
+            ),
+          ),
+        ),
+      );
 
-//   testWidgets('Long press shows handles and toolbar', (WidgetTester tester) async {
-//     await tester.pumpWidget(
-//       const MaterialApp(
-//         home: Material(
-//           child: SelectableText('abc def ghi'),
-//         ),
-//       ),
-//     );
+      // Long press at 'e' in 'def'.
+      final ePos = textOffsetToCaretPosition(tester, 5);
+      await tester.longPressAt(ePos);
+      await tester.pumpAndSettle();
 
-//     // Long press at 'e' in 'def'.
-//     final Offset ePos = textOffsetToPosition(tester, 5);
-//     await tester.longPressAt(ePos);
-//     await tester.pumpAndSettle();
+      final selectableMath = tester.state<InternalSelectableMathState>(
+          find.byType(InternalSelectableMath));
+      expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
+      expect(selectableMath.selectionOverlay.toolbarIsVisible, isTrue);
+    });
 
-//     final EditableTextState editableText = tester.state(find.byType(EditableText));
-//     expect(editableText.selectionOverlay.handlesAreVisible, isTrue);
-//     expect(editableText.selectionOverlay.toolbarIsVisible, isTrue);
-//   });
+    testWidgets('Double tap shows handles and toolbar',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: Center(
+              child: MathSelectable.tex('abc def ghi'),
+            ),
+          ),
+        ),
+      );
 
-//   testWidgets('Double tap shows handles and toolbar', (WidgetTester tester) async {
-//     await tester.pumpWidget(
-//       const MaterialApp(
-//         home: Material(
-//           child: SelectableText('abc def ghi'),
-//         ),
-//       ),
-//     );
+      // Double tap at 'e' in 'def'.
+      final ePos = textOffsetToCaretPosition(tester, 5);
+      await tester.tapAt(ePos);
+      await tester.pump(const Duration(milliseconds: 50));
+      await tester.tapAt(ePos);
+      await tester.pump();
 
-//     // Double tap at 'e' in 'def'.
-//     final Offset ePos = textOffsetToPosition(tester, 5);
-//     await tester.tapAt(ePos);
-//     await tester.pump(const Duration(milliseconds: 50));
-//     await tester.tapAt(ePos);
-//     await tester.pump();
+      final selectableMath = tester.state<InternalSelectableMathState>(
+          find.byType(InternalSelectableMath));
+      expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
+      expect(selectableMath.selectionOverlay.toolbarIsVisible, isTrue);
+    });
 
-//     final EditableTextState editableText = tester.state(find.byType(EditableText));
-//     expect(editableText.selectionOverlay.handlesAreVisible, isTrue);
-//     expect(editableText.selectionOverlay.toolbarIsVisible, isTrue);
-//   });
+    testWidgets(
+      'Mouse tap does not show handles nor toolbar',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: Center(
+                child: MathSelectable.tex('abc def ghi'),
+              ),
+            ),
+          ),
+        );
 
-//   testWidgets(
-//     'Mouse tap does not show handles nor toolbar',
-//     (WidgetTester tester) async {
-//       await tester.pumpWidget(
-//         const MaterialApp(
-//           home: Material(
-//             child: SelectableText('abc def ghi'),
-//           ),
-//         ),
-//       );
+        // Long press to trigger the selectable text.
+        final ePos = textOffsetToCaretPosition(tester, 5);
+        final gesture = await tester.startGesture(
+          ePos,
+          pointer: 7,
+          kind: PointerDeviceKind.mouse,
+        );
+        addTearDown(gesture.removePointer);
+        await tester.pump();
+        await gesture.up();
+        await tester.pump();
 
-//       // Long press to trigger the selectable text.
-//       final Offset ePos = textOffsetToPosition(tester, 5);
-//       final TestGesture gesture = await tester.startGesture(
-//         ePos,
-//         pointer: 7,
-//         kind: PointerDeviceKind.mouse,
-//       );
-//       addTearDown(gesture.removePointer);
-//       await tester.pump();
-//       await gesture.up();
-//       await tester.pump();
+        final selectableMath = tester.state<InternalSelectableMathState>(
+            find.byType(InternalSelectableMath));
+        expect(selectableMath.selectionOverlay.toolbarIsVisible, isFalse);
+        expect(selectableMath.selectionOverlay.handlesAreVisible, isFalse);
+      },
+    );
 
-//       final EditableTextState editableText = tester.state(find.byType(EditableText));
-//       expect(editableText.selectionOverlay.toolbarIsVisible, isFalse);
-//       expect(editableText.selectionOverlay.handlesAreVisible, isFalse);
-//     },
-//   );
+    testWidgets(
+      'Mouse long press does not show handles nor toolbar',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: Center(
+                child: MathSelectable.tex('abc def ghi'),
+              ),
+            ),
+          ),
+        );
 
-//   testWidgets(
-//     'Mouse long press does not show handles nor toolbar',
-//     (WidgetTester tester) async {
-//       await tester.pumpWidget(
-//         const MaterialApp(
-//           home: Material(
-//             child: SelectableText('abc def ghi'),
-//           ),
-//         ),
-//       );
+        // Long press to trigger the selectable text.
+        final ePos = textOffsetToCaretPosition(tester, 5);
+        final gesture = await tester.startGesture(
+          ePos,
+          pointer: 7,
+          kind: PointerDeviceKind.mouse,
+        );
+        addTearDown(gesture.removePointer);
+        await tester.pump(const Duration(seconds: 2));
+        await gesture.up();
+        await tester.pump();
 
-//       // Long press to trigger the selectable text.
-//       final Offset ePos = textOffsetToPosition(tester, 5);
-//       final TestGesture gesture = await tester.startGesture(
-//         ePos,
-//         pointer: 7,
-//         kind: PointerDeviceKind.mouse,
-//       );
-//       addTearDown(gesture.removePointer);
-//       await tester.pump(const Duration(seconds: 2));
-//       await gesture.up();
-//       await tester.pump();
+        final selectableMath = tester.state<InternalSelectableMathState>(
+            find.byType(InternalSelectableMath));
+        expect(selectableMath.selectionOverlay.toolbarIsVisible, isFalse);
+        expect(selectableMath.selectionOverlay.handlesAreVisible, isFalse);
+      },
+    );
 
-//       final EditableTextState editableText = tester.state(find.byType(EditableText));
-//       expect(editableText.selectionOverlay.toolbarIsVisible, isFalse);
-//       expect(editableText.selectionOverlay.handlesAreVisible, isFalse);
-//     },
-//   );
+    testWidgets(
+      'Mouse double tap does not show handles nor toolbar',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: Center(
+                child: MathSelectable.tex('abc def ghi'),
+              ),
+            ),
+          ),
+        );
 
-//   testWidgets(
-//     'Mouse double tap does not show handles nor toolbar',
-//     (WidgetTester tester) async {
-//       await tester.pumpWidget(
-//         const MaterialApp(
-//           home: Material(
-//             child: SelectableText('abc def ghi'),
-//           ),
-//         ),
-//       );
+        // Double tap to trigger the selectable text.
+        final selectableTextPos = tester.getCenter(find.byType(MathSelectable));
+        final gesture = await tester.startGesture(
+          selectableTextPos,
+          pointer: 7,
+          kind: PointerDeviceKind.mouse,
+        );
+        addTearDown(gesture.removePointer);
+        await tester.pump(const Duration(milliseconds: 50));
+        await gesture.up();
+        await tester.pump();
+        await gesture.down(selectableTextPos);
+        await tester.pump();
+        await gesture.up();
+        await tester.pump();
 
-//       // Double tap to trigger the selectable text.
-//       final Offset selectableTextPos = tester.getCenter(find.byType(SelectableText));
-//       final TestGesture gesture = await tester.startGesture(
-//         selectableTextPos,
-//         pointer: 7,
-//         kind: PointerDeviceKind.mouse,
-//       );
-//       addTearDown(gesture.removePointer);
-//       await tester.pump(const Duration(milliseconds: 50));
-//       await gesture.up();
-//       await tester.pump();
-//       await gesture.down(selectableTextPos);
-//       await tester.pump();
-//       await gesture.up();
-//       await tester.pump();
+        final selectableMath = tester.state<InternalSelectableMathState>(
+            find.byType(InternalSelectableMath));
+        expect(selectableMath.selectionOverlay.toolbarIsVisible, isFalse);
+        expect(selectableMath.selectionOverlay.handlesAreVisible, isFalse);
+      },
+    );
 
-//       final EditableTextState editableText = tester.state(find.byType(EditableText));
-//       expect(editableText.selectionOverlay.toolbarIsVisible, isFalse);
-//       expect(editableText.selectionOverlay.handlesAreVisible, isFalse);
-//     },
-//   );
+    testWidgets('changes mouse cursor when hovered',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: Center(
+              child: MathSelectable.tex('test'),
+            ),
+          ),
+        ),
+      );
 
-//   testWidgets('text span with tap gesture recognizer works in selectable rich text', (WidgetTester tester) async {
-//     int spyTaps = 0;
-//     final TapGestureRecognizer spyRecognizer = TapGestureRecognizer()
-//       ..onTap = () {
-//         spyTaps += 1;
-//       };
-//     await tester.pumpWidget(
-//       MaterialApp(
-//         home: Material(
-//           child: Center(
-//             child: SelectableText.rich(
-//               TextSpan(
-//                 children: <TextSpan>[
-//                   const TextSpan(text: 'Atwater '),
-//                   TextSpan(text: 'Peel', recognizer: spyRecognizer),
-//                   const TextSpan(text: ' Sherbrooke Bonaventure'),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//     expect(spyTaps, 0);
-//     final Offset selectableTextStart = tester.getTopLeft(find.byType(SelectableText));
+      final gesture =
+          await tester.createGesture(kind: PointerDeviceKind.mouse, pointer: 1);
+      await gesture.addPointer(
+          location: tester.getCenter(find.byType(MathSelectable)));
+      addTearDown(gesture.removePointer);
 
-//     await tester.tapAt(selectableTextStart + const Offset(150.0, 5.0));
-//     expect(spyTaps, 1);
+      await tester.pump();
 
-//     // Waits for a while to avoid double taps.
-//     await tester.pump(const Duration(seconds: 1));
+      expect(RendererBinding.instance.mouseTracker.debugDeviceActiveCursor(1),
+          SystemMouseCursors.text);
+    });
 
-//     // Starts a long press.
-//     final TestGesture gesture =
-//       await tester.startGesture(selectableTextStart + const Offset(150.0, 5.0));
-//     await tester.pump(const Duration(milliseconds: 500));
-//     await gesture.up();
-//     await tester.pump();
-//     final EditableText editableTextWidget = tester.widget(find.byType(EditableText).first);
+    // testWidgets(
+    //   'The handles show after pressing Select All',
+    //   (WidgetTester tester) async {
+    //     await tester.pumpWidget(
+    //       MaterialApp(
+    //         home: Material(
+    //           child: Center(
+    //             child: MathSelectable.tex('abc def ghi'),
+    //           ),
+    //         ),
+    //       ),
+    //     );
 
-//     final TextEditingController controller = editableTextWidget.controller;
-//     // Long press still triggers selection.
-//     expect(
-//       controller.selection,
-//       const TextSelection(baseOffset: 8, extentOffset: 12),
-//     );
-//     // Long press does not trigger gesture recognizer.
-//     expect(spyTaps, 1);
-//   });
+    //     // Long press at 'e' in 'def'.
+    //     final ePos = textOffsetToCaretPosition(tester, 5);
+    //     await tester.longPressAt(ePos);
+    //     await tester.pumpAndSettle();
 
-//   testWidgets('text span with long press gesture recognizer works in selectable rich text', (WidgetTester tester) async {
-//     int spyLongPress = 0;
-//     final LongPressGestureRecognizer spyRecognizer = LongPressGestureRecognizer()
-//       ..onLongPress = () {
-//         spyLongPress += 1;
-//       };
-//     await tester.pumpWidget(
-//       MaterialApp(
-//         home: Material(
-//           child: Center(
-//             child: SelectableText.rich(
-//               TextSpan(
-//                 children: <TextSpan>[
-//                   const TextSpan(text: 'Atwater '),
-//                   TextSpan(text: 'Peel', recognizer: spyRecognizer),
-//                   const TextSpan(text: ' Sherbrooke Bonaventure'),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//     expect(spyLongPress, 0);
-//     final Offset selectableTextStart = tester.getTopLeft(find.byType(SelectableText));
+    //     expect(find.text('Select all'), findsOneWidget);
+    //     expect(find.text('Copy'), findsOneWidget);
+    //     expect(find.text('Paste'), findsNothing);
+    //     expect(find.text('Cut'), findsNothing);
+    //     var selectableMath = tester.state<InternalSelectableMathState>(
+    //         find.byType(InternalSelectableMath));
+    //     expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
+    //     expect(selectableMath.selectionOverlay.toolbarIsVisible, isTrue);
 
-//     await tester.tapAt(selectableTextStart + const Offset(150.0, 5.0));
-//     expect(spyLongPress, 0);
+    //     await tester.tap(find.text('Select all'));
+    //     await tester.pump();
+    //     expect(find.text('Copy'), findsOneWidget);
+    //     expect(find.text('Select all'), findsNothing);
+    //     expect(find.text('Paste'), findsNothing);
+    //     expect(find.text('Cut'), findsNothing);
+    //     selectableMath = tester.state<InternalSelectableMathState>(
+    //         find.byType(InternalSelectableMath));
+    //     expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
+    //   },
+    //   variant: const TargetPlatformVariant(<TargetPlatform>{
+    //     TargetPlatform.android,
+    //     TargetPlatform.fuchsia,
+    //     TargetPlatform.linux,
+    //     TargetPlatform.windows,
+    //   }),
+    // );
 
-//     // Waits for a while to avoid double taps.
-//     await tester.pump(const Duration(seconds: 1));
+    testWidgets('Does not show handles when updated from the web engine',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: Center(
+              child: MathSelectable.tex('abc def ghi'),
+            ),
+          ),
+        ),
+      );
 
-//     // Starts a long press.
-//     final TestGesture gesture =
-//     await tester.startGesture(selectableTextStart + const Offset(150.0, 5.0));
-//     await tester.pump(const Duration(milliseconds: 500));
-//     await gesture.up();
-//     await tester.pump();
-//     final EditableText editableTextWidget = tester.widget(find.byType(EditableText).first);
+      // Interact with the selectable text to establish the input connection.
+      final topLeft = tester.getTopLeft(find.byType(MathSelectable));
+      final gesture = await tester.startGesture(
+        topLeft + const Offset(0.0, 5.0),
+        kind: PointerDeviceKind.mouse,
+      );
+      addTearDown(gesture.removePointer);
+      await tester.pump(const Duration(milliseconds: 50));
+      await gesture.up();
+      await tester.pumpAndSettle();
 
-//     final TextEditingController controller = editableTextWidget.controller;
-//     // Long press does not trigger selection if there is text span with long
-//     // press recognizer.
-//     expect(
-//       controller.selection,
-//       const TextSelection(baseOffset: 11, extentOffset: 11, affinity: TextAffinity.upstream),
-//     );
-//     // Long press triggers gesture recognizer.
-//     expect(spyLongPress, 1);
-//   });
+      final state = tester.state<InternalSelectableMathState>(
+          find.byType(InternalSelectableMath));
+      expect(state.selectionOverlay.handlesAreVisible, isFalse);
+      expect(
+        state.currentTextEditingValue.selection,
+        const TextSelection.collapsed(offset: 0),
+      );
 
-//   testWidgets('SelectableText changes mouse cursor when hovered', (WidgetTester tester) async {
-//     await tester.pumpWidget(
-//       const MaterialApp(
-//         home: Material(
-//           child: Center(
-//             child: SelectableText('test'),
-//           ),
-//         ),
-//       ),
-//     );
-
-//     final TestGesture gesture = await tester.createGesture(kind: PointerDeviceKind.mouse, pointer: 1);
-//     await gesture.addPointer(location: tester.getCenter(find.text('test')));
-//     addTearDown(gesture.removePointer);
-
-//     await tester.pump();
-
-//     expect(RendererBinding.instance.mouseTracker.debugDeviceActiveCursor(1), SystemMouseCursors.text);
-//   });
-
-//   testWidgets('The handles show after pressing Select All', (WidgetTester tester) async {
-//     await tester.pumpWidget(
-//       const MaterialApp(
-//         home: Material(
-//           child: SelectableText('abc def ghi'),
-//         ),
-//       ),
-//     );
-
-//     // Long press at 'e' in 'def'.
-//     final Offset ePos = textOffsetToPosition(tester, 5);
-//     await tester.longPressAt(ePos);
-//     await tester.pumpAndSettle();
-
-//     expect(find.text('Select all'), findsOneWidget);
-//     expect(find.text('Copy'), findsOneWidget);
-//     expect(find.text('Paste'), findsNothing);
-//     expect(find.text('Cut'), findsNothing);
-//     EditableTextState editableText = tester.state(find.byType(EditableText));
-//     expect(editableText.selectionOverlay.handlesAreVisible, isTrue);
-//     expect(editableText.selectionOverlay.toolbarIsVisible, isTrue);
-
-//     await tester.tap(find.text('Select all'));
-//     await tester.pump();
-//     expect(find.text('Copy'), findsOneWidget);
-//     expect(find.text('Select all'), findsNothing);
-//     expect(find.text('Paste'), findsNothing);
-//     expect(find.text('Cut'), findsNothing);
-//     editableText = tester.state(find.byType(EditableText));
-//     expect(editableText.selectionOverlay.handlesAreVisible, isTrue);
-//   },
-//     variant: const TargetPlatformVariant(<TargetPlatform>{
-//       TargetPlatform.android,
-//       TargetPlatform.fuchsia,
-//       TargetPlatform.linux,
-//       TargetPlatform.windows,
-//     }),
-//   );
-
-//   testWidgets('Does not show handles when updated from the web engine', (WidgetTester tester) async {
-//     await tester.pumpWidget(
-//       const MaterialApp(
-//         home: Material(
-//           child: SelectableText('abc def ghi'),
-//         ),
-//       ),
-//     );
-
-//     // Interact with the selectable text to establish the input connection.
-//     final Offset topLeft = tester.getTopLeft(find.byType(EditableText));
-//     final TestGesture gesture = await tester.startGesture(
-//       topLeft + const Offset(0.0, 5.0),
-//       kind: PointerDeviceKind.mouse,
-//     );
-//     addTearDown(gesture.removePointer);
-//     await tester.pump(const Duration(milliseconds: 50));
-//     await gesture.up();
-//     await tester.pumpAndSettle();
-
-//     final EditableTextState state = tester.state(find.byType(EditableText));
-//     expect(state.selectionOverlay.handlesAreVisible, isFalse);
-//     expect(
-//       state.currentTextEditingValue.selection,
-//       const TextSelection.collapsed(offset: 0),
-//     );
-
-//     if (kIsWeb) {
-//       tester.testTextInput.updateEditingValue(const TextEditingValue(
-//         selection: TextSelection(baseOffset: 2, extentOffset: 7),
-//       ));
-//       // Wait for all the `setState` calls to be flushed.
-//       await tester.pumpAndSettle();
-//       expect(
-//         state.currentTextEditingValue.selection,
-//         const TextSelection(baseOffset: 2, extentOffset: 7),
-//       );
-//       expect(state.selectionOverlay.handlesAreVisible, isFalse);
-//     }
-//   });
+      if (kIsWeb) {
+        tester.testTextInput.updateEditingValue(const TextEditingValue(
+          selection: TextSelection(baseOffset: 2, extentOffset: 7),
+        ));
+        // Wait for all the `setState` calls to be flushed.
+        await tester.pumpAndSettle();
+        expect(
+          state.currentTextEditingValue.selection,
+          const TextSelection(baseOffset: 2, extentOffset: 7),
+        );
+        expect(state.selectionOverlay.handlesAreVisible, isFalse);
+      }
+    });
 
 //   testWidgets('onSelectionChanged is called when selection changes', (WidgetTester tester) async {
 //     int onSelectionChangedCallCount = 0;

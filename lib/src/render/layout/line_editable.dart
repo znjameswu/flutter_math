@@ -378,7 +378,7 @@ class RenderEditableLine extends RenderLine {
     final localOffset = globalToLocal(globalOffset);
     var index = 0;
     while (
-        caretOffsets[index] <= localOffset.dx && index < caretOffsets.length) {
+        index < caretOffsets.length && caretOffsets[index] <= localOffset.dx) {
       index++;
     }
     return math.max(0, index - 1);

@@ -16,6 +16,7 @@ mixin MathSelectionOverlayManager<T extends StatefulWidget>
 
   TextSelectionControls get textSelectionControls;
 
+  MathSelectionOverlay get selectionOverlay => _selectionOverlay;
   MathSelectionOverlay _selectionOverlay;
 
   final toolbarLayerLink = LayerLink();
