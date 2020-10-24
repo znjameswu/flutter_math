@@ -38,8 +38,8 @@ class MathSelectable extends StatelessWidget {
     this.enableInteractiveSelection = true,
     this.focusNode,
     this.mathStyle = MathStyle.display,
-    @required this.onErrorFallback,
-    @required this.options,
+    this.onErrorFallback = defaultOnErrorFallback,
+    this.options = Options.displayOptions,
     this.parseError,
     this.showCursor = false,
     this.textScaleFactor,
@@ -99,35 +99,55 @@ class MathSelectable extends StatelessWidget {
 
   factory MathSelectable.tex(
     String expression, {
-    Options options = Options.displayOptions,
+    Key key,
     Settings settings = const Settings(),
-    TextSelectionControls textSelectionControls,
+    Options options = Options.displayOptions,
     OnErrorFallback onErrorFallback = defaultOnErrorFallback,
+    bool autofocus = false,
+    Color cursorColor,
+    Radius cursorRadius,
+    double cursorWidth = 2.0,
+    double cursorHeight,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    bool enableInteractiveSelection = true,
+    FocusNode focusNode,
+    MathStyle mathStyle = MathStyle.display,
+    bool showCursor = false,
+    double textScaleFactor,
+    TextSelectionControls textSelectionControls,
+    TextStyle textStyle,
+    ToolbarOptions toolbarOptions,
   }) {
+    SyntaxTree ast;
+    String parseError;
     try {
-      final ast =
-          SyntaxTree(greenRoot: TexParser(expression, settings).parse());
-      return MathSelectable(
-        ast: ast,
-        options: options,
-        onErrorFallback: onErrorFallback,
-        textSelectionControls: textSelectionControls,
-      );
+      ast = SyntaxTree(greenRoot: TexParser(expression, settings).parse());
     } on ParseError catch (e) {
-      return MathSelectable(
-        parseError: 'Parse Error: ${e.message}',
-        onErrorFallback: onErrorFallback,
-        options: options,
-        textSelectionControls: textSelectionControls,
-      );
+      parseError = 'Parse Error: ${e.message}';
     } on dynamic catch (e) {
-      return MathSelectable(
-        parseError: e.toString(),
-        onErrorFallback: onErrorFallback,
-        options: options,
-        textSelectionControls: textSelectionControls,
-      );
+      parseError = e.toString();
     }
+    return MathSelectable(
+      key: key,
+      ast: ast,
+      autofocus: autofocus,
+      cursorColor: cursorColor,
+      cursorRadius: cursorRadius,
+      cursorWidth: cursorWidth,
+      cursorHeight: cursorHeight,
+      dragStartBehavior: dragStartBehavior,
+      enableInteractiveSelection: enableInteractiveSelection,
+      focusNode: focusNode,
+      mathStyle: mathStyle,
+      onErrorFallback: onErrorFallback,
+      options: options,
+      parseError: parseError,
+      showCursor: showCursor,
+      textScaleFactor: textScaleFactor,
+      textSelectionControls: textSelectionControls,
+      textStyle: textStyle,
+      toolbarOptions: toolbarOptions,
+    );
   }
 
   Widget build(BuildContext context) {
@@ -155,7 +175,7 @@ class MathSelectable extends StatelessWidget {
               ? FontOptions(fontWeight: effectiveTextStyle.fontWeight)
               : null,
         );
-    
+
     // A trial build to catch any potential build errors
     try {
       ast.buildWidget(options);
@@ -216,8 +236,6 @@ class MathSelectable extends StatelessWidget {
         }
         break;
     }
-
-    
 
     return RepaintBoundary(
       child: InternalSelectableMath(
@@ -337,11 +355,16 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
 
   bool get cursorOpacityAnimates => widget.cursorOpacityAnimates;
 
+  DragStartBehavior get dragStartBehavior => widget.dragStartBehavior;
+
   MathController controller;
+
+  FocusNode _oldFocusNode;
 
   @override
   void initState() {
     controller = MathController(ast: widget.ast);
+    _oldFocusNode = focusNode..addListener(updateKeepAlive);
     super.initState();
   }
 
@@ -349,6 +372,10 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
   void didUpdateWidget(InternalSelectableMath oldWidget) {
     if (widget.ast != controller.ast) {
       controller = MathController(ast: widget.ast);
+    }
+    if (_oldFocusNode != focusNode) {
+      _oldFocusNode.removeListener(updateKeepAlive);
+      _oldFocusNode = focusNode..addListener(updateKeepAlive);
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -370,6 +397,7 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
 
   @override
   void dispose() {
+    _oldFocusNode.removeListener(updateKeepAlive);
     super.dispose();
     controller.dispose();
   }
@@ -435,7 +463,7 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
   }
 
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => hasFocus;
 
   @override
   bool get copyEnabled => widget.toolbarOptions.copy;

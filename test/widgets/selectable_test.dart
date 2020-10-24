@@ -15,6 +15,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../load_fonts.dart';
 
+Widget overlay({Widget child}) => MaterialApp(
+      home: Center(
+        child: Material(
+          child: child,
+        ),
+      ),
+    );
+
 void main() {
   // Returns the first RenderEditable.
   RenderEditableLine findRenderEditableLine(WidgetTester tester) {
@@ -42,7 +50,224 @@ void main() {
   }
 
   setUpAll(loadKaTeXFonts);
+
   group('SelectableMath test', () {
+    testWidgets('Cursor blinks when showCursor is true',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        overlay(
+          child: MathSelectable.tex(
+            'some text',
+            showCursor: true,
+          ),
+        ),
+      );
+      await tester.tap(find.byType(MathSelectable));
+      await tester.idle();
+
+      final selectableMath = tester.state<InternalSelectableMathState>(
+          find.byType(InternalSelectableMath));
+
+      // Check that the cursor visibility toggles after each blink interval.
+      final initialShowCursor = selectableMath.cursorCurrentlyVisible;
+      await tester.pump(selectableMath.cursorBlinkInterval);
+      expect(selectableMath.cursorCurrentlyVisible, equals(!initialShowCursor));
+      await tester.pump(selectableMath.cursorBlinkInterval);
+      expect(selectableMath.cursorCurrentlyVisible, equals(initialShowCursor));
+      await tester.pump(selectableMath.cursorBlinkInterval ~/ 10);
+      expect(selectableMath.cursorCurrentlyVisible, equals(initialShowCursor));
+      await tester.pump(selectableMath.cursorBlinkInterval);
+      expect(selectableMath.cursorCurrentlyVisible, equals(!initialShowCursor));
+      await tester.pump(selectableMath.cursorBlinkInterval);
+      expect(selectableMath.cursorCurrentlyVisible, equals(initialShowCursor));
+    });
+
+    // testWidgets('selectable text basic', (WidgetTester tester) async {
+    //   await tester.pumpWidget(
+    //     overlay(
+    //       child: const SelectableText('selectable'),
+    //     ),
+    //   );
+    //   final EditableText editableTextWidget =
+    //       tester.widget(find.byType(EditableText));
+    //   // selectable text cannot open keyboard.
+    //   await tester.showKeyboard(find.byType(SelectableText));
+    //   expect(tester.testTextInput.hasAnyClients, false);
+    //   await skipPastScrollingAnimation(tester);
+
+    //   expect(editableTextWidget.controller.selection.isCollapsed, true);
+
+    //   await tester.tap(find.byType(SelectableText));
+    //   await tester.pump();
+
+    //   final EditableTextState editableText =
+    //       tester.state(find.byType(EditableText));
+    //   // Collapse selection should not paint.
+    //   expect(editableText.selectionOverlay!.handlesAreVisible, isFalse);
+    //   // Long press on the 't' character of text 'selectable' to show context menu.
+    //   const int dIndex = 5;
+    //   final Offset dPos = textOffsetToPosition(tester, dIndex);
+    //   await tester.longPressAt(dPos);
+    //   await tester.pump();
+
+    //   // Context menu should not have paste and cut.
+    //   expect(find.text('Copy'), findsOneWidget);
+    //   expect(find.text('Paste'), findsNothing);
+    //   expect(find.text('Cut'), findsNothing);
+    // });
+
+    testWidgets('Can drag handles to change selection',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: Center(
+              child: MathSelectable.tex(
+                'abc def ghi',
+                dragStartBehavior: DragStartBehavior.down,
+              ),
+            ),
+          ),
+        ),
+      );
+      final selectableMath = tester.state<InternalSelectableMathState>(
+          find.byType(InternalSelectableMath));
+      final controller = selectableMath.controller;
+
+      // Long press the 'e' to select 'def'.
+      final ePos = textOffsetToCaretPosition(tester, 5);
+      var gesture = await tester.startGesture(ePos, pointer: 7);
+      await tester.pump(const Duration(seconds: 2));
+      await gesture.up();
+      await tester.pump();
+      await tester.pump(const Duration(
+          milliseconds: 200)); // skip past the frame where the opacity is zero
+
+      final selection = controller.selection;
+      expect(selection.baseOffset, 5);
+      expect(selection.extentOffset, 6);
+
+      final renderEditable = findRenderEditableLine(tester);
+      final endpoints = [
+        renderEditable.getEndpointForCaretIndex(5),
+        renderEditable.getEndpointForCaretIndex(6)
+      ];
+      expect(endpoints.length, 2);
+
+      // Drag the right handle 2 letters to the right.
+      // We use a small offset because the endpoint is on the very corner
+      // of the handle.
+      var handlePos = endpoints[1] + const Offset(1.0, 1.0);
+      var newHandlePos = textOffsetToCaretPosition(tester, 9);
+      gesture = await tester.startGesture(handlePos, pointer: 7);
+      await tester.pump();
+      await gesture.moveTo(newHandlePos);
+      await tester.pump();
+      await gesture.up();
+      await tester.pump();
+
+      expect(controller.selection.baseOffset, 5);
+      expect(controller.selection.extentOffset, 9);
+
+      // Drag the left handle 2 letters to the left.
+      handlePos = endpoints[0] + const Offset(-1.0, 1.0);
+      newHandlePos = textOffsetToCaretPosition(tester, 0);
+      gesture = await tester.startGesture(handlePos, pointer: 7);
+      await tester.pump();
+      await gesture.moveTo(newHandlePos);
+      await tester.pump();
+      await gesture.up();
+      await tester.pump();
+
+      expect(controller.selection.baseOffset, 0);
+      expect(controller.selection.extentOffset, 9);
+    });
+
+    // testWidgets('Can use selection toolbar', (WidgetTester tester) async {
+    //   const testValue = 'abcdefghi';
+    //   await tester.pumpWidget(
+    //     MaterialApp(
+    //       home: Material(
+    //         child: Center(
+    //           child: MathSelectable.tex(
+    //             testValue,
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    //   final selectableMath = tester.state<InternalSelectableMathState>(
+    //       find.byType(InternalSelectableMath));
+    //   final controller = selectableMath.controller;
+
+    //   // Tap the selection handle to bring up the "paste / select all" menu.
+    //   await tester
+    //       .tapAt(textOffsetToCaretPosition(tester, testValue.indexOf('e')));
+    //   await tester.pump();
+    //   await tester.pump(const Duration(
+    //       milliseconds: 200)); // skip past the frame where the opacity is zero
+    //   final renderLine = findRenderEditableLine(tester);
+    //   final endpoints = globalize(
+    //     renderLine.getEndpointsForSelection(controller.selection),
+    //     renderLine,
+    //   );
+    //   // Tapping on the part of the handle's GestureDetector where it overlaps
+    //   // with the text itself does not show the menu, so add a small vertical
+    //   // offset to tap below the text.
+    //   await tester.tapAt(endpoints[0].point + const Offset(1.0, 13.0));
+    //   await tester.pump();
+    //   await tester.pump(const Duration(
+    //       milliseconds: 200)); // skip past the frame where the opacity is zero
+
+    //   // Select all should select all the text.
+    //   await tester.tap(find.text('Select all'));
+    //   await tester.pump();
+    //   expect(controller.selection.baseOffset, 0);
+    //   expect(controller.selection.extentOffset, testValue.length);
+
+    //   // Copy should reset the selection.
+    //   await tester.tap(find.text('Copy'));
+    //   await skipPastScrollingAnimation(tester);
+    //   expect(controller.selection.isCollapsed, true);
+    // });
+
+    testWidgets('Selectable text drops selection when losing focus',
+        (WidgetTester tester) async {
+      final Key key1 = UniqueKey();
+      final Key key2 = UniqueKey();
+
+      await tester.pumpWidget(
+        overlay(
+          child: Column(
+            children: <Widget>[
+              MathSelectable.tex(
+                'text 1',
+                key: key1,
+              ),
+              MathSelectable.tex(
+                'text 2',
+                key: key2,
+              ),
+            ],
+          ),
+        ),
+      );
+
+      await tester.tap(find.byKey(key1));
+      await tester.pump();
+      final selectableMath = tester.state<InternalSelectableMathState>(
+          find.byType(InternalSelectableMath).first);
+      final controller = selectableMath.controller;
+      controller.selection =
+          const TextSelection(baseOffset: 0, extentOffset: 3);
+      await tester.pump();
+      expect(controller.selection, isNot(equals(TextRange.empty)));
+
+      await tester.tap(find.byKey(key2));
+      await tester.pump();
+      expect(controller.selection, equals(TextRange.empty));
+    });
+
     testWidgets('selection handles are rendered and not faded away',
         (WidgetTester tester) async {
       const testText = r'abcdef\frac{abc}{def}\sqrt[abc]{def}';
@@ -385,33 +610,35 @@ void main() {
       }
     });
 
-//   testWidgets('onSelectionChanged is called when selection changes', (WidgetTester tester) async {
-//     int onSelectionChangedCallCount = 0;
+    // testWidgets('onSelectionChanged is called when selection changes',
+    //     (WidgetTester tester) async {
+    //   int onSelectionChangedCallCount = 0;
 
-//     await tester.pumpWidget(
-//       MaterialApp(
-//         home: Material(
-//           child: SelectableText(
-//             'abc def ghi',
-//             onSelectionChanged: (TextSelection selection, SelectionChangedCause cause) {
-//               onSelectionChangedCallCount += 1;
-//             },
-//           ),
-//         ),
-//       ),
-//     );
+    //   await tester.pumpWidget(
+    //     MaterialApp(
+    //       home: Material(
+    //         child: SelectableText(
+    //           'abc def ghi',
+    //           onSelectionChanged:
+    //               (TextSelection selection, SelectionChangedCause cause) {
+    //             onSelectionChangedCallCount += 1;
+    //           },
+    //         ),
+    //       ),
+    //     ),
+    //   );
 
-//     // Long press to select 'abc'.
-//     final Offset aLocation = textOffsetToPosition(tester, 1);
-//     await tester.longPressAt(aLocation);
-//     await tester.pump();
-//     expect(onSelectionChangedCallCount, equals(1));
+    //   // Long press to select 'abc'.
+    //   final Offset aLocation = textOffsetToPosition(tester, 1);
+    //   await tester.longPressAt(aLocation);
+    //   await tester.pump();
+    //   expect(onSelectionChangedCallCount, equals(1));
 
-//     // Tap on 'Select all' option to select the whole text.
-//     await tester.longPressAt(textOffsetToPosition(tester, 5));
-//     await tester.pump();
-//     await tester.tap(find.text('Select all'));
-//     expect(onSelectionChangedCallCount, equals(2));
-//   });
+    //   // Tap on 'Select all' option to select the whole text.
+    //   await tester.longPressAt(textOffsetToPosition(tester, 5));
+    //   await tester.pump();
+    //   await tester.tap(find.text('Select all'));
+    //   expect(onSelectionChangedCallCount, equals(2));
+    // });
   });
 }

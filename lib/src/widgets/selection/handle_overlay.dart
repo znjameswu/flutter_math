@@ -80,7 +80,6 @@ class _MathSelectionHandleOverlayState extends State<MathSelectionHandleOverlay>
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
-    print('drag updated');
     _dragPosition += details.delta;
     final position = widget.manager.getPositionForOffset(_dragPosition);
 

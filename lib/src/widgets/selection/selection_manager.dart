@@ -14,6 +14,39 @@ mixin MathSelectionManagerMixin<T extends StatefulWidget> on State<T>
     implements TextSelectionDelegate {
   MathController get controller;
 
+  FocusNode get focusNode;
+
+  bool get hasFocus;
+
+  FocusNode _oldFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _oldFocusNode = focusNode..addListener(_handleFocusChange);
+  }
+
+  @override
+  void didUpdateWidget(covariant oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (focusNode != _oldFocusNode) {
+      _oldFocusNode.removeListener(_handleFocusChange);
+      _oldFocusNode = focusNode..addListener(_handleFocusChange);
+    }
+  }
+
+  @override
+  void dispose() {
+    _oldFocusNode.removeListener(_handleFocusChange);
+    super.dispose();
+  }
+
+  void _handleFocusChange() {
+    if (!hasFocus) {
+      controller.selection = TextSelection.collapsed(offset: -1);
+    }
+  }
+
   void onSelectionChanged(TextSelection selection, SelectionChangedCause cause);
 
   @mustCallSuper

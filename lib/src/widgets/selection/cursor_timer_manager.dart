@@ -20,6 +20,8 @@ mixin CursorTimerManagerMixin<T extends StatefulWidget>
 
   bool get hasFocus;
 
+  FocusNode get focusNode;
+
   Timer _cursorTimer;
   // final ValueNotifier<bool> _showCursor = ValueNotifier<bool>(false);
 
@@ -29,12 +31,17 @@ mixin CursorTimerManagerMixin<T extends StatefulWidget>
 
   MathController _oldController;
 
+  FocusNode _oldFocusNode;
+
   @override
   void initState() {
     cursorBlinkOpacityController =
         AnimationController(vsync: this, duration: _fadeDuration);
     super.initState();
     _oldController = controller
+      ..addListener(_startOrStopOrResetCursorTimerIfNeeded);
+
+    _oldFocusNode = focusNode
       ..addListener(_startOrStopOrResetCursorTimerIfNeeded);
   }
 
@@ -46,12 +53,18 @@ mixin CursorTimerManagerMixin<T extends StatefulWidget>
       _oldController = controller
         ..addListener(_startOrStopOrResetCursorTimerIfNeeded);
     }
+    if (focusNode != _oldFocusNode) {
+      _oldFocusNode.removeListener(_startOrStopOrResetCursorTimerIfNeeded);
+      _oldFocusNode = focusNode
+        ..addListener(_startOrStopOrResetCursorTimerIfNeeded);
+    }
   }
 
   @override
   void dispose() {
     _stopCursorTimer();
     _oldController.removeListener(_startOrStopOrResetCursorTimerIfNeeded);
+    _oldFocusNode.removeListener(_startOrStopOrResetCursorTimerIfNeeded);
     super.dispose();
   }
 
@@ -122,4 +135,15 @@ mixin CursorTimerManagerMixin<T extends StatefulWidget>
       _stopCursorTimer();
     }
   }
+
+  /// Whether the blinking cursor is actually visible at this precise moment
+  /// (it's hidden half the time, since it blinks).
+  @visibleForTesting
+  bool get cursorCurrentlyVisible => cursorBlinkOpacityController.value > 0;
+
+  /// The cursor blink interval (the amount of time the cursor is in the "on"
+  /// state or the "off" state). A complete cursor blink period is twice this
+  /// value (half on, half off).
+  @visibleForTesting
+  Duration get cursorBlinkInterval => _kCursorBlinkHalfPeriod;
 }

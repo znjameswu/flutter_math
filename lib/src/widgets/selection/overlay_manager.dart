@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'gesture_detector_builder.dart';
 import 'gesture_detector_builder_selectable.dart';
@@ -16,6 +17,8 @@ mixin MathSelectionOverlayManager<T extends StatefulWidget>
 
   TextSelectionControls get textSelectionControls;
 
+  DragStartBehavior get dragStartBehavior;
+
   MathSelectionOverlay get selectionOverlay => _selectionOverlay;
   MathSelectionOverlay _selectionOverlay;
 
@@ -25,7 +28,7 @@ mixin MathSelectionOverlayManager<T extends StatefulWidget>
 
   final endHandleLayerLink = LayerLink();
 
-  bool toolbarVisible =  false;
+  bool toolbarVisible = false;
 
   MathSelectableSelectionGestureDetectorBuilder
       _selectionGestureDetectorBuilder;
@@ -106,11 +109,11 @@ mixin MathSelectionOverlayManager<T extends StatefulWidget>
   void handleSelectionChanged(
       TextSelection selection, SelectionChangedCause cause,
       {bool rebuildOverlay = true}) {
-    super.handleSelectionChanged(selection, cause);
-
     if (!hasFocus) {
       focusNode.requestFocus();
     }
+
+    super.handleSelectionChanged(selection, cause);
 
     if (rebuildOverlay) {
       _selectionOverlay?.hide();
@@ -128,6 +131,8 @@ mixin MathSelectionOverlayManager<T extends StatefulWidget>
             }
           },
           selectionControls: textSelectionControls,
+          dragStartBehavior: dragStartBehavior,
+          debugRequiredFor: widget,
         );
         _selectionOverlay.handlesVisible = _shouldShowSelectionHandles(cause);
         _selectionOverlay.showHandles();
