@@ -7,14 +7,17 @@ import '../size.dart';
 import '../style.dart';
 import '../syntax_tree.dart';
 
-// \underset
+/// Under node.
+///
+/// Examples: `\underset`
 class UnderNode extends SlotableNode {
+  /// Base where the under node is applied upon.
   final EquationRowNode base;
-  // final EquationRowNode above;
+
+  /// Argumentn below the base.
   final EquationRowNode below;
   UnderNode({
     @required this.base,
-    // this.above,
     @required this.below,
   })  : assert(base != null),
         assert(below != null);

@@ -173,14 +173,15 @@ MatrixNode parseArray(
   parser.macroExpander.endGroup();
 
   return MatrixNode(
-      body: body,
-      vLines: separators,
-      columnAligns: colAligns,
-      rowSpacings: rowGaps,
-      arrayStretch: arrayStretch,
-      hLines: hLinesBeforeRow,
-      hskipBeforeAndAfter: hskipBeforeAndAfter,
-      isSmall: isSmall);
+    body: body,
+    vLines: separators,
+    columnAligns: colAligns,
+    rowSpacings: rowGaps,
+    arrayStretch: arrayStretch,
+    hLines: hLinesBeforeRow,
+    hskipBeforeAndAfter: hskipBeforeAndAfter,
+    isSmall: isSmall,
+  );
 }
 
 /// Decides on a style for cells in an array according to whether the given

@@ -9,20 +9,34 @@ import '../options.dart';
 import '../size.dart';
 import '../syntax_tree.dart';
 
+/// Enclosure node
+/// 
+/// Examples: `\colorbox`, `\fbox`, `\cancel`.
 class EnclosureNode extends SlotableNode {
+  /// Base where the enclosure is applied upon
   final EquationRowNode base;
 
+  /// Whether the enclosure has a border.
   final bool hasBorder;
 
-  // If null, will default to options.color
+  /// Border color.
+  /// 
+  /// If null, will default to options.color.
   final Color bordercolor;
 
+  /// Background color.
   final Color backgroundcolor;
 
+  /// Special styles for this enclosure.
+  /// 
+  /// Including `'updiagonalstrike'`, `'downdiagnoalstrike'`, 
+  /// and `'horizontalstrike'`.
   final List<String> notation;
 
+  /// Horizontal padding.
   final Measurement horizontalPadding;
 
+  /// Vertical padding.
   final Measurement verticalPadding;
 
   EnclosureNode({

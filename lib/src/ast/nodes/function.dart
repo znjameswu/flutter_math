@@ -5,8 +5,14 @@ import '../options.dart';
 import '../spacing.dart';
 import '../syntax_tree.dart';
 
+/// Function node
+///
+/// Examples: `\sin`, `\lim`, `\operatorname`
 class FunctionNode extends SlotableNode {
+  /// Name of the function.
   final EquationRowNode functionName;
+
+  /// Argument of the function.
   final EquationRowNode argument;
 
   FunctionNode({

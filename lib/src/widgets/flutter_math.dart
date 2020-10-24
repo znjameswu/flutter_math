@@ -2,7 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import '../ast/options.dart';
 import '../parser/tex/settings.dart';
-import 'view.dart';
+import 'math.dart';
+import 'selectable.dart';
 
 enum FlutterMathMode {
   edit,
@@ -19,9 +20,9 @@ enum EquationFormat {
 
 typedef OnErrorFallback = Widget Function(String errmsg);
 
-@Deprecated('Consider using a more explicit widget variant: Math')
 class FlutterMath {
-  @Deprecated('Consider using Math.tex')
+  @Deprecated('Consider using a more explicit widget variant '
+      'and its constructor: Math.tex')
   static Widget fromTexString(
     String expression, {
     Key key,
@@ -39,4 +40,5 @@ class FlutterMath {
       );
 }
 
+/// Default fallback function for [Math], [SelectableMath]
 Widget defaultOnErrorFallback(String error) => Text(error.toString());

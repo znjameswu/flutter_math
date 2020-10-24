@@ -11,12 +11,22 @@ import '../size.dart';
 import '../style.dart';
 import '../syntax_tree.dart';
 
+/// Frac node.
 class FracNode extends SlotableNode {
-  // final Options options;
+  /// Numerator.
   final EquationRowNode numerator;
+
+  /// Denumerator.
   final EquationRowNode denominator;
+
+  /// Bar size.
+  ///
+  /// If null, will use default bar size.
   final Measurement barSize;
+
+  /// Whether it is a continued frac `\cfrac`.
   final bool continued; // TODO continued
+
   FracNode({
     // this.options,
     @required this.numerator,

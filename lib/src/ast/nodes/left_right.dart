@@ -17,11 +17,22 @@ import '../spacing.dart';
 import '../syntax_tree.dart';
 import '../types.dart';
 
+/// Left right node.
 class LeftRightNode extends SlotableNode {
+  /// Unicode symbol for the left delimiter character.
   final String leftDelim;
+
+  /// Unicode symbol for the right delimiter character.
   final String rightDelim;
+
+  /// List of inside bodys.
+  ///
+  /// Its length should be 1 longer than [middle].
   final List<EquationRowNode> body;
+
+  /// List of middle delimiter characters.
   final List<String> middle;
+
   LeftRightNode({
     @required this.leftDelim,
     @required this.rightDelim,

@@ -9,16 +9,17 @@ import '../options.dart';
 import '../size.dart';
 import '../syntax_tree.dart';
 
+/// AccentUnder Nodes.
+///
+/// Examples: `\utilde`
 class AccentUnderNode extends SlotableNode {
+  /// Base where the accentUnder is applied upon.
   final EquationRowNode base;
+  /// Unicode symbol of the accent character.
   final String label;
-  // final bool isStretchy;
-  // final bool isShifty;
   AccentUnderNode({
     @required this.base,
     @required this.label,
-    // @required this.isStretchy,
-    // @required this.isShifty,
   });
 
   @override
@@ -93,8 +94,6 @@ class AccentUnderNode extends SlotableNode {
     ..addAll({
       'base': base.toJson(),
       'label': unicodeLiteral(label),
-      // 'isStretchy': isStretchy,
-      // 'isShifty': isShifty,
     });
 
   AccentUnderNode copyWith({

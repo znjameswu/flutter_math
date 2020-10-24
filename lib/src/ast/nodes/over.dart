@@ -7,11 +7,17 @@ import '../size.dart';
 import '../style.dart';
 import '../syntax_tree.dart';
 
-// \underset
+/// Over node.
+///
+/// Examples: `\underset`
 class OverNode extends SlotableNode {
+  /// Base where the over node is applied upon.
   final EquationRowNode base;
+
+  /// Argument above the base.
   final EquationRowNode above;
 
+  /// Special flag for `\stackrel`
   final bool stackRel;
 
   OverNode({

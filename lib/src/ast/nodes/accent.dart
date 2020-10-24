@@ -15,10 +15,21 @@ import '../size.dart';
 import '../syntax_tree.dart';
 import '../types.dart';
 
+/// Accent node.
+/// 
+/// Examples: `\hat`
 class AccentNode extends SlotableNode {
+  /// Base where the accent is applied upon.
   final EquationRowNode base;
+  /// Unicode symbol of the accent character.
   final String label;
+  /// Is the accent strecthy?
+  /// 
+  /// Stretchy accent will stretch according to the width of [base].
   final bool isStretchy;
+  /// Is the accent shifty?
+  /// 
+  /// Shifty accent will shift according to the italic of [base].
   final bool isShifty;
   AccentNode({
     @required this.base,

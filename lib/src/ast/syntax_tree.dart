@@ -467,15 +467,17 @@ class EquationRowNode extends ParentableNode<GreenNode>
 
   factory EquationRowNode.empty() => EquationRowNode(children: []);
 
-  /// Children list when fully expand any underlying [TransparentNode]
+  /// Children list when fully expanded any underlying [TransparentNode].
   List<GreenNode> get flattenedChildList => _flattenedChildList ??= children
       .expand((child) =>
           child is TransparentNode ? child.flattenedChildList : [child])
       .toList(growable: false);
   List<GreenNode> _flattenedChildList;
 
-  List<int> _caretPositions;
+  /// Children positions when fully expanded underlying [TransparentNode], but
+  /// appended an extra position entry for the end.
   List<int> get caretPositions => _caretPositions ??= computeCaretPositions();
+  List<int> _caretPositions;
   List<int> computeCaretPositions() {
     var curPos = 1;
     return List.generate(flattenedChildList.length + 1, (index) {

@@ -12,19 +12,30 @@ import '../syntax_tree.dart';
 import '../types.dart';
 import 'accent.dart';
 
+/// Node for an unbreakable symbol.
 class SymbolNode extends LeafNode {
+  /// Unicode symbol.
   final String symbol;
+
+  /// Whether it is a varaint form.
+  ///
+  /// Refer to MathJaX's variantForm
   final bool variantForm;
-  AtomType _atomType;
+
+  /// Effective atom type for this symbol;
   AtomType get atomType => _atomType ??= overrideAtomType ??
       getDefaultAtomTypeForSymbol(symbol, variantForm: variantForm, mode: mode);
+  AtomType _atomType;
 
+  /// Overriding atom type;
   final AtomType overrideAtomType;
+
+  /// Overriding atom font;
   final FontOptions overrideFont;
 
   final Mode mode;
 
-  bool get noBreak => symbol == '\u00AF';
+  // bool get noBreak => symbol == '\u00AF';
 
   SymbolNode({
     @required this.symbol,

@@ -8,14 +8,30 @@ import '../size.dart';
 import '../syntax_tree.dart';
 import 'matrix.dart';
 
+/// Equantion array node. Brings support for equationa alignment.
 class EquationArrayNode extends SlotableNode {
+  /// `arrayStretch` parameter from the context.
+  /// 
+  /// Affects the minimum row height and row depth for each row.
+  ///
+  /// `\smallmatrix` has an `arrayStretch` of 0.5.
   final double arrayStretch;
-  final bool addJot;
-  final List<EquationRowNode> body;
-  final List<MatrixSeparatorStyle> hlines;
-  final List<Measurement> rowSpacings;
 
-  // final int rows;
+  /// Whether to add an extra 3 pt spacing between each row.
+  /// 
+  /// True for `\aligned` and `\alignedat`
+  final bool addJot;
+
+  /// Arrayed equations.
+  final List<EquationRowNode> body;
+
+  /// Style for horizontal separator lines.
+  ///
+  /// This includes outermost lines. Different from MathML!
+  final List<MatrixSeparatorStyle> hlines;
+
+  /// Spacings between rows;
+  final List<Measurement> rowSpacings;
 
   EquationArrayNode({
     this.addJot = false,

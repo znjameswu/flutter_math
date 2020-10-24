@@ -6,18 +6,32 @@ import '../style.dart';
 import '../syntax_tree.dart';
 import 'symbol.dart';
 
-/// Word:   _     ^
-/// Latex:  _     ^
-/// MathML: msub  msup  mmultiscripts
+/// Node for postscripts and prescripts
 ///
+/// Examples:
+///
+/// - Word:   _     ^
+/// - Latex:  _     ^
+/// - MathML: msub  msup  mmultiscripts
 class MultiscriptsNode extends SlotableNode {
+  /// Whether to align the subscript to the superscript.
+  ///
+  /// Mimics MathML's mmultiscripts.
   final bool alignPostscripts;
 
+  /// Base where scripts are applied upon.
   final EquationRowNode base;
 
+  /// Subscript.
   final EquationRowNode sub;
+
+  /// Superscript.
   final EquationRowNode sup;
+
+  /// Presubscript.
   final EquationRowNode presub;
+
+  /// Presuperscript.
   final EquationRowNode presup;
 
   MultiscriptsNode({

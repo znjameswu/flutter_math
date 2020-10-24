@@ -13,17 +13,20 @@ import 'functions.dart';
 
 final texEncodingCache = Expando<EncodeResult>('Tex encoding results');
 
+/// Encodes [GreenNode] into TeX
 class TexEncoder extends Converter<GreenNode, String> {
   @override
   String convert(GreenNode input) => input.encodeTeX();
 }
 
 extension TexEncoderExt on GreenNode {
+  /// Encodes the node into TeX
   String encodeTeX({TexEncodeConf conf = const TexEncodeConf()}) =>
       encodeTex(this).stringify(conf);
 }
 
 extension ListTexEncoderExt on List<GreenNode> {
+  /// Encode the list of nodes into TeX
   String encodeTex() =>
       this.wrapWithEquationRow().encodeTeX(conf: TexEncodeConf().mathParam());
 }

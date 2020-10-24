@@ -17,6 +17,7 @@ import '../parser/tex/settings.dart';
 import '../utils/wrapper.dart';
 import 'controller.dart';
 import 'flutter_math.dart';
+import 'math.dart';
 import 'selection/cursor_timer_manager.dart';
 import 'selection/focus_manager.dart';
 import 'selection/overlay_manager.dart';
@@ -25,7 +26,22 @@ import 'selection/web_selection_manager.dart';
 
 const defaultSelection = TextSelection.collapsed(offset: -1);
 
+
+/// Selectable math widget.
+/// 
+/// On top of non-selectable [Math], it adds selection functionality. Users can 
+/// select by long press gesture, drag gesture, moving selection handles or 
+/// pointer selection. The selected region can be encoded into TeX and copied 
+/// to clipboard.
+/// 
+/// See [SelectableText] as this widget aims to fully imitate its behavior.
 class SelectableMath extends StatelessWidget {
+
+  /// SelectableMath default constructor.
+  /// 
+  /// Requires either a parsed [ast] or a [parseError].
+  /// 
+  /// See [SelectableMath] for its member documentation.
   const SelectableMath({
     Key key,
     this.ast,
@@ -39,7 +55,7 @@ class SelectableMath extends StatelessWidget {
     this.focusNode,
     this.mathStyle = MathStyle.display,
     this.onErrorFallback = defaultOnErrorFallback,
-    this.options = Options.displayOptions,
+    this.options,
     this.parseError,
     this.showCursor = false,
     this.textScaleFactor,
@@ -61,47 +77,106 @@ class SelectableMath extends StatelessWidget {
             ),
         super(key: key);
 
+  /// The equation to display.
+  /// 
+  /// It can be null only when [parseError] is not null.
   final SyntaxTree ast;
 
+  /// {@macro flutter.widgets.editableText.autofocus}
   final bool autofocus;
 
+  /// The color to use when painting the cursor.
+  ///
+  /// Defaults to the theme's `cursorColor` when null.
   final Color cursorColor;
 
+  /// {@macro flutter.widgets.editableText.cursorRadius}
   final Radius cursorRadius;
 
+  /// {@macro flutter.widgets.editableText.cursorWidth}
   final double cursorWidth;
 
+  /// {@macro flutter.widgets.editableText.cursorHeight}
   final double cursorHeight;
 
+  /// {@macro flutter.widgets.scrollable.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
 
+  /// {@macro flutter.widgets.editableText.enableInteractiveSelection}
   final bool enableInteractiveSelection;
 
+  /// Defines the focus for this widget.
+  ///
+  /// Math is only selectable when widget is focused.
+  ///
+  /// The [focusNode] is a long-lived object that's typically managed by a
+  /// [StatefulWidget] parent. See [FocusNode] for more information.
+  ///
+  /// To give the focus to this widget, provide a [focusNode] and then
+  /// use the current [FocusScope] to request the focus:
+  ///
+  /// ```dart
+  /// FocusScope.of(context).requestFocus(myFocusNode);
+  /// ```
+  ///
+  /// This happens automatically when the widget is tapped.
+  ///
+  /// To be notified when the widget gains or loses the focus, add a listener
+  /// to the [focusNode]:
+  ///
+  /// ```dart
+  /// focusNode.addListener(() { print(myFocusNode.hasFocus); });
+  /// ```
+  ///
+  /// If null, this widget will create its own [FocusNode].
   final FocusNode focusNode;
 
+  /// {@macro flutter_math.widgets.math.mathStyle}
   final MathStyle mathStyle;
 
+  /// {@macro flutter_math.widgets.math.onErrorFallback}
   final OnErrorFallback onErrorFallback;
 
+  /// {@macro flutter_math.widgets.math.options}
   final Options options;
 
+  /// {@macro flutter_math.widgets.math.parseError}
   final String parseError;
 
+  /// {@macro flutter.widgets.editableText.showCursor}
   final bool showCursor;
 
+  /// {@macro flutter.widgets.editableText.textScaleFactor}
   final double textScaleFactor;
 
+  /// Optional delegate for building the text selection handles and toolbar.
+  ///
+  /// Just works like [EditableText.selectionControls]
   final TextSelectionControls textSelectionControls;
 
+  /// {@macro fluttermath.widgets.math.textStyle}
   final TextStyle textStyle;
 
+  /// Configuration of toolbar options.
+  ///
+  /// Paste and cut will be disabled regardless.
+  ///
+  /// If not set, select all and copy will be enabled by default.
   final ToolbarOptions toolbarOptions;
 
+  /// SelectableMath builder using a TeX string
+  /// 
+  /// {@macro flutter_math.widgets.math.tex_builder}
+  /// 
+  /// See alse:
+  /// 
+  /// * [SelectableMath.mathStyle]
+  /// * [SelectableMath.textStyle]
   factory SelectableMath.tex(
     String expression, {
     Key key,
     Settings settings = const Settings(),
-    Options options = Options.displayOptions,
+    Options options,
     OnErrorFallback onErrorFallback = defaultOnErrorFallback,
     bool autofocus = false,
     Color cursorColor,
@@ -263,6 +338,7 @@ class SelectableMath extends StatelessWidget {
   }
 }
 
+/// The internal widget for [SelectableMath] when no errors are encountered.
 class InternalSelectableMath extends StatefulWidget {
   const InternalSelectableMath({
     Key key,

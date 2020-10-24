@@ -19,13 +19,19 @@ import '../size.dart';
 import '../style.dart';
 import '../syntax_tree.dart';
 
-/// Word:   \sqrt   \sqrt(index & base)
-/// Latex:  \sqrt   \sqrt[index]{base}
-/// MathML: msqrt   mroot
-
+/// Square root node.
+///
+/// Examples:
+/// - Word:   `\sqrt`   `\sqrt(index & base)`
+/// - Latex:  `\sqrt`   `\sqrt[index]{base}`
+/// - MathML: `msqrt`   `mroot`
 class SqrtNode extends SlotableNode {
+  /// The index.
   final EquationRowNode index;
+
+  /// The sqrt-and.
   final EquationRowNode base;
+
   SqrtNode({
     @required this.index,
     @required this.base,

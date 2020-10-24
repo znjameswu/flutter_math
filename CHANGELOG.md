@@ -1,6 +1,18 @@
-## [0.1.8+2] - 2020/10/12
+## [0.2.0] - 2020/10/24
+- A new `SelectableMath` widget that supports selection and copy-to-clipboard.
+- A TeX encoder.
+- Various performance boosts.
+- fix a bug where some math functions' lower bound get dropped
 
-- Bump dependencies and remove `pubspec.lock` from the package.
+### 0.2.0 API breaking change
+- Major overhual on classnames.
+- `baseSizeMultiplier` is removed.
+- Parse errors and build errors now have correct types instead of `dynamic`. `onErrorFallback`'s signature has changed as a result.
+- Exports are grouped into `widgets`, `ast`, `tex`.
+For detailed information, please see [0.2.0 migration guide](doc/migration.0.2.0.md).
+
+## [0.1.9] - 2020/10/24
+With all 0.2.0 improvements, but excluding those breaking changes.
 
 ## [0.1.8+1] - 2020/9/3
 - More documentations.

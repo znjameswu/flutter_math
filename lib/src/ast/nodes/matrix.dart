@@ -30,27 +30,47 @@ enum MatrixRowAlign {
   // axis,
 }
 
+/// Matrix node
 class MatrixNode extends SlotableNode {
+  /// `arrayStretch` parameter from the context.
+  /// 
+  /// Affects the minimum row height and row depth for each row.
+  /// 
+  /// `\smallmatrix` has an `arrayStretch` of 0.5.
   final double arrayStretch;
-  // Latex compatibility
-  final bool hskipBeforeAndAfter;
-  // refers to total spacing between columns, 2*arraycolsep
-  // final List<Measurement> columnSpacing;
 
+  /// Whether to create an extra padding before the first column and after the 
+  /// last column.
+  final bool hskipBeforeAndAfter;
+
+  /// Special flags for `\smallmatrix`
   final bool isSmall;
+
+  /// Align types for each column.
   final List<MatrixColumnAlign> columnAligns;
 
-  // INCLUDE OUTERMOST LINES! DIFFERENT FROM MATHML!
+  /// Style for vertical separator lines.
+  /// 
+  /// This includes outermost lines. Different from MathML!
   final List<MatrixSeparatorStyle> vLines;
 
+  /// Spacings between rows;
   final List<Measurement> rowSpacings;
 
-  // INCLUDE OUTERMOST LINES! DIFFERENT FROM MATHML!
+  /// Style for horizontal separator lines.
+  /// 
+  /// This includes outermost lines. Different from MathML!
   final List<MatrixSeparatorStyle> hLines;
 
+  /// Body of the matrix.
+  /// 
+  /// First index is line number. Second index is column number.
   final List<List<EquationRowNode>> body;
 
+  /// Row number.
   final int rows;
+
+  /// Column number.
   final int cols;
 
   MatrixNode._({
@@ -74,6 +94,7 @@ class MatrixNode extends SlotableNode {
         assert(rowSpacings.length == rows),
         assert(hLines.length == rows + 1);
 
+  /// Factory constructor for [MatrixNode] that will sanitize inputs.
   factory MatrixNode({
     double arrayStretch = 1.0,
     bool hskipBeforeAndAfter = false,

@@ -3,8 +3,11 @@ import 'package:flutter/foundation.dart';
 import '../options.dart';
 import '../syntax_tree.dart';
 
+/// Node to denote all kinds of style changes.
 class StyleNode extends TransparentNode {
   final List<GreenNode> children;
+
+  /// The difference of [Options].
   final OptionsDiff optionsDiff;
 
   StyleNode({

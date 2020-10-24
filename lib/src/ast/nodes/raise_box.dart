@@ -5,8 +5,14 @@ import '../options.dart';
 import '../size.dart';
 import '../syntax_tree.dart';
 
+/// Raise box node which vertically displace its child.
+///
+/// Example: `\raisebox`
 class RaiseBoxNode extends SlotableNode {
+  /// Child to raise.
   final EquationRowNode body;
+
+  /// Vertical displacement.
   final Measurement dy;
 
   RaiseBoxNode({

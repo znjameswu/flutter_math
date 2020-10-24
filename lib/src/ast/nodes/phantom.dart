@@ -6,17 +6,27 @@ import '../options.dart';
 import '../syntax_tree.dart';
 import '../types.dart';
 
+/// Phantom node.
+///
+/// Example: `\phantom` `\hphantom`.
 class PhantomNode extends LeafNode {
   Mode get mode => Mode.math;
 
+  /// The phantomed child.
   // TODO: suppress editbox in edit mode
   // If we use arbitrary GreenNode here, then we will face the danger of
   // transparent node
   final EquationRowNode phantomChild;
 
+  /// Whether to eliminate width.
   final bool zeroWidth;
+
+  /// Whether to eliminate height.
   final bool zeroHeight;
+
+  /// Whether to eliminate depth.
   final bool zeroDepth;
+
   PhantomNode({
     @required this.phantomChild,
     this.zeroHeight = false,

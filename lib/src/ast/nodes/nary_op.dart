@@ -17,21 +17,27 @@ import '../style.dart';
 import '../syntax_tree.dart';
 import '../types.dart';
 
-// enum LimitsBehavior {
-//   //ignore: constant_identifier_names
-//   Default,
-//   subsup,
-//   underover,
-// }
-
+/// N-ary operator node.
+/// 
+/// Examples: `\sum`, `\int`
 class NaryOperatorNode extends SlotableNode {
-  final String operator;
-  final EquationRowNode lowerLimit;
-  final EquationRowNode upperLimit;
-  final EquationRowNode naryand;
-  final bool limits;
-  bool get canlimits => _naryDefaultLimit.contains(operator);
 
+  /// Unicode symbol for the operator character.
+  final String operator;
+
+  /// Lower limit.
+  final EquationRowNode lowerLimit;
+
+  /// Upper limit.
+  final EquationRowNode upperLimit;
+
+  /// Argument for the N-ary operator.
+  final EquationRowNode naryand;
+
+  /// Whether the limits are displayed as under/over or as scripts.
+  final bool limits;
+
+  /// Special flag for `\smallint`.
   final bool allowLargeOp; // for \smallint
 
   NaryOperatorNode({

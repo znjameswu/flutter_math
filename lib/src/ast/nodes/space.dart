@@ -9,15 +9,28 @@ import '../size.dart';
 import '../syntax_tree.dart';
 import '../types.dart';
 
+/// Space node. Also used for equation alignment.
 class SpaceNode extends LeafNode {
+  /// Height.
   final Measurement height;
+
+  /// Width.
   final Measurement width;
+
+  /// Depth.
   final Measurement depth;
-  // For the sole purpose of \rule
+
+  /// Vertical shift.
+  ///
+  ///  For the sole purpose of `\rule`
   final Measurement shift;
+
+  /// Whether to allow linebreak.
   final bool noBreak;
+
+  /// Whether to fill with text color.
   final bool fill;
-  // final Color background;
+
   final Mode mode;
 
   final bool alignerOrSpacer;
