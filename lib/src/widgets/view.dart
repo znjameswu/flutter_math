@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../ast/options.dart';
+import '../ast/style.dart';
 import '../ast/syntax_tree.dart';
 import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
@@ -9,51 +10,63 @@ import '../parser/tex/settings.dart';
 import 'flutter_math.dart';
 
 class Math extends StatelessWidget {
-  final SyntaxTree ast;
-
-  final String parseError;
-
-  final Options options;
-
-  final OnErrorFallback onErrorFallback;
-
   const Math({
     Key key,
     this.ast,
-    this.parseError,
+    this.mathStyle = MathStyle.display,
+    this.onErrorFallback = defaultOnErrorFallback,
     this.options,
-    this.onErrorFallback,
-  }) : super(key: key);
+    this.parseError,
+    this.textScaleFactor,
+    this.textStyle,
+  })  : assert(ast != null || parseError != null),
+        assert(onErrorFallback != null),
+        assert(mathStyle != null || options != null),
+        super(key: key);
+
+  final SyntaxTree ast;
+
+  final MathStyle mathStyle;
+
+  final OnErrorFallback onErrorFallback;
+
+  final Options options;
+
+  final String parseError;
+
+  final double textScaleFactor;
+
+  final TextStyle textStyle;
 
   factory Math.tex(
     String expression, {
     Key key,
     Options options = Options.displayOptions,
     Settings settings = const Settings(),
-    OnErrorFallback onErrorFallback,
+    OnErrorFallback onErrorFallback = defaultOnErrorFallback,
+    MathStyle mathStyle = MathStyle.display,
+    double textScaleFactor,
+    TextStyle textStyle,
   }) {
+    SyntaxTree ast;
+    String parseError;
     try {
-      final ast =
-          SyntaxTree(greenRoot: TexParser(expression, settings).parse());
-      return Math(
-        key: key,
-        ast: ast,
-        options: options,
-        onErrorFallback: onErrorFallback,
-      );
+      ast = SyntaxTree(greenRoot: TexParser(expression, settings).parse());
     } on ParseError catch (e) {
-      return Math(
-        key: key,
-        parseError: 'Parser Error: ${e.message}',
-        onErrorFallback: onErrorFallback,
-      );
+      parseError = 'Parser Error: ${e.message}';
     } on dynamic catch (e) {
-      return Math(
-        key: key,
-        parseError: e.toString(),
-        onErrorFallback: onErrorFallback,
-      );
+      parseError = e.toString();
     }
+    return Math(
+      key: key,
+      ast: ast,
+      parseError: parseError,
+      options: options,
+      onErrorFallback: onErrorFallback,
+      mathStyle: mathStyle,
+      textScaleFactor: textScaleFactor,
+      textStyle: textStyle,
+    );
   }
 
   @override
@@ -61,16 +74,42 @@ class Math extends StatelessWidget {
     if (parseError != null) {
       return onErrorFallback(parseError);
     }
-    try {
-      return MultiProvider(
-        providers: [
-          Provider.value(value: FlutterMathMode.view),
-          Provider.value(value: const TextSelection.collapsed(offset: -1)),
-        ],
-        child: ast.buildWidget(options),
+
+    var options = this.options;
+    if (options == null) {
+      var effectiveTextStyle = textStyle;
+      if (textStyle == null || textStyle.inherit) {
+        effectiveTextStyle =
+            DefaultTextStyle.of(context).style.merge(textStyle);
+      }
+      if (MediaQuery.boldTextOverride(context)) {
+        effectiveTextStyle = effectiveTextStyle
+            .merge(const TextStyle(fontWeight: FontWeight.bold));
+      }
+
+      final textScaleFactor =
+          this.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
+
+      options = Options(
+        style: mathStyle,
+        fontSize: effectiveTextStyle.fontSize * textScaleFactor,
+        mathFontOptions: effectiveTextStyle.fontWeight != FontWeight.normal
+            ? FontOptions(fontWeight: effectiveTextStyle.fontWeight)
+            : null,
       );
-    } on dynamic catch (err) {
-      return onErrorFallback(err.toString());
     }
+
+    Widget child;
+
+    try {
+      child = ast.buildWidget(options);
+    } on dynamic catch (e) {
+      return onErrorFallback(e.toString());
+    }
+
+    return Provider.value(
+      value: FlutterMathMode.view,
+      child: child,
+    );
   }
 }
