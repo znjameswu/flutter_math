@@ -25,7 +25,7 @@ class EquationArrayNode extends SlotableNode {
     List<Measurement> rowSpacings,
   })  : assert(body != null),
         assert(body.every((element) => element != null)),
-        hlines = (hlines ?? []).extendToByFill(body.length, null),
+        hlines = (hlines ?? []).extendToByFill(body.length + 1, null),
         rowSpacings =
             (rowSpacings ?? []).extendToByFill(body.length, Measurement.zero);
 

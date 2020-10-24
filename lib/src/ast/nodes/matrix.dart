@@ -182,11 +182,11 @@ class MatrixNode extends SlotableNode {
   ParentableNode<EquationRowNode> updateChildren(
       List<EquationRowNode> newChildren) {
     assert(newChildren.length >= rows * cols);
-    var body =
-        List<List<EquationRowNode>>.filled(rows, const [], growable: false);
-    for (var i = 0; i < rows; i++) {
-      body[i] = newChildren.sublist(i * cols + (i + 1) * cols);
-    }
+    var body = List<List<EquationRowNode>>.generate(
+      rows,
+      (i) => newChildren.sublist(i * cols + (i + 1) * cols),
+      growable: false,
+    );
     return copyWith(body: body);
   }
 

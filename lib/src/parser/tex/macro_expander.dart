@@ -162,8 +162,7 @@ class MacroExpander implements MacroContext {
   }
 
   List<List<Token>> consumeArgs(int numArgs) {
-    final args = List<List<Token>>.filled(numArgs, null);
-    for (var i = 0; i < numArgs; ++i) {
+    final args = List<List<Token>>.generate(numArgs, (i) {
       this.consumeSpaces();
       final startOfArg = this.popToken();
       if (startOfArg.text == '{') {
@@ -184,13 +183,13 @@ class MacroExpander implements MacroContext {
           }
         }
         arg.removeLast();
-        args[i] = arg.reversed.toList();
+        return arg.reversed.toList();
       } else if (startOfArg.text == 'EOF') {
         throw ParseError('End of input expecting macro argument');
       } else {
-        args[i] = [startOfArg];
+        return [startOfArg];
       }
-    }
+    });
     return args;
   }
 

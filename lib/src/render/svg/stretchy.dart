@@ -164,17 +164,18 @@ Widget strechySvgSpan(String name, double width, Options options) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        for (var i = 0; i < numSvgChildren; i++)
-          svgWidgetFromPath(
-            svgPaths[data.paths[i]],
-            Size(widths[i], height),
-            Rect.fromLTWH(0, 0, viewBoxWidth, data.viewBoxHeight),
-            options.color,
-            aligns[i],
-            BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
-          )
-      ],
+      children: List.generate(
+        numSvgChildren,
+        (index) => svgWidgetFromPath(
+          svgPaths[data.paths[index]],
+          Size(widths[index], height),
+          Rect.fromLTWH(0, 0, viewBoxWidth, data.viewBoxHeight),
+          options.color,
+          aligns[index],
+          BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
+        ),
+        growable: false,
+      ),
     );
   }
 }

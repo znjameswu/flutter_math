@@ -30,10 +30,14 @@ extension ListExtension<T> on List<T> {
     this.sort((a, b) => f(a).compareTo(f(b)));
   }
 
-  List<T> extendToByFill(int desiredLength, T fill) => [
-        ...this,
-        for (var i = 0; i < desiredLength - this.length; i++) fill,
-      ];
+  List<T> extendToByFill(int desiredLength, T fill) =>
+      this.length >= desiredLength
+          ? this
+          : List.generate(
+              desiredLength,
+              (index) => index < this.length ? this[index] : fill,
+              growable: false,
+            );
 }
 
 extension NumListSearchExt<T extends num> on List<T> {

@@ -103,12 +103,6 @@ class SyntaxTree {
 
     final localPos1 = position1 - rowNode.pos;
     final localPos2 = position2 - rowNode.pos;
-    // final caretIndex1 = rowNode.caretPositions.slotFor(localPos1).floor();
-    // final caretIndex2 = rowNode.caretPositions.slotFor(localPos2).ceil();
-    // final selectedPos1 = rowNode.caretPositions[
-    //     caretIndex1.clampInt(0, rowNode.caretPositions.length - 1)];
-    // final selectedPos2 = rowNode.caretPositions[
-    //     caretIndex2.clampInt(0, rowNode.caretPositions.length - 1)];
     return rowNode.clipChildrenBetween(localPos1, localPos2).children;
   }
 
@@ -140,18 +134,16 @@ class SyntaxNode {
   List<SyntaxNode> _children;
   List<SyntaxNode> get children {
     if (_children != null) return _children;
-    final res =
-        List<SyntaxNode>.filled(value.children.length, null, growable: false);
-    for (var i = 0; i < value.children.length; i++) {
-      res[i] = value.children[i] != null
-          ? SyntaxNode(
-              parent: this,
-              value: value.children[i],
-              pos: this.pos + value.childPositions[i],
-            )
-          : null;
-    }
-    return _children = res;
+    return _children = List.generate(
+        value.children.length,
+        (index) => value.children[index] != null
+            ? SyntaxNode(
+                parent: this,
+                value: value.children[index],
+                pos: this.pos + value.childPositions[index],
+              )
+            : null,
+        growable: false);
   }
 
   /// [GreenNode.getRange]
@@ -199,52 +191,11 @@ class SyntaxNode {
   List<BuildResult> _buildChildWidgets(List<Options> childOptions) {
     assert(children.length == childOptions.length);
     if (children.isEmpty) return const [];
-    final result =
-        List<BuildResult>.filled(children.length, null, growable: false);
-    for (var i = 0; i < children.length; i++) {
-      result[i] = children[i]?.buildWidget(childOptions[i]);
-    }
-    return result;
+    return List.generate(children.length,
+        (index) => children[index]?.buildWidget(childOptions[index]),
+        growable: false);
   }
 }
-
-// /// The range of a node used for hit-testing.
-// ///
-// /// Used only for editing functionalities. Not to be used in parser.
-// ///
-// /// The [NodeRange] is a closed interval where the cursor whose position falls
-// /// inside this interval will be captured by the corresponding node. If the node
-// /// only captures 1 cursor position, then [start] == [end]. If the node does not
-// /// capture cursor at all (e.g. [SymbolNode]), then [start] > [end]
-// ///
-// /// The position of a cursor is defined as number of "Right" keystrokes needed
-// /// to move the cursor from the starting position to the current position.
-// class NodeRange {
-//   /// Number of "Right" keystrokes needed to move cursor from starting position
-//   /// of parent node to the leftmost position of this node.
-//   final int start;
-
-//   /// Number of "Right" keystrokes needed to move cursor from starting position
-//   /// of parent node to the leftmost position of the next sibling node.
-//   final int end;
-//   const NodeRange(
-//     this.start,
-//     this.end,
-//   );
-
-//   NodeRange copyWith({
-//     int start,
-//     int end,
-//   }) =>
-//       NodeRange(
-//         start ?? this.start,
-//         end ?? this.end,
-//       );
-
-//   NodeRange operator +(int offset) => NodeRange(start + offset, end + offset);
-
-//   bool contains(int pos) => pos >= start && pos <= end;
-// }
 
 /// Node of Roslyn's Green Tree. Base class of any math nodes.
 ///
@@ -533,17 +484,6 @@ class EquationRowNode extends ParentableNode<GreenNode>
     }, growable: false);
   }
 
-  // int caretIndexForSelectionStart(int start) => start < 1
-  //     ? -1
-  //     : start > capturedCursor
-  //         ? caretPositions.length
-  //         : caretPositions.indexWhere((pos) => pos >= start);
-  // int caretIndexForSelectionEnd(int end) => end > capturedCursor
-  //     ? caretPositions.length
-  //     : end < 1
-  //         ? -1
-  //         : caretPositions.lastIndexWhere((pos) => pos <= end);
-
   @override
   BuildResult buildWidget(
       Options options, List<BuildResult> childBuildResults) {
@@ -560,10 +500,15 @@ class EquationRowNode extends ParentableNode<GreenNode>
     //   be seen as an ord
     // - There could aligners and spacers. We need to calculate the spacing
     //   after filtering them out, hence the [traverseNonSpaceNodes]
-    final childSpacingConfs = flattenedChildList
-        .mapIndexed((e, index) => _NodeSpacingConf(
-            e.leftType, e.rightType, flattenedChildOptions[index], 0.0))
-        .toList(growable: false);
+    final childSpacingConfs = List.generate(
+      flattenedChildList.length,
+      (index) {
+        final e = flattenedChildList[index];
+        return _NodeSpacingConf(
+            e.leftType, e.rightType, flattenedChildOptions[index], 0.0);
+      },
+      growable: false,
+    );
     _traverseNonSpaceNodes(childSpacingConfs, (prev, curr) {
       if (prev?.rightType == AtomType.bin &&
           const {
