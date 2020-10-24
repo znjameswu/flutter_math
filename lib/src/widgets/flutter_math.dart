@@ -28,7 +28,7 @@ class FlutterMath {
     FlutterMathMode mode = FlutterMathMode.view,
     OnErrorFallback onErrorFallback = defaultOnErrorFallback,
   }) =>
-      MathView.tex(
+      Math.tex(
         expression,
         key: key,
         options: options,

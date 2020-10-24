@@ -7,7 +7,7 @@ import 'selection_manager.dart';
 
 /// Helper class that keeps state relevant to the editing cursor.
 mixin CursorTimerManagerMixin<T extends StatefulWidget>
-    on MathSelectionManagerMixin<T> implements TickerProvider {
+    on SelectionManagerMixin<T> implements TickerProvider {
   static const _kCursorBlinkHalfPeriod = Duration(milliseconds: 500);
 
   static const _fadeDuration = Duration(milliseconds: 250);

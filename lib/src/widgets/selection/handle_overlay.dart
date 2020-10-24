@@ -25,7 +25,7 @@ class MathSelectionHandleOverlay extends StatefulWidget {
   }) : super(key: key);
 
   // final SyntaxTree ast;
-  final MathSelectionOverlayManager manager;
+  final SelectionOverlayManagerMixin manager;
   final TextSelection selection;
   final MathSelectionHandlePosition position;
   final LayerLink startHandleLayerLink;

@@ -62,7 +62,7 @@ class MathSelectionOverlay {
 
   /// The delegate for manipulating the current selection in the owning
   /// text field.
-  final MathSelectionOverlayManager manager;
+  final SelectionOverlayManagerMixin manager;
 
   /// Determines the way that drag start behavior is handled.
   ///

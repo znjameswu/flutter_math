@@ -13,7 +13,7 @@ class MathSelectionGestureDetectorBuilder {
   MathSelectionGestureDetectorBuilder({
     @required this.delegate,
   });
-  final MathSelectionOverlayManager delegate;
+  final SelectionOverlayManagerMixin delegate;
 
   /// Whether to show the selection toolbar.
   ///

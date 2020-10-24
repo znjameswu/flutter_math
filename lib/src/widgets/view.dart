@@ -8,7 +8,7 @@ import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';
 import 'flutter_math.dart';
 
-class MathView extends StatelessWidget {
+class Math extends StatelessWidget {
   final SyntaxTree ast;
 
   final String parseError;
@@ -17,7 +17,7 @@ class MathView extends StatelessWidget {
 
   final OnErrorFallback onErrorFallback;
 
-  const MathView({
+  const Math({
     Key key,
     this.ast,
     this.parseError,
@@ -25,7 +25,7 @@ class MathView extends StatelessWidget {
     this.onErrorFallback,
   }) : super(key: key);
 
-  factory MathView.tex(
+  factory Math.tex(
     String expression, {
     Key key,
     Options options = Options.displayOptions,
@@ -35,20 +35,20 @@ class MathView extends StatelessWidget {
     try {
       final ast =
           SyntaxTree(greenRoot: TexParser(expression, settings).parse());
-      return MathView(
+      return Math(
         key: key,
         ast: ast,
         options: options,
         onErrorFallback: onErrorFallback,
       );
     } on ParseError catch (e) {
-      return MathView(
+      return Math(
         key: key,
         parseError: 'Parser Error: ${e.message}',
         onErrorFallback: onErrorFallback,
       );
     } on dynamic catch (e) {
-      return MathView(
+      return Math(
         key: key,
         parseError: e.toString(),
         onErrorFallback: onErrorFallback,

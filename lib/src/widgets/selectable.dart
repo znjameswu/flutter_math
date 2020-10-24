@@ -25,8 +25,8 @@ import 'selection/web_selection_manager.dart';
 
 const defaultSelection = TextSelection.collapsed(offset: -1);
 
-class MathSelectable extends StatelessWidget {
-  const MathSelectable({
+class SelectableMath extends StatelessWidget {
+  const SelectableMath({
     Key key,
     this.ast,
     this.autofocus = false,
@@ -97,7 +97,7 @@ class MathSelectable extends StatelessWidget {
 
   final ToolbarOptions toolbarOptions;
 
-  factory MathSelectable.tex(
+  factory SelectableMath.tex(
     String expression, {
     Key key,
     Settings settings = const Settings(),
@@ -127,7 +127,7 @@ class MathSelectable extends StatelessWidget {
     } on dynamic catch (e) {
       parseError = e.toString();
     }
-    return MathSelectable(
+    return SelectableMath(
       key: key,
       ast: ast,
       autofocus: autofocus,
@@ -340,9 +340,9 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
     with
         AutomaticKeepAliveClientMixin,
         FocusManagerMixin,
-        MathSelectionManagerMixin,
-        MathSelectionOverlayManager,
-        WebSelectionManagerMixin,
+        SelectionManagerMixin,
+        SelectionOverlayManagerMixin,
+        WebSelectionControlsManagerMixin,
         SingleTickerProviderStateMixin,
         CursorTimerManagerMixin {
   TextSelectionControls get textSelectionControls =>

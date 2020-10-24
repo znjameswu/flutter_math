@@ -10,7 +10,7 @@ import '../../render/layout/line_editable.dart';
 import '../../utils/render_box_extensions.dart';
 import '../controller.dart';
 
-mixin MathSelectionManagerMixin<T extends StatefulWidget> on State<T>
+mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
     implements TextSelectionDelegate {
   MathController get controller;
 

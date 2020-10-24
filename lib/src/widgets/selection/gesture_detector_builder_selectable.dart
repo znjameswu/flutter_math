@@ -7,7 +7,7 @@ import 'overlay_manager.dart';
 class MathSelectableSelectionGestureDetectorBuilder
     extends MathSelectionGestureDetectorBuilder {
   MathSelectableSelectionGestureDetectorBuilder({
-    @required MathSelectionOverlayManager delegate,
+    @required SelectionOverlayManagerMixin delegate,
   }) : super(delegate: delegate);
 
   @override

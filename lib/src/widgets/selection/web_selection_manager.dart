@@ -20,8 +20,8 @@ import 'selection_manager.dart';
 /// `textarea` accordingly). Finally, to ensure `textarea` selection covers  our
 /// widget，we use an absurdly large font size and keep a select-all state.
 ///
-mixin WebSelectionManagerMixin<T extends StatefulWidget>
-    on MathSelectionManagerMixin<T> implements TextInputClient {
+mixin WebSelectionControlsManagerMixin<T extends StatefulWidget>
+    on SelectionManagerMixin<T> implements TextInputClient {
   FocusNode get focusNode;
   FocusNode _oldFocusNode;
 

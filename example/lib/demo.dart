@@ -59,7 +59,7 @@ class DemoPage extends StatelessWidget {
                             padding: EdgeInsets.all(10),
                             child: Consumer<TextEditingController>(
                               builder: (context, controller, _) =>
-                                  MathSelectable.tex(
+                                  SelectableMath.tex(
                                 controller.value.text,
                                 options: Options(
                                   style: MathStyle.display,

@@ -56,13 +56,13 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(
         overlay(
-          child: MathSelectable.tex(
+          child: SelectableMath.tex(
             'some text',
             showCursor: true,
           ),
         ),
       );
-      await tester.tap(find.byType(MathSelectable));
+      await tester.tap(find.byType(SelectableMath));
       await tester.idle();
 
       final selectableMath = tester.state<InternalSelectableMathState>(
@@ -122,7 +122,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: Center(
-              child: MathSelectable.tex(
+              child: SelectableMath.tex(
                 'abc def ghi',
                 dragStartBehavior: DragStartBehavior.down,
               ),
@@ -240,11 +240,11 @@ void main() {
         overlay(
           child: Column(
             children: <Widget>[
-              MathSelectable.tex(
+              SelectableMath.tex(
                 'text 1',
                 key: key1,
               ),
-              MathSelectable.tex(
+              SelectableMath.tex(
                 'text 2',
                 key: key2,
               ),
@@ -275,7 +275,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: Center(
-              child: MathSelectable.tex(testText),
+              child: SelectableMath.tex(testText),
             ),
           ),
         ),
@@ -314,7 +314,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: Center(
-              child: MathSelectable.tex(testText),
+              child: SelectableMath.tex(testText),
             ),
           ),
         ),
@@ -354,7 +354,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: Center(
-              child: MathSelectable.tex('abc def ghi'),
+              child: SelectableMath.tex('abc def ghi'),
             ),
           ),
         ),
@@ -377,7 +377,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: Center(
-              child: MathSelectable.tex('abc def ghi'),
+              child: SelectableMath.tex('abc def ghi'),
             ),
           ),
         ),
@@ -403,7 +403,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: Center(
-                child: MathSelectable.tex('abc def ghi'),
+                child: SelectableMath.tex('abc def ghi'),
               ),
             ),
           ),
@@ -435,7 +435,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: Center(
-                child: MathSelectable.tex('abc def ghi'),
+                child: SelectableMath.tex('abc def ghi'),
               ),
             ),
           ),
@@ -467,14 +467,14 @@ void main() {
           MaterialApp(
             home: Material(
               child: Center(
-                child: MathSelectable.tex('abc def ghi'),
+                child: SelectableMath.tex('abc def ghi'),
               ),
             ),
           ),
         );
 
         // Double tap to trigger the selectable text.
-        final selectableTextPos = tester.getCenter(find.byType(MathSelectable));
+        final selectableTextPos = tester.getCenter(find.byType(SelectableMath));
         final gesture = await tester.startGesture(
           selectableTextPos,
           pointer: 7,
@@ -502,7 +502,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: Center(
-              child: MathSelectable.tex('test'),
+              child: SelectableMath.tex('test'),
             ),
           ),
         ),
@@ -511,7 +511,7 @@ void main() {
       final gesture =
           await tester.createGesture(kind: PointerDeviceKind.mouse, pointer: 1);
       await gesture.addPointer(
-          location: tester.getCenter(find.byType(MathSelectable)));
+          location: tester.getCenter(find.byType(SelectableMath)));
       addTearDown(gesture.removePointer);
 
       await tester.pump();
@@ -571,14 +571,14 @@ void main() {
         MaterialApp(
           home: Material(
             child: Center(
-              child: MathSelectable.tex('abc def ghi'),
+              child: SelectableMath.tex('abc def ghi'),
             ),
           ),
         ),
       );
 
       // Interact with the selectable text to establish the input connection.
-      final topLeft = tester.getTopLeft(find.byType(MathSelectable));
+      final topLeft = tester.getTopLeft(find.byType(SelectableMath));
       final gesture = await tester.startGesture(
         topLeft + const Offset(0.0, 5.0),
         kind: PointerDeviceKind.mouse,

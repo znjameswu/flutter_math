@@ -6,8 +6,8 @@ import 'gesture_detector_builder_selectable.dart';
 import 'overlay.dart';
 import 'selection_manager.dart';
 
-mixin MathSelectionOverlayManager<T extends StatefulWidget>
-    on MathSelectionManagerMixin<T>
+mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
+    on SelectionManagerMixin<T>
     implements MathSelectionGestureDetectorBuilderDelegate {
   FocusNode get focusNode;
 
