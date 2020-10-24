@@ -785,8 +785,8 @@ class TexParser {
         this.settings.reportNonstrict('unicodeTextInMathMode',
             'Unicode text character "${text[0]} used in math mode"', nucleus);
       }
-      symbol =
-          SymbolNode(symbol: text + combiningMarks, overrideAtomType: AtomType.ord);
+      symbol = SymbolNode(
+          symbol: text + combiningMarks, overrideAtomType: AtomType.ord);
     } else {
       return null;
     }

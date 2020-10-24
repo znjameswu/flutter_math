@@ -41,6 +41,5 @@ void main() {
       );
       expect(bar.encodeTeX(conf: TexEncodeConf.textConf), '\\={}');
     });
-    
   });
 }

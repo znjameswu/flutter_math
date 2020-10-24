@@ -22,7 +22,6 @@ EncodeResult _naryEncoder(GreenNode node) {
   ]);
 }
 
-
 // Dart compiler bug here. Cannot set it to const
 final _naryOperatorMapping = {
   ...singleCharBigOps,

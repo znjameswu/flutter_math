@@ -194,7 +194,6 @@ class TexCommandEncodeResult extends EncodeResult {
         if (index < numOptionalArgs) {
           return string.isEmpty ? '' : '[$string]';
         } else {
-          // if (string.length == 1 || _isSingleSymbol(args[index])) return string;
           return '{$string}'; // TODO optimize
         }
       },

@@ -1,7 +1,7 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/render/constants.dart';
 
+import '../constants.dart';
 import '../utils/render_box_offset.dart';
 
 class ResetDimension extends SingleChildRenderObjectWidget {
@@ -50,7 +50,6 @@ class RenderResetDimension extends RenderShiftedBox {
         _layoutWidth = layoutWidth,
         _horizontalAlignment = horizontalAlignment,
         super(child);
-
 
   double get layoutHeight => _layoutHeight;
   double _layoutHeight;

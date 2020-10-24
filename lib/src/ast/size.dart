@@ -144,9 +144,7 @@ class Measurement {
   double toCssEmUnder(Options options) => toLpUnder(options) / options.fontSize;
 
   @override
-  String toString() {
-    return '$value${unit.name}';
-  }
+  String toString() => '$value${unit.name}';
 
   static const zero = Measurement(value: 0, unit: Unit.pt);
 }

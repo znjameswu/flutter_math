@@ -9,7 +9,7 @@ abstract class Matcher {
   int get specificity;
   bool match(GreenNode node);
 
-  Matcher or(Matcher other) {}
+  Matcher or(Matcher other) => OrMatcher(this, other);
 }
 
 class OrMatcher extends Matcher {

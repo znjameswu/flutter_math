@@ -27,19 +27,12 @@ class MathSelectionGestureDetectorBuilder {
   Offset lastTapDownPosition;
 
   /// Handler for [TextSelectionGestureDetector.onTapDown].
-  ///
-  /// By default, it forwards the tap to [RenderEditable.handleTapDown] and sets
-  /// [shouldShowSelectionToolbar] to true if the tap was initiated by a finger or stylus.
-  ///
-  /// See also:
-  ///
-  ///  * [TextSelectionGestureDetector.onTapDown], which triggers this callback.
   @protected
   void onTapDown(TapDownDetails details) {
     lastTapDownPosition = details.globalPosition;
     // The selection overlay should only be shown when the user is interacting
-    // through a touch screen (via either a finger or a stylus). A mouse shouldn't
-    // trigger the selection overlay.
+    // through a touch screen (via either a finger or a stylus). A mouse
+    // shouldn't trigger the selection overlay.
     // For backwards-compatibility, we treat a null kind the same as touch.
     final kind = details.kind;
     _shouldShowSelectionToolbar = kind == null ||

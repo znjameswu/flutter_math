@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 class Wrapper<T> {
   final T value;
 

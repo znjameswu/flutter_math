@@ -108,30 +108,28 @@ class AccentNode extends SlotableNode {
         },
       );
     }
-    return 
-      BuildResult(
-        options: options,
-        italic: childBuildResults[0].italic,
-        skew: childBuildResults[0].skew,
-        widget: VList(
-          baselineReferenceWidgetIndex: 1,
-          children: <Widget>[
-            VListElement(
-              customCrossSize: (width) =>
-                  BoxConstraints(minWidth: width - 2 * skew),
-              hShift: skew,
-              child: accentWidget,
-            ),
-            // Set min height
-            MinDimension(
-              minHeight: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
-              topPadding: 0,
-              child: childBuildResults[0].widget,
-            ),
-          ],
-        ),
-      )
-    ;
+    return BuildResult(
+      options: options,
+      italic: childBuildResults[0].italic,
+      skew: childBuildResults[0].skew,
+      widget: VList(
+        baselineReferenceWidgetIndex: 1,
+        children: <Widget>[
+          VListElement(
+            customCrossSize: (width) =>
+                BoxConstraints(minWidth: width - 2 * skew),
+            hShift: skew,
+            child: accentWidget,
+          ),
+          // Set min height
+          MinDimension(
+            minHeight: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+            topPadding: 0,
+            child: childBuildResults[0].widget,
+          ),
+        ],
+      ),
+    );
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../ast/syntax_tree.dart';
@@ -26,8 +27,10 @@ class MathSelectionOverlay {
     assert(
       overlay != null,
       'No Overlay widget exists above $context.\n'
-      'Usually the Navigator created by WidgetsApp provides the overlay. Perhaps your '
-      'app content was created above the Navigator with the WidgetsApp builder parameter.',
+      'Usually the Navigator created by WidgetsApp provides the overlay. '
+      'Perhaps your '
+      'app content was created above the Navigator with the WidgetsApp '
+      'builder parameter.',
     );
     _toolbarController =
         AnimationController(duration: fadeDuration, vsync: overlay);
@@ -65,7 +68,8 @@ class MathSelectionOverlay {
   ///
   /// If set to [DragStartBehavior.start], handle drag behavior will
   /// begin upon the detection of a drag gesture. If set to
-  /// [DragStartBehavior.down] it will begin when a down event is first detected.
+  /// [DragStartBehavior.down] it will begin when a down event is first
+  /// detected.
   ///
   /// In general, setting this to [DragStartBehavior.start] will make drag
   /// animation smoother and setting it to [DragStartBehavior.down] will make
@@ -75,7 +79,8 @@ class MathSelectionOverlay {
   ///
   /// See also:
   ///
-  ///  * [DragGestureRecognizer.dragStartBehavior], which gives an example for the different behaviors.
+  ///  * [DragGestureRecognizer.dragStartBehavior], which gives an example for
+  /// the different behaviors.
   final DragStartBehavior dragStartBehavior;
 
   /// A callback that's invoked when a selection handle is tapped.
@@ -239,8 +244,9 @@ class MathSelectionOverlay {
       BuildContext context, MathSelectionHandlePosition position) {
     if ((_selection.isCollapsed &&
             position == MathSelectionHandlePosition.end) ||
-        selectionControls == null)
-      return Container(); // hide the second handle when collapsed
+        selectionControls == null) {
+      return Container();
+    } // hide the second handle when collapsed
     return Visibility(
       visible: handlesVisible,
       child: MathSelectionHandleOverlay(
@@ -273,7 +279,8 @@ class MathSelectionOverlay {
     // endpoints.last.point.dy - endpoints.first.point.dy >
     // manager.preferredLineHeight / 2;
 
-    // If the selected text spans more than 1 line, horizontally center the toolbar.
+    // If the selected text spans more than 1 line, horizontally center the
+    // toolbar.
     // Derived from both iOS and Android.
     final midX = isMultiline
         ? editingRegion.width / 2

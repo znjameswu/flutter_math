@@ -82,7 +82,6 @@ mixin MathSelectionOverlayManager<T extends StatefulWidget>
     _selectionOverlay?.hideToolbar();
   }
 
-  @override
   void hide() {
     toolbarVisible = false;
     _selectionOverlay?.hide();

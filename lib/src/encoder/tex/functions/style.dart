@@ -109,22 +109,3 @@ const _sizeCommands = {
   SizeMode.huge: '\\huge',
   SizeMode.HUGE: '\\HUGE',
 };
-
-final _mathFontCommands = {
-  // styles, except \boldsymbol defined below
-  '\\mathrm', '\\mathit', '\\mathbf', //'\\mathnormal',
-
-  // families
-  '\\mathbb', '\\mathcal', '\\mathfrak', '\\mathscr', '\\mathsf',
-  '\\mathtt',
-};
-
-final _textFontCommands = {
-  // Font families
-  // '\\text',
-  '\\textrm', '\\textsf', '\\texttt', '\\textnormal',
-  // Font weights
-  '\\textbf', '\\textmd',
-  // Font Shapes
-  '\\textit', '\\textup',
-};

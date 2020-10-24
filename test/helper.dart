@@ -115,7 +115,7 @@ void testTexToRenderLike(
               'golden/temp/${(description + expression1 + expression2).hashCode}.png'));
     }
 
-    final key2= GlobalKey();
+    final key2 = GlobalKey();
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(

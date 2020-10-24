@@ -46,7 +46,6 @@ import 'package:flutter_math/src/ast/nodes/style.dart';
 import 'package:flutter_math/src/ast/size.dart';
 import 'package:flutter_math/src/parser/tex/colors.dart';
 import 'package:flutter_math/src/parser/tex/font.dart';
-import 'package:flutter_math/src/parser/tex/functions/katex_base.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helper.dart';
@@ -1636,16 +1635,16 @@ void main() {
 
     test("should produce the correct fonts", () {
       final mathbbParse = getParsed(r'\mathbb x').children[0] as StyleNode;
-      expect(
-          mathbbParse.optionsDiff.mathFontOptions, texMathFontOptions["\\mathbb"]);
+      expect(mathbbParse.optionsDiff.mathFontOptions,
+          texMathFontOptions["\\mathbb"]);
 
       final mathrmParse = getParsed(r'\mathrm x').children[0] as StyleNode;
-      expect(
-          mathrmParse.optionsDiff.mathFontOptions, texMathFontOptions["\\mathrm"]);
+      expect(mathrmParse.optionsDiff.mathFontOptions,
+          texMathFontOptions["\\mathrm"]);
 
       final mathitParse = getParsed(r'\mathit x').children[0] as StyleNode;
-      expect(
-          mathitParse.optionsDiff.mathFontOptions, texMathFontOptions["\\mathit"]);
+      expect(mathitParse.optionsDiff.mathFontOptions,
+          texMathFontOptions["\\mathit"]);
 
       // final mathnormalParse =
       //     getParsed(r'\mathnormal x').children[0] as StyleNode;
@@ -1654,11 +1653,11 @@ void main() {
 
       final mathcalParse = getParsed(r'\mathcal C').children[0] as StyleNode;
       expect(mathcalParse.optionsDiff.mathFontOptions,
-       texMathFontOptions["\\mathcal"]);
+          texMathFontOptions["\\mathcal"]);
 
       final mathfrakParse = getParsed(r'\mathfrak C').children[0] as StyleNode;
       expect(mathfrakParse.optionsDiff.mathFontOptions,
-       texMathFontOptions["\\mathfrak"]);
+          texMathFontOptions["\\mathfrak"]);
     });
 
     // TODO
