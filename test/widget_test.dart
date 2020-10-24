@@ -10,7 +10,7 @@ void main() {
     testWidgets('Should show default error message', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(body: FlutterMath.fromTexString(r'\Gaarbled$')),
+          home: Scaffold(body: Math.tex(r'\Gaarbled$')),
         ),
       );
       final finder = find.byType(Text);
@@ -25,7 +25,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: FlutterMath.fromTexString(
+            body: Math.tex(
               r'\Gaarbled$',
               onErrorFallback: (_) => Container(
                 width: 100,

@@ -63,7 +63,6 @@ class DemoPage extends StatelessWidget {
                                 controller.value.text,
                                 options: Options(
                                   style: MathStyle.display,
-                                  baseSizeMultiplier: 1.0,
                                 ),
                               ),
                             ),

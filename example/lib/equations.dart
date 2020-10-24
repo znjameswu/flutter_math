@@ -45,7 +45,7 @@ class EquationsPage extends StatelessWidget {
                             ),
                             Container(
                               padding: const EdgeInsets.fromLTRB(1, 5, 1, 5),
-                              child: FlutterMath.fromTexString(entry[1]),
+                              child: Math.tex(entry[1]),
                             )
                           ],
                         ),

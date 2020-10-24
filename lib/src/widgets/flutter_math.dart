@@ -19,7 +19,9 @@ enum EquationFormat {
 
 typedef OnErrorFallback = Widget Function(String errmsg);
 
+@Deprecated('Consider using a more explicit widget variant: Math')
 class FlutterMath {
+  @Deprecated('Consider using Math.tex')
   static Widget fromTexString(
     String expression, {
     Key key,

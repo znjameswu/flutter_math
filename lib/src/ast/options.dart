@@ -80,7 +80,10 @@ class Options {
     FontOptions mathFontOptions,
     double fontSize,
     double logicalPpi,
-    double baseSizeMultiplier = 1.0,
+    @Deprecated('Consider using fontSize to directly control widget size. '
+        'If you still wish to stay relative to default size, use '
+        'Options.defaultFontSize instead')
+        double baseSizeMultiplier = 1.0,
     // @required this.maxSize,
     // @required this.minRuleThickness,
   }) {

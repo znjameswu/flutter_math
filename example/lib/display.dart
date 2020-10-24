@@ -26,7 +26,7 @@ class DisplayMath extends StatelessWidget {
               height: 1.0,
             ),
             Expanded(
-              child: Center(child: FlutterMath.fromTexString(expression)),
+              child: Center(child: Math.tex(expression)),
             )
           ],
         ),

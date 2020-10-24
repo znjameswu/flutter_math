@@ -26,12 +26,12 @@ void testTexToMatchGoldenFile(
             child: RepaintBoundary(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: FlutterMath.fromTexString(
+                child: Math.tex(
                   expression,
                   key: key,
                   options: Options(
                     style: MathStyle.display,
-                    baseSizeMultiplier: scale,
+                    fontSize: scale * Options.defaultFontSize,
                   ),
                   onErrorFallback: (_) => throw _,
                 ),
@@ -63,7 +63,7 @@ void testTexToRender(
             child: RepaintBoundary(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: FlutterMath.fromTexString(
+                child: Math.tex(
                   expression,
                   options: Options(
                     style: MathStyle.display,
@@ -93,7 +93,7 @@ void testTexToRenderLike(
             child: RepaintBoundary(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: FlutterMath.fromTexString(
+                child: Math.tex(
                   expression1,
                   key: key,
                   options: Options(
@@ -123,7 +123,7 @@ void testTexToRenderLike(
             child: RepaintBoundary(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: FlutterMath.fromTexString(
+                child: Math.tex(
                   expression2,
                   key: key2,
                   options: Options(
