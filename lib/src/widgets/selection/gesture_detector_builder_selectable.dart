@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'gesture_detector_builder.dart';
 import 'overlay_manager.dart';
 
-class MathSelectableSelectionGestureDetectorBuilder
+class SelectableMathSelectionGestureDetectorBuilder
     extends MathSelectionGestureDetectorBuilder {
-  MathSelectableSelectionGestureDetectorBuilder({
+  SelectableMathSelectionGestureDetectorBuilder({
     @required SelectionOverlayManagerMixin delegate,
   }) : super(delegate: delegate);
 

@@ -30,16 +30,16 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
 
   bool toolbarVisible = false;
 
-  MathSelectableSelectionGestureDetectorBuilder
+  SelectableMathSelectionGestureDetectorBuilder
       _selectionGestureDetectorBuilder;
-  MathSelectableSelectionGestureDetectorBuilder
+  SelectableMathSelectionGestureDetectorBuilder
       get selectionGestureDetectorBuilder => _selectionGestureDetectorBuilder;
 
   @override
   void initState() {
     super.initState();
     _selectionGestureDetectorBuilder =
-        MathSelectableSelectionGestureDetectorBuilder(delegate: this);
+        SelectableMathSelectionGestureDetectorBuilder(delegate: this);
   }
 
   @override
