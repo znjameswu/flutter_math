@@ -13,7 +13,7 @@ import 'selectable.dart';
 /// Static, non-selectable widget for equations.
 ///
 /// Sample usage:
-/// 
+///
 /// ```dart
 /// Math.tex(
 ///   r'\frac a b\sqrt[3]{n}',
@@ -21,21 +21,21 @@ import 'selectable.dart';
 ///   textStyle: TextStyle(fontSize: 42),
 /// )
 /// ```
-/// 
-/// Compared to [SelectableMath], [Math] will offer a significant performance 
-/// advantage. So if no selection capability is needed or the equation counts 
+///
+/// Compared to [SelectableMath], [Math] will offer a significant performance
+/// advantage. So if no selection capability is needed or the equation counts
 /// on the same screen is huge, it's preferable to use [Math].
 class Math extends StatelessWidget {
-
   /// Math widget default constructor
-  /// 
+  ///
   /// Requires either a parsed [ast] or a [parseError].
-  /// 
+  ///
   /// See [Math] for its member documentation
   const Math({
     Key key,
     this.ast,
     this.mathStyle = MathStyle.display,
+    this.logicalPpi,
     this.onErrorFallback = defaultOnErrorFallback,
     this.options,
     this.parseError,
@@ -61,6 +61,18 @@ class Math extends StatelessWidget {
   /// {@endtemplate}
   final MathStyle mathStyle;
 
+  /// {@template flutter_math.widgets.math.logicalPpi}
+  /// {@macro flutter_math.math_options.logicalPpi}
+  ///
+  /// If set to null, the effective [logicalPpi] will scale with
+  /// [TextStyle.fontSize]. You can obtain the default scaled value by
+  /// [Options.defaultLogicalPpiFor].
+  ///
+  /// Will be overruled if [options] is present.
+  ///
+  /// {@endtemplate}
+  final double logicalPpi;
+
   /// {@template flutter_math.widgets.math.onErrorFallback}
   /// Fallback widget when there are uncaught errors during parsing or building.
   ///
@@ -76,14 +88,14 @@ class Math extends StatelessWidget {
 
   /// {@template flutter_math.widgets.math.options}
   /// Overriding [Options] to build the AST.
-  /// 
+  ///
   /// Will overrule [mathStyle] and [textStyle] if not null.
   /// {@endtemplate}
   final Options options;
 
   /// {@template flutter_math.widgets.math.parseError}
   /// Errors generated during parsing.
-  /// 
+  ///
   /// If not null, the [onErrorFallback] widget will be presented.
   /// {@endtemplate}
   final String parseError;
@@ -93,28 +105,28 @@ class Math extends StatelessWidget {
 
   /// {@template fluttermath.widgets.math.textStyle}
   /// The style for rendered math analogous to [Text.style].
-  /// 
+  ///
   /// Can controll the size of the equation via [TextStyle.fontSize]. It can
   /// also affect the font weight and font shape of the equation.
-  /// 
-  /// If set to null, `DefaultTextStyle` from context will be used.
-  /// 
+  ///
+  /// If set to null, `DefaultTextStyle` from the context will be used.
+  ///
   /// Will be overruled if [options] is present.
   /// {@endtemplate}
   final TextStyle textStyle;
 
   /// Math builder using a TeX string
-  /// 
+  ///
   /// {@template flutter_math.widgets.math.tex_builder}
-  /// [expression] will first be parsed under [settings]. Then the acquired 
-  /// [SyntaxTree] will be built under a specific options. If [ParseError] is 
+  /// [expression] will first be parsed under [settings]. Then the acquired
+  /// [SyntaxTree] will be built under a specific options. If [ParseError] is
   /// thrown or a build error occurs, [onErrorFallback] will be displayed.
-  /// 
+  ///
   /// You can control the options via [mathStyle] and [textStyle].
   /// {@endtemplate}
-  /// 
+  ///
   /// See alse:
-  /// 
+  ///
   /// * [Math.mathStyle]
   /// * [Math.textStyle]
   factory Math.tex(
@@ -175,6 +187,7 @@ class Math extends StatelessWidget {
         mathFontOptions: effectiveTextStyle.fontWeight != FontWeight.normal
             ? FontOptions(fontWeight: effectiveTextStyle.fontWeight)
             : null,
+        logicalPpi: logicalPpi,
       );
     }
 

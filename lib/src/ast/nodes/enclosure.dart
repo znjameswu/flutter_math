@@ -10,7 +10,7 @@ import '../size.dart';
 import '../syntax_tree.dart';
 
 /// Enclosure node
-/// 
+///
 /// Examples: `\colorbox`, `\fbox`, `\cancel`.
 class EnclosureNode extends SlotableNode {
   /// Base where the enclosure is applied upon
@@ -20,7 +20,7 @@ class EnclosureNode extends SlotableNode {
   final bool hasBorder;
 
   /// Border color.
-  /// 
+  ///
   /// If null, will default to options.color.
   final Color bordercolor;
 
@@ -28,8 +28,8 @@ class EnclosureNode extends SlotableNode {
   final Color backgroundcolor;
 
   /// Special styles for this enclosure.
-  /// 
-  /// Including `'updiagonalstrike'`, `'downdiagnoalstrike'`, 
+  ///
+  /// Including `'updiagonalstrike'`, `'downdiagnoalstrike'`,
   /// and `'horizontalstrike'`.
   final List<String> notation;
 

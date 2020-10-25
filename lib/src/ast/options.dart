@@ -18,9 +18,9 @@ import 'syntax_tree.dart';
 /// [Options].
 class Options {
   /// The style used to render the math node.
-  /// 
+  ///
   /// For displayed equations, use [MathStyle.display].
-  /// 
+  ///
   /// For in-line equations, use [MathStyle.text].
   final MathStyle style;
 
@@ -59,14 +59,17 @@ class Options {
 
   /// Font size under current size.
   ///
-  /// This is the font size passed to Flutter's [RichText] widget to build math 
+  /// This is the font size passed to Flutter's [RichText] widget to build math
   /// symbols.
   final double fontSize;
 
+  /// {@template flutter_math.math_options.logicalPpi}
   /// Logical pixels per inch on screen.
-  /// 
-  /// This parameter decides how big 1 inch is renderer on screen. Affects the 
-  /// size of all equation elements whose size uses an absolute unit.
+  ///
+  /// This parameter decides how big 1 inch is rendered on the screen. Affects
+  /// the size of all equation elements whose size uses an absolute unit (e.g.
+  /// pt, cm, inch).
+  /// {@endtemplate}
   final double logicalPpi;
 
   const Options._({
@@ -82,10 +85,10 @@ class Options {
   });
 
   /// Factory constructor for [Options].
-  /// 
+  ///
   /// If [fontSize] is null, then [Options.defaultFontSize] will be used.
-  /// 
-  /// If [logicalPpi] is null, then it will scale with [fontSize]. The default 
+  ///
+  /// If [logicalPpi] is null, then it will scale with [fontSize]. The default
   /// value for [Options.defaultFontSize] is [Options.defaultLogicalPpi].
   factory Options({
     MathStyle style = MathStyle.display,
@@ -124,18 +127,18 @@ class Options {
   static const _defaultPtPerEm = 10;
 
   /// Default value for [logicalPpi] is 160.
-  /// 
+  ///
   /// The value 160 comes from the definition of an Android dp.
-  /// 
-  /// Though Flutter provies a reference value for its logical pixel of 
+  ///
+  /// Though Flutter provies a reference value for its logical pixel of
   /// [38 lp/cm](https://api.flutter.dev/flutter/dart-ui/Window/devicePixelRatio.html).
   /// However this value is simply too off from the scale so we use 160 lp/in.
   static const defaultLogicalPpi = 72.27 / _defaultLpPerPt;
 
   /// Default logical pixel count for 1 em is 1600/72.27.
-  /// 
-  /// By default 1 em = 10 pt. 1 inch = 72.27 pt. 
-  /// 
+  ///
+  /// By default 1 em = 10 pt. 1 inch = 72.27 pt.
+  ///
   /// See also [Options.defaultLogicalPpi].
   static const defaultFontSize = _defaultPtPerEm / _defaultLpPerPt;
 

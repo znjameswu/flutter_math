@@ -26,21 +26,19 @@ import 'selection/web_selection_manager.dart';
 
 const defaultSelection = TextSelection.collapsed(offset: -1);
 
-
 /// Selectable math widget.
-/// 
-/// On top of non-selectable [Math], it adds selection functionality. Users can 
-/// select by long press gesture, drag gesture, moving selection handles or 
-/// pointer selection. The selected region can be encoded into TeX and copied 
+///
+/// On top of non-selectable [Math], it adds selection functionality. Users can
+/// select by long press gesture, drag gesture, moving selection handles or
+/// pointer selection. The selected region can be encoded into TeX and copied
 /// to clipboard.
-/// 
+///
 /// See [SelectableText] as this widget aims to fully imitate its behavior.
 class SelectableMath extends StatelessWidget {
-
   /// SelectableMath default constructor.
-  /// 
+  ///
   /// Requires either a parsed [ast] or a [parseError].
-  /// 
+  ///
   /// See [SelectableMath] for its member documentation.
   const SelectableMath({
     Key key,
@@ -54,6 +52,7 @@ class SelectableMath extends StatelessWidget {
     this.enableInteractiveSelection = true,
     this.focusNode,
     this.mathStyle = MathStyle.display,
+    this.logicalPpi,
     this.onErrorFallback = defaultOnErrorFallback,
     this.options,
     this.parseError,
@@ -78,7 +77,7 @@ class SelectableMath extends StatelessWidget {
         super(key: key);
 
   /// The equation to display.
-  /// 
+  ///
   /// It can be null only when [parseError] is not null.
   final SyntaxTree ast;
 
@@ -134,6 +133,9 @@ class SelectableMath extends StatelessWidget {
   /// {@macro flutter_math.widgets.math.mathStyle}
   final MathStyle mathStyle;
 
+  /// {@macro flutter_math.widgets.math.logicalPpi}
+  final double logicalPpi;
+
   /// {@macro flutter_math.widgets.math.onErrorFallback}
   final OnErrorFallback onErrorFallback;
 
@@ -165,11 +167,11 @@ class SelectableMath extends StatelessWidget {
   final ToolbarOptions toolbarOptions;
 
   /// SelectableMath builder using a TeX string
-  /// 
+  ///
   /// {@macro flutter_math.widgets.math.tex_builder}
-  /// 
+  ///
   /// See alse:
-  /// 
+  ///
   /// * [SelectableMath.mathStyle]
   /// * [SelectableMath.textStyle]
   factory SelectableMath.tex(
@@ -187,6 +189,7 @@ class SelectableMath extends StatelessWidget {
     bool enableInteractiveSelection = true,
     FocusNode focusNode,
     MathStyle mathStyle = MathStyle.display,
+    double logicalPpi,
     bool showCursor = false,
     double textScaleFactor,
     TextSelectionControls textSelectionControls,
@@ -214,6 +217,7 @@ class SelectableMath extends StatelessWidget {
       enableInteractiveSelection: enableInteractiveSelection,
       focusNode: focusNode,
       mathStyle: mathStyle,
+      logicalPpi: logicalPpi,
       onErrorFallback: onErrorFallback,
       options: options,
       parseError: parseError,
@@ -249,6 +253,7 @@ class SelectableMath extends StatelessWidget {
           mathFontOptions: effectiveTextStyle.fontWeight != FontWeight.normal
               ? FontOptions(fontWeight: effectiveTextStyle.fontWeight)
               : null,
+          logicalPpi: logicalPpi,
         );
 
     // A trial build to catch any potential build errors

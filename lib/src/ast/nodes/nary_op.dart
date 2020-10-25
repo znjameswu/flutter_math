@@ -18,10 +18,9 @@ import '../syntax_tree.dart';
 import '../types.dart';
 
 /// N-ary operator node.
-/// 
+///
 /// Examples: `\sum`, `\int`
 class NaryOperatorNode extends SlotableNode {
-
   /// Unicode symbol for the operator character.
   final String operator;
 

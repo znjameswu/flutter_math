@@ -11,14 +11,14 @@ import 'matrix.dart';
 /// Equantion array node. Brings support for equationa alignment.
 class EquationArrayNode extends SlotableNode {
   /// `arrayStretch` parameter from the context.
-  /// 
+  ///
   /// Affects the minimum row height and row depth for each row.
   ///
   /// `\smallmatrix` has an `arrayStretch` of 0.5.
   final double arrayStretch;
 
   /// Whether to add an extra 3 pt spacing between each row.
-  /// 
+  ///
   /// True for `\aligned` and `\alignedat`
   final bool addJot;
 

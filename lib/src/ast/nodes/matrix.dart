@@ -33,13 +33,13 @@ enum MatrixRowAlign {
 /// Matrix node
 class MatrixNode extends SlotableNode {
   /// `arrayStretch` parameter from the context.
-  /// 
+  ///
   /// Affects the minimum row height and row depth for each row.
-  /// 
+  ///
   /// `\smallmatrix` has an `arrayStretch` of 0.5.
   final double arrayStretch;
 
-  /// Whether to create an extra padding before the first column and after the 
+  /// Whether to create an extra padding before the first column and after the
   /// last column.
   final bool hskipBeforeAndAfter;
 
@@ -50,7 +50,7 @@ class MatrixNode extends SlotableNode {
   final List<MatrixColumnAlign> columnAligns;
 
   /// Style for vertical separator lines.
-  /// 
+  ///
   /// This includes outermost lines. Different from MathML!
   final List<MatrixSeparatorStyle> vLines;
 
@@ -58,12 +58,12 @@ class MatrixNode extends SlotableNode {
   final List<Measurement> rowSpacings;
 
   /// Style for horizontal separator lines.
-  /// 
+  ///
   /// This includes outermost lines. Different from MathML!
   final List<MatrixSeparatorStyle> hLines;
 
   /// Body of the matrix.
-  /// 
+  ///
   /// First index is line number. Second index is column number.
   final List<List<EquationRowNode>> body;
 
