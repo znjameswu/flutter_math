@@ -160,11 +160,31 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
   @override
   TextEditingValue get textEditingValue {
     final string = controller.selectedNodes.encodeTex();
+    final taggedString = '$string$_selectAllReservedTag';
     return TextEditingValue(
-      text: string,
-      selection: TextSelection(baseOffset: 0, extentOffset: string.length),
+      text: taggedString,
+      selection: TextSelection(
+        baseOffset: 0,
+        extentOffset: string.length,
+      ),
     );
   }
 
-  set textEditingValue(TextEditingValue value) {}
+  static const _selectAllReservedTag = 'THIS MARKUP SHOULD NOT APPEAR!';
+
+  set textEditingValue(TextEditingValue value) {
+    // Select All ?
+    if (value.selection.start == 0 &&
+        value.selection.end == value.text.length &&
+        value.text.length != 0) {
+      handleSelectionChanged(
+        TextSelection(
+          baseOffset: 0,
+          extentOffset: controller.ast.greenRoot.capturedCursor - 1,
+        ),
+        SelectionChangedCause.drag,
+        rebuildOverlay: false,
+      );
+    }
+  }
 }
