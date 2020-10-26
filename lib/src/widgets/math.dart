@@ -8,7 +8,7 @@ import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';
 import 'exception.dart';
-import 'flutter_math.dart';
+import 'mode.dart';
 import 'selectable.dart';
 
 typedef OnErrorFallback = Widget Function(FlutterMathException errmsg);

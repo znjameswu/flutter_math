@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import '../widgets/mode.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
@@ -11,7 +12,6 @@ import '../render/layout/line_editable.dart';
 import '../utils/iterable_extensions.dart';
 import '../utils/num_extension.dart';
 import '../utils/wrapper.dart';
-import '../widgets/flutter_math.dart';
 import '../widgets/selectable.dart';
 import 'nodes/space.dart';
 import 'nodes/sqrt.dart';
