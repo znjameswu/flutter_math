@@ -11,7 +11,7 @@ const equations = [
   ],
   [
     'Fourier transform',
-    r'\hat f(\xi) = \int_{-\infty}^\infty f(x)e^{- 2\pi i \xi x}\mathrm{d}x'
+    r'\hat f(\xi) = \int_{-\infty}^\infty {f(x)e^{- 2\pi i \xi x}\mathrm{d}x}'
   ],
   [
     'Maxwell\'s equations',
@@ -38,14 +38,17 @@ class EquationsPage extends StatelessWidget {
                           children: [
                             ListTile(
                               title: Text(entry[0]),
-                              subtitle: Text(
+                              subtitle: SelectableText(
                                 entry[1],
                                 style: GoogleFonts.robotoMono(),
                               ),
                             ),
                             Container(
                               padding: const EdgeInsets.fromLTRB(1, 5, 1, 5),
-                              child: Math.tex(entry[1]),
+                              child: SelectableMath.tex(
+                                entry[1],
+                                options: Options(),
+                              ),
                             )
                           ],
                         ),
