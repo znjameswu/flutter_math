@@ -27,23 +27,8 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_math/ast.dart';
 import 'package:flutter_math/flutter_math.dart';
-import 'package:flutter_math/src/ast/nodes/accent.dart';
-import 'package:flutter_math/src/ast/nodes/accent_under.dart';
-import 'package:flutter_math/src/ast/nodes/symbol.dart';
-import 'package:flutter_math/src/ast/nodes/enclosure.dart';
-import 'package:flutter_math/src/ast/nodes/frac.dart';
-import 'package:flutter_math/src/ast/nodes/left_right.dart';
-import 'package:flutter_math/src/ast/nodes/matrix.dart';
-import 'package:flutter_math/src/ast/nodes/multiscripts.dart';
-import 'package:flutter_math/src/ast/nodes/nary_op.dart';
-import 'package:flutter_math/src/ast/nodes/over.dart';
-import 'package:flutter_math/src/ast/nodes/phantom.dart';
-import 'package:flutter_math/src/ast/nodes/space.dart';
-import 'package:flutter_math/src/ast/nodes/sqrt.dart';
-import 'package:flutter_math/src/ast/nodes/stretchy_op.dart';
-import 'package:flutter_math/src/ast/nodes/style.dart';
-import 'package:flutter_math/src/ast/size.dart';
 import 'package:flutter_math/src/parser/tex/colors.dart';
 import 'package:flutter_math/src/parser/tex/font.dart';
 import 'package:flutter_test/flutter_test.dart';

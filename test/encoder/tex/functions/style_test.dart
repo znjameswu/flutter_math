@@ -1,10 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter_math/flutter_math.dart';
-import 'package:flutter_math/src/ast/nodes/style.dart';
-import 'package:flutter_math/src/ast/nodes/symbol.dart';
-import 'package:flutter_math/src/ast/size.dart';
-import 'package:flutter_math/src/ast/types.dart';
+import 'package:flutter_math/ast.dart';
 import 'package:flutter_math/src/parser/tex/font.dart';
 import 'package:flutter_test/flutter_test.dart';
 

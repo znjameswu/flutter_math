@@ -58,13 +58,13 @@ class NaryOperatorNode extends SlotableNode {
         : FontOptions(fontFamily: 'Size1');
     Widget operatorWidget;
     CharacterMetrics symbolMetrics;
-    if (!stashedOvalNaryOperator.containsKey(operator)) {
+    if (!_stashedOvalNaryOperator.containsKey(operator)) {
       symbolMetrics = lookupChar(operator, font, Mode.math);
       final symbolWidget =
           makeChar(operator, font, symbolMetrics, options, needItalic: true);
       operatorWidget = symbolWidget;
     } else {
-      final baseSymbol = stashedOvalNaryOperator[operator];
+      final baseSymbol = _stashedOvalNaryOperator[operator];
       symbolMetrics = lookupChar(baseSymbol, font, Mode.math);
       final baseSymbolWidget =
           makeChar(baseSymbol, font, symbolMetrics, options, needItalic: true);
@@ -244,7 +244,7 @@ const _naryDefaultLimit = {
   '\u2a06',
 };
 
-const stashedOvalNaryOperator = {
+const _stashedOvalNaryOperator = {
   '\u222F': '\u222C',
   '\u2230': '\u222D',
 };

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_math/ast.dart';
 import 'package:flutter_math/flutter_math.dart';
 import 'package:flutter_math/src/parser/tex/parse_error.dart';
 import 'package:flutter_math/src/parser/tex/parser.dart';
