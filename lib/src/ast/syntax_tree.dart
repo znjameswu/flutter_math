@@ -73,6 +73,7 @@ class SyntaxTree {
 
   EquationRowNode findNodeManagesPosition(int position) {
     var curr = root;
+    var lastEqRow = root.value as EquationRowNode;
     while (true) {
       final next = curr.children.firstWhereOrNull(
         (child) => child == null
@@ -80,10 +81,13 @@ class SyntaxTree {
             : child.range.start <= position && child.range.end >= position,
       );
       if (next == null) break;
+      if (next.value is EquationRowNode) {
+        lastEqRow = next.value as EquationRowNode;
+      }
       curr = next;
     }
     // assert(curr.value is EquationRowNode);
-    return curr.value as EquationRowNode;
+    return lastEqRow;
   }
 
   EquationRowNode findLowestCommonRowNode(int position1, int position2) {
