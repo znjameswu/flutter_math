@@ -5,6 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_math/src/encoder/tex/encoder.dart';
 
+import 'recode.dart';
+
 void main() {
   group('EquationRowEncoderResult', () {
     test('empty row', () {
@@ -22,6 +24,16 @@ void main() {
       ]);
       expect(result.stringify(TexEncodeConf.mathConf), '{abc{}}');
       expect(result.stringify(TexEncodeConf.mathParamConf), 'abc{}');
+    });
+
+    test('symbol contanetation', () {
+      const testStrings = [
+        'i\\pi x',
+        'i\\pi\\xi',
+      ];
+      for (final testString in testStrings) {
+        expect(recodeTex(testString), testString);
+      }
     });
   });
   group('TexCommandEncoderResult', () {

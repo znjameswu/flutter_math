@@ -241,7 +241,7 @@ class EquationRowTexEncodeResult extends EncodeResult {
         return _handleArg(child, conf.param());
       }
       return _handleArg(child, conf.ord());
-    }).join();
+    }).texJoin();
     if (conf.removeRowBracket == true) {
       return content;
     } else {
@@ -257,7 +257,7 @@ class TransparentTexEncodeResult extends EncodeResult {
 
   @override
   String stringify(TexEncodeConf conf) =>
-      children.map((dynamic child) => _handleArg(child, conf.ord())).join();
+      children.map((dynamic child) => _handleArg(child, conf.ord())).texJoin();
 }
 
 class ModeDependentEncodeResult extends EncodeResult {
@@ -294,7 +294,7 @@ class TexModeCommandEncodeResult extends EncodeResult {
         return _handleArg(child, conf.param());
       }
       return _handleArg(child, conf.ord());
-    }).join();
+    }).texJoin();
     if (conf.removeRowBracket == true) {
       return '$command $content';
     } else {
