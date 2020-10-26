@@ -20,10 +20,10 @@ The constructor name has also been changed to `Math.tex` and `SelectableMath.tex
 
 ### Use TextStyle to controll the size of your equation 
 1. `TextStyle.fontSize` will be the size of any math symbols.
-2. `lpPerInch` will be used to decide the size of absolute units (pt, cm, inch, etc). 
-3. If `lpPerInch` is null, then absolute units will resize on different `TextStyle.fontSize` to keep a consistent ratio (Just like current `baseSizeMultiplier`'s behavior). 
-4. `baseSizeMultiplier` is deprecated. If you still wish similar behavior, calculate relevant parameters from `MathOptions.defaultFontSize` and `double defaultLpPerInch(double fontSize)`.
-5. If neither `TextStyle.fontSize` nor `lpPerInch` is supplied, then the widget will use the default `TextStyle` supplied by Flutter's build context.
+2. `logicalPpi` will be used to decide the size of absolute units (pt, cm, inch, etc). 
+3. If `logicalPpi` is null, then absolute units will resize on different `TextStyle.fontSize` to keep a consistent ratio (Just like current `baseSizeMultiplier`'s behavior). 
+4. `baseSizeMultiplier` is deprecated. If you still wish similar behavior, calculate relevant parameters from `MathOptions.defaultFontSize` and `double defaultLogicalPpi(double fontSize)`.
+5. If neither `TextStyle.fontSize` nor `logicalPpi` is supplied, then the widget will use the default `TextStyle` supplied by Flutter's build context.
 
 ## Sanitized Error System
 `ParseError` will be renamed to `ParseException`. Also, other throws within the library will be sanitized to throw either `ParseException`, `BuildException`, `EncodeExecption`. All of them extends `FlutterMathException`. As a result, `onErrorFallback` will have a different signature and allows users to handle exceptions with type safety.
@@ -35,8 +35,8 @@ The final API will look like
 Math.tex(
   r'\frac a b',
   textStyle: TextStyle(fontSize: 42),
-  // parserSettings: TexParserSettings(),
-  // lpPerInch: defaultLpPerInch(42),
+  // settings: TexParserSettings(),
+  // logicalPpi: defaultLogicalPpi(42),
   onErrorFallback: (err) => {
     if (error is ParseException)
       return SelectableText('ParseError: ${err.message}');
