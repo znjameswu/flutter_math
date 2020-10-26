@@ -170,7 +170,7 @@ extension MeasurementExtOnNum on double {
   Measurement get cssEm => Measurement(value: this, unit: Unit.cssEm);
 }
 
-enum SizeMode {
+enum MathSize {
   tiny,
   size2,
   scriptsize,
@@ -184,7 +184,7 @@ enum SizeMode {
   HUGE,
 }
 
-extension SizeModeExt on SizeMode {
+extension SizeModeExt on MathSize {
   double get sizeMultiplier => const [
         0.5,
         0.6,

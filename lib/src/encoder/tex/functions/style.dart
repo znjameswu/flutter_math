@@ -97,15 +97,15 @@ const _styleCommands = {
 };
 
 const _sizeCommands = {
-  SizeMode.tiny: '\\tiny',
-  SizeMode.size2: '\\tiny',
-  SizeMode.scriptsize: '\\scriptsize',
-  SizeMode.footnotesize: '\\footnotesize',
-  SizeMode.small: '\\small',
-  SizeMode.normalsize: '\\normalsize',
-  SizeMode.large: '\\large',
-  SizeMode.Large: '\\Large',
-  SizeMode.LARGE: '\\LARGE',
-  SizeMode.huge: '\\huge',
-  SizeMode.HUGE: '\\HUGE',
+  MathSize.tiny: '\\tiny',
+  MathSize.size2: '\\tiny',
+  MathSize.scriptsize: '\\scriptsize',
+  MathSize.footnotesize: '\\footnotesize',
+  MathSize.small: '\\small',
+  MathSize.normalsize: '\\normalsize',
+  MathSize.large: '\\large',
+  MathSize.Large: '\\Large',
+  MathSize.LARGE: '\\LARGE',
+  MathSize.huge: '\\huge',
+  MathSize.HUGE: '\\HUGE',
 };

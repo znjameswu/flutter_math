@@ -28,13 +28,13 @@ class MathOptions {
   final Color color;
 
   /// Real size applied to equation elements under current style.
-  SizeMode get size => sizeUnderTextStyle.underStyle(style);
+  MathSize get size => sizeUnderTextStyle.underStyle(style);
 
   /// Declared size for equation elements.
   ///
   /// User declared size such as \tiny \Huge. The real size applied to equation
   /// elements also depends on current style.
-  final SizeMode sizeUnderTextStyle;
+  final MathSize sizeUnderTextStyle;
 
   /// Font options for text mode.
   ///
@@ -77,7 +77,7 @@ class MathOptions {
     @required this.logicalPpi,
     @required this.style,
     this.color = Colors.black,
-    this.sizeUnderTextStyle = SizeMode.normalsize,
+    this.sizeUnderTextStyle = MathSize.normalsize,
     this.textFontOptions,
     this.mathFontOptions,
     // @required this.maxSize,
@@ -94,7 +94,7 @@ class MathOptions {
   factory MathOptions({
     MathStyle style = MathStyle.display,
     Color color = Colors.black,
-    SizeMode sizeUnderTextStyle = SizeMode.normalsize,
+    MathSize sizeUnderTextStyle = MathSize.normalsize,
     FontOptions textFontOptions,
     FontOptions mathFontOptions,
     double fontSize,
@@ -182,7 +182,7 @@ class MathOptions {
   }
 
   /// Returns [MathOptions] with their user-declared size set to given size
-  MathOptions havingSize(SizeMode size) {
+  MathOptions havingSize(MathSize size) {
     if (this.size == size && this.sizeUnderTextStyle == size) return this;
     return this.copyWith(
       style: style.atLeastText(),
@@ -190,25 +190,25 @@ class MathOptions {
     );
   }
 
-  /// Returns [MathOptions] with size reset to [SizeMode.normalsize] and given
+  /// Returns [MathOptions] with size reset to [MathSize.normalsize] and given
   /// style. If style is not given, then the current style will be increased to
   /// at least [MathStyle.text]
   MathOptions havingStyleUnderBaseSize(MathStyle style) {
     style = style ?? this.style.atLeastText();
-    if (this.sizeUnderTextStyle == SizeMode.normalsize && this.style == style) {
+    if (this.sizeUnderTextStyle == MathSize.normalsize && this.style == style) {
       return this;
     }
     return this.copyWith(
       style: style,
-      sizeUnderTextStyle: SizeMode.normalsize,
+      sizeUnderTextStyle: MathSize.normalsize,
     );
   }
 
-  /// Returns [MathOptions] with size reset to [SizeMode.normalsize]
+  /// Returns [MathOptions] with size reset to [MathSize.normalsize]
   MathOptions havingBaseSize() {
-    if (this.sizeUnderTextStyle == SizeMode.normalsize) return this;
+    if (this.sizeUnderTextStyle == MathSize.normalsize) return this;
     return this.copyWith(
-      sizeUnderTextStyle: SizeMode.normalsize,
+      sizeUnderTextStyle: MathSize.normalsize,
     );
   }
 
@@ -236,7 +236,7 @@ class MathOptions {
   MathOptions copyWith({
     MathStyle style,
     Color color,
-    SizeMode sizeUnderTextStyle,
+    MathSize sizeUnderTextStyle,
     FontOptions textFontOptions,
     FontOptions mathFontOptions,
     // double maxSize,
@@ -287,7 +287,7 @@ class OptionsDiff {
   final MathStyle style;
 
   /// Override declared size.
-  final SizeMode size;
+  final MathSize size;
 
   /// Override text color.
   final Color color;

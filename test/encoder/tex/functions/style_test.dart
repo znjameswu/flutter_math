@@ -25,7 +25,7 @@ void main() {
     test('size handling', () {
       expect(
         StyleNode(
-          optionsDiff: OptionsDiff(size: SizeMode.scriptsize),
+          optionsDiff: OptionsDiff(size: MathSize.scriptsize),
           children: [SymbolNode(symbol: 'a')],
         ).encodeTeX(),
         '{\\scriptsize a}',
@@ -66,7 +66,7 @@ void main() {
         StyleNode(
           optionsDiff: OptionsDiff(
             style: MathStyle.display,
-            size: SizeMode.scriptsize,
+            size: MathSize.scriptsize,
             color: Color.fromARGB(0, 1, 2, 3),
           ),
           children: [SymbolNode(symbol: 'a')],
@@ -80,7 +80,7 @@ void main() {
           StyleNode(
             optionsDiff: OptionsDiff(
               style: MathStyle.display,
-              size: SizeMode.scriptsize,
+              size: MathSize.scriptsize,
             ),
             children: [SymbolNode(symbol: 'a')],
           ),

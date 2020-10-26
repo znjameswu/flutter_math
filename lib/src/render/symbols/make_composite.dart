@@ -93,36 +93,36 @@ BuildResult makeDecoratedEqualSymbol(
 ) {
   List<String> decoratorSymbols;
   FontOptions decoratorFont;
-  SizeMode decoratorSize;
+  MathSize decoratorSize;
 
   switch (symbol) {
     // case '\u2258':
     //   break;
     case '\u2259':
       decoratorSymbols = ['\u2227']; // \wedge
-      decoratorSize = SizeMode.tiny;
+      decoratorSize = MathSize.tiny;
       break;
     case '\u225A':
       decoratorSymbols = ['\u2228']; // \vee
-      decoratorSize = SizeMode.tiny;
+      decoratorSize = MathSize.tiny;
       break;
     case '\u225B':
       decoratorSymbols = ['\u22c6']; // \star
-      decoratorSize = SizeMode.scriptsize;
+      decoratorSize = MathSize.scriptsize;
       break;
     case '\u225D':
       decoratorSymbols = ['d', 'e', 'f'];
-      decoratorSize = SizeMode.tiny;
+      decoratorSize = MathSize.tiny;
       decoratorFont = texMathFontOptions['\\mathrm'];
       break;
     case '\u225E':
       decoratorSymbols = ['m'];
-      decoratorSize = SizeMode.tiny;
+      decoratorSize = MathSize.tiny;
       decoratorFont = texMathFontOptions['\\mathrm'];
       break;
     case '\u225F':
       decoratorSymbols = ['?'];
-      decoratorSize = SizeMode.tiny;
+      decoratorSize = MathSize.tiny;
       break;
   }
 

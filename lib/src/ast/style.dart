@@ -76,13 +76,13 @@ extension MathStyleExtOnInt on int {
   MathStyle toMathStyle() => MathStyle.values[(this * 2).clamp(0, 6).toInt()];
 }
 
-extension MathStyleExtOnSize on SizeMode {
+extension MathStyleExtOnSize on MathSize {
   /// katex/src/Options.js/sizeStyleMap
-  SizeMode underStyle(MathStyle style) {
+  MathSize underStyle(MathStyle style) {
     if (style >= MathStyle.textCramped) {
       return this;
     }
-    return SizeMode.values[sizeStyleMap[this.index][style.size - 1] - 1];
+    return MathSize.values[sizeStyleMap[this.index][style.size - 1] - 1];
   }
 
   static const sizeStyleMap = [

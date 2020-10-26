@@ -222,21 +222,21 @@ CharacterMetrics getCharacterMetrics(
   return null;
 }
 
-FontMetrics getGlobalMetrics(SizeMode size) {
+FontMetrics getGlobalMetrics(MathSize size) {
   switch (size) {
-    case SizeMode.tiny:
-    case SizeMode.size2:
+    case MathSize.tiny:
+    case MathSize.size2:
       return scriptscriptFontMetrics;
-    case SizeMode.scriptsize:
-    case SizeMode.footnotesize:
+    case MathSize.scriptsize:
+    case MathSize.footnotesize:
       return scriptFontMetrics;
-    case SizeMode.small:
-    case SizeMode.normalsize:
-    case SizeMode.large:
-    case SizeMode.Large:
-    case SizeMode.LARGE:
-    case SizeMode.huge:
-    case SizeMode.HUGE:
+    case MathSize.small:
+    case MathSize.normalsize:
+    case MathSize.large:
+    case MathSize.Large:
+    case MathSize.LARGE:
+    case MathSize.huge:
+    case MathSize.HUGE:
       return textFontMetrics;
     default:
       throw ArgumentError(size);

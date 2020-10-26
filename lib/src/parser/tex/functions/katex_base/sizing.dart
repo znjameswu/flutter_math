@@ -51,7 +51,7 @@ GreenNode _sizingHandler(TexParser parser, FunctionContext context) {
   return StyleNode(
     children: body,
     optionsDiff: OptionsDiff(
-      size: SizeMode.values[_sizeFuncs.indexOf(context.funcName)],
+      size: MathSize.values[_sizeFuncs.indexOf(context.funcName)],
     ),
   );
 }
