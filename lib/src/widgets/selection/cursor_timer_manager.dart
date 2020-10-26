@@ -58,6 +58,7 @@ mixin CursorTimerManagerMixin<T extends StatefulWidget>
       _oldFocusNode = focusNode
         ..addListener(_startOrStopOrResetCursorTimerIfNeeded);
     }
+    _startOrStopOrResetCursorTimerIfNeeded();
   }
 
   @override

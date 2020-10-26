@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import '../../ast/syntax_tree.dart';
 import 'handle_overlay.dart';
 import 'overlay_manager.dart';
+import 'selection_manager.dart';
 
 enum MathSelectionHandlePosition { start, end }
 
@@ -325,8 +326,8 @@ class MathSelectionOverlay {
         textPosition = newSelection.extent;
         break;
     }
-    manager.handleSelectionChanged(newSelection, SelectionChangedCause.drag,
-        rebuildOverlay: false);
+    manager.handleSelectionChanged(
+        newSelection, null, ExtraSelectionChangedCause.handle);
     manager.bringIntoView(textPosition);
   }
 }

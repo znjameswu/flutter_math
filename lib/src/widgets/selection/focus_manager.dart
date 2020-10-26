@@ -12,6 +12,7 @@ mixin FocusManagerMixin<T extends StatefulWidget> on State<T> {
     super.initState();
 
     _focusAttachment = focusNode.attach(context);
+    _oldFocusNode = focusNode;
   }
 
   @override

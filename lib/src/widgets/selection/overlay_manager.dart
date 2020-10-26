@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'gesture_detector_builder.dart';
 import 'gesture_detector_builder_selectable.dart';
@@ -71,6 +72,9 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
       return false;
     }
 
+    if (controller.selection.isCollapsed) {
+      return false;
+    }
     _selectionOverlay.showToolbar();
     toolbarVisible = true;
     return true;
@@ -107,14 +111,10 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
 
   void handleSelectionChanged(
       TextSelection selection, SelectionChangedCause cause,
-      {bool rebuildOverlay = true}) {
-    if (!hasFocus) {
-      focusNode.requestFocus();
-    }
+      [ExtraSelectionChangedCause extraCause]) {
+    super.handleSelectionChanged(selection, cause, extraCause);
 
-    super.handleSelectionChanged(selection, cause);
-
-    if (rebuildOverlay) {
+    if (extraCause != ExtraSelectionChangedCause.handle) {
       _selectionOverlay?.hide();
       _selectionOverlay = null;
 
@@ -134,7 +134,14 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
           debugRequiredFor: widget,
         );
         _selectionOverlay.handlesVisible = _shouldShowSelectionHandles(cause);
-        _selectionOverlay.showHandles();
+        if (SchedulerBinding.instance.schedulerPhase ==
+            SchedulerPhase.persistentCallbacks) {
+          SchedulerBinding.instance
+              .addPostFrameCallback((_) => _selectionOverlay.showHandles());
+        } else {
+          _selectionOverlay.showHandles();
+        }
+        // _selectionOverlay.showHandles();
       }
     } else {
       _selectionOverlay?.update();

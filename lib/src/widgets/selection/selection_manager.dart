@@ -4,11 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../ast/syntax_tree.dart';
 import '../../encoder/tex/encoder.dart';
-
 import '../../render/layout/line_editable.dart';
 import '../../utils/render_box_extensions.dart';
 import '../controller.dart';
+
+enum ExtraSelectionChangedCause {
+  // Selection handle dragged,
+  handle,
+
+  // Unfocused
+  unfocus,
+
+  // Changed by other code directly manipulating controller.
+  exterior,
+}
 
 mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
     implements TextSelectionDelegate {
@@ -20,10 +31,13 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
 
   FocusNode _oldFocusNode;
 
+  MathController _oldController;
+
   @override
   void initState() {
     super.initState();
     _oldFocusNode = focusNode..addListener(_handleFocusChange);
+    _oldController = controller..addListener(_onControllerChanged);
   }
 
   @override
@@ -32,18 +46,35 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
     if (focusNode != _oldFocusNode) {
       _oldFocusNode.removeListener(_handleFocusChange);
       _oldFocusNode = focusNode..addListener(_handleFocusChange);
+      _handleFocusChange();
+    }
+    if (controller != _oldController) {
+      _oldController.removeListener(_onControllerChanged);
+      _oldController = controller..addListener(_onControllerChanged);
+      _onControllerChanged();
     }
   }
 
   @override
   void dispose() {
+    _oldController.removeListener(_onControllerChanged);
     _oldFocusNode.removeListener(_handleFocusChange);
     super.dispose();
   }
 
   void _handleFocusChange() {
     if (!hasFocus) {
-      controller.selection = TextSelection.collapsed(offset: -1);
+      handleSelectionChanged(TextSelection.collapsed(offset: -1), null,
+          ExtraSelectionChangedCause.unfocus);
+    }
+  }
+
+  SyntaxTree _oldAst;
+  TextSelection _oldSelection;
+  void _onControllerChanged() {
+    if (_oldAst != controller.ast || _oldSelection != controller.selection) {
+      handleSelectionChanged(
+          controller.selection, null, ExtraSelectionChangedCause.exterior);
     }
   }
 
@@ -52,7 +83,14 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
   @mustCallSuper
   void handleSelectionChanged(
       TextSelection selection, SelectionChangedCause cause,
-      {bool rebuildOverlay = true}) {
+      [ExtraSelectionChangedCause extraCause]) {
+    if (extraCause != ExtraSelectionChangedCause.unfocus &&
+        extraCause != ExtraSelectionChangedCause.exterior &&
+        !hasFocus) {
+      focusNode.requestFocus();
+    }
+    _oldAst = controller.ast;
+    _oldSelection = selection;
     controller.selection = selection;
     onSelectionChanged(selection, cause);
   }
@@ -182,8 +220,8 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
           baseOffset: 0,
           extentOffset: controller.ast.greenRoot.capturedCursor - 1,
         ),
-        SelectionChangedCause.drag,
-        rebuildOverlay: false,
+        null,
+        ExtraSelectionChangedCause.handle,
       );
     }
   }
