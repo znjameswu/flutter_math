@@ -31,56 +31,77 @@ The TeX parser is a Dart port of the KaTeX parser. There are only a few unsuppor
 
 Add `flutter_math` to your `pubspec.yaml` dependencies
 
-From v0.1.7, this plugin no longer require extra font declarations in `pubspec.yaml`. 
-
 ### Mobile
 Currently only Android platform has been tested. If you encounter any issues with iOS, please file them.
 
 ### Web
 Web support is added in v0.1.6. It is tested for DomCanvas backend. In general it should behave largely the same with mobile. It is expected to break with CanvasKit backend. Check out the [Online Demo](https://znjameswu.github.io/flutter_math_demo/)
 
-## API usage
-Currently the usage is straightforward. Just `FlutterMath.fromTexString(r'\frac a b')`. There is also optional arguments of `Options` and `Settings`, which correspond to Options and Settings in KaTeX and support a subset of their features.
+## API usage (v0.2.0)
+The usage is straightforward. Just `Math.tex(r'\frac a b')`. There is also optional arguments of `TexParserSettings settings`, which corresponds to  Settings in KaTeX and support a subset of its features.
 
 Display-style equations:
 ```dart
-FlutterMath.fromTexString(r'\frac a b', options: Options.displayOptions)
+Math.tex(r'\frac a b', mathStyle: MathStyle.display) // Default
 ```
 
 In-line equations
 ```dart
-FlutterMath.fromTexString(r'\frac a b', options: Options.textOptions)
+Math.tex(r'\frac a b', mathStyle: MathStyle.text)
 ```
 
-You can also resize the output by providing `baseSizeMultiplier` parameter. (This parameter will also affect the size of absolute unit used in the equation. You can obtain the approximate font size for normal-sized letters by `Options.fontSize`.)
+The default size of the equation is obtained from the build context. If you wish to specify the size, you can use `textStyle`. Note: this parameter will also change how big 1cm/1pt/1inch is rendered on the screen. If you wish to specify the size of those absolute units, use `logicalPpi`
 
 ```dart
-FlutterMath.fromTexString(
-  r'\frac a b', 
-  options: Options(
-    style: MathStyle.display, 
-    baseSizeMultiplier: 1.5,
+Math.tex(
+  r'\frac a b',
+  textStyle: TextStyle(fontSize: 42),
+  // logicalPpi: MathOptions.defaultLogicalPpiFor(42),
+)
+```
+
+There is also a selectable variant `SelectableMath` that creates selectable and copy-able equations on both mobile and web. (EXPERIMENTAL) Users can select part of the equation and obtain the encoded TeX strings. The usage is similar to Flutter's `SelectableText`.
+
+```dart
+SelectableMath.tex(r'\frac a b', textStyle: TextStyle(fontSize: 42))
+```
+
+If you would like to display custom styled error message, you should use `onErrorFallback` parameter. You can also process the errors in this function. But beware this function is called in build function.
+```dart
+Math.tex(
+  r'\garbled $tring', 
+  onErrorFallback: (err) => Container(
+    color: Colors.red,
+    child: Text(err.messageWithType),
   ),
 )
 ```
 
-If you would like to display custom styled error message or handle them differently, you should use `onErrorFallback` parameter
-
+If you wish to have more granularity dealing with equations, you can manually invoke the parser and supply AST into the widget.
 ```dart
-FlutterMath.fromTexString(
-  r'\garbled $tring', 
-  onErrorFallback: (errMsg) => Text(errMsg), // You can also invoke your handler here
+SyntaxTree ast;
+try {
+  ast = SyntaxTree(greenRoot: TexParser(r'\frac a b', TexParserSettings()).parse());
+} on ParseException catch (e) {
+  // Handle my error here
+}
+
+SelectableMath(
+  ast: ast,
+  mathStyle: MathStyle.text,
+  textStyle: TextStyle(fontSize: 42),
 )
 ```
 
 ## Credits
-This project is made possible thanks to the inspirations and resources from [the KaTeX Project](https://katex.org/), [MathJax](www.mathjax.org), and [Zefyr](https://github.com/memspace/zefyr).
+This project is possible thanks to the inspirations and resources from [the KaTeX Project](https://katex.org/), [MathJax](www.mathjax.org), [Zefyr](https://github.com/memspace/zefyr), and [CaTeX](https://github.com/simpleclub/CaTeX).
 
 ## Goals
 - [x] : TeX math parsing (See [design doc](doc/design.md))
 - [x] : AST rendering in flutter
-- [ ] : TeX output
-- [ ] : [UnicodeMath](https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.1.pdf)-style editing
+- [x] : Selectable widget
+- [x] : TeX output (WIP)
 - [ ] : UnicodeMath parsing and encoding
+- [ ] : [UnicodeMath](https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.1.pdf)-style editing
 - [ ] : Breakable equations
 - [ ] : MathML parsing and encoding
