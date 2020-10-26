@@ -62,8 +62,9 @@ class SyntaxTree {
     final res = <SyntaxNode>[];
     while (true) {
       res.add(curr);
-      final next = curr.children.firstWhereOrNull((child) =>
-          child.range.start <= position && child.range.end >= position);
+      final next = curr.children.firstWhereOrNull((child) => child == null
+          ? false
+          : child.range.start <= position && child.range.end >= position);
       if (next == null) break;
       curr = next;
     }
@@ -74,7 +75,9 @@ class SyntaxTree {
     var curr = root;
     while (true) {
       final next = curr.children.firstWhereOrNull(
-        (child) => child.range.start <= position && child.range.end >= position,
+        (child) => child == null
+            ? false
+            : child.range.start <= position && child.range.end >= position,
       );
       if (next == null) break;
       curr = next;
