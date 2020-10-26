@@ -59,7 +59,7 @@ class SpaceNode extends LeafNode {
 
   @override
   BuildResult buildWidget(
-      Options options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult> childBuildResults) {
     if (alignerOrSpacer == true) {
       return BuildResult(
         options: options,
@@ -93,7 +93,7 @@ class SpaceNode extends LeafNode {
   AtomType get rightType => AtomType.spacing;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
       oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
 
   @override

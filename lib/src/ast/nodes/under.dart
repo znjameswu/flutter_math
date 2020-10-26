@@ -25,7 +25,7 @@ class UnderNode extends SlotableNode {
   // KaTeX's corresponding code is in /src/functions/utils/assembleSubSup.js
   @override
   BuildResult buildWidget(
-      Options options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult> childBuildResults) {
     final spacing = options.fontMetrics.bigOpSpacing5.cssEm.toLpUnder(options);
     return BuildResult(
       italic: 0.0,
@@ -51,7 +51,7 @@ class UnderNode extends SlotableNode {
   }
 
   @override
-  List<Options> computeChildOptions(Options options) => [
+  List<MathOptions> computeChildOptions(MathOptions options) => [
         options,
         options.havingStyle(options.style.sub()),
       ];
@@ -66,7 +66,8 @@ class UnderNode extends SlotableNode {
   AtomType get rightType => AtomType.ord;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
+      false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(

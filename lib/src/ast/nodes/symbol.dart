@@ -47,7 +47,7 @@ class SymbolNode extends LeafNode {
 
   @override
   BuildResult buildWidget(
-      Options options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult> childBuildResults) {
     final expanded = symbol.runes.expand((code) {
       final ch = String.fromCharCode(code);
       return unicodeSymbols[ch]?.split('') ?? [ch];
@@ -100,7 +100,7 @@ class SymbolNode extends LeafNode {
   }
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
       oldOptions.mathFontOptions != newOptions.mathFontOptions ||
       oldOptions.textFontOptions != newOptions.textFontOptions ||
       oldOptions.sizeMultiplier != newOptions.sizeMultiplier;

@@ -51,7 +51,7 @@ class EnclosureNode extends SlotableNode {
 
   @override
   BuildResult buildWidget(
-      Options options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult> childBuildResults) {
     final horizontalPadding = this.horizontalPadding.toLpUnder(options);
     final verticalPadding = this.verticalPadding.toLpUnder(options);
 
@@ -143,7 +143,7 @@ class EnclosureNode extends SlotableNode {
   }
 
   @override
-  List<Options> computeChildOptions(Options options) => [options];
+  List<MathOptions> computeChildOptions(MathOptions options) => [options];
 
   @override
   List<EquationRowNode> computeChildren() => [base];
@@ -155,7 +155,8 @@ class EnclosureNode extends SlotableNode {
   AtomType get rightType => AtomType.ord;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
+      false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(

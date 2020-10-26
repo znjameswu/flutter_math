@@ -110,7 +110,7 @@ class Measurement {
   final Unit unit;
   const Measurement({this.value, this.unit});
 
-  double toLpUnder(Options options) {
+  double toLpUnder(MathOptions options) {
     if (unit == Unit.lp) return value;
     if (unit.toPt != null) {
       return value * unit.toPt / Unit.inches.toPt * options.logicalPpi;
@@ -141,7 +141,8 @@ class Measurement {
     }
   }
 
-  double toCssEmUnder(Options options) => toLpUnder(options) / options.fontSize;
+  double toCssEmUnder(MathOptions options) =>
+      toLpUnder(options) / options.fontSize;
 
   @override
   String toString() => '$value${unit.name}';

@@ -33,5 +33,6 @@ const _arrayEntries = {
 };
 
 GreenNode _throwExceptionHandler(TexParser parser, FunctionContext context) {
-  throw ParseException('${context.funcName} valid only within array environment');
+  throw ParseException(
+      '${context.funcName} valid only within array environment');
 }

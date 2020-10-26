@@ -50,7 +50,7 @@ class NaryOperatorNode extends SlotableNode {
 
   @override
   BuildResult buildWidget(
-      Options options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult> childBuildResults) {
     final large =
         allowLargeOp && (options.style.size == MathStyle.display.size);
     final font = large
@@ -172,7 +172,7 @@ class NaryOperatorNode extends SlotableNode {
   }
 
   @override
-  List<Options> computeChildOptions(Options options) => [
+  List<MathOptions> computeChildOptions(MathOptions options) => [
         options.havingStyle(options.style.sub()),
         options.havingStyle(options.style.sup()),
         options,
@@ -188,7 +188,7 @@ class NaryOperatorNode extends SlotableNode {
   AtomType get rightType => naryand.rightType;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
       oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
 
   @override

@@ -69,7 +69,7 @@ class Math extends StatelessWidget {
   ///
   /// If set to null, the effective [logicalPpi] will scale with
   /// [TextStyle.fontSize]. You can obtain the default scaled value by
-  /// [Options.defaultLogicalPpiFor].
+  /// [MathOptions.defaultLogicalPpiFor].
   ///
   /// Will be overruled if [options] is present.
   ///
@@ -90,11 +90,11 @@ class Math extends StatelessWidget {
   final OnErrorFallback onErrorFallback;
 
   /// {@template flutter_math.widgets.math.options}
-  /// Overriding [Options] to build the AST.
+  /// Overriding [MathOptions] to build the AST.
   ///
   /// Will overrule [mathStyle] and [textStyle] if not null.
   /// {@endtemplate}
-  final Options options;
+  final MathOptions options;
 
   /// {@template flutter_math.widgets.math.parseError}
   /// Errors generated during parsing.
@@ -135,7 +135,7 @@ class Math extends StatelessWidget {
   factory Math.tex(
     String expression, {
     Key key,
-    Options options = Options.displayOptions,
+    MathOptions options = MathOptions.displayOptions,
     Settings settings = const Settings(),
     OnErrorFallback onErrorFallback = defaultOnErrorFallback,
     MathStyle mathStyle = MathStyle.display,
@@ -185,7 +185,7 @@ class Math extends StatelessWidget {
       final textScaleFactor =
           this.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
 
-      options = Options(
+      options = MathOptions(
         style: mathStyle,
         fontSize: effectiveTextStyle.fontSize * textScaleFactor,
         mathFontOptions: effectiveTextStyle.fontWeight != FontWeight.normal

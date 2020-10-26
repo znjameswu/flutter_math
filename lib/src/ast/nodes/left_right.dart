@@ -44,7 +44,7 @@ class LeftRightNode extends SlotableNode {
 
   @override
   BuildResult buildWidget(
-      Options options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult> childBuildResults) {
     final numElements = 2 + body.length + middle.length;
     final a = options.fontMetrics.axisHeight.cssEm.toLpUnder(options);
 
@@ -96,7 +96,7 @@ class LeftRightNode extends SlotableNode {
   }
 
   @override
-  List<Options> computeChildOptions(Options options) =>
+  List<MathOptions> computeChildOptions(MathOptions options) =>
       List.filled(body.length, options, growable: false);
 
   @override
@@ -109,7 +109,8 @@ class LeftRightNode extends SlotableNode {
   AtomType get rightType => AtomType.close;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
+      false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(
@@ -180,7 +181,7 @@ const stackNeverDelimiters = {
 };
 
 Widget buildCustomSizedDelimWidget(
-    String delim, double minDelimiterHeight, Options options) {
+    String delim, double minDelimiterHeight, MathOptions options) {
   if (delim == null) {
     final axisHeight = options.fontMetrics.xHeight.cssEm.toLpUnder(options);
     return ShiftBaseline(
@@ -228,7 +229,7 @@ Widget buildCustomSizedDelimWidget(
 }
 
 Widget makeStackedDelim(
-    String delim, double minDelimiterHeight, Mode mode, Options options) {
+    String delim, double minDelimiterHeight, Mode mode, MathOptions options) {
   final conf = stackDelimiterConfs[delim];
   final topMetrics = lookupChar(conf.top, conf.font, Mode.math);
   final repeatMetrics = lookupChar(conf.repeat, conf.font, Mode.math);

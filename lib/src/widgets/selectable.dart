@@ -141,7 +141,7 @@ class SelectableMath extends StatelessWidget {
   final OnErrorFallback onErrorFallback;
 
   /// {@macro flutter_math.widgets.math.options}
-  final Options options;
+  final MathOptions options;
 
   /// {@macro flutter_math.widgets.math.parseError}
   final ParseException parseException;
@@ -179,7 +179,7 @@ class SelectableMath extends StatelessWidget {
     String expression, {
     Key key,
     Settings settings = const Settings(),
-    Options options,
+    MathOptions options,
     OnErrorFallback onErrorFallback = defaultOnErrorFallback,
     bool autofocus = false,
     Color cursorColor,
@@ -249,7 +249,7 @@ class SelectableMath extends StatelessWidget {
         this.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
 
     final options = this.options ??
-        Options(
+        MathOptions(
           style: mathStyle,
           fontSize: effectiveTextStyle.fontSize * textScaleFactor,
           mathFontOptions: effectiveTextStyle.fontWeight != FontWeight.normal
@@ -411,7 +411,7 @@ class InternalSelectableMath extends StatefulWidget {
 
   final OnErrorFallback onErrorFallback;
 
-  final Options options;
+  final MathOptions options;
 
   final bool paintCursorAboveText;
 

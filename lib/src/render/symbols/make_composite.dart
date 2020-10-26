@@ -18,7 +18,7 @@ BuildResult makeRlapCompositeSymbol(
   String char2,
   AtomType type,
   Mode mode,
-  Options options,
+  MathOptions options,
 ) {
   final res1 = makeBaseSymbol(
       symbol: char1, atomType: type, mode: mode, options: options);
@@ -50,7 +50,7 @@ BuildResult makeCompactedCompositeSymbol(
   Measurement spacing,
   AtomType type,
   Mode mode,
-  Options options,
+  MathOptions options,
 ) {
   final res1 = makeBaseSymbol(
       symbol: char1, atomType: type, mode: mode, options: options);
@@ -89,7 +89,7 @@ BuildResult makeDecoratedEqualSymbol(
   String symbol,
   AtomType type,
   Mode mode,
-  Options options,
+  MathOptions options,
 ) {
   List<String> decoratorSymbols;
   FontOptions decoratorFont;

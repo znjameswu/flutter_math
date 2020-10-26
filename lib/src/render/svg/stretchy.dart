@@ -94,7 +94,7 @@ const katexImagesData = {
       ['shortbaraboveleftharpoon', 'shortrightharpoonabovebar'], 1.75, 716),
 };
 
-Widget strechySvgSpan(String name, double width, Options options) {
+Widget strechySvgSpan(String name, double width, MathOptions options) {
   var viewBoxWidth = 400000.0;
   if (const {'widehat', 'widecheck', 'widetilde', 'utilde'}.contains(name)) {
     double viewBoxHeight;

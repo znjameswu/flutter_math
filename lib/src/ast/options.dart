@@ -11,12 +11,12 @@ import 'syntax_tree.dart';
 
 /// Options for equation element rendering.
 ///
-/// Every [GreenNode] is rendered with an [Options]. It controls their size,
+/// Every [GreenNode] is rendered with an [MathOptions]. It controls their size,
 /// color, font, etc.
 ///
-/// [Options] is immutable. Each modification returns a new instance of
-/// [Options].
-class Options {
+/// [MathOptions] is immutable. Each modification returns a new instance of
+/// [MathOptions].
+class MathOptions {
   /// The style used to render the math node.
   ///
   /// For displayed equations, use [MathStyle.display].
@@ -72,7 +72,7 @@ class Options {
   /// {@endtemplate}
   final double logicalPpi;
 
-  const Options._({
+  const MathOptions._({
     @required this.fontSize,
     @required this.logicalPpi,
     @required this.style,
@@ -84,13 +84,14 @@ class Options {
     // @required this.minRuleThickness,
   });
 
-  /// Factory constructor for [Options].
+  /// Factory constructor for [MathOptions].
   ///
-  /// If [fontSize] is null, then [Options.defaultFontSize] will be used.
+  /// If [fontSize] is null, then [MathOptions.defaultFontSize] will be used.
   ///
   /// If [logicalPpi] is null, then it will scale with [fontSize]. The default
-  /// value for [Options.defaultFontSize] is [Options.defaultLogicalPpi].
-  factory Options({
+  /// value for [MathOptions.defaultFontSize] is
+  /// [MathOptions.defaultLogicalPpi].
+  factory MathOptions({
     MathStyle style = MathStyle.display,
     Color color = Colors.black,
     SizeMode sizeUnderTextStyle = SizeMode.normalsize,
@@ -111,7 +112,7 @@ class Options {
             : defaultFontSizeFor(logicalPpi: logicalPpi));
     final effectiveLogicalPPI =
         logicalPpi ?? defaultLogicalPpiFor(fontSize: effectiveFontSize);
-    return Options._(
+    return MathOptions._(
       fontSize: effectiveFontSize * baseSizeMultiplier,
       logicalPpi: effectiveLogicalPPI * baseSizeMultiplier,
       style: style,
@@ -139,7 +140,7 @@ class Options {
   ///
   /// By default 1 em = 10 pt. 1 inch = 72.27 pt.
   ///
-  /// See also [Options.defaultLogicalPpi].
+  /// See also [MathOptions.defaultLogicalPpi].
   static const defaultFontSize = _defaultPtPerEm / _defaultLpPerPt;
 
   /// Default value for [logicalPpi] when [fontSize] has been set.
@@ -151,37 +152,37 @@ class Options {
       _defaultPtPerEm / Unit.inches.toPt * logicalPpi;
 
   /// Default options for displayed equations
-  static const displayOptions = Options._(
+  static const displayOptions = MathOptions._(
     fontSize: defaultFontSize,
     logicalPpi: defaultLogicalPpi,
     style: MathStyle.display,
   );
 
   /// Default options for in-line equations
-  static const textOptions = Options._(
+  static const textOptions = MathOptions._(
     fontSize: defaultFontSize,
     logicalPpi: defaultLogicalPpi,
     style: MathStyle.text,
   );
 
-  /// Returns [Options] with given [MathStyle]
-  Options havingStyle(MathStyle style) {
+  /// Returns [MathOptions] with given [MathStyle]
+  MathOptions havingStyle(MathStyle style) {
     if (this.style == style) return this;
     return this.copyWith(
       style: style,
     );
   }
 
-  /// Returns [Options] with their styles set to cramped (e.g. textCramped)
-  Options havingCrampedStyle() {
+  /// Returns [MathOptions] with their styles set to cramped (e.g. textCramped)
+  MathOptions havingCrampedStyle() {
     if (this.style.cramped) return this;
     return this.copyWith(
       style: style.cramp(),
     );
   }
 
-  /// Returns [Options] with their user-declared size set to given size
-  Options havingSize(SizeMode size) {
+  /// Returns [MathOptions] with their user-declared size set to given size
+  MathOptions havingSize(SizeMode size) {
     if (this.size == size && this.sizeUnderTextStyle == size) return this;
     return this.copyWith(
       style: style.atLeastText(),
@@ -189,10 +190,10 @@ class Options {
     );
   }
 
-  /// Returns [Options] with size reset to [SizeMode.normalsize] and given
+  /// Returns [MathOptions] with size reset to [SizeMode.normalsize] and given
   /// style. If style is not given, then the current style will be increased to
   /// at least [MathStyle.text]
-  Options havingStyleUnderBaseSize(MathStyle style) {
+  MathOptions havingStyleUnderBaseSize(MathStyle style) {
     style = style ?? this.style.atLeastText();
     if (this.sizeUnderTextStyle == SizeMode.normalsize && this.style == style) {
       return this;
@@ -203,36 +204,36 @@ class Options {
     );
   }
 
-  /// Returns [Options] with size reset to [SizeMode.normalsize]
-  Options havingBaseSize() {
+  /// Returns [MathOptions] with size reset to [SizeMode.normalsize]
+  MathOptions havingBaseSize() {
     if (this.sizeUnderTextStyle == SizeMode.normalsize) return this;
     return this.copyWith(
       sizeUnderTextStyle: SizeMode.normalsize,
     );
   }
 
-  /// Returns [Options] with given text color
-  Options withColor(Color color) {
+  /// Returns [MathOptions] with given text color
+  MathOptions withColor(Color color) {
     if (this.color == color) return this;
     return this.copyWith(color: color);
   }
 
-  /// Returns [Options] with current text-mode font options merged with given
-  /// font differences
-  Options withTextFont(PartialFontOptions font) => this.copyWith(
+  /// Returns [MathOptions] with current text-mode font options merged with
+  /// given font differences
+  MathOptions withTextFont(PartialFontOptions font) => this.copyWith(
         mathFontOptions: null,
         textFontOptions:
             (this.textFontOptions ?? FontOptions()).mergeWith(font),
       );
 
-  /// Returns [Options] with given math font
-  Options withMathFont(FontOptions font) {
+  /// Returns [MathOptions] with given math font
+  MathOptions withMathFont(FontOptions font) {
     if (font == this.mathFontOptions) return this;
     return this.copyWith(mathFontOptions: font);
   }
 
   /// Utility method copyWith
-  Options copyWith({
+  MathOptions copyWith({
     MathStyle style,
     Color color,
     SizeMode sizeUnderTextStyle,
@@ -241,7 +242,7 @@ class Options {
     // double maxSize,
     // num minRuleThickness,
   }) =>
-      Options._(
+      MathOptions._(
         fontSize: this.fontSize,
         logicalPpi: this.logicalPpi,
         style: style ?? this.style,
@@ -253,8 +254,8 @@ class Options {
         // minRuleThickness: minRuleThickness ?? this.minRuleThickness,
       );
 
-  /// Merge an [OptionsDiff] into current [Options]
-  Options merge(OptionsDiff partialOptions) {
+  /// Merge an [OptionsDiff] into current [MathOptions]
+  MathOptions merge(OptionsDiff partialOptions) {
     var res = this;
     if (partialOptions.size != null) {
       res = res.havingSize(partialOptions.size);
@@ -278,11 +279,11 @@ class Options {
   }
 }
 
-/// Difference between the current [Options] and the desired [Options].
+/// Difference between the current [MathOptions] and the desired [MathOptions].
 ///
-/// This is used to declaratively describe the modifications to [Options].
+/// This is used to declaratively describe the modifications to [MathOptions].
 class OptionsDiff {
-  /// Override [Options.style]
+  /// Override [MathOptions.style]
   final MathStyle style;
 
   /// Override declared size.

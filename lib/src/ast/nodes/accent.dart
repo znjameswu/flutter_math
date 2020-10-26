@@ -43,7 +43,7 @@ class AccentNode extends SlotableNode {
 
   @override
   BuildResult buildWidget(
-      Options options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult> childBuildResults) {
     // Checking of character box is done automatically by the passing of
     // BuildResult, so we don't need to check it here.
     final skew = isShifty ? childBuildResults[0].skew : 0.0;
@@ -147,7 +147,7 @@ class AccentNode extends SlotableNode {
   }
 
   @override
-  List<Options> computeChildOptions(Options options) =>
+  List<MathOptions> computeChildOptions(MathOptions options) =>
       [options.havingCrampedStyle()];
 
   @override
@@ -160,7 +160,8 @@ class AccentNode extends SlotableNode {
   AtomType get rightType => AtomType.ord;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
+      false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(

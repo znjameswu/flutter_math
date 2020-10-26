@@ -163,7 +163,8 @@ MatrixNode parseArray(
       row = [];
       body.add(row);
     } else {
-      throw ParseException('Expected & or \\\\ or \\cr or \\end', parser.nextToken);
+      throw ParseException(
+          'Expected & or \\\\ or \\cr or \\end', parser.nextToken);
     }
   }
 

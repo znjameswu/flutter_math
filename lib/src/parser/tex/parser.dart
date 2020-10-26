@@ -238,7 +238,8 @@ class TexParser {
         case '\\limits':
         case '\\nolimits':
           if (!allowLimits) {
-            throw ParseException('Limit controls must follow a math operator', lex);
+            throw ParseException(
+                'Limit controls must follow a math operator', lex);
           }
           limits = lex.text == '\\limits';
           this.consume();
@@ -420,9 +421,11 @@ class TexParser {
           '''Got function '$func' with no arguments ${name != null ? ' as $name' : ''}''',
           token);
     } else if (this.mode == Mode.text && !funcData.allowedInText) {
-      throw ParseException('''Can't use function '$func' in text mode''', token);
+      throw ParseException(
+          '''Can't use function '$func' in text mode''', token);
     } else if (this.mode == Mode.math && funcData.allowedInMath == false) {
-      throw ParseException('''Can't use function '$func' in math mode''', token);
+      throw ParseException(
+          '''Can't use function '$func' in math mode''', token);
     }
 
     // final funcArgs = parseArgument(func, funcData);
@@ -461,7 +464,8 @@ class TexParser {
 
   void _assertOptionalBeforeReturn(dynamic value, {@required bool optional}) {
     if (!optional && value == null) {
-      throw ParseException('Expected group after ${currArgParsingContext.funcName}',
+      throw ParseException(
+          'Expected group after ${currArgParsingContext.funcName}',
           this.fetch());
     }
   }
@@ -690,7 +694,8 @@ class TexParser {
       this.consume();
     }
     if (str.isEmpty) {
-      throw ParseException("Invalid $modeName: '${firstToken.text}'", firstToken);
+      throw ParseException(
+          "Invalid $modeName: '${firstToken.text}'", firstToken);
     }
     this.mode = outerMode;
     return Token.range(firstToken, lastToken, str);

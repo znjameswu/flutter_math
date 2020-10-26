@@ -58,11 +58,11 @@ class Multiscripts extends StatelessWidget {
   final double italic;
   final bool isBaseCharacterBox;
 
-  final Options baseOptions;
-  final Options subOptions;
-  final Options supOptions;
-  final Options presubOptions;
-  final Options presupOptions;
+  final MathOptions baseOptions;
+  final MathOptions subOptions;
+  final MathOptions supOptions;
+  final MathOptions presubOptions;
+  final MathOptions presupOptions;
 
   final Widget base;
   final Widget sub;
@@ -118,11 +118,11 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
   final double italic;
 
   final bool isBaseCharacterBox;
-  final Options baseOptions;
-  final Options subOptions;
-  final Options supOptions;
-  final Options presubOptions;
-  final Options presupOptions;
+  final MathOptions baseOptions;
+  final MathOptions subOptions;
+  final MathOptions supOptions;
+  final MathOptions presubOptions;
+  final MathOptions presupOptions;
 
   MultiscriptsLayoutDelegate({
     @required this.alignPostscripts,
@@ -291,9 +291,9 @@ Tuple2<double, double> calculateUV({
   double baseSize,
   double supSize,
   double subSize,
-  Options baseOptions,
-  Options subOptions,
-  Options supOptions,
+  MathOptions baseOptions,
+  MathOptions subOptions,
+  MathOptions supOptions,
   bool isBaseCharacterBox,
   bool isComputingIntrinsics,
 }) {

@@ -19,7 +19,7 @@ BuildResult makeBaseSymbol({
   @required AtomType atomType,
   @required Mode mode,
   FontOptions overrideFont,
-  @required Options options,
+  @required MathOptions options,
 }) {
   // First lookup the render config table. We need the information
   var symbolRenderConfig = symbolRenderConfigs[symbol];
@@ -127,7 +127,7 @@ BuildResult makeBaseSymbol({
 }
 
 Widget makeChar(String character, FontOptions font,
-    CharacterMetrics characterMetrics, Options options,
+    CharacterMetrics characterMetrics, MathOptions options,
     {bool needItalic = false}) {
   final charWidget = ResetDimension(
     height: characterMetrics?.height?.cssEm?.toLpUnder(options),

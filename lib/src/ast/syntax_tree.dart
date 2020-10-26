@@ -114,7 +114,7 @@ class SyntaxTree {
   }
 
   // Build widget tree
-  Widget buildWidget([Options options = Options.displayOptions]) =>
+  Widget buildWidget([MathOptions options = MathOptions.displayOptions]) =>
       root.buildWidget(options).widget;
 }
 
@@ -171,7 +171,7 @@ class SyntaxNode {
   /// - If [GreenNode.shouldRebuildWidget], force rebuild
   /// - Call [buildWidget] on [children]. If the results are identical to the
   /// results returned by [buildWidget] called last time, then bypass.
-  BuildResult buildWidget(Options options) {
+  BuildResult buildWidget(MathOptions options) {
     if (value is PositionDependentMixin) {
       (value as PositionDependentMixin).updatePos(pos);
     }
@@ -195,7 +195,7 @@ class SyntaxNode {
             value.buildWidget(options, newChildBuildResults));
   }
 
-  List<BuildResult> _buildChildWidgets(List<Options> childOptions) {
+  List<BuildResult> _buildChildWidgets(List<MathOptions> childOptions) {
     assert(children.length == childOptions.length);
     if (children.isEmpty) return const [];
     return List.generate(children.length,
@@ -248,7 +248,7 @@ abstract class GreenNode {
   ///
   /// Please ensure [children] works in the same order as [updateChildren],
   /// [computeChildOptions], and [buildWidget].
-  List<Options> computeChildOptions(Options options);
+  List<MathOptions> computeChildOptions(MathOptions options);
 
   /// Compose Flutter widget with child widgets already built
   ///
@@ -259,21 +259,22 @@ abstract class GreenNode {
   ///
   /// Please ensure [children] works in the same order as [updateChildren],
   /// [computeChildOptions], and [buildWidget].
-  BuildResult buildWidget(Options options, List<BuildResult> childBuildResults);
+  BuildResult buildWidget(
+      MathOptions options, List<BuildResult> childBuildResults);
 
-  /// Whether the specific [Options] parameters that this node directly depends
-  /// upon have changed.
+  /// Whether the specific [MathOptions] parameters that this node directly
+  /// depends upon have changed.
   ///
   /// Subclasses should override this method. This method is used to determine
-  /// whether certain widget rebuilds can be bypassed even when the [Options]
-  /// have changed.
+  /// whether certain widget rebuilds can be bypassed even when the
+  /// [MathOptions] have changed.
   ///
   /// Rebuild bypass is determined by the following process:
   /// - If [oldOptions] == [newOptions], bypass
   /// - If [shouldRebuildWidget], force rebuild
   /// - Call [buildWidget] on [children]. If the results are identical to the
   /// the results returned by [buildWidget] called last time, then bypass.
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions);
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions);
 
   /// Minimum number of "right" keystrokes needed to move the cursor pass
   /// through this node (from the rightmost of the previous node, to the
@@ -313,7 +314,7 @@ abstract class GreenNode {
   /// [AtomType] observed from the right side.
   AtomType get rightType;
 
-  Options _oldOptions;
+  MathOptions _oldOptions;
   BuildResult _oldBuildResult;
   List<BuildResult> _oldChildBuildResults;
 
@@ -413,7 +414,7 @@ abstract class TransparentNode extends ParentableNode<GreenNode>
 
   @override
   BuildResult buildWidget(
-          Options options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult> childBuildResults) =>
       BuildResult(
         widget: const Text('This widget should not appear. '
             'It means one of FlutterMath\'s AST nodes '
@@ -495,7 +496,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
 
   @override
   BuildResult buildWidget(
-      Options options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult> childBuildResults) {
     final flattenedBuildResults = childBuildResults
         .expand((result) => result.results ?? [result])
         .toList(growable: false);
@@ -655,11 +656,12 @@ class EquationRowNode extends ParentableNode<GreenNode>
   }
 
   @override
-  List<Options> computeChildOptions(Options options) =>
+  List<MathOptions> computeChildOptions(MathOptions options) =>
       List.filled(children.length, options, growable: false);
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
+      false;
 
   @override
   ParentableNode<GreenNode> updateChildren(List<GreenNode> newChildren) =>
@@ -797,7 +799,7 @@ abstract class LeafNode extends GreenNode {
   }
 
   @override
-  List<Options> computeChildOptions(Options options) => const [];
+  List<MathOptions> computeChildOptions(MathOptions options) => const [];
 
   @override
   List<int> get childPositions => const [];
@@ -835,7 +837,7 @@ class TemporaryNode extends LeafNode {
 
   @override
   BuildResult buildWidget(
-          Options options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult> childBuildResults) =>
       throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
@@ -847,7 +849,7 @@ class TemporaryNode extends LeafNode {
       throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
       throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
@@ -857,7 +859,7 @@ class TemporaryNode extends LeafNode {
 
 class BuildResult {
   final Widget widget;
-  final Options options;
+  final MathOptions options;
   final double italic;
   final double skew;
   final List<BuildResult> results;
@@ -896,7 +898,7 @@ void _traverseNonSpaceNodes(
 class _NodeSpacingConf {
   AtomType leftType;
   AtomType rightType;
-  Options options;
+  MathOptions options;
   double spacingAfter;
   _NodeSpacingConf(
     this.leftType,

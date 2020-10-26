@@ -25,7 +25,7 @@ class AccentUnderNode extends SlotableNode {
 
   @override
   BuildResult buildWidget(
-          Options options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult> childBuildResults) =>
       BuildResult(
         options: options,
         italic: childBuildResults[0].italic,
@@ -70,7 +70,7 @@ class AccentUnderNode extends SlotableNode {
       );
 
   @override
-  List<Options> computeChildOptions(Options options) =>
+  List<MathOptions> computeChildOptions(MathOptions options) =>
       [options.havingCrampedStyle()];
 
   @override
@@ -83,7 +83,8 @@ class AccentUnderNode extends SlotableNode {
   AtomType get rightType => AtomType.ord;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
+      false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(

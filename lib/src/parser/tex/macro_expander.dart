@@ -179,7 +179,8 @@ class MacroExpander implements MacroContext {
               --depth;
               break;
             case 'EOF':
-              throw ParseException('End of input in macro argument', startOfArg);
+              throw ParseException(
+                  'End of input in macro argument', startOfArg);
           }
         }
         arg.removeLast();

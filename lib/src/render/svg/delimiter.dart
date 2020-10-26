@@ -49,7 +49,7 @@ double getHeightForDelim({
   String delim,
   String fontName,
   MathStyle style,
-  Options options,
+  MathOptions options,
 }) {
   final char = symbolRenderConfigs[delim]?.math?.replaceChar ?? delim;
   final metrics =

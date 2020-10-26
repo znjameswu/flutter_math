@@ -36,7 +36,7 @@ class PhantomNode extends LeafNode {
 
   @override
   BuildResult buildWidget(
-      Options options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult> childBuildResults) {
     final phantomRedNode =
         SyntaxNode(parent: null, value: phantomChild, pos: 0);
     final phantomResult = phantomRedNode.buildWidget(options);
@@ -64,7 +64,7 @@ class PhantomNode extends LeafNode {
   AtomType get rightType => phantomChild.rightType;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
       phantomChild.shouldRebuildWidget(oldOptions, newOptions);
 
   @override

@@ -22,7 +22,7 @@ class RaiseBoxNode extends SlotableNode {
 
   @override
   BuildResult buildWidget(
-          Options options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult> childBuildResults) =>
       BuildResult(
         options: options,
         widget: ShiftBaseline(
@@ -32,7 +32,7 @@ class RaiseBoxNode extends SlotableNode {
       );
 
   @override
-  List<Options> computeChildOptions(Options options) => [options];
+  List<MathOptions> computeChildOptions(MathOptions options) => [options];
 
   @override
   List<EquationRowNode> computeChildren() => [body];
@@ -44,7 +44,8 @@ class RaiseBoxNode extends SlotableNode {
   AtomType get rightType => AtomType.ord;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
+      false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(

@@ -32,7 +32,7 @@ class StretchyOpNode extends SlotableNode {
 
   @override
   BuildResult buildWidget(
-      Options options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult> childBuildResults) {
     final verticalPadding = 2.0.mu.toLpUnder(options);
     return BuildResult(
       options: options,
@@ -72,7 +72,7 @@ class StretchyOpNode extends SlotableNode {
   }
 
   @override
-  List<Options> computeChildOptions(Options options) => [
+  List<MathOptions> computeChildOptions(MathOptions options) => [
         options.havingStyle(options.style.sup()),
         options.havingStyle(options.style.sub()),
       ];
@@ -87,7 +87,7 @@ class StretchyOpNode extends SlotableNode {
   AtomType get rightType => AtomType.rel;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) =>
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
       oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
 
   @override

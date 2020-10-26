@@ -41,7 +41,7 @@ class FracNode extends SlotableNode {
 
   @override
   BuildResult buildWidget(
-          Options options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult> childBuildResults) =>
       BuildResult(
         options: options,
         widget: CustomLayout(
@@ -63,13 +63,14 @@ class FracNode extends SlotableNode {
       );
 
   @override
-  List<Options> computeChildOptions(Options options) => [
+  List<MathOptions> computeChildOptions(MathOptions options) => [
         options.havingStyle(options.style.fracNum()),
         options.havingStyle(options.style.fracDen()),
       ];
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
+      false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(
@@ -92,7 +93,7 @@ class FracNode extends SlotableNode {
     });
 
   FracNode copyWith({
-    Options options,
+    MathOptions options,
     EquationRowNode numerator,
     EquationRowNode denumerator,
     Measurement barSize,
@@ -112,7 +113,7 @@ enum _FracPos {
 
 class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
   final Measurement barSize;
-  final Options options;
+  final MathOptions options;
 
   FracLayoutDelegate({
     @required this.barSize,

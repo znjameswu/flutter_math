@@ -29,9 +29,9 @@ void testTexToMatchGoldenFile(
                 child: Math.tex(
                   expression,
                   key: key,
-                  options: Options(
+                  options: MathOptions(
                     style: MathStyle.display,
-                    fontSize: scale * Options.defaultFontSize,
+                    fontSize: scale * MathOptions.defaultFontSize,
                   ),
                   onErrorFallback: (_) => throw _,
                 ),
@@ -65,7 +65,7 @@ void testTexToRender(
                 padding: const EdgeInsets.all(8.0),
                 child: Math.tex(
                   expression,
-                  options: Options(
+                  options: MathOptions(
                     style: MathStyle.display,
                   ),
                   onErrorFallback: (_) => throw _,
@@ -96,7 +96,7 @@ void testTexToRenderLike(
                 child: Math.tex(
                   expression1,
                   key: key,
-                  options: Options(
+                  options: MathOptions(
                     style: MathStyle.display,
                   ),
                 ),
@@ -126,7 +126,7 @@ void testTexToRenderLike(
                 child: Math.tex(
                   expression2,
                   key: key2,
-                  options: Options(
+                  options: MathOptions(
                     style: MathStyle.display,
                   ),
                 ),
@@ -251,11 +251,11 @@ final toBuild = _ToBuild();
 final toBuildStrict = _ToBuild(settings: strictSettings);
 
 class _ToBuild extends Matcher {
-  final Options options;
+  final MathOptions options;
   final Settings settings;
 
   _ToBuild(
-      {this.options = Options.displayOptions,
+      {this.options = MathOptions.displayOptions,
       this.settings = nonstrictSettings});
 
   @override

@@ -39,7 +39,7 @@ class SqrtNode extends SlotableNode {
 
   @override
   BuildResult buildWidget(
-          Options options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult> childBuildResults) =>
       BuildResult(
         options: options,
         widget: CustomLayout<_SqrtPos>(
@@ -77,7 +77,7 @@ class SqrtNode extends SlotableNode {
       );
 
   @override
-  List<Options> computeChildOptions(Options options) => [
+  List<MathOptions> computeChildOptions(MathOptions options) => [
         options.havingStyle(MathStyle.scriptscript),
         options.havingStyle(options.style.cramp()),
       ];
@@ -92,7 +92,8 @@ class SqrtNode extends SlotableNode {
   AtomType get rightType => AtomType.ord;
 
   @override
-  bool shouldRebuildWidget(Options oldOptions, Options newOptions) => false;
+  bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
+      false;
 
   @override
   ParentableNode<EquationRowNode> updateChildren(
@@ -124,9 +125,9 @@ enum _SqrtPos {
 
 // Square roots are handled in the TeXbook pg. 443, Rule 11.
 class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
-  final Options options;
-  final Options baseOptions;
-  final Options indexOptions;
+  final MathOptions options;
+  final MathOptions baseOptions;
+  final MathOptions indexOptions;
 
   SqrtLayoutDelegate({
     @required this.options,
@@ -236,7 +237,7 @@ const emPad = vbPad / 1000;
 // We will use a highly similar strategy while sticking to the strict meaning
 // of TexBook Rule 11. We do not choose the style at *normalsize*
 double getSqrtAdvanceWidth(
-    double minDelimiterHeight, double baseWidth, Options options) {
+    double minDelimiterHeight, double baseWidth, MathOptions options) {
   // final newOptions = options.havingBaseSize();
   final delimConf = sqrtDelimieterSequence.firstWhereOrNull(
     (element) =>
@@ -270,7 +271,8 @@ double getSqrtAdvanceWidth(
 // KaTeX chooses the style and font of the \\surd to cover inner at *normalsize*
 // We will use a highly similar strategy while sticking to the strict meaning
 // of TexBook Rule 11. We do not choose the style at *normalsize*
-Widget sqrtSvg({double minDelimiterHeight, double baseWidth, Options options}) {
+Widget sqrtSvg(
+    {double minDelimiterHeight, double baseWidth, MathOptions options}) {
   // final newOptions = options.havingBaseSize();
   final delimConf = sqrtDelimieterSequence.firstWhereOrNull(
     (element) =>
