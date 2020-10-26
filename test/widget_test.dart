@@ -13,12 +13,12 @@ void main() {
           home: Scaffold(body: Math.tex(r'\Gaarbled$')),
         ),
       );
-      final finder = find.byType(Text);
+      final finder = find.byType(SelectableText);
       expect(finder, findsOneWidget);
       expect(
-          (finder.evaluate().single.widget as Text)
+          (finder.evaluate().single.widget as SelectableText)
               .data
-              .startsWith('Parser Error'),
+              .startsWith('Parser Error:'),
           isTrue);
     });
     testWidgets('Should show onErrorFallback widget', (tester) async {

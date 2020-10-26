@@ -24,16 +24,17 @@
 import '../../widgets/exception.dart';
 import 'token.dart';
 
-class ParseException extends FlutterMathException {
+class ParseException implements FlutterMathException {
   /// Nullable
   int position;
   String message;
 
+  String get messageWithType => 'Parser Error: $message';
+
   /// Nullable
   Token token;
 
-  ParseException(String message, [this.token])
-      : message = 'parser error $message' {
+  ParseException(String message, [this.token]) : message = '$message' {
     final loc = token?.loc;
     if (loc != null && loc.start <= loc.end) {
       final input = loc.lexer.input;

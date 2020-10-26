@@ -350,7 +350,7 @@ class SelectableMath extends StatelessWidget {
 
   /// Default fallback function for [Math], [SelectableMath]
   static Widget defaultOnErrorFallback(FlutterMathException error) =>
-      Text(error.toString());
+      Math.defaultOnErrorFallback(error);
 }
 
 /// The internal widget for [SelectableMath] when no errors are encountered.

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -215,5 +216,5 @@ class Math extends StatelessWidget {
 
   /// Default fallback function for [Math], [SelectableMath]
   static Widget defaultOnErrorFallback(FlutterMathException error) =>
-      Text(error.toString());
+      SelectableText(error.messageWithType);
 }
