@@ -111,7 +111,7 @@ GreenNode _internalFracHandler({
       rightDelim = ']';
       break;
     default:
-      throw ParseError('Unrecognized genfrac command');
+      throw ParseException('Unrecognized genfrac command');
   }
   switch (funcName) {
     case '\\cfrac':

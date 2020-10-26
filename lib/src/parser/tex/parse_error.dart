@@ -21,9 +21,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import '../../widgets/exception.dart';
 import 'token.dart';
 
-class ParseError extends Error {
+class ParseException extends FlutterMathException {
   /// Nullable
   int position;
   String message;
@@ -31,7 +32,8 @@ class ParseError extends Error {
   /// Nullable
   Token token;
 
-  ParseError(String message, [this.token]) : message = 'parser error $message' {
+  ParseException(String message, [this.token])
+      : message = 'parser error $message' {
     final loc = token?.loc;
     if (loc != null && loc.start <= loc.end) {
       final input = loc.lexer.input;

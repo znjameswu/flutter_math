@@ -53,5 +53,5 @@ GreenNode _mathLeftHandler(TexParser parser, FunctionContext context) {
 }
 
 GreenNode _mathRightHandler(TexParser parser, FunctionContext context) {
-  throw ParseError('Mismatched ${context.funcName}');
+  throw ParseException('Mismatched ${context.funcName}');
 }

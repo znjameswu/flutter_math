@@ -177,7 +177,7 @@ class _ToParse extends Matcher {
             .describeMismatch(item, mismatchDescription, matchState, verbose);
       }
       return mismatchDescription.add('input is not a string');
-    } on ParseError catch (e) {
+    } on ParseException catch (e) {
       return mismatchDescription.add(e.message);
     } on Object catch (e) {
       return mismatchDescription.add(e.toString());
@@ -194,7 +194,7 @@ class _ToParse extends Matcher {
         return true;
       }
       return false;
-    } on ParseError catch (_) {
+    } on ParseException catch (_) {
       return false;
     }
   }
@@ -224,7 +224,7 @@ class _ToNotParse extends Matcher {
         // return mismatchDescription.add(prettyPrintJson(res.toJson()));
       }
       return mismatchDescription.add('input is not a string');
-    } on ParseError catch (_) {
+    } on ParseException catch (_) {
       return super
           .describeMismatch(item, mismatchDescription, matchState, verbose);
     }
@@ -240,7 +240,7 @@ class _ToNotParse extends Matcher {
         return false;
       }
       return false;
-    } on ParseError catch (_) {
+    } on ParseException catch (_) {
       return true;
     }
   }
@@ -275,7 +275,7 @@ class _ToBuild extends Matcher {
             .describeMismatch(item, mismatchDescription, matchState, verbose);
       }
       return mismatchDescription.add('input is not a string');
-    } on ParseError catch (e) {
+    } on ParseException catch (e) {
       return mismatchDescription.add(e.message);
     } on Object catch (e) {
       return mismatchDescription.add(e.toString());
@@ -293,7 +293,7 @@ class _ToBuild extends Matcher {
         return true;
       }
       return false;
-    } on ParseError catch (_) {
+    } on ParseException catch (_) {
       return false;
     }
   }

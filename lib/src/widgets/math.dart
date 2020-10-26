@@ -7,8 +7,11 @@ import '../ast/syntax_tree.dart';
 import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';
+import 'exception.dart';
 import 'flutter_math.dart';
 import 'selectable.dart';
+
+typedef OnErrorFallback = Widget Function(FlutterMathException errmsg);
 
 /// Static, non-selectable widget for equations.
 ///
@@ -98,7 +101,7 @@ class Math extends StatelessWidget {
   ///
   /// If not null, the [onErrorFallback] widget will be presented.
   /// {@endtemplate}
-  final String parseError;
+  final ParseException parseError;
 
   /// {@macro flutter.widgets.editableText.textScaleFactor}
   final double textScaleFactor;
@@ -119,8 +122,8 @@ class Math extends StatelessWidget {
   ///
   /// {@template flutter_math.widgets.math.tex_builder}
   /// [expression] will first be parsed under [settings]. Then the acquired
-  /// [SyntaxTree] will be built under a specific options. If [ParseError] is
-  /// thrown or a build error occurs, [onErrorFallback] will be displayed.
+  /// [SyntaxTree] will be built under a specific options. If [ParseException]
+  /// is thrown or a build error occurs, [onErrorFallback] will be displayed.
   ///
   /// You can control the options via [mathStyle] and [textStyle].
   /// {@endtemplate}
@@ -140,13 +143,14 @@ class Math extends StatelessWidget {
     TextStyle textStyle,
   }) {
     SyntaxTree ast;
-    String parseError;
+    ParseException parseError;
     try {
       ast = SyntaxTree(greenRoot: TexParser(expression, settings).parse());
-    } on ParseError catch (e) {
-      parseError = 'Parser Error: ${e.message}';
+    } on ParseException catch (e) {
+      parseError = e;
     } on dynamic catch (e) {
-      parseError = e.toString();
+      parseError = ParseException('Unsanitized parse exception detected: $e.'
+          'Please report this error with correponding input.');
     }
     return Math(
       key: key,
@@ -195,8 +199,12 @@ class Math extends StatelessWidget {
 
     try {
       child = ast.buildWidget(options);
+    } on BuildException catch (e) {
+      return onErrorFallback(e);
     } on dynamic catch (e) {
-      return onErrorFallback(e.toString());
+      return onErrorFallback(
+          BuildException('Unsanitized build exception detected: $e.'
+              'Please report this error with correponding input.'));
     }
 
     return Provider.value(
@@ -204,4 +212,8 @@ class Math extends StatelessWidget {
       child: child,
     );
   }
+
+  /// Default fallback function for [Math], [SelectableMath]
+  static Widget defaultOnErrorFallback(FlutterMathException error) =>
+      Text(error.toString());
 }

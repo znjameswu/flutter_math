@@ -112,17 +112,17 @@ const digitToNumber = {
 String newcommand(MacroContext context, bool existsOK, bool nonexistsOK) {
   var arg = context.consumeArgs(1)[0];
   if (arg.length != 1) {
-    throw ParseError("\\newcommand's first argument must be a macro name");
+    throw ParseException("\\newcommand's first argument must be a macro name");
   }
   final name = arg[0].text;
 
   final exists = context.isDefined(name);
   if (exists && !existsOK) {
-    throw ParseError('\\newcommand{$name} attempting to redefine '
+    throw ParseException('\\newcommand{$name} attempting to redefine '
         '$name; use \\renewcommand');
   }
   if (!exists && !nonexistsOK) {
-    throw ParseError('\\renewcommand{$name} when command $name '
+    throw ParseException('\\renewcommand{$name} when command $name '
         'does not yet exist; use \\newcommand');
   }
 
@@ -137,7 +137,7 @@ String newcommand(MacroContext context, bool existsOK, bool nonexistsOK) {
       token = context.expandNextToken();
     }
     if (!RegExp(r'^\s*[0-9]+\s*$').hasMatch(argText)) {
-      throw ParseError('Invalid number of arguments: $argText');
+      throw ParseException('Invalid number of arguments: $argText');
     }
     numArgs = int.parse(argText);
     arg = context.consumeArgs(1)[0];
@@ -324,7 +324,7 @@ final Map<String, MacroDefinition> builtinMacros = {
       if (token.text[0] == "\\") {
         number = token.text.codeUnitAt(1);
       } else if (token.text == "EOF") {
-        throw ParseError("\\char` missing argument");
+        throw ParseException("\\char` missing argument");
       } else {
         number = token.text.codeUnitAt(0);
       }
@@ -335,7 +335,7 @@ final Map<String, MacroDefinition> builtinMacros = {
       // Parse a number in the given base, starting with first 'token'.
       number = digitToNumber[token.text];
       if (number == null || number >= base) {
-        throw ParseError('Invalid base-$base digit ${token.text}');
+        throw ParseException('Invalid base-$base digit ${token.text}');
       }
       int digit;
       while ((digit = digitToNumber[context.future().text]) != null &&
@@ -607,7 +607,7 @@ final Map<String, MacroDefinition> builtinMacros = {
   '\\tag@paren': MacroDefinition.fromString("\\tag@literal{({#1})}"),
   '\\tag@literal': MacroDefinition.fromCtxString((context) {
     if (context.macros.get("\\df@tag") != null) {
-      throw ParseError("Multiple \\tag");
+      throw ParseException("Multiple \\tag");
     }
     return "\\gdef\\df@tag{\\text{#1}}";
   }),

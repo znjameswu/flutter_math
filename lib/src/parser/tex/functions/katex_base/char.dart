@@ -12,7 +12,7 @@ GreenNode _charHandler(TexParser parser, FunctionContext context) {
       .join('');
   final code = int.tryParse(number);
   if (code == null) {
-    throw ParseError('\\@char has non-numeric argument $number');
+    throw ParseException('\\@char has non-numeric argument $number');
   }
   return SymbolNode(
     symbol: String.fromCharCode(code),

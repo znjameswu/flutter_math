@@ -169,11 +169,11 @@ String _checkDelimiter(GreenNode delim, FunctionContext context) {
       }
     } else {
       // TODO: this throw omitted the token location
-      throw ParseError(
+      throw ParseException(
           "Invalid delimiter '${delim.symbol}' after '${context.funcName}'");
     }
   } else {
-    throw ParseError("Invalid delimiter type '${delim.runtimeType}'");
+    throw ParseException("Invalid delimiter type '${delim.runtimeType}'");
   }
 }
 
@@ -255,12 +255,12 @@ GreenNode _middleHandler(TexParser parser, FunctionContext context) {
   final delimArg = parser.parseArgNode(mode: Mode.math, optional: false);
   final delim = _checkDelimiter(delimArg, context);
   if (parser.leftrightDepth <= 0) {
-    throw ParseError('\\middle without preceding \\left');
+    throw ParseException('\\middle without preceding \\left');
   }
   final contexts = parser.argParsingContexts.toList();
   final lastContext = contexts[contexts.length - 2];
   if (lastContext.funcName != '\\left') {
-    throw ParseError('\\middle must be within \\left and \\right');
+    throw ParseException('\\middle must be within \\left and \\right');
   }
 
   return _MiddleNode(delim: delim);

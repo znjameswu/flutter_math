@@ -63,7 +63,7 @@ class Namespace<T> {
 
   void endGroup() {
     if (this.undefStack.isEmpty) {
-      throw ParseError('Unbalanced namespace destruction: attempt '
+      throw ParseException('Unbalanced namespace destruction: attempt '
           'to pop global namespace; please report this as a bug');
     }
     final undefs = this.undefStack.removeLast();

@@ -29,7 +29,7 @@ const _environmentEntries = {
 GreenNode _enviromentHandler(TexParser parser, FunctionContext context) {
   final nameGroup = parser.parseArgNode(mode: Mode.text, optional: false);
   if (nameGroup.children.any((element) => element is! SymbolNode)) {
-    throw ParseError('Invalid environment name');
+    throw ParseException('Invalid environment name');
   }
   final envName =
       nameGroup.children.map((node) => (node as SymbolNode).symbol).join();
@@ -37,7 +37,7 @@ GreenNode _enviromentHandler(TexParser parser, FunctionContext context) {
   if (context.funcName == '\\begin') {
     // begin...end is similar to left...right
     if (!environments.containsKey(envName)) {
-      throw ParseError('No such environment: $envName');
+      throw ParseException('No such environment: $envName');
     }
     // Build the environment object. Arguments and other information will
     // be made available to the begin and end methods using properties.
@@ -54,7 +54,7 @@ GreenNode _enviromentHandler(TexParser parser, FunctionContext context) {
     final end = assertNodeType<_EndEnvironmentNode>(
         parser.parseFunction(null, null, null));
     if (end.name != envName) {
-      throw ParseError(
+      throw ParseException(
           'Mismatch: \\begin{$envName} matched by \\end{${end.name}}',
           endNameToken);
     }

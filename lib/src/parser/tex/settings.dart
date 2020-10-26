@@ -89,7 +89,7 @@ class Settings {
       case Strict.ignore:
         return;
       case Strict.error:
-        throw ParseError(
+        throw ParseException(
             "LaTeX-incompatible input and strict mode is set to 'error': "
             '$errorMsg [$errorCode]',
             token);

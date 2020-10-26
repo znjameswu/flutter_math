@@ -77,7 +77,7 @@ class Lexer implements LexerInterface {
 
     // Validate current match
     if (match == null || match.start != pos) {
-      throw ParseError('Unexpected character: \'${input[pos]}\'',
+      throw ParseException('Unexpected character: \'${input[pos]}\'',
           Token(input[pos], SourceLocation(this, pos, pos + 1)));
     }
 

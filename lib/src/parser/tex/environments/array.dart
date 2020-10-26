@@ -108,7 +108,7 @@ MatrixNode parseArray(
     } else {
       arrayStretch = double.tryParse(stretch);
       if (arrayStretch == null || arrayStretch < 0) {
-        throw ParseError('Invalid \\arraystretch: $stretch');
+        throw ParseException('Invalid \\arraystretch: $stretch');
       }
     }
   }
@@ -163,7 +163,7 @@ MatrixNode parseArray(
       row = [];
       body.add(row);
     } else {
-      throw ParseError('Expected & or \\\\ or \\cr or \\end', parser.nextToken);
+      throw ParseException('Expected & or \\\\ or \\cr or \\end', parser.nextToken);
     }
   }
 
@@ -248,7 +248,7 @@ GreenNode _arrayHandler(TexParser parser, EnvContext context) {
         lastIsSeparator = true;
         break;
       default:
-        throw ParseError('Unknown column alignment: $ca');
+        throw ParseException('Unknown column alignment: $ca');
     }
   }
   if (!lastIsSeparator) {
@@ -310,11 +310,11 @@ GreenNode _subArrayHandler(TexParser parser, EnvContext context) {
     if (ca == 'l' || ca == 'c') {
       aligns.add(ca == 'l' ? MatrixColumnAlign.left : MatrixColumnAlign.center);
     } else {
-      throw ParseError('Unknown column alignment: $ca');
+      throw ParseException('Unknown column alignment: $ca');
     }
   }
   if (aligns.length > 1) {
-    throw ParseError('{subarray} can contain only one column');
+    throw ParseException('{subarray} can contain only one column');
   }
   final res = parseArray(
     parser,
@@ -324,7 +324,7 @@ GreenNode _subArrayHandler(TexParser parser, EnvContext context) {
     style: MathStyle.script,
   );
   if (res.body[0].length > 1) {
-    throw ParseError('{subarray} can contain only one column');
+    throw ParseException('{subarray} can contain only one column');
   }
   return res;
 }

@@ -91,14 +91,14 @@ class MacroExpander implements MacroContext {
           expansion == null &&
           name[0] == '\\' &&
           this.isDefined(name)) {
-        throw ParseError('Undefined control sequence: $name');
+        throw ParseException('Undefined control sequence: $name');
       }
       this.pushToken(topToken);
       return topToken;
     }
     this.expansionCount += 1;
     if (this.expansionCount > this.settings.maxExpand) {
-      throw ParseError('Too many expansions: infinite loop or '
+      throw ParseException('Too many expansions: infinite loop or '
           'need to increase maxExpand setting');
     }
     var tokens = expansion.tokens;
@@ -112,7 +112,7 @@ class MacroExpander implements MacroContext {
         var tok = tokens[i];
         if (tok.text == '#') {
           if (i == 0) {
-            throw ParseError(
+            throw ParseException(
                 'Incomplete placeholder at end of macro body', tok);
           }
           --i;
@@ -123,7 +123,7 @@ class MacroExpander implements MacroContext {
             try {
               tokens.replaceRange(i, i + 2, args[int.parse(tok.text) - 1]);
             } on FormatException {
-              throw ParseError('Not a valid argument number', tok);
+              throw ParseException('Not a valid argument number', tok);
             }
           }
         }
@@ -179,13 +179,13 @@ class MacroExpander implements MacroContext {
               --depth;
               break;
             case 'EOF':
-              throw ParseError('End of input in macro argument', startOfArg);
+              throw ParseException('End of input in macro argument', startOfArg);
           }
         }
         arg.removeLast();
         return arg.reversed.toList();
       } else if (startOfArg.text == 'EOF') {
-        throw ParseError('End of input expecting macro argument');
+        throw ParseException('End of input expecting macro argument');
       } else {
         return [startOfArg];
       }

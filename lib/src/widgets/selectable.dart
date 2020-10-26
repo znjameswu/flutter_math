@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math/src/widgets/exception.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
@@ -37,7 +38,7 @@ const defaultSelection = TextSelection.collapsed(offset: -1);
 class SelectableMath extends StatelessWidget {
   /// SelectableMath default constructor.
   ///
-  /// Requires either a parsed [ast] or a [parseError].
+  /// Requires either a parsed [ast] or a [parseException].
   ///
   /// See [SelectableMath] for its member documentation.
   const SelectableMath({
@@ -55,13 +56,13 @@ class SelectableMath extends StatelessWidget {
     this.logicalPpi,
     this.onErrorFallback = defaultOnErrorFallback,
     this.options,
-    this.parseError,
+    this.parseException,
     this.showCursor = false,
     this.textScaleFactor,
     this.textSelectionControls,
     this.textStyle,
     ToolbarOptions toolbarOptions,
-  })  : assert(ast != null || parseError != null),
+  })  : assert(ast != null || parseException != null),
         assert(autofocus != null),
         assert(cursorWidth != null),
         assert(dragStartBehavior != null),
@@ -78,7 +79,7 @@ class SelectableMath extends StatelessWidget {
 
   /// The equation to display.
   ///
-  /// It can be null only when [parseError] is not null.
+  /// It can be null only when [parseException] is not null.
   final SyntaxTree ast;
 
   /// {@macro flutter.widgets.editableText.autofocus}
@@ -143,7 +144,7 @@ class SelectableMath extends StatelessWidget {
   final Options options;
 
   /// {@macro flutter_math.widgets.math.parseError}
-  final String parseError;
+  final ParseException parseException;
 
   /// {@macro flutter.widgets.editableText.showCursor}
   final bool showCursor;
@@ -197,13 +198,14 @@ class SelectableMath extends StatelessWidget {
     ToolbarOptions toolbarOptions,
   }) {
     SyntaxTree ast;
-    String parseError;
+    ParseException parseError;
     try {
       ast = SyntaxTree(greenRoot: TexParser(expression, settings).parse());
-    } on ParseError catch (e) {
-      parseError = 'Parse Error: ${e.message}';
+    } on ParseException catch (e) {
+      parseError = e;
     } on dynamic catch (e) {
-      parseError = e.toString();
+      parseError = ParseException('Unsanitized parse exception detected: $e.'
+          'Please report this error with correponding input.');
     }
     return SelectableMath(
       key: key,
@@ -220,7 +222,7 @@ class SelectableMath extends StatelessWidget {
       logicalPpi: logicalPpi,
       onErrorFallback: onErrorFallback,
       options: options,
-      parseError: parseError,
+      parseException: parseError,
       showCursor: showCursor,
       textScaleFactor: textScaleFactor,
       textSelectionControls: textSelectionControls,
@@ -230,8 +232,8 @@ class SelectableMath extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
-    if (parseError != null) {
-      return onErrorFallback(parseError);
+    if (parseException != null) {
+      return onErrorFallback(parseException);
     }
 
     var effectiveTextStyle = textStyle;
@@ -259,8 +261,12 @@ class SelectableMath extends StatelessWidget {
     // A trial build to catch any potential build errors
     try {
       ast.buildWidget(options);
+    } on BuildException catch (e) {
+      return onErrorFallback(e);
     } on dynamic catch (e) {
-      return onErrorFallback(e.toString());
+      return onErrorFallback(
+          BuildException('Unsanitized build exception detected: $e.'
+              'Please report this error with correponding input.'));
     }
 
     final theme = Theme.of(context);
@@ -341,6 +347,10 @@ class SelectableMath extends StatelessWidget {
       ),
     );
   }
+
+  /// Default fallback function for [Math], [SelectableMath]
+  static Widget defaultOnErrorFallback(FlutterMathException error) =>
+      Text(error.toString());
 }
 
 /// The internal widget for [SelectableMath] when no errors are encountered.

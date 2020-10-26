@@ -57,7 +57,7 @@ GreenNode _notHandler(TexParser parser, FunctionContext context) {
   if (node.mode != Mode.math ||
       node.variantForm == true ||
       !_notRemap.containsKey(node.symbol)) {
-    throw ParseError('\\not has to be followed by a combinable character');
+    throw ParseException('\\not has to be followed by a combinable character');
   }
   return node.copyWith(
     symbol: _notRemap[node.symbol],

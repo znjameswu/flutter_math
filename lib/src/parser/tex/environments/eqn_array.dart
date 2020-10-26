@@ -123,14 +123,14 @@ GreenNode _alignedAtHandler(TexParser parser, EnvContext context) {
       .join('');
   final cols = int.tryParse(string);
   if (cols == null) {
-    throw ParseError('Invalid argument for environment: alignedat');
+    throw ParseException('Invalid argument for environment: alignedat');
   }
   return parseEqnArray(
     parser,
     addJot: true,
     concatRow: (cells) {
       if (cells.length > 2 * cols) {
-        throw ParseError('Too many math in a row: '
+        throw ParseException('Too many math in a row: '
             'expected ${2 * cols}, but got ${cells.length}');
       }
       final expanded = cells
@@ -160,7 +160,7 @@ EquationArrayNode parseEqnArray(
   } else {
     arrayStretch = double.tryParse(stretch);
     if (arrayStretch == null || arrayStretch < 0) {
-      throw ParseError('Invalid \\arraystretch: $stretch');
+      throw ParseException('Invalid \\arraystretch: $stretch');
     }
   }
   // }
@@ -210,7 +210,7 @@ EquationArrayNode parseEqnArray(
       row = [];
       body.add(row);
     } else {
-      throw ParseError('Expected & or \\\\ or \\cr or \\end', parser.nextToken);
+      throw ParseException('Expected & or \\\\ or \\cr or \\end', parser.nextToken);
     }
   }
 
