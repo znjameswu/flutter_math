@@ -1,4 +1,4 @@
-import 'package:flutter_math/src/widgets/exception.dart';
+import '../widgets/exception.dart';
 
 class EncoderException implements FlutterMathException {
   final String message;

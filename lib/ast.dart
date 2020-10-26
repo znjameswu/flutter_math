@@ -1,7 +1,7 @@
 /// Utilities to manipulate Flutter Math's ASTs
-/// 
+///
 /// See also:
-/// 
+///
 /// * [GreenNode]
 /// * [SyntaxNode]
 /// * [SyntaxTree]
@@ -31,5 +31,6 @@ export 'src/ast/nodes/under.dart';
 export 'src/ast/options.dart';
 export 'src/ast/size.dart';
 export 'src/ast/style.dart';
-export 'src/ast/syntax_tree.dart' hide TemporaryNode, BuildResult, PositionDependentMixin;
+export 'src/ast/syntax_tree.dart'
+    hide TemporaryNode, BuildResult, PositionDependentMixin;
 export 'src/ast/types.dart';

@@ -1,6 +1,3 @@
-import 'package:flutter_math/src/encoder/exception.dart';
-import 'package:flutter_math/src/parser/tex/parse_error.dart';
-
 /// Base class for exceptions.
 abstract class FlutterMathException implements Exception {
   String get message;

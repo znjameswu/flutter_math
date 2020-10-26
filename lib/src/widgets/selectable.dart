@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/src/widgets/exception.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
@@ -17,6 +16,7 @@ import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';
 import '../utils/wrapper.dart';
 import 'controller.dart';
+import 'exception.dart';
 import 'math.dart';
 import 'mode.dart';
 import 'selection/cursor_timer_manager.dart';

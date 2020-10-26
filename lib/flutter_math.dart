@@ -1,6 +1,5 @@
-
 /// Basic utilities to render math equations.
-/// 
+///
 /// Please refer to README for usage.
 library flutter_math;
 
