@@ -97,12 +97,8 @@ class MathOptions {
     MathSize sizeUnderTextStyle = MathSize.normalsize,
     FontOptions textFontOptions,
     FontOptions mathFontOptions,
-    double fontSize,
+    @required double fontSize,
     double logicalPpi,
-    @Deprecated('Consider using fontSize to directly control widget size. '
-        'If you still wish to stay relative to the default size, use '
-        'Options.defaultFontSize instead')
-        double baseSizeMultiplier = 1.0,
     // @required this.maxSize,
     // @required this.minRuleThickness,
   }) {
@@ -113,8 +109,8 @@ class MathOptions {
     final effectiveLogicalPPI =
         logicalPpi ?? defaultLogicalPpiFor(fontSize: effectiveFontSize);
     return MathOptions._(
-      fontSize: effectiveFontSize * baseSizeMultiplier,
-      logicalPpi: effectiveLogicalPPI * baseSizeMultiplier,
+      fontSize: effectiveFontSize,
+      logicalPpi: effectiveLogicalPPI,
       style: style,
       color: color,
       sizeUnderTextStyle: sizeUnderTextStyle,

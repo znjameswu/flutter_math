@@ -61,9 +61,7 @@ class DemoPage extends StatelessWidget {
                               builder: (context, controller, _) =>
                                   SelectableMath.tex(
                                 controller.value.text,
-                                options: MathOptions(
-                                  style: MathStyle.display,
-                                ),
+                                textStyle: TextStyle(fontSize: 22),
                               ),
                             ),
                           ),

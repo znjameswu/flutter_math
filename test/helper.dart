@@ -66,6 +66,7 @@ void testTexToRender(
                 child: Math.tex(
                   expression,
                   options: MathOptions(
+                    fontSize: MathOptions.defaultFontSize,
                     style: MathStyle.display,
                   ),
                   onErrorFallback: (_) => throw _,
@@ -97,6 +98,7 @@ void testTexToRenderLike(
                   expression1,
                   key: key,
                   options: MathOptions(
+                    fontSize: MathOptions.defaultFontSize,
                     style: MathStyle.display,
                   ),
                 ),
@@ -127,6 +129,7 @@ void testTexToRenderLike(
                   expression2,
                   key: key2,
                   options: MathOptions(
+                    fontSize: MathOptions.defaultFontSize,
                     style: MathStyle.display,
                   ),
                 ),
