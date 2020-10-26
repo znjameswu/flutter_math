@@ -11,7 +11,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
-        title: 'Flutter Math Demo v0.1.8',
+        title: 'Flutter Math Demo v0.1.9',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-                'Flutter Math Demo',
+                'Flutter Math Demo v0.1.9',
               ),
               bottom: TabBar(tabs: [
                 Text('Interactive Demo'),
