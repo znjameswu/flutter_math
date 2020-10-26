@@ -83,7 +83,7 @@ void testTexToRender(
 
 void testTexToRenderLike(
     String description, String expression1, String expression2,
-    [Settings settings = strictSettings]) {
+    [TexParserSettings settings = strictSettings]) {
   testWidgets(description, (WidgetTester tester) async {
     final key = GlobalKey();
     await tester.pumpWidget(
@@ -147,19 +147,21 @@ void testTexToRenderLike(
   });
 }
 
-const strictSettings = Settings(strict: Strict.error);
-const nonstrictSettings = Settings(strict: Strict.ignore);
+const strictSettings = TexParserSettings(strict: Strict.error);
+const nonstrictSettings = TexParserSettings(strict: Strict.ignore);
 
-GreenNode getParsed(String expr, [Settings settings = const Settings()]) =>
+GreenNode getParsed(String expr,
+        [TexParserSettings settings = const TexParserSettings()]) =>
     TexParser(expr, settings).parse();
 
 String prettyPrintJson(Map<String, Object> a) =>
     JsonEncoder.withIndent('| ').convert(a);
 
-_ToParse toParse([Settings settings = strictSettings]) => _ToParse(settings);
+_ToParse toParse([TexParserSettings settings = strictSettings]) =>
+    _ToParse(settings);
 
 class _ToParse extends Matcher {
-  final Settings settings;
+  final TexParserSettings settings;
 
   _ToParse(this.settings);
 
@@ -189,7 +191,7 @@ class _ToParse extends Matcher {
     try {
       if (item is String) {
         // ignore: unused_local_variable
-        final res = TexParser(item, const Settings()).parse();
+        final res = TexParser(item, const TexParserSettings()).parse();
         // print(prettyPrintJson(res.toJson()));
         return true;
       }
@@ -200,11 +202,11 @@ class _ToParse extends Matcher {
   }
 }
 
-_ToNotParse toNotParse([Settings settings = strictSettings]) =>
+_ToNotParse toNotParse([TexParserSettings settings = strictSettings]) =>
     _ToNotParse(settings);
 
 class _ToNotParse extends Matcher {
-  final Settings settings;
+  final TexParserSettings settings;
 
   _ToNotParse(this.settings);
 
@@ -252,7 +254,7 @@ final toBuildStrict = _ToBuild(settings: strictSettings);
 
 class _ToBuild extends Matcher {
   final MathOptions options;
-  final Settings settings;
+  final TexParserSettings settings;
 
   _ToBuild(
       {this.options = MathOptions.displayOptions,

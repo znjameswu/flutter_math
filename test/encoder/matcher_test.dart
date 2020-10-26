@@ -14,8 +14,10 @@ void main() {
     });
 
     test('node matcher', () {
-      final target =
-          TexParser('\\frac{123}{abc}', Settings()).parse().children.first;
+      final target = TexParser('\\frac{123}{abc}', TexParserSettings())
+          .parse()
+          .children
+          .first;
       expect(isA<FracNode>().match(target), true);
       expect(isA<EquationRowNode>().match(target), false);
 

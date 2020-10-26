@@ -47,7 +47,7 @@ class MacroExpander implements MacroContext {
         this.lexer = Lexer(input, settings);
 
   String input;
-  Settings settings;
+  TexParserSettings settings;
   Mode mode;
   int expansionCount = 0;
   var stack = <Token>[];

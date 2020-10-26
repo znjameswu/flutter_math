@@ -59,7 +59,7 @@ class TexParser {
         this.macroExpander = MacroExpander(content, settings, Mode.math);
 
   String content;
-  Settings settings;
+  TexParserSettings settings;
   Mode mode;
   int leftrightDepth;
 

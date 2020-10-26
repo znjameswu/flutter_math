@@ -136,7 +136,7 @@ class Math extends StatelessWidget {
     String expression, {
     Key key,
     MathOptions options = MathOptions.displayOptions,
-    Settings settings = const Settings(),
+    TexParserSettings settings = const TexParserSettings(),
     OnErrorFallback onErrorFallback = defaultOnErrorFallback,
     MathStyle mathStyle = MathStyle.display,
     double textScaleFactor,

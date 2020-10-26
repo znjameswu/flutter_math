@@ -178,7 +178,7 @@ class SelectableMath extends StatelessWidget {
   factory SelectableMath.tex(
     String expression, {
     Key key,
-    Settings settings = const Settings(),
+    TexParserSettings settings = const TexParserSettings(),
     MathOptions options,
     OnErrorFallback onErrorFallback = defaultOnErrorFallback,
     bool autofocus = false,

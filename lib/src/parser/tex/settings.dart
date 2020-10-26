@@ -38,13 +38,13 @@ enum Strict {
   /// Throw on non-strict behaviors
   error,
 
-  /// Non-strict behaviors will be reported to [Settings.strictFun] and
+  /// Non-strict behaviors will be reported to [TexParserSettings.strictFun] and
   /// processed according to the return value
   function,
 }
 
 /// Settings for [TexParser]
-class Settings {
+class TexParserSettings {
   final bool displayMode; // TODO
   final bool throwOnError; // TODO
 
@@ -58,7 +58,7 @@ class Settings {
   final Strict strict;
 
   /// Functions to decide how to handle non-strict behaviors. Must set
-  /// [Settings.strict] to [Strict.function]
+  /// [TexParserSettings.strict] to [Strict.function]
   final Strict Function(String, String, Token) strictFun;
 
   final bool globalGroup; // TODO
@@ -68,7 +68,7 @@ class Settings {
   /// See https://katex.org/docs/options.html
   final bool colorIsTextColor;
 
-  const Settings({
+  const TexParserSettings({
     this.displayMode = false,
     this.throwOnError = true,
     this.macros = const {},

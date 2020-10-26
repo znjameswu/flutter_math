@@ -3302,27 +3302,39 @@ void main() {
     test("should allow unicode text when not strict", () {
       expect(r'é', toParse(nonstrictSettings));
       expect(r'試', toParse(nonstrictSettings));
-      expect(r'é', toParse(Settings(strict: Strict.ignore)));
-      expect(r'試', toParse(Settings(strict: Strict.ignore)));
-      expect(r'é', toParse(Settings(strictFun: (_, __, ___) => Strict.ignore)));
-      expect(r'試', toParse(Settings(strictFun: (_, __, ___) => Strict.ignore)));
-      expect(r'é', toParse(Settings(strictFun: (_, __, ___) => Strict.ignore)));
-      expect(r'試', toParse(Settings(strictFun: (_, __, ___) => Strict.ignore)));
+      expect(r'é', toParse(TexParserSettings(strict: Strict.ignore)));
+      expect(r'試', toParse(TexParserSettings(strict: Strict.ignore)));
+      expect(r'é',
+          toParse(TexParserSettings(strictFun: (_, __, ___) => Strict.ignore)));
+      expect(r'試',
+          toParse(TexParserSettings(strictFun: (_, __, ___) => Strict.ignore)));
+      expect(r'é',
+          toParse(TexParserSettings(strictFun: (_, __, ___) => Strict.ignore)));
+      expect(r'試',
+          toParse(TexParserSettings(strictFun: (_, __, ___) => Strict.ignore)));
     });
 
     test("should forbid unicode text when strict", () {
-      expect(r'é', toNotParse(Settings(strict: Strict.error)));
-      expect(r'試', toNotParse(Settings(strict: Strict.error)));
-      expect(r'é', toNotParse(Settings(strict: Strict.error)));
-      expect(r'試', toNotParse(Settings(strict: Strict.error)));
+      expect(r'é', toNotParse(TexParserSettings(strict: Strict.error)));
+      expect(r'試', toNotParse(TexParserSettings(strict: Strict.error)));
+      expect(r'é', toNotParse(TexParserSettings(strict: Strict.error)));
+      expect(r'試', toNotParse(TexParserSettings(strict: Strict.error)));
       expect(
-          r'é', toNotParse(Settings(strictFun: (_, __, ___) => Strict.error)));
+          r'é',
+          toNotParse(
+              TexParserSettings(strictFun: (_, __, ___) => Strict.error)));
       expect(
-          r'試', toNotParse(Settings(strictFun: (_, __, ___) => Strict.error)));
+          r'試',
+          toNotParse(
+              TexParserSettings(strictFun: (_, __, ___) => Strict.error)));
       expect(
-          r'é', toNotParse(Settings(strictFun: (_, __, ___) => Strict.error)));
+          r'é',
+          toNotParse(
+              TexParserSettings(strictFun: (_, __, ___) => Strict.error)));
       expect(
-          r'試', toNotParse(Settings(strictFun: (_, __, ___) => Strict.error)));
+          r'試',
+          toNotParse(
+              TexParserSettings(strictFun: (_, __, ___) => Strict.error)));
     });
 
     // test("should warn about unicode text when default", () {

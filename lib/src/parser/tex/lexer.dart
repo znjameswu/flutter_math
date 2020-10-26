@@ -59,7 +59,7 @@ class Lexer implements LexerInterface {
     it = matches.iterator;
   }
   String input;
-  Settings settings;
+  TexParserSettings settings;
   final Map<String, int> catCodes = {'%': 14};
   int pos = 0;
   Iterable<RegExpMatch> matches;
