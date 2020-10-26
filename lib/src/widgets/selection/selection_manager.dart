@@ -197,13 +197,20 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
 
   @override
   TextEditingValue get textEditingValue {
-    final string = controller.selectedNodes.encodeTex();
-    final taggedString = '$string$_selectAllReservedTag';
+    final encodeResult = controller.selectedNodes.encodeTex();
+    String string;
+    if (controller.selection.start == 0 &&
+        controller.selection.end ==
+            controller.ast.greenRoot.capturedCursor - 1) {
+      string = encodeResult;
+    } else {
+      string = '$encodeResult$_selectAllReservedTag';
+    }
     return TextEditingValue(
-      text: taggedString,
+      text: string,
       selection: TextSelection(
         baseOffset: 0,
-        extentOffset: string.length,
+        extentOffset: encodeResult.length,
       ),
     );
   }
@@ -214,7 +221,7 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
     // Select All ?
     if (value.selection.start == 0 &&
         value.selection.end == value.text.length &&
-        value.text.length != 0) {
+        value.text.length > controller.ast.greenRoot.capturedCursor - 1) {
       handleSelectionChanged(
         TextSelection(
           baseOffset: 0,

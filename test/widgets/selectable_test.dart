@@ -23,6 +23,11 @@ Widget overlay({Widget child}) => MaterialApp(
       ),
     );
 
+Future<void> skipPastScrollingAnimation(WidgetTester tester) async {
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 200));
+}
+
 void main() {
   // Returns the first RenderEditable.
   RenderEditableLine findRenderEditableLine(WidgetTester tester) {
@@ -82,39 +87,39 @@ void main() {
       expect(selectableMath.cursorCurrentlyVisible, equals(initialShowCursor));
     });
 
-    // testWidgets('selectable text basic', (WidgetTester tester) async {
-    //   await tester.pumpWidget(
-    //     overlay(
-    //       child: const SelectableText('selectable'),
-    //     ),
-    //   );
-    //   final EditableText editableTextWidget =
-    //       tester.widget(find.byType(EditableText));
-    //   // selectable text cannot open keyboard.
-    //   await tester.showKeyboard(find.byType(SelectableText));
-    //   expect(tester.testTextInput.hasAnyClients, false);
-    //   await skipPastScrollingAnimation(tester);
+    testWidgets('selectable math basic', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        overlay(
+          child: SelectableMath.tex('selectable'),
+        ),
+      );
+      final selectableMath = tester.state<InternalSelectableMathState>(
+          find.byType(InternalSelectableMath));
+      // selectable text cannot open keyboard.
+      // TODO
+      // await tester.showKeyboard(find.byType(InternalSelectableMath));
+      // expect(tester.testTextInput.hasAnyClients, false);
+      // await skipPastScrollingAnimation(tester);
 
-    //   expect(editableTextWidget.controller.selection.isCollapsed, true);
+      // expect(selectableMath.controller.selection.isCollapsed, true);
 
-    //   await tester.tap(find.byType(SelectableText));
-    //   await tester.pump();
+      await tester.tap(find.byType(SelectableMath));
+      await tester.pump();
 
-    //   final EditableTextState editableText =
-    //       tester.state(find.byType(EditableText));
-    //   // Collapse selection should not paint.
-    //   expect(editableText.selectionOverlay!.handlesAreVisible, isFalse);
-    //   // Long press on the 't' character of text 'selectable' to show context menu.
-    //   const int dIndex = 5;
-    //   final Offset dPos = textOffsetToPosition(tester, dIndex);
-    //   await tester.longPressAt(dPos);
-    //   await tester.pump();
+      // Collapse selection should not paint.
+      expect(selectableMath.selectionOverlay.handlesAreVisible, isFalse);
+      // Long press on the 't' character of text 'selectable' to show context
+      // menu.
+      const dIndex = 5;
+      final dPos = textOffsetToCaretPosition(tester, dIndex);
+      await tester.longPressAt(dPos);
+      await tester.pump();
 
-    //   // Context menu should not have paste and cut.
-    //   expect(find.text('Copy'), findsOneWidget);
-    //   expect(find.text('Paste'), findsNothing);
-    //   expect(find.text('Cut'), findsNothing);
-    // });
+      // Context menu should not have paste and cut.
+      expect(find.text('Copy'), findsOneWidget);
+      expect(find.text('Paste'), findsNothing);
+      expect(find.text('Cut'), findsNothing);
+    });
 
     testWidgets('Can drag handles to change selection',
         (WidgetTester tester) async {
@@ -189,7 +194,7 @@ void main() {
     //     MaterialApp(
     //       home: Material(
     //         child: Center(
-    //           child: MathSelectable.tex(
+    //           child: SelectableMath.tex(
     //             testValue,
     //           ),
     //         ),
@@ -207,14 +212,12 @@ void main() {
     //   await tester.pump(const Duration(
     //       milliseconds: 200)); // skip past the frame where the opacity is zero
     //   final renderLine = findRenderEditableLine(tester);
-    //   final endpoints = globalize(
-    //     renderLine.getEndpointsForSelection(controller.selection),
-    //     renderLine,
-    //   );
+    //   final endpoint =
+    //       renderLine.getEndpointForCaretIndex(controller.selection.start);
     //   // Tapping on the part of the handle's GestureDetector where it overlaps
     //   // with the text itself does not show the menu, so add a small vertical
     //   // offset to tap below the text.
-    //   await tester.tapAt(endpoints[0].point + const Offset(1.0, 13.0));
+    //   await tester.tapAt(endpoint + const Offset(1.0, 13.0));
     //   await tester.pump();
     //   await tester.pump(const Duration(
     //       milliseconds: 200)); // skip past the frame where the opacity is zero
@@ -520,50 +523,50 @@ void main() {
           SystemMouseCursors.text);
     });
 
-    // testWidgets(
-    //   'The handles show after pressing Select All',
-    //   (WidgetTester tester) async {
-    //     await tester.pumpWidget(
-    //       MaterialApp(
-    //         home: Material(
-    //           child: Center(
-    //             child: MathSelectable.tex('abc def ghi'),
-    //           ),
-    //         ),
-    //       ),
-    //     );
+    testWidgets(
+      'The handles show after pressing Select All',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: Center(
+                child: SelectableMath.tex('abc def ghi'),
+              ),
+            ),
+          ),
+        );
 
-    //     // Long press at 'e' in 'def'.
-    //     final ePos = textOffsetToCaretPosition(tester, 5);
-    //     await tester.longPressAt(ePos);
-    //     await tester.pumpAndSettle();
+        // Long press at 'e' in 'def'.
+        final ePos = textOffsetToCaretPosition(tester, 5);
+        await tester.longPressAt(ePos);
+        await tester.pumpAndSettle();
 
-    //     expect(find.text('Select all'), findsOneWidget);
-    //     expect(find.text('Copy'), findsOneWidget);
-    //     expect(find.text('Paste'), findsNothing);
-    //     expect(find.text('Cut'), findsNothing);
-    //     var selectableMath = tester.state<InternalSelectableMathState>(
-    //         find.byType(InternalSelectableMath));
-    //     expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
-    //     expect(selectableMath.selectionOverlay.toolbarIsVisible, isTrue);
+        expect(find.text('Select all'), findsOneWidget);
+        expect(find.text('Copy'), findsOneWidget);
+        expect(find.text('Paste'), findsNothing);
+        expect(find.text('Cut'), findsNothing);
+        var selectableMath = tester.state<InternalSelectableMathState>(
+            find.byType(InternalSelectableMath));
+        expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
+        expect(selectableMath.selectionOverlay.toolbarIsVisible, isTrue);
 
-    //     await tester.tap(find.text('Select all'));
-    //     await tester.pump();
-    //     expect(find.text('Copy'), findsOneWidget);
-    //     expect(find.text('Select all'), findsNothing);
-    //     expect(find.text('Paste'), findsNothing);
-    //     expect(find.text('Cut'), findsNothing);
-    //     selectableMath = tester.state<InternalSelectableMathState>(
-    //         find.byType(InternalSelectableMath));
-    //     expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
-    //   },
-    //   variant: const TargetPlatformVariant(<TargetPlatform>{
-    //     TargetPlatform.android,
-    //     TargetPlatform.fuchsia,
-    //     TargetPlatform.linux,
-    //     TargetPlatform.windows,
-    //   }),
-    // );
+        await tester.tap(find.text('Select all'));
+        await tester.pump();
+        expect(find.text('Copy'), findsOneWidget);
+        expect(find.text('Select all'), findsNothing);
+        expect(find.text('Paste'), findsNothing);
+        expect(find.text('Cut'), findsNothing);
+        selectableMath = tester.state<InternalSelectableMathState>(
+            find.byType(InternalSelectableMath));
+        expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
+      },
+      variant: const TargetPlatformVariant(<TargetPlatform>{
+        TargetPlatform.android,
+        TargetPlatform.fuchsia,
+        TargetPlatform.linux,
+        TargetPlatform.windows,
+      }),
+    );
 
     testWidgets('Does not show handles when updated from the web engine',
         (WidgetTester tester) async {
