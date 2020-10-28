@@ -136,7 +136,7 @@ class Math extends StatelessWidget {
   factory Math.tex(
     String expression, {
     Key key,
-    MathOptions options = MathOptions.displayOptions,
+    MathOptions options,
     TexParserSettings settings = const TexParserSettings(),
     OnErrorFallback onErrorFallback = defaultOnErrorFallback,
     MathStyle mathStyle = MathStyle.display,

@@ -1,3 +1,6 @@
+## [0.2.0+1] - 2020/10/28
+Fix `Math.tex` constructor's wrong default value for `MathOptions`.
+
 ## [0.2.0] - 2020/10/24
 - A new `SelectableMath` widget that supports selection and copy-to-clipboard.
 - A TeX encoder.
