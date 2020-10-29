@@ -1,8 +1,6 @@
 String fixedHex(int number, int length) {
   var str = number.toRadixString(16).toUpperCase();
-  while (str.length < length) {
-    str = '0$str';
-  }
+  str = str.padLeft(length, '0');
   return str;
 }
 
