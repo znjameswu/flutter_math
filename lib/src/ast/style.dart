@@ -24,7 +24,7 @@ enum MathStyleDiff {
   uncramp,
 }
 
-MathStyle parseMathStyle(String string) => const {
+MathStyle? parseMathStyle(String string) => const {
       'display': MathStyle.display,
       'displayCramped': MathStyle.displayCramped,
       'text': MathStyle.text,

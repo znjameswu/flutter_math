@@ -22,16 +22,16 @@ mixin CursorTimerManagerMixin<T extends StatefulWidget>
 
   FocusNode get focusNode;
 
-  Timer _cursorTimer;
+  Timer? _cursorTimer;
   // final ValueNotifier<bool> _showCursor = ValueNotifier<bool>(false);
 
-  AnimationController cursorBlinkOpacityController;
+  late AnimationController cursorBlinkOpacityController;
 
   bool _targetCursorVisibility = false;
 
-  MathController _oldController;
+  late MathController _oldController;
 
-  FocusNode _oldFocusNode;
+  late FocusNode _oldFocusNode;
 
   @override
   void initState() {

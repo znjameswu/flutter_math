@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
@@ -10,10 +11,10 @@ import 'line.dart';
 
 class EditableLine extends MultiChildRenderObjectWidget {
   EditableLine({
-    Key key,
+    Key? key,
     this.crossAxisAlignment = CrossAxisAlignment.baseline,
     this.cursorBlinkOpacityController,
-    this.cursorColor,
+    required this.cursorColor,
     this.cursorOffset,
     this.cursorOpacityAnimates = false,
     this.cursorRadius,
@@ -23,9 +24,9 @@ class EditableLine extends MultiChildRenderObjectWidget {
     this.hintingColor,
     this.minDepth = 0.0,
     this.minHeight = 0.0,
-    @required this.node,
+    required this.node,
     this.paintCursorAboveText = false,
-    @required this.preferredLineHeight,
+    required this.preferredLineHeight,
     this.selection = const TextSelection.collapsed(offset: -1),
     this.selectionColor,
     this.showCursor = false,
@@ -41,23 +42,23 @@ class EditableLine extends MultiChildRenderObjectWidget {
 
   final CrossAxisAlignment crossAxisAlignment;
 
-  final AnimationController cursorBlinkOpacityController;
+  final AnimationController? cursorBlinkOpacityController;
 
   final Color cursorColor;
 
-  final Offset cursorOffset;
+  final Offset? cursorOffset;
 
   final bool cursorOpacityAnimates;
 
-  final Radius cursorRadius;
+  final Radius? cursorRadius;
 
   final double cursorWidth;
 
-  final double cursorHeight;
+  final double? cursorHeight;
 
   final double devicePixelRatio;
 
-  final Color hintingColor;
+  final Color? hintingColor;
 
   final double minDepth;
 
@@ -71,22 +72,22 @@ class EditableLine extends MultiChildRenderObjectWidget {
 
   final TextSelection selection;
 
-  final Color selectionColor;
+  final Color? selectionColor;
 
   final bool showCursor;
 
-  final LayerLink startHandleLayerLink;
+  final LayerLink? startHandleLayerLink;
 
-  final LayerLink endHandleLayerLink;
+  final LayerLink? endHandleLayerLink;
 
   final TextBaseline textBaseline;
 
-  final TextDirection textDirection;
+  final TextDirection? textDirection;
 
   bool get _needTextDirection => true;
 
   @protected
-  TextDirection getEffectiveTextDirection(BuildContext context) =>
+  TextDirection? getEffectiveTextDirection(BuildContext context) =>
       textDirection ?? (_needTextDirection ? Directionality.of(context) : null);
 
   @override
@@ -155,28 +156,28 @@ class EditableLine extends MultiChildRenderObjectWidget {
 
 class RenderEditableLine extends RenderLine {
   RenderEditableLine({
-    List<RenderBox> children,
+    List<RenderBox>? children,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.baseline,
-    AnimationController cursorBlinkOpacityController,
-    Color cursorColor,
-    Offset cursorOffset,
-    Radius cursorRadius,
+    AnimationController? cursorBlinkOpacityController,
+    required Color cursorColor,
+    Offset? cursorOffset,
+    Radius? cursorRadius,
     double cursorWidth = 1.0,
-    double cursorHeight,
+    double? cursorHeight,
     double devicePixelRatio = 1.0,
-    Color hintingColor,
-    double minDepth,
-    double minHeight,
-    this.node,
+    Color? hintingColor,
+    double minDepth = 0,
+    double minHeight = 0,
+    required this.node,
     bool paintCursorAboveText = false,
-    this.preferredLineHeight,
-    TextSelection selection,
-    Color selectionColor,
+    required this.preferredLineHeight,
+    TextSelection selection = const TextSelection.collapsed(offset: -1),
+    Color? selectionColor,
     bool showCursor = false,
-    LayerLink startHandleLayerLink,
-    LayerLink endHandleLayerLink,
+    LayerLink? startHandleLayerLink,
+    LayerLink? endHandleLayerLink,
     TextBaseline textBaseline = TextBaseline.alphabetic,
-    TextDirection textDirection = TextDirection.ltr,
+    TextDirection? textDirection = TextDirection.ltr,
   })  : assert(!showCursor || cursorColor != null),
         _cursorBlinkOpacityController = cursorBlinkOpacityController,
         _cursorColor = cursorColor,
@@ -201,10 +202,10 @@ class RenderEditableLine extends RenderLine {
           textDirection: textDirection,
         );
 
-  AnimationController get cursorBlinkOpacityController =>
+  AnimationController? get cursorBlinkOpacityController =>
       _cursorBlinkOpacityController;
-  AnimationController _cursorBlinkOpacityController;
-  set cursorBlinkOpacityController(AnimationController value) {
+  AnimationController? _cursorBlinkOpacityController;
+  set cursorBlinkOpacityController(AnimationController? value) {
     if (_cursorBlinkOpacityController != value) {
       _cursorBlinkOpacityController?.removeListener(onCursorOpacityChanged);
       _cursorBlinkOpacityController = value;
@@ -230,9 +231,9 @@ class RenderEditableLine extends RenderLine {
   }
 
   /// {@macro flutter.rendering.editable.cursorOffset}
-  Offset get cursorOffset => _cursorOffset;
-  Offset _cursorOffset;
-  set cursorOffset(Offset value) {
+  Offset? get cursorOffset => _cursorOffset;
+  Offset? _cursorOffset;
+  set cursorOffset(Offset? value) {
     if (_cursorOffset != value) {
       _cursorOffset = value;
       markNeedsPaint();
@@ -242,9 +243,9 @@ class RenderEditableLine extends RenderLine {
   /// How rounded the corners of the cursor should be.
   ///
   /// A null value is the same as [Radius.zero].
-  Radius get cursorRadius => _cursorRadius;
-  Radius _cursorRadius;
-  set cursorRadius(Radius value) {
+  Radius? get cursorRadius => _cursorRadius;
+  Radius? _cursorRadius;
+  set cursorRadius(Radius? value) {
     if (_cursorRadius != value) {
       _cursorRadius = value;
       markNeedsPaint();
@@ -269,8 +270,8 @@ class RenderEditableLine extends RenderLine {
   /// [preferredLineHeight]. Setting
   /// this to null returns the behaviour of deferring to [preferredLineHeight].
   double get cursorHeight => _cursorHeight ?? preferredLineHeight;
-  double _cursorHeight;
-  set cursorHeight(double value) {
+  double? _cursorHeight;
+  set cursorHeight(double? value) {
     if (_cursorHeight != value) {
       _cursorHeight = value;
       markNeedsPaint();
@@ -286,9 +287,9 @@ class RenderEditableLine extends RenderLine {
     }
   }
 
-  Color get hintingColor => _hintingColor;
-  Color _hintingColor;
-  set hintingColor(Color value) {
+  Color? get hintingColor => _hintingColor;
+  Color? _hintingColor;
+  set hintingColor(Color? value) {
     if (_hintingColor != value) {
       _hintingColor = value;
       markNeedsPaint();
@@ -319,9 +320,9 @@ class RenderEditableLine extends RenderLine {
   }
 
   /// The color to use when painting the selection.
-  Color get selectionColor => _selectionColor;
-  Color _selectionColor;
-  set selectionColor(Color value) {
+  Color? get selectionColor => _selectionColor;
+  Color? _selectionColor;
+  set selectionColor(Color? value) {
     if (_selectionColor != value) {
       _selectionColor = value;
       markNeedsPaint();
@@ -338,18 +339,18 @@ class RenderEditableLine extends RenderLine {
     }
   }
 
-  LayerLink get startHandleLayerLink => _startHandleLayerLink;
-  LayerLink _startHandleLayerLink;
-  set startHandleLayerLink(LayerLink value) {
+  LayerLink? get startHandleLayerLink => _startHandleLayerLink;
+  LayerLink? _startHandleLayerLink;
+  set startHandleLayerLink(LayerLink? value) {
     if (_startHandleLayerLink != value) {
       _startHandleLayerLink = value;
       markNeedsPaint();
     }
   }
 
-  LayerLink get endHandleLayerLink => _endHandleLayerLink;
-  LayerLink _endHandleLayerLink;
-  set endHandleLayerLink(LayerLink value) {
+  LayerLink? get endHandleLayerLink => _endHandleLayerLink;
+  LayerLink? _endHandleLayerLink;
+  set endHandleLayerLink(LayerLink? value) {
     if (_endHandleLayerLink != value) {
       _endHandleLayerLink = value;
       markNeedsPaint();
@@ -406,7 +407,7 @@ class RenderEditableLine extends RenderLine {
             offset & size,
             Paint()
               ..style = PaintingStyle.fill
-              ..color = _hintingColor,
+              ..color = _hintingColor!,
           );
         }
       } else if (_selectionColor != null) {
@@ -415,7 +416,7 @@ class RenderEditableLine extends RenderLine {
           Rect.fromLTRB(startOffset, 0, endOffset, size.height).shift(offset),
           Paint()
             ..style = PaintingStyle.fill
-            ..color = _selectionColor,
+            ..color = _selectionColor!,
         );
       }
 
@@ -423,7 +424,7 @@ class RenderEditableLine extends RenderLine {
       if (startHandleLayerLink != null) {
         context.pushLayer(
           LeaderLayer(
-            link: startHandleLayerLink,
+            link: startHandleLayerLink!,
             offset: Offset(startOffset, size.height) + offset,
           ),
           emptyPaintFunction,
@@ -433,7 +434,7 @@ class RenderEditableLine extends RenderLine {
       if (endHandleLayerLink != null) {
         context.pushLayer(
           LeaderLayer(
-            link: endHandleLayerLink,
+            link: endHandleLayerLink!,
             offset: Offset(endOffset, size.height) + offset,
           ),
           emptyPaintFunction,
@@ -496,7 +497,7 @@ class RenderEditableLine extends RenderLine {
         .shift(Offset(0, -0.9 * cursorHeight)); // 0.9 is eyeballed
 
     if (_cursorOffset != null) {
-      caretRect = caretRect.shift(_cursorOffset);
+      caretRect = caretRect.shift(_cursorOffset!);
     }
 
     // final double caretHeight =
@@ -535,7 +536,7 @@ class RenderEditableLine extends RenderLine {
     if (_cursorRadius == null) {
       canvas.drawRect(caretRect, paint);
     } else {
-      final caretRRect = RRect.fromRectAndRadius(caretRect, _cursorRadius);
+      final caretRRect = RRect.fromRectAndRadius(caretRect, _cursorRadius!);
       canvas.drawRRect(caretRRect, paint);
     }
   }

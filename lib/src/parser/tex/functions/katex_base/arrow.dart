@@ -75,7 +75,7 @@ const arrowCommandMapping = {
 
 GreenNode _arrowHandler(TexParser parser, FunctionContext context) {
   final below = parser.parseArgNode(mode: null, optional: true);
-  final above = parser.parseArgNode(mode: null, optional: false);
+  final above = parser.parseArgNode(mode: null, optional: false)!;
   return StretchyOpNode(
     above: above.wrapWithEquationRow(),
     below: below?.wrapWithEquationRow(),

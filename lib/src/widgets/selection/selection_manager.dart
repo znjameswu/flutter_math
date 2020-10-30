@@ -29,9 +29,9 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
 
   bool get hasFocus;
 
-  FocusNode _oldFocusNode;
+  late FocusNode _oldFocusNode;
 
-  MathController _oldController;
+  late MathController _oldController;
 
   @override
   void initState() {
@@ -69,8 +69,8 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
     }
   }
 
-  SyntaxTree _oldAst;
-  TextSelection _oldSelection;
+  SyntaxTree? _oldAst;
+  TextSelection? _oldSelection;
   void _onControllerChanged() {
     if (_oldAst != controller.ast || _oldSelection != controller.selection) {
       handleSelectionChanged(
@@ -78,12 +78,13 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
     }
   }
 
-  void onSelectionChanged(TextSelection selection, SelectionChangedCause cause);
+  void onSelectionChanged(
+      TextSelection selection, SelectionChangedCause? cause);
 
   @mustCallSuper
   void handleSelectionChanged(
-      TextSelection selection, SelectionChangedCause cause,
-      [ExtraSelectionChangedCause extraCause]) {
+      TextSelection selection, SelectionChangedCause? cause,
+      [ExtraSelectionChangedCause? extraCause]) {
     if (extraCause != ExtraSelectionChangedCause.unfocus &&
         extraCause != ExtraSelectionChangedCause.exterior &&
         !hasFocus) {
@@ -96,9 +97,9 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
   }
 
   void selectPositionAt({
-    @required Offset from,
-    Offset to,
-    @required SelectionChangedCause cause,
+    required Offset from,
+    Offset? to,
+    required SelectionChangedCause cause,
   }) {
     final fromPosition = getPositionForOffset(from);
     final toPosition = to == null ? fromPosition : getPositionForOffset(to);
@@ -109,8 +110,8 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
   }
 
   void selectWordAt({
-    Offset offset,
-    SelectionChangedCause cause,
+    required Offset offset,
+    required SelectionChangedCause cause,
   }) {
     handleSelectionChanged(
       getWordRangeAtPoint(offset),
@@ -122,13 +123,13 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
     final rootRenderBox = this.rootRenderBox;
     final rootOffset = rootRenderBox.globalToLocal(globalOffset);
     final constrainedOffset = Offset(
-      rootOffset.dx.clamp(0.0, rootRenderBox.size.width) as double,
-      rootOffset.dy.clamp(0.0, rootRenderBox.size.height) as double,
+      rootOffset.dx.clamp(0.0, rootRenderBox.size.width),
+      rootOffset.dy.clamp(0.0, rootRenderBox.size.height),
     );
-    return (controller.ast.greenRoot.key.currentContext.findRenderObject()
+    return (controller.ast.greenRoot.key!.currentContext!.findRenderObject()
                 as RenderEditableLine)
             .hittestFindLowest<RenderEditableLine>(constrainedOffset) ??
-        controller.ast.greenRoot.key.currentContext.findRenderObject()
+        controller.ast.greenRoot.key!.currentContext!.findRenderObject()
             as RenderEditableLine;
   }
 
@@ -148,7 +149,7 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
       caretIndex = node.caretPositions.length - 1;
     }
     final renderLine =
-        node.key.currentContext.findRenderObject() as RenderEditableLine;
+        node.key!.currentContext!.findRenderObject() as RenderEditableLine;
     final globalOffset = renderLine.getEndpointForCaretIndex(caretIndex);
 
     return rootRenderBox.globalToLocal(globalOffset);
@@ -173,8 +174,8 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
   }
 
   TextSelection getWordsRangeInRange({
-    @required Offset from,
-    @required Offset to,
+    required Offset from,
+    required Offset to,
   }) {
     final range1 = getWordRangeAtPoint(from);
     final range2 = getWordRangeAtPoint(to);
@@ -187,8 +188,8 @@ mixin SelectionManagerMixin<T extends StatefulWidget> on State<T>
   }
 
   Rect getLocalEditingRegion() {
-    final root = controller.ast.greenRoot.key.currentContext.findRenderObject()
-        as RenderEditableLine;
+    final root = controller.ast.greenRoot.key!.currentContext!
+        .findRenderObject() as RenderEditableLine;
     return Rect.fromPoints(
       Offset.zero,
       root.size.bottomRight(Offset.zero),

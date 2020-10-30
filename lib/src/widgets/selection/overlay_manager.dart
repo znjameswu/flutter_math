@@ -20,8 +20,8 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
 
   DragStartBehavior get dragStartBehavior;
 
-  MathSelectionOverlay get selectionOverlay => _selectionOverlay;
-  MathSelectionOverlay _selectionOverlay;
+  MathSelectionOverlay? get selectionOverlay => _selectionOverlay;
+  MathSelectionOverlay? _selectionOverlay;
 
   final toolbarLayerLink = LayerLink();
 
@@ -31,7 +31,7 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
 
   bool toolbarVisible = false;
 
-  SelectableMathSelectionGestureDetectorBuilder
+  late SelectableMathSelectionGestureDetectorBuilder
       _selectionGestureDetectorBuilder;
   SelectableMathSelectionGestureDetectorBuilder
       get selectionGestureDetectorBuilder => _selectionGestureDetectorBuilder;
@@ -68,14 +68,14 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
       return false;
     }
 
-    if (_selectionOverlay == null || _selectionOverlay.toolbarIsVisible) {
+    if (_selectionOverlay == null || _selectionOverlay!.toolbarIsVisible) {
       return false;
     }
 
     if (controller.selection.isCollapsed) {
       return false;
     }
-    _selectionOverlay.showToolbar();
+    _selectionOverlay!.showToolbar();
     toolbarVisible = true;
     return true;
   }
@@ -91,7 +91,7 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
     _selectionOverlay?.hide();
   }
 
-  bool _shouldShowSelectionHandles(SelectionChangedCause cause) {
+  bool _shouldShowSelectionHandles(SelectionChangedCause? cause) {
     // When the text field is activated by something that doesn't trigger the
     // selection overlay, we shouldn't show the handles either.
     if (!_selectionGestureDetectorBuilder.shouldShowSelectionToolbar) {
@@ -110,8 +110,8 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
   }
 
   void handleSelectionChanged(
-      TextSelection selection, SelectionChangedCause cause,
-      [ExtraSelectionChangedCause extraCause]) {
+      TextSelection selection, SelectionChangedCause? cause,
+      [ExtraSelectionChangedCause? extraCause]) {
     super.handleSelectionChanged(selection, cause, extraCause);
 
     if (extraCause != ExtraSelectionChangedCause.handle) {
@@ -120,6 +120,7 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
 
       if (textSelectionControls != null) {
         _selectionOverlay = MathSelectionOverlay(
+          clipboardStatus: kIsWeb ? null : ClipboardStatusNotifier(),
           manager: this,
           toolbarLayerLink: toolbarLayerLink,
           startHandleLayerLink: startHandleLayerLink,
@@ -133,13 +134,13 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
           dragStartBehavior: dragStartBehavior,
           debugRequiredFor: widget,
         );
-        _selectionOverlay.handlesVisible = _shouldShowSelectionHandles(cause);
-        if (SchedulerBinding.instance.schedulerPhase ==
+        _selectionOverlay!.handlesVisible = _shouldShowSelectionHandles(cause);
+        if (SchedulerBinding.instance!.schedulerPhase ==
             SchedulerPhase.persistentCallbacks) {
-          SchedulerBinding.instance
-              .addPostFrameCallback((_) => _selectionOverlay.showHandles());
+          SchedulerBinding.instance!
+              .addPostFrameCallback((_) => _selectionOverlay!.showHandles());
         } else {
-          _selectionOverlay.showHandles();
+          _selectionOverlay!.showHandles();
         }
         // _selectionOverlay.showHandles();
       }

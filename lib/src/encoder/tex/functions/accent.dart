@@ -40,7 +40,7 @@ EncodeResult _accentEncoder(GreenNode node) {
                   '${accentNode.isStretchy ? '' : 'not '}stretchy and '
                   '${accentNode.isShifty ? '' : 'not '}shifty',
               TexCommandEncodeResult(
-                command: mathCommandCandidates.firstOrNull,
+                command: mathCommandCandidates.first,
                 args: node.children,
               ),
             )
@@ -69,7 +69,7 @@ EncodeResult _accentEncoder(GreenNode node) {
                   '${accentNode.isStretchy ? '' : 'not '}stretchy and '
                   '${accentNode.isShifty ? '' : 'not '}shifty',
               TexCommandEncodeResult(
-                command: textCommandCandidates.firstOrNull,
+                command: textCommandCandidates.first,
                 args: node.children,
               ),
             )

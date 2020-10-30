@@ -36,8 +36,8 @@ import 'symbols_extra.dart';
 class TexSymbolConfig {
   final String symbol;
   final bool variantForm;
-  final AtomType type;
-  final FontOptions font;
+  final AtomType? type;
+  final FontOptions? font;
 
   const TexSymbolConfig(
     this.symbol, {

@@ -1,5 +1,5 @@
 class ImageElement {
-  ImageElement({String src, int height, int width});
+  ImageElement({String? src, int? height, int? width});
   CssStyleDeclaration get style => CssStyleDeclaration();
 }
 

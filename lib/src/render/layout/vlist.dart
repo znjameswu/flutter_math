@@ -6,7 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 class VListParentData extends ContainerBoxParentData<RenderBox> {
-  BoxConstraints Function(double width) customCrossSize;
+  BoxConstraints Function(double width)? customCrossSize;
 
   double trailingMargin = 0.0;
 
@@ -18,19 +18,19 @@ class VListParentData extends ContainerBoxParentData<RenderBox> {
 }
 
 class VListElement extends ParentDataWidget<VListParentData> {
-  final BoxConstraints Function(double width) customCrossSize;
+  final BoxConstraints Function(double width)? customCrossSize;
 
   final double trailingMargin;
 
   final double hShift;
 
   const VListElement({
-    Key key,
+    Key? key,
     this.customCrossSize,
     this.trailingMargin = 0.0,
     this.hShift = 0.0,
-    @required Widget child,
-  })  : assert(trailingMargin != null),
+    required Widget child,
+  })   : assert(trailingMargin != null),
         super(key: key, child: child);
 
   @override
@@ -106,7 +106,7 @@ class VListElement extends ParentDataWidget<VListParentData> {
 /// than Flutter's Column.
 class VList extends MultiChildRenderObjectWidget {
   VList({
-    Key key,
+    Key? key,
     this.textBaseline = TextBaseline.alphabetic,
     this.baselineReferenceWidgetIndex = 0,
     // this.baselineOffset = 0,
@@ -122,13 +122,13 @@ class VList extends MultiChildRenderObjectWidget {
   final int baselineReferenceWidgetIndex;
   // final double baselineOffset;
   final CrossAxisAlignment crossAxisAlignment;
-  final TextDirection textDirection;
+  final TextDirection? textDirection;
   bool get _needTextDirection =>
       crossAxisAlignment == CrossAxisAlignment.start ||
       crossAxisAlignment == CrossAxisAlignment.end;
 
   @protected
-  TextDirection getEffectiveTextDirection(BuildContext context) =>
+  TextDirection? getEffectiveTextDirection(BuildContext context) =>
       textDirection ?? (_needTextDirection ? Directionality.of(context) : null);
   @override
   RenderRelativeWidthColumn createRenderObject(BuildContext context) =>
@@ -174,12 +174,12 @@ class RenderRelativeWidthColumn extends RenderBox
         RenderBoxContainerDefaultsMixin<RenderBox, VListParentData>,
         DebugOverflowIndicatorMixin {
   RenderRelativeWidthColumn({
-    List<RenderBox> children,
+    List<RenderBox>? children,
     TextBaseline textBaseline = TextBaseline.alphabetic,
     int baselineReferenceWidgetIndex = 0,
     // double baselineOffset = 0,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-    TextDirection textDirection = TextDirection.ltr,
+    TextDirection? textDirection = TextDirection.ltr,
   })  : assert(textBaseline != null),
         assert(baselineReferenceWidgetIndex != null),
         // assert(baselineOffset != null),
@@ -228,9 +228,9 @@ class RenderRelativeWidthColumn extends RenderBox
     }
   }
 
-  TextDirection get textDirection => _textDirection;
-  TextDirection _textDirection;
-  set textDirection(TextDirection value) {
+  TextDirection? get textDirection => _textDirection;
+  TextDirection? _textDirection;
+  set textDirection(TextDirection? value) {
     if (_textDirection != value) {
       _textDirection = value;
       markNeedsLayout();
@@ -247,8 +247,8 @@ class RenderRelativeWidthColumn extends RenderBox
     return true;
   }
 
-  double _overflow;
-  bool get _hasOverflow => _overflow > precisionErrorTolerance;
+  double? _overflow;
+  bool get _hasOverflow => _overflow! > precisionErrorTolerance;
 
   @override
   void setupParentData(RenderBox child) {
@@ -258,10 +258,10 @@ class RenderRelativeWidthColumn extends RenderBox
   }
 
   double _getIntrinsicSize({
-    Axis sizingDirection,
-    double
+    required Axis sizingDirection,
+    required double
         extent, // the extent in the direction that isn't the sizing direction
-    double Function(RenderBox child, double extent)
+    required double Function(RenderBox child, double extent)
         childSize, // a method to find the size in the sizing direction
   }) {
     if (sizingDirection == Axis.vertical) {
@@ -326,10 +326,10 @@ class RenderRelativeWidthColumn extends RenderBox
             child.getMaxIntrinsicHeight(extent),
       );
 
-  double distanceToBaseline;
+  double? distanceToBaseline;
 
   @override
-  double computeDistanceToActualBaseline(TextBaseline baseline) {
+  double? computeDistanceToActualBaseline(TextBaseline baseline) {
     assert(!debugNeedsLayout);
     return distanceToBaseline;
   }
@@ -383,7 +383,7 @@ class RenderRelativeWidthColumn extends RenderBox
     for (final child in relativeChildren) {
       final childParentData = child.parentData as VListParentData;
       assert(childParentData.customCrossSize != null);
-      child.layout(childParentData.customCrossSize(fixedChildrenCrossSize),
+      child.layout(childParentData.customCrossSize!(fixedChildrenCrossSize),
           parentUsesSize: true);
       final width = child.size.width;
       final right = getRightMost(crossAxisAlignment, width);
@@ -430,7 +430,7 @@ class RenderRelativeWidthColumn extends RenderBox
 
       if (index == baselineReferenceWidgetIndex) {
         distanceToBaseline =
-            childMainPosition + child.getDistanceToBaseline(textBaseline);
+            childMainPosition + child.getDistanceToBaseline(textBaseline)!;
       }
 
       childMainPosition += child.size.height + childParentData.trailingMargin;
@@ -440,7 +440,7 @@ class RenderRelativeWidthColumn extends RenderBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) =>
       defaultHitTestChildren(result, position: position);
 
   @override
@@ -481,7 +481,8 @@ class RenderRelativeWidthColumn extends RenderBox
       // rect is never used for drawing, just for determining the overflow
       // location and amount.
       Rect overflowChildRect;
-      overflowChildRect = Rect.fromLTWH(0.0, 0.0, 0.0, size.height + _overflow);
+      overflowChildRect =
+          Rect.fromLTWH(0.0, 0.0, 0.0, size.height + _overflow!);
 
       paintOverflowIndicator(
           context, offset, Offset.zero & size, overflowChildRect,
@@ -491,7 +492,7 @@ class RenderRelativeWidthColumn extends RenderBox
   }
 
   @override
-  Rect describeApproximatePaintClip(RenderObject child) =>
+  Rect? describeApproximatePaintClip(RenderObject child) =>
       _hasOverflow ? Offset.zero & size : null;
 
   @override

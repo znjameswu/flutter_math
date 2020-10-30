@@ -59,7 +59,7 @@ class TexParserSettings {
 
   /// Functions to decide how to handle non-strict behaviors. Must set
   /// [TexParserSettings.strict] to [Strict.function]
-  final Strict Function(String, String, Token) strictFun;
+  final Strict Function(String, String, Token?)? strictFun;
 
   final bool globalGroup; // TODO
 
@@ -81,7 +81,7 @@ class TexParserSettings {
   //: assert(strict != Strict.function || strictFun != null) // This line causes analyzer error
   ;
 
-  void reportNonstrict(String errorCode, String errorMsg, [Token token]) {
+  void reportNonstrict(String errorCode, String errorMsg, [Token? token]) {
     final strict = this.strict != Strict.function
         ? this.strict
         : (strictFun?.call(errorCode, errorMsg, token) ?? Strict.warn);
@@ -103,11 +103,11 @@ class TexParserSettings {
     }
   }
 
-  bool useStrictBehavior(String errorCode, String errorMsg, [Token token]) {
+  bool useStrictBehavior(String errorCode, String errorMsg, [Token? token]) {
     var strict = this.strict;
     if (strict == Strict.function) {
       try {
-        strict = strictFun(errorCode, errorMsg, token);
+        strict = strictFun!(errorCode, errorMsg, token);
       } on Object {
         strict = Strict.error;
       }

@@ -134,14 +134,14 @@ const accentCommandMapping = {
 };
 
 GreenNode _accentHandler(TexParser parser, FunctionContext context) {
-  final base = parser.parseArgNode(mode: Mode.math, optional: false);
+  final base = parser.parseArgNode(mode: Mode.math, optional: false)!;
 
   final isStretchy = !nonStretchyAccents.contains(context.funcName);
   final isShifty = !isStretchy || shiftyAccents.contains(context.funcName);
 
   return AccentNode(
     base: base.wrapWithEquationRow(),
-    label: accentCommandMapping[context.funcName],
+    label: accentCommandMapping[context.funcName]!,
     isStretchy: isStretchy,
     isShifty: isShifty,
   );
@@ -162,23 +162,23 @@ const textUnicodeAccentMapping = {
   // '\\textcircled': '\u',
 };
 GreenNode _textAccentHandler(TexParser parser, FunctionContext context) {
-  final base = parser.parseArgNode(mode: null, optional: false);
+  final base = parser.parseArgNode(mode: null, optional: false)!;
   if (base is SymbolNode) {
-    return base.copyWith(
-      symbol: base.symbol + textUnicodeAccentMapping[context.funcName],
+    return base.withSymbol(
+      base.symbol + textUnicodeAccentMapping[context.funcName]!,
     );
   }
   if (base is EquationRowNode && base.children.length == 1) {
     final node = base.children[0];
     if (node is SymbolNode) {
-      return node.copyWith(
-        symbol: node.symbol + textUnicodeAccentMapping[context.funcName],
+      return node.withSymbol(
+        node.symbol + textUnicodeAccentMapping[context.funcName]!,
       );
     }
   }
   return AccentNode(
     base: base.wrapWithEquationRow(),
-    label: accentCommandMapping[context.funcName],
+    label: accentCommandMapping[context.funcName]!,
     isStretchy: false,
     isShifty: true,
   );

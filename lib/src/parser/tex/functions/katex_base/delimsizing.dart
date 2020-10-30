@@ -150,10 +150,10 @@ const delimiterCommands = [
 ];
 
 final _delimiterSymbols = delimiterCommands
-    .map((command) => texSymbolCommandConfigs[Mode.math][command])
-    .toList();
+    .map((command) => texSymbolCommandConfigs[Mode.math]![command]!)
+    .toList(growable: false);
 
-String _checkDelimiter(GreenNode delim, FunctionContext context) {
+String? _checkDelimiter(GreenNode delim, FunctionContext context) {
   if (delim is SymbolNode) {
     if (_delimiterSymbols.any((symbol) =>
         symbol.symbol == delim.symbol &&
@@ -178,7 +178,7 @@ String _checkDelimiter(GreenNode delim, FunctionContext context) {
 }
 
 GreenNode _delimSizeHandler(TexParser parser, FunctionContext context) {
-  final delimArg = parser.parseArgNode(mode: Mode.math, optional: false);
+  final delimArg = parser.parseArgNode(mode: Mode.math, optional: false)!;
   final delim = _checkDelimiter(delimArg, context);
   return delim == null
       ? SpaceNode(
@@ -192,7 +192,7 @@ GreenNode _delimSizeHandler(TexParser parser, FunctionContext context) {
 }
 
 class _LeftRightRightNode extends TemporaryNode {
-  final String delim;
+  final String? delim;
 
   _LeftRightRightNode({this.delim});
 }
@@ -202,14 +202,14 @@ class _LeftRightRightNode extends TemporaryNode {
 /// Here we choose to follow MathJax's behavior because it fits out AST design
 /// better. KaTeX's solution is messy.
 GreenNode _rightHandler(TexParser parser, FunctionContext context) {
-  final delimArg = parser.parseArgNode(mode: Mode.math, optional: false);
+  final delimArg = parser.parseArgNode(mode: Mode.math, optional: false)!;
   return _LeftRightRightNode(
     delim: _checkDelimiter(delimArg, context),
   );
 }
 
 GreenNode _leftHandler(TexParser parser, FunctionContext context) {
-  final leftArg = parser.parseArgNode(mode: Mode.math, optional: false);
+  final leftArg = parser.parseArgNode(mode: Mode.math, optional: false)!;
   final delim = _checkDelimiter(leftArg, context);
   // Parse out the implicit body
   ++parser.leftrightDepth;
@@ -223,7 +223,7 @@ GreenNode _leftHandler(TexParser parser, FunctionContext context) {
   final right = assertNodeType<_LeftRightRightNode>(rightArg);
 
   final splittedBody = [<GreenNode>[]];
-  final middles = <String>[];
+  final middles = <String?>[];
   for (final element in body) {
     if (element is _MiddleNode) {
       splittedBody.add([]);
@@ -243,7 +243,7 @@ GreenNode _leftHandler(TexParser parser, FunctionContext context) {
 }
 
 class _MiddleNode extends TemporaryNode {
-  final String delim;
+  final String? delim;
 
   _MiddleNode({this.delim});
 }
@@ -252,12 +252,12 @@ class _MiddleNode extends TemporaryNode {
 /// will cause error. This is in accordance with MathJax and different from
 /// KaTeX, and is more compatible with our AST structure.
 GreenNode _middleHandler(TexParser parser, FunctionContext context) {
-  final delimArg = parser.parseArgNode(mode: Mode.math, optional: false);
+  final delimArg = parser.parseArgNode(mode: Mode.math, optional: false)!;
   final delim = _checkDelimiter(delimArg, context);
   if (parser.leftrightDepth <= 0) {
     throw ParseException('\\middle without preceding \\left');
   }
-  final contexts = parser.argParsingContexts.toList();
+  final contexts = parser.argParsingContexts.toList(growable: false);
   final lastContext = contexts[contexts.length - 2];
   if (lastContext.funcName != '\\left') {
     throw ParseException('\\middle must be within \\left and \\right');

@@ -27,7 +27,7 @@ EncodeResult _optionsDiffEncode(OptionsDiff diff, List<dynamic> children) {
   if (diff.style != null) {
     final styleCommand = _styleCommands[diff.style];
     res = TexModeCommandEncodeResult(
-      command: styleCommand ?? _styleCommands[diff.style.uncramp()],
+      command: styleCommand ?? _styleCommands[diff.style!.uncramp()]!,
       children: <dynamic>[res],
     );
     if (styleCommand == null) {
@@ -81,7 +81,7 @@ EncodeResult _optionsDiffEncode(OptionsDiff diff, List<dynamic> children) {
     res = TexCommandEncodeResult(
       command: '\\textcolor',
       args: <dynamic>[
-        '#${diff.color.value.toRadixString(16).padLeft(6, '0')}',
+        '#${diff.color!.value.toRadixString(16).padLeft(6, '0')}',
         res,
       ],
     );

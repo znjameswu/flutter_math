@@ -32,7 +32,7 @@ const _sqrtEntries = {
 };
 GreenNode _sqrtHandler(TexParser parser, FunctionContext context) {
   final index = parser.parseArgNode(mode: null, optional: true);
-  final body = parser.parseArgNode(mode: null, optional: false);
+  final body = parser.parseArgNode(mode: null, optional: false)!;
   return SqrtNode(
     index: index?.wrapWithEquationRow(),
     base: body.wrapWithEquationRow(),

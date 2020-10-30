@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:meta/meta.dart';
 
 import '../../render/layout/layout_builder_baseline.dart';
 import '../../render/layout/shift_baseline.dart';
@@ -14,25 +13,25 @@ import '../syntax_tree.dart';
 /// Stretchy operator node.
 ///
 /// Example: `\xleftarrow`
-class StretchyOpNode extends SlotableNode {
+class StretchyOpNode extends SlotableNode<EquationRowNode?> {
   /// Unicode symbol for the operator.
   final String symbol;
 
   /// Arguments above the operator.
-  final EquationRowNode above;
+  final EquationRowNode? above;
 
   /// Arguments below the operator.
-  final EquationRowNode below;
+  final EquationRowNode? below;
 
   StretchyOpNode({
-    @required this.above,
-    @required this.below,
-    @required this.symbol,
+    required this.above,
+    required this.below,
+    required this.symbol,
   }) : assert(above != null || below != null);
 
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     final verticalPadding = 2.0.mu.toLpUnder(options);
     return BuildResult(
       options: options,
@@ -43,7 +42,7 @@ class StretchyOpNode extends SlotableNode {
           if (above != null)
             Padding(
               padding: EdgeInsets.only(bottom: verticalPadding),
-              child: childBuildResults[0].widget,
+              child: childBuildResults[0]!.widget,
             ),
           VListElement(
             // From katex.less/x-arrow-pad
@@ -64,7 +63,7 @@ class StretchyOpNode extends SlotableNode {
           if (below != null)
             Padding(
               padding: EdgeInsets.only(top: verticalPadding),
-              child: childBuildResults[1].widget,
+              child: childBuildResults[1]!.widget,
             )
         ],
       ),
@@ -78,7 +77,7 @@ class StretchyOpNode extends SlotableNode {
       ];
 
   @override
-  List<EquationRowNode> computeChildren() => [above, below];
+  List<EquationRowNode?> computeChildren() => [above, below];
 
   @override
   AtomType get leftType => AtomType.rel;
@@ -91,31 +90,20 @@ class StretchyOpNode extends SlotableNode {
       oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
-      copyWith(
+  StretchyOpNode updateChildren(List<EquationRowNode> newChildren) =>
+      StretchyOpNode(
         above: newChildren[0],
         below: newChildren[1],
+        symbol: symbol,
       );
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'symbol': unicodeLiteral(symbol),
-      if (above != null) 'above': above.toJson(),
-      if (below != null) 'below': below.toJson(),
+      if (above != null) 'above': above!.toJson(),
+      if (below != null) 'below': below!.toJson(),
     });
-
-  StretchyOpNode copyWith({
-    EquationRowNode above,
-    EquationRowNode below,
-    String symbol,
-  }) =>
-      StretchyOpNode(
-        above: above ?? this.above,
-        below: below ?? this.below,
-        symbol: symbol ?? this.symbol,
-      );
 }
 
 const stretchyOpMapping = {

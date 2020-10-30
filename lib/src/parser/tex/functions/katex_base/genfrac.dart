@@ -64,8 +64,8 @@ const _genfracEntries = {
 };
 
 GreenNode _fracHandler(TexParser parser, FunctionContext context) {
-  final numer = parser.parseArgNode(mode: null, optional: false);
-  final denom = parser.parseArgNode(mode: null, optional: false);
+  final numer = parser.parseArgNode(mode: null, optional: false)!;
+  final denom = parser.parseArgNode(mode: null, optional: false)!;
   return _internalFracHandler(
     funcName: context.funcName,
     numer: numer.wrapWithEquationRow(),
@@ -74,14 +74,14 @@ GreenNode _fracHandler(TexParser parser, FunctionContext context) {
 }
 
 GreenNode _internalFracHandler({
-  String funcName,
-  EquationRowNode numer,
-  EquationRowNode denom,
+  required String funcName,
+  required EquationRowNode numer,
+  required EquationRowNode denom,
 }) {
   bool hasBarLine;
-  String leftDelim;
-  String rightDelim;
-  MathStyle size;
+  String? leftDelim;
+  String? rightDelim;
+  MathStyle? size;
 
   switch (funcName) {
     case '\\cfrac':
@@ -180,12 +180,12 @@ GreenNode _overHandler(TexParser parser, FunctionContext context) {
 }
 
 GreenNode _genfracHandler(TexParser parser, FunctionContext context) {
-  final leftDelimArg = parser.parseArgNode(mode: Mode.math, optional: false);
-  final rightDelimArg = parser.parseArgNode(mode: Mode.math, optional: false);
-  final barSize = parser.parseArgSize(optional: false);
-  final styleArg = parser.parseArgNode(mode: Mode.text, optional: false);
-  final numer = parser.parseArgNode(mode: Mode.math, optional: false);
-  final denom = parser.parseArgNode(mode: Mode.math, optional: false);
+  final leftDelimArg = parser.parseArgNode(mode: Mode.math, optional: false)!;
+  final rightDelimArg = parser.parseArgNode(mode: Mode.math, optional: false)!;
+  final barSize = parser.parseArgSize(optional: false)!;
+  final styleArg = parser.parseArgNode(mode: Mode.text, optional: false)!;
+  final numer = parser.parseArgNode(mode: Mode.math, optional: false)!;
+  final denom = parser.parseArgNode(mode: Mode.math, optional: false)!;
 
   final leftDelimNode = leftDelimArg is EquationRowNode
       ? leftDelimArg.children.length == 1
@@ -208,7 +208,7 @@ GreenNode _genfracHandler(TexParser parser, FunctionContext context) {
       ? rightDelimNode.symbol
       : null;
 
-  int style;
+  int? style;
   if (styleArg.expandEquationRow().isNotEmpty) {
     final textOrd = assertNodeType<SymbolNode>(styleArg.expandEquationRow()[0]);
     style = int.tryParse(textOrd.symbol);
@@ -231,7 +231,7 @@ GreenNode _genfracHandler(TexParser parser, FunctionContext context) {
   if (style != null) {
     res = StyleNode(
       children: [res],
-      optionsDiff: OptionsDiff(style: style?.toMathStyle()),
+      optionsDiff: OptionsDiff(style: style.toMathStyle()),
     );
   }
   return res;
@@ -252,9 +252,9 @@ GreenNode _aboveHandler(TexParser parser, FunctionContext context) {
 }
 
 GreenNode _aboveFracHandler(TexParser parser, FunctionContext context) {
-  final numer = parser.parseArgNode(mode: Mode.math, optional: false);
-  final barSize = parser.parseArgSize(optional: false);
-  final denom = parser.parseArgNode(mode: Mode.math, optional: false);
+  final numer = parser.parseArgNode(mode: Mode.math, optional: false)!;
+  final barSize = parser.parseArgSize(optional: false)!;
+  final denom = parser.parseArgNode(mode: Mode.math, optional: false)!;
 
   return FracNode(
     numerator: numer.wrapWithEquationRow(),

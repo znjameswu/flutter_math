@@ -82,7 +82,7 @@ class MacroExpander implements MacroContext {
     this.macros.endGroup();
   }
 
-  Token expandOnce([bool expandableOnly = false]) {
+  Token? expandOnce([bool expandableOnly = false]) {
     final topToken = this.popToken();
     final name = topToken.text;
     final expansion = !topToken.noexpand ? this._getExpansion(name) : null;
@@ -153,7 +153,7 @@ class MacroExpander implements MacroContext {
     return this.stack.last;
   }
 
-  MacroExpansion _getExpansion(String name) {
+  MacroExpansion? _getExpansion(String name) {
     final definition = this.macros.get(name);
     if (definition == null) {
       return null;
@@ -207,8 +207,8 @@ class MacroExpander implements MacroContext {
 
   bool isDefined(String name) =>
       this.macros.has(name) ||
-      texSymbolCommandConfigs[Mode.math].containsKey(name) ||
-      texSymbolCommandConfigs[Mode.text].containsKey(name) ||
+      texSymbolCommandConfigs[Mode.math]!.containsKey(name) ||
+      texSymbolCommandConfigs[Mode.text]!.containsKey(name) ||
       functions.containsKey(name) ||
       implicitCommands.contains(name);
 
@@ -219,7 +219,7 @@ class MacroExpander implements MacroContext {
 
   Lexer getNewLexer(String input) => Lexer(input, this.settings);
 
-  String expandMacroAsText(String name) {
+  String? expandMacroAsText(String name) {
     final tokens = this.expandMacro(name);
     if (tokens != null) {
       return tokens.map((token) => token.text).join('');
@@ -227,7 +227,7 @@ class MacroExpander implements MacroContext {
     return null;
   }
 
-  List<Token> expandMacro(String name) {
+  List<Token>? expandMacro(String name) {
     if (this.macros.get(name) == null) {
       return null;
     }
@@ -246,13 +246,13 @@ class MacroExpander implements MacroContext {
 }
 
 abstract class MacroContext {
-  Mode mode;
-  Namespace<MacroDefinition> macros;
+  Mode get mode;
+  Namespace<MacroDefinition> get macros;
   Token future();
   Token popToken();
   void consumeSpaces();
 //  Token expandAfterFuture();
-  Token expandOnce([bool expandableOnly]);
+  Token? expandOnce([bool expandableOnly]);
   Token expandAfterFuture();
   Token expandNextToken();
 //

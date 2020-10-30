@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../render/layout/custom_layout.dart';
@@ -12,7 +11,7 @@ import '../syntax_tree.dart';
 /// Enclosure node
 ///
 /// Examples: `\colorbox`, `\fbox`, `\cancel`.
-class EnclosureNode extends SlotableNode {
+class EnclosureNode extends SlotableNode<EquationRowNode> {
   /// Base where the enclosure is applied upon
   final EquationRowNode base;
 
@@ -22,10 +21,10 @@ class EnclosureNode extends SlotableNode {
   /// Border color.
   ///
   /// If null, will default to options.color.
-  final Color bordercolor;
+  final Color? bordercolor;
 
   /// Background color.
-  final Color backgroundcolor;
+  final Color? backgroundcolor;
 
   /// Special styles for this enclosure.
   ///
@@ -40,18 +39,18 @@ class EnclosureNode extends SlotableNode {
   final Measurement verticalPadding;
 
   EnclosureNode({
-    @required this.base,
-    @required this.hasBorder,
+    required this.base,
+    required this.hasBorder,
     this.bordercolor,
     this.backgroundcolor,
     this.notation = const [],
     this.horizontalPadding = Measurement.zero,
     this.verticalPadding = Measurement.zero,
-  }) : assert(base != null);
+  });
 
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     final horizontalPadding = this.horizontalPadding.toLpUnder(options);
     final verticalPadding = this.verticalPadding.toLpUnder(options);
 
@@ -75,7 +74,7 @@ class EnclosureNode extends SlotableNode {
               vertical: verticalPadding,
               horizontal: horizontalPadding,
             ),
-            child: childBuildResults[0].widget,
+            child: childBuildResults[0]!.widget,
           ),
         ),
         if (notation.contains('updiagonalstrike'))
@@ -159,12 +158,19 @@ class EnclosureNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
-      copyWith(base: newChildren[0]);
+  EnclosureNode updateChildren(List<EquationRowNode> newChildren) =>
+      EnclosureNode(
+        base: newChildren[0],
+        hasBorder: hasBorder,
+        bordercolor: bordercolor,
+        backgroundcolor: backgroundcolor,
+        notation: notation,
+        horizontalPadding: horizontalPadding,
+        verticalPadding: verticalPadding,
+      );
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'base': base.toJson(),
       'hasBorder': hasBorder,
@@ -176,25 +182,6 @@ class EnclosureNode extends SlotableNode {
       if (verticalPadding != Measurement.zero)
         'verticalPadding': verticalPadding.toString(),
     });
-
-  EnclosureNode copyWith({
-    EquationRowNode base,
-    bool hasBorder,
-    Color bordercolor,
-    Color backgroundcolor,
-    List<String> notation,
-    Measurement horizontalPadding,
-    Measurement verticalPadding,
-  }) =>
-      EnclosureNode(
-        base: base ?? this.base,
-        hasBorder: hasBorder ?? this.hasBorder,
-        bordercolor: bordercolor ?? this.bordercolor,
-        backgroundcolor: backgroundcolor ?? this.backgroundcolor,
-        notation: notation ?? this.notation,
-        horizontalPadding: horizontalPadding ?? this.horizontalPadding,
-        verticalPadding: verticalPadding ?? this.verticalPadding,
-      );
 }
 
 class LinePainter extends CustomPainter {
@@ -206,12 +193,12 @@ class LinePainter extends CustomPainter {
   final Color color;
 
   const LinePainter({
-    @required this.startRelativeX,
-    @required this.startRelativeY,
-    @required this.endRelativeX,
-    @required this.endRelativeY,
-    @required this.lineWidth,
-    @required this.color,
+    required this.startRelativeX,
+    required this.startRelativeY,
+    required this.endRelativeX,
+    required this.endRelativeY,
+    required this.lineWidth,
+    required this.color,
   });
 
   @override
@@ -235,9 +222,9 @@ class HorizontalStrikeDelegate extends CustomLayoutDelegate<int> {
   final Color color;
 
   HorizontalStrikeDelegate({
-    @required this.ruleThickness,
-    @required this.vShift,
-    @required this.color,
+    required this.ruleThickness,
+    required this.vShift,
+    required this.color,
   });
 
   var height = 0.0;
@@ -249,21 +236,23 @@ class HorizontalStrikeDelegate extends CustomLayoutDelegate<int> {
       height;
 
   @override
-  double getIntrinsicSize(
-          {Axis sizingDirection,
-          bool max,
-          double extent,
-          double Function(RenderBox child, double extent) childSize,
-          Map<int, RenderBox> childrenTable}) =>
-      childSize(childrenTable[0], double.infinity);
+  double getIntrinsicSize({
+    required Axis sizingDirection,
+    required bool max,
+    required double extent,
+    required double Function(RenderBox child, double extent) childSize,
+    required Map<int, RenderBox> childrenTable,
+  }) =>
+      childSize(childrenTable[0]!, double.infinity);
 
   @override
   Size performLayout(
       BoxConstraints constraints, Map<int, RenderBox> childrenTable) {
-    childrenTable[0].layout(constraints, parentUsesSize: true);
-    height = childrenTable[0].layoutHeight;
-    width = childrenTable[0].size.width;
-    return childrenTable[0].size;
+    final base = childrenTable[0]!;
+    base.layout(constraints, parentUsesSize: true);
+    height = base.layoutHeight;
+    width = base.size.width;
+    return base.size;
   }
 
   @override

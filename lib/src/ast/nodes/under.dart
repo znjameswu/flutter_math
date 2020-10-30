@@ -17,15 +17,14 @@ class UnderNode extends SlotableNode {
   /// Argumentn below the base.
   final EquationRowNode below;
   UnderNode({
-    @required this.base,
-    @required this.below,
-  })  : assert(base != null),
-        assert(below != null);
+    required this.base,
+    required this.below,
+  });
 
   // KaTeX's corresponding code is in /src/functions/utils/assembleSubSup.js
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     final spacing = options.fontMetrics.bigOpSpacing5.cssEm.toLpUnder(options);
     return BuildResult(
       italic: 0.0,
@@ -35,14 +34,14 @@ class UnderNode extends SlotableNode {
         child: VList(
           baselineReferenceWidgetIndex: 0,
           children: <Widget>[
-            childBuildResults[0].widget,
+            childBuildResults[0]!.widget,
             // TexBook Rule 13a
             MinDimension(
               minHeight:
                   options.fontMetrics.bigOpSpacing4.cssEm.toLpUnder(options),
               topPadding:
                   options.fontMetrics.bigOpSpacing2.cssEm.toLpUnder(options),
-              child: childBuildResults[1].widget,
+              child: childBuildResults[1]!.widget,
             ),
           ],
         ),
@@ -70,20 +69,19 @@ class UnderNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
+  UnderNode updateChildren(List<EquationRowNode> newChildren) =>
       copyWith(base: newChildren[0], below: newChildren[1]);
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'base': base.toJson(),
       'below': below.toJson(),
     });
 
   UnderNode copyWith({
-    EquationRowNode base,
-    EquationRowNode below,
+    EquationRowNode? base,
+    EquationRowNode? below,
   }) =>
       UnderNode(
         base: base ?? this.base,

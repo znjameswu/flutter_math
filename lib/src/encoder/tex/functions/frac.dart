@@ -52,7 +52,7 @@ final _fracOptimizationEntries = [
             : '\\tfrac',
         args: node.children.first.children,
       );
-      final remainingOptions = (node as StyleNode).optionsDiff.removeStyle();
+      final remainingOptions = node.optionsDiff.removeStyle();
       texEncodingCache[node] = remainingOptions.isEmpty
           ? res
           : _optionsDiffEncode(remainingOptions, <dynamic>[res]);
@@ -73,7 +73,7 @@ final _fracOptimizationEntries = [
     optimize: (node) {
       texEncodingCache[node] = TexCommandEncodeResult(
         command: '\\binom',
-        args: node.children.first.children.first.children,
+        args: node.children.first!.children.first!.children,
       );
     },
   ),
@@ -98,14 +98,19 @@ final _fracOptimizationEntries = [
       final res = TexCommandEncodeResult(
         command: '\\genfrac',
         args: <dynamic>[
-          SymbolNode(symbol: leftRight.leftDelim),
-          SymbolNode(symbol: leftRight.rightDelim),
+          // TODO
+          leftRight.leftDelim == null
+              ? null
+              : SymbolNode(symbol: leftRight.leftDelim!),
+          leftRight.rightDelim == null
+              ? null
+              : SymbolNode(symbol: leftRight.rightDelim!),
           frac.barSize,
-          (node as StyleNode).optionsDiff.style.size,
+          (node as StyleNode).optionsDiff.style?.size,
           ...frac.children,
         ],
       );
-      final remainingOptions = (node as StyleNode).optionsDiff.removeStyle();
+      final remainingOptions = node.optionsDiff.removeStyle();
       texEncodingCache[node] = remainingOptions.isEmpty
           ? res
           : _optionsDiffEncode(remainingOptions, <dynamic>[res]);
@@ -126,11 +131,11 @@ final _fracOptimizationEntries = [
           null,
           null,
           frac.barSize,
-          (node as StyleNode).optionsDiff.style.size,
+          (node as StyleNode).optionsDiff.style?.size,
           ...frac.children,
         ],
       );
-      final remainingOptions = (node as StyleNode).optionsDiff.removeStyle();
+      final remainingOptions = node.optionsDiff.removeStyle();
       texEncodingCache[node] = remainingOptions.isEmpty
           ? res
           : _optionsDiffEncode(remainingOptions, <dynamic>[res]);

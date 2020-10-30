@@ -49,7 +49,7 @@ typedef StrictFun = Strict Function(String errorCode, String errorMsg,
 abstract class EncodeConf {
   final Strict strict;
 
-  final StrictFun strictFun;
+  final StrictFun? strictFun;
 
   const EncodeConf({
     this.strict = Strict.warn,

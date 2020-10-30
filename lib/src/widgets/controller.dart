@@ -5,7 +5,7 @@ import '../utils/text_extension.dart';
 
 class MathController extends ChangeNotifier {
   MathController({
-    SyntaxTree ast,
+    required SyntaxTree ast,
     TextSelection selection = const TextSelection.collapsed(offset: -1),
   })  : _ast = ast,
         _selection = selection;

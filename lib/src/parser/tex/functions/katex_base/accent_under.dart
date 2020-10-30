@@ -48,9 +48,9 @@ const accentUnderMapping = {
 };
 
 GreenNode _accentUnderHandler(TexParser parser, FunctionContext context) {
-  final base = parser.parseArgNode(mode: null, optional: false);
+  final base = parser.parseArgNode(mode: null, optional: false)!;
   return AccentUnderNode(
     base: base.wrapWithEquationRow(),
-    label: accentUnderMapping[context.funcName],
+    label: accentUnderMapping[context.funcName]!,
   );
 }

@@ -17,7 +17,7 @@ void main() {
       expect(finder, findsOneWidget);
       expect(
           (finder.evaluate().single.widget as SelectableText)
-              .data
+              .data!
               .startsWith('Parser Error:'),
           isTrue);
     });

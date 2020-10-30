@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 import '../../render/layout/eqn_array.dart';
 import '../../render/layout/shift_baseline.dart';
 import '../../utils/iterable_extensions.dart';
@@ -9,7 +7,7 @@ import '../syntax_tree.dart';
 import 'matrix.dart';
 
 /// Equantion array node. Brings support for equationa alignment.
-class EquationArrayNode extends SlotableNode {
+class EquationArrayNode extends SlotableNode<EquationRowNode?> {
   /// `arrayStretch` parameter from the context.
   ///
   /// Affects the minimum row height and row depth for each row.
@@ -35,19 +33,18 @@ class EquationArrayNode extends SlotableNode {
 
   EquationArrayNode({
     this.addJot = false,
-    @required this.body,
+    required this.body,
     this.arrayStretch = 1.0,
-    List<MatrixSeparatorStyle> hlines,
-    List<Measurement> rowSpacings,
-  })  : assert(body != null),
-        assert(body.every((element) => element != null)),
-        hlines = (hlines ?? []).extendToByFill(body.length + 1, null),
+    List<MatrixSeparatorStyle>? hlines,
+    List<Measurement>? rowSpacings,
+  })  : hlines = (hlines ?? [])
+            .extendToByFill(body.length + 1, MatrixSeparatorStyle.none),
         rowSpacings =
             (rowSpacings ?? []).extendToByFill(body.length, Measurement.zero);
 
   @override
   BuildResult buildWidget(
-          MathOptions options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult?> childBuildResults) =>
       BuildResult(
         options: options,
         widget: ShiftBaseline(
@@ -63,7 +60,7 @@ class EquationArrayNode extends SlotableNode {
                 .map((e) => e.toLpUnder(options))
                 .toList(growable: false),
             children:
-                childBuildResults.map((e) => e.widget).toList(growable: false),
+                childBuildResults.map((e) => e!.widget).toList(growable: false),
           ),
         ),
       );
@@ -86,12 +83,11 @@ class EquationArrayNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
+  EquationArrayNode updateChildren(List<EquationRowNode> newChildren) =>
       copyWith(body: newChildren);
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       if (addJot != false) 'addJot': addJot,
       'body': body.map((e) => e.toJson()),
@@ -101,11 +97,11 @@ class EquationArrayNode extends SlotableNode {
     });
 
   EquationArrayNode copyWith({
-    double arrayStretch,
-    bool addJot,
-    List<EquationRowNode> body,
-    List<MatrixSeparatorStyle> hlines,
-    List<Measurement> rowSpacings,
+    double? arrayStretch,
+    bool? addJot,
+    List<EquationRowNode>? body,
+    List<MatrixSeparatorStyle>? hlines,
+    List<Measurement>? rowSpacings,
   }) =>
       EquationArrayNode(
         arrayStretch: arrayStretch ?? this.arrayStretch,

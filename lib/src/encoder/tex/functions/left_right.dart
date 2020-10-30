@@ -20,7 +20,7 @@ EncodeResult _leftRightEncoder(GreenNode node) {
   ]);
 }
 
-EncodeResult _delimEncoder(String delim) {
+EncodeResult _delimEncoder(String? delim) {
   if (delim == null) return StaticEncodeResult('.');
   final result = _baseSymbolEncoder(delim, Mode.math);
   return result != null

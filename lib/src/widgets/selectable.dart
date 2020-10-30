@@ -6,7 +6,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:tuple/tuple.dart';
 
 import '../ast/options.dart';
 import '../ast/style.dart';
@@ -14,6 +13,7 @@ import '../ast/syntax_tree.dart';
 import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';
+import '../utils/tuple.dart';
 import '../utils/wrapper.dart';
 import 'controller.dart';
 import 'exception.dart';
@@ -42,7 +42,7 @@ class SelectableMath extends StatelessWidget {
   ///
   /// See [SelectableMath] for its member documentation.
   const SelectableMath({
-    Key key,
+    Key? key,
     this.ast,
     this.autofocus = false,
     this.cursorColor,
@@ -61,7 +61,7 @@ class SelectableMath extends StatelessWidget {
     this.textScaleFactor,
     this.textSelectionControls,
     this.textStyle,
-    ToolbarOptions toolbarOptions,
+    ToolbarOptions? toolbarOptions,
   })  : assert(ast != null || parseException != null),
         assert(autofocus != null),
         assert(cursorWidth != null),
@@ -80,7 +80,7 @@ class SelectableMath extends StatelessWidget {
   /// The equation to display.
   ///
   /// It can be null only when [parseException] is not null.
-  final SyntaxTree ast;
+  final SyntaxTree? ast;
 
   /// {@macro flutter.widgets.editableText.autofocus}
   final bool autofocus;
@@ -88,16 +88,16 @@ class SelectableMath extends StatelessWidget {
   /// The color to use when painting the cursor.
   ///
   /// Defaults to the theme's `cursorColor` when null.
-  final Color cursorColor;
+  final Color? cursorColor;
 
   /// {@macro flutter.widgets.editableText.cursorRadius}
-  final Radius cursorRadius;
+  final Radius? cursorRadius;
 
   /// {@macro flutter.widgets.editableText.cursorWidth}
   final double cursorWidth;
 
   /// {@macro flutter.widgets.editableText.cursorHeight}
-  final double cursorHeight;
+  final double? cursorHeight;
 
   /// {@macro flutter.widgets.scrollable.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
@@ -129,36 +129,36 @@ class SelectableMath extends StatelessWidget {
   /// ```
   ///
   /// If null, this widget will create its own [FocusNode].
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   /// {@macro flutter_math.widgets.math.mathStyle}
   final MathStyle mathStyle;
 
   /// {@macro flutter_math.widgets.math.logicalPpi}
-  final double logicalPpi;
+  final double? logicalPpi;
 
   /// {@macro flutter_math.widgets.math.onErrorFallback}
   final OnErrorFallback onErrorFallback;
 
   /// {@macro flutter_math.widgets.math.options}
-  final MathOptions options;
+  final MathOptions? options;
 
   /// {@macro flutter_math.widgets.math.parseError}
-  final ParseException parseException;
+  final ParseException? parseException;
 
   /// {@macro flutter.widgets.editableText.showCursor}
   final bool showCursor;
 
   /// {@macro flutter.widgets.editableText.textScaleFactor}
-  final double textScaleFactor;
+  final double? textScaleFactor;
 
   /// Optional delegate for building the text selection handles and toolbar.
   ///
   /// Just works like [EditableText.selectionControls]
-  final TextSelectionControls textSelectionControls;
+  final TextSelectionControls? textSelectionControls;
 
   /// {@macro fluttermath.widgets.math.textStyle}
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   /// Configuration of toolbar options.
   ///
@@ -177,33 +177,33 @@ class SelectableMath extends StatelessWidget {
   /// * [SelectableMath.textStyle]
   factory SelectableMath.tex(
     String expression, {
-    Key key,
+    Key? key,
     TexParserSettings settings = const TexParserSettings(),
-    MathOptions options,
+    MathOptions? options,
     OnErrorFallback onErrorFallback = defaultOnErrorFallback,
     bool autofocus = false,
-    Color cursorColor,
-    Radius cursorRadius,
+    Color? cursorColor,
+    Radius? cursorRadius,
     double cursorWidth = 2.0,
-    double cursorHeight,
+    double? cursorHeight,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     bool enableInteractiveSelection = true,
-    FocusNode focusNode,
+    FocusNode? focusNode,
     MathStyle mathStyle = MathStyle.display,
-    double logicalPpi,
+    double? logicalPpi,
     bool showCursor = false,
-    double textScaleFactor,
-    TextSelectionControls textSelectionControls,
-    TextStyle textStyle,
-    ToolbarOptions toolbarOptions,
+    double? textScaleFactor,
+    TextSelectionControls? textSelectionControls,
+    TextStyle? textStyle,
+    ToolbarOptions? toolbarOptions,
   }) {
-    SyntaxTree ast;
-    ParseException parseError;
+    SyntaxTree? ast;
+    ParseException? parseError;
     try {
       ast = SyntaxTree(greenRoot: TexParser(expression, settings).parse());
     } on ParseException catch (e) {
       parseError = e;
-    } on dynamic catch (e) {
+    } on Object catch (e) {
       parseError = ParseException('Unsanitized parse exception detected: $e.'
           'Please report this error with correponding input.');
     }
@@ -233,11 +233,11 @@ class SelectableMath extends StatelessWidget {
 
   Widget build(BuildContext context) {
     if (parseException != null) {
-      return onErrorFallback(parseException);
+      return onErrorFallback(parseException!);
     }
 
     var effectiveTextStyle = textStyle;
-    if (textStyle == null || textStyle.inherit) {
+    if (effectiveTextStyle == null || effectiveTextStyle.inherit) {
       effectiveTextStyle = DefaultTextStyle.of(context).style.merge(textStyle);
     }
     if (MediaQuery.boldTextOverride(context)) {
@@ -251,17 +251,17 @@ class SelectableMath extends StatelessWidget {
     final options = this.options ??
         MathOptions(
           style: mathStyle,
-          fontSize: effectiveTextStyle.fontSize * textScaleFactor,
+          fontSize: effectiveTextStyle.fontSize! * textScaleFactor,
           mathFontOptions: effectiveTextStyle.fontWeight != FontWeight.normal
-              ? FontOptions(fontWeight: effectiveTextStyle.fontWeight)
+              ? FontOptions(fontWeight: effectiveTextStyle.fontWeight!)
               : null,
           logicalPpi: logicalPpi,
-          color: effectiveTextStyle.color,
+          color: effectiveTextStyle.color!,
         );
 
     // A trial build to catch any potential build errors
     try {
-      ast.buildWidget(options);
+      ast!.buildWidget(options);
     } on BuildException catch (e) {
       return onErrorFallback(e);
     } on dynamic catch (e) {
@@ -277,7 +277,7 @@ class SelectableMath extends StatelessWidget {
     var textSelectionControls = this.textSelectionControls;
     bool paintCursorAboveText;
     bool cursorOpacityAnimates;
-    Offset cursorOffset;
+    Offset? cursorOffset;
     var cursorColor = this.cursorColor;
     Color selectionColor;
     var cursorRadius = this.cursorRadius;
@@ -326,7 +326,7 @@ class SelectableMath extends StatelessWidget {
 
     return RepaintBoundary(
       child: InternalSelectableMath(
-        ast: ast,
+        ast: ast!,
         autofocus: autofocus,
         cursorColor: cursorColor,
         cursorOffset: cursorOffset,
@@ -338,7 +338,6 @@ class SelectableMath extends StatelessWidget {
         enableInteractiveSelection: enableInteractiveSelection,
         focusNode: focusNode,
         forcePressEnabled: forcePressEnabled,
-        onErrorFallback: onErrorFallback,
         options: options,
         paintCursorAboveText: paintCursorAboveText,
         selectionColor: selectionColor,
@@ -357,10 +356,10 @@ class SelectableMath extends StatelessWidget {
 /// The internal widget for [SelectableMath] when no errors are encountered.
 class InternalSelectableMath extends StatefulWidget {
   const InternalSelectableMath({
-    Key key,
-    @required this.ast,
+    Key? key,
+    required this.ast,
     this.autofocus = false,
-    this.cursorColor,
+    required this.cursorColor,
     this.cursorOffset,
     this.cursorOpacityAnimates = false,
     this.cursorRadius,
@@ -371,13 +370,12 @@ class InternalSelectableMath extends StatefulWidget {
     this.forcePressEnabled = false,
     this.focusNode,
     this.hintingColor,
-    this.onErrorFallback,
-    @required this.options,
+    required this.options,
     this.paintCursorAboveText = false,
     this.selectionColor,
     this.showCursor = false,
-    this.textSelectionControls,
-    this.toolbarOptions,
+    required this.textSelectionControls,
+    required this.toolbarOptions,
   })  : assert(ast != null),
         assert(options != null),
         assert(textSelectionControls != null),
@@ -390,33 +388,31 @@ class InternalSelectableMath extends StatefulWidget {
 
   final Color cursorColor;
 
-  final Offset cursorOffset;
+  final Offset? cursorOffset;
 
   final bool cursorOpacityAnimates;
 
-  final Radius cursorRadius;
+  final Radius? cursorRadius;
 
   final double cursorWidth;
 
-  final double cursorHeight;
+  final double? cursorHeight;
 
   final DragStartBehavior dragStartBehavior;
 
   final bool enableInteractiveSelection;
 
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   final bool forcePressEnabled;
 
-  final Color hintingColor;
-
-  final OnErrorFallback onErrorFallback;
+  final Color? hintingColor;
 
   final MathOptions options;
 
   final bool paintCursorAboveText;
 
-  final Color selectionColor;
+  final Color? selectionColor;
 
   final bool showCursor;
 
@@ -440,7 +436,7 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
   TextSelectionControls get textSelectionControls =>
       widget.textSelectionControls;
 
-  FocusNode _focusNode;
+  FocusNode? _focusNode;
   FocusNode get focusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool get showCursor => widget.showCursor ?? false;
@@ -449,9 +445,9 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
 
   DragStartBehavior get dragStartBehavior => widget.dragStartBehavior;
 
-  MathController controller;
+  late MathController controller;
 
-  FocusNode _oldFocusNode;
+  late FocusNode _oldFocusNode;
 
   @override
   void initState() {
@@ -479,9 +475,9 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
     super.didChangeDependencies();
     if (!_didAutoFocus && widget.autofocus) {
       _didAutoFocus = true;
-      SchedulerBinding.instance.addPostFrameCallback((_) {
+      SchedulerBinding.instance!.addPostFrameCallback((_) {
         if (mounted) {
-          FocusScope.of(context).autofocus(widget.focusNode);
+          FocusScope.of(context).autofocus(widget.focusNode!);
         }
       });
     }
@@ -495,7 +491,7 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
   }
 
   void onSelectionChanged(
-      TextSelection selection, SelectionChangedCause cause) {
+      TextSelection selection, SelectionChangedCause? cause) {
     switch (Theme.of(context).platform) {
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
@@ -584,16 +580,16 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
 
 class SelectionStyle {
   final Color cursorColor;
-  final Offset cursorOffset;
-  final Radius cursorRadius;
+  final Offset? cursorOffset;
+  final Radius? cursorRadius;
   final double cursorWidth;
-  final double cursorHeight;
-  final Color hintingColor;
+  final double? cursorHeight;
+  final Color? hintingColor;
   final bool paintCursorAboveText;
-  final Color selectionColor;
+  final Color? selectionColor;
   final bool showCursor;
   const SelectionStyle({
-    this.cursorColor,
+    required this.cursorColor,
     this.cursorOffset,
     this.cursorRadius,
     this.cursorWidth = 1.0,

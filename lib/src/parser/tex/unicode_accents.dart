@@ -23,7 +23,7 @@
 
 import '../../ast/types.dart';
 
-const Map<String, Map<Mode, String>> unicodeAccents = {
+const Map<String, Map<Mode, String?>> unicodeAccents = {
   '\u0300': {Mode.text: '\\`', Mode.math: '\\grave'},
   '\u0308': {Mode.text: '\\"', Mode.math: '\\ddot'},
   '\u0303': {Mode.text: '\\~', Mode.math: '\\tilde'},

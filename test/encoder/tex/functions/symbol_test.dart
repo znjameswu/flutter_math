@@ -13,7 +13,7 @@ String recodeTexSymbol(String tex, [Mode mode = Mode.math]) {
   }
   var node = TexParser(tex, const TexParserSettings()).parse().children.first;
   while (node is ParentableNode) {
-    node = node.children.first;
+    node = node.children.first!;
   }
   assert(node is SymbolNode);
   return node.encodeTeX(

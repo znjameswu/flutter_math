@@ -42,7 +42,7 @@ const _encloseEntries = {
 
 GreenNode _colorboxHandler(TexParser parser, FunctionContext context) {
   final color = parser.parseArgColor(optional: false);
-  final body = parser.parseArgNode(mode: Mode.text, optional: false);
+  final body = parser.parseArgNode(mode: Mode.text, optional: false)!;
   return EnclosureNode(
     backgroundcolor: color,
     base: body.wrapWithEquationRow(),
@@ -55,9 +55,9 @@ GreenNode _colorboxHandler(TexParser parser, FunctionContext context) {
 }
 
 GreenNode _fcolorboxHandler(TexParser parser, FunctionContext context) {
-  final borderColor = parser.parseArgColor(optional: false);
-  final color = parser.parseArgColor(optional: false);
-  final body = parser.parseArgNode(mode: Mode.text, optional: false);
+  final borderColor = parser.parseArgColor(optional: false)!;
+  final color = parser.parseArgColor(optional: false)!;
+  final body = parser.parseArgNode(mode: Mode.text, optional: false)!;
   return EnclosureNode(
     hasBorder: true,
     bordercolor: borderColor,
@@ -83,14 +83,14 @@ GreenNode _fboxHandler(TexParser parser, FunctionContext context) {
 }
 
 GreenNode _cancelHandler(TexParser parser, FunctionContext context) {
-  final body = parser.parseArgNode(mode: null, optional: false);
+  final body = parser.parseArgNode(mode: null, optional: false)!;
   return EnclosureNode(
     notation: const {
       '\\cancel': ['updiagonalstrike'],
       '\\bcancel': ['downdiagonalstrike'],
       '\\xcancel': ['updiagonalstrike, downdiagonalstrike'],
       '\\sout': ['horizontalstrike'],
-    }[context.funcName],
+    }[context.funcName]!,
     hasBorder: false,
     base: body.wrapWithEquationRow(),
     // KaTeX/src/functions/enclose.js line 59

@@ -12,12 +12,12 @@ class MinDimension extends SingleChildRenderObjectWidget {
   final double bottomPadding;
 
   const MinDimension({
-    Key key,
+    Key? key,
     this.minHeight = 0,
     this.minDepth = 0,
     this.topPadding = 0,
     this.bottomPadding = 0,
-    Widget child,
+    required Widget child,
   }) : super(key: key, child: child);
 
   @override
@@ -41,7 +41,7 @@ class MinDimension extends SingleChildRenderObjectWidget {
 
 class RenderMinDimension extends RenderShiftedBox {
   RenderMinDimension({
-    RenderBox child,
+    RenderBox? child,
     double minHeight = 0,
     double minDepth = 0,
     double topPadding = 0,
@@ -108,8 +108,9 @@ class RenderMinDimension extends RenderShiftedBox {
 
   @override
   void performLayout() {
+    final child = this.child!;
     child.layout(constraints, parentUsesSize: true);
-    final childHeight = child.getDistanceToBaseline(TextBaseline.alphabetic);
+    final childHeight = child.getDistanceToBaseline(TextBaseline.alphabetic)!;
     final childDepth = child.size.height - childHeight;
     final width = child.size.width;
 

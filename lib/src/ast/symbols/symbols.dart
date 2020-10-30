@@ -48,9 +48,9 @@ class SymbolId {
 }
 
 class SymbolRenderConfig {
-  final RenderConfig math;
-  final RenderConfig text;
-  final SymbolRenderConfig variantForm;
+  final RenderConfig? math;
+  final RenderConfig? text;
+  final SymbolRenderConfig? variantForm;
 
   const SymbolRenderConfig({
     this.math,
@@ -60,9 +60,9 @@ class SymbolRenderConfig {
 }
 
 class RenderConfig {
-  final String replaceChar;
+  final String? replaceChar;
   final FontOptions defaultFont;
-  final AtomType defaultType;
+  final AtomType? defaultType;
   const RenderConfig(this.defaultType, this.defaultFont, [this.replaceChar]);
 }
 

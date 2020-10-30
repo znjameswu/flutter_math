@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import '../../render/layout/multiscripts.dart';
 import '../options.dart';
 import '../style.dart';
@@ -13,7 +11,7 @@ import 'symbol.dart';
 /// - Word:   _     ^
 /// - Latex:  _     ^
 /// - MathML: msub  msup  mmultiscripts
-class MultiscriptsNode extends SlotableNode {
+class MultiscriptsNode extends SlotableNode<EquationRowNode?> {
   /// Whether to align the subscript to the superscript.
   ///
   /// Mimics MathML's mmultiscripts.
@@ -23,20 +21,20 @@ class MultiscriptsNode extends SlotableNode {
   final EquationRowNode base;
 
   /// Subscript.
-  final EquationRowNode sub;
+  final EquationRowNode? sub;
 
   /// Superscript.
-  final EquationRowNode sup;
+  final EquationRowNode? sup;
 
   /// Presubscript.
-  final EquationRowNode presub;
+  final EquationRowNode? presub;
 
   /// Presuperscript.
-  final EquationRowNode presup;
+  final EquationRowNode? presup;
 
   MultiscriptsNode({
     this.alignPostscripts = false,
-    @required this.base,
+    required this.base,
     this.sub,
     this.sup,
     this.presub,
@@ -45,14 +43,14 @@ class MultiscriptsNode extends SlotableNode {
 
   @override
   BuildResult buildWidget(
-          MathOptions options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult?> childBuildResults) =>
       BuildResult(
         options: options,
         widget: Multiscripts(
           alignPostscripts: alignPostscripts,
           isBaseCharacterBox: base.flattenedChildList.length == 1 &&
               base.flattenedChildList[0] is SymbolNode,
-          baseResult: childBuildResults[0],
+          baseResult: childBuildResults[0]!,
           subResult: childBuildResults[1],
           supResult: childBuildResults[2],
           presubResult: childBuildResults[3],
@@ -68,7 +66,7 @@ class MultiscriptsNode extends SlotableNode {
   }
 
   @override
-  List<EquationRowNode> computeChildren() => [base, sub, sup, presub, presup];
+  List<EquationRowNode?> computeChildren() => [base, sub, sup, presub, presup];
 
   @override
   AtomType get leftType =>
@@ -83,10 +81,10 @@ class MultiscriptsNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
-      copyWith(
-        base: newChildren[0],
+  MultiscriptsNode updateChildren(List<EquationRowNode?> newChildren) =>
+      MultiscriptsNode(
+        alignPostscripts: alignPostscripts,
+        base: newChildren[0]!,
         sub: newChildren[1],
         sup: newChildren[2],
         presub: newChildren[3],
@@ -94,29 +92,12 @@ class MultiscriptsNode extends SlotableNode {
       );
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'base': base.toJson(),
-      if (sub != null) 'sub': sub.toJson(),
-      if (sup != null) 'sup': sup.toJson(),
-      if (presub != null) 'presub': presub.toJson(),
-      if (presup != null) 'presup': presup.toJson(),
+      if (sub != null) 'sub': sub?.toJson(),
+      if (sup != null) 'sup': sup?.toJson(),
+      if (presub != null) 'presub': presub?.toJson(),
+      if (presup != null) 'presup': presup?.toJson(),
     });
-
-  MultiscriptsNode copyWith({
-    bool alignPostscripts,
-    EquationRowNode base,
-    EquationRowNode sub,
-    EquationRowNode sup,
-    EquationRowNode presub,
-    EquationRowNode presup,
-  }) =>
-      MultiscriptsNode(
-        alignPostscripts: alignPostscripts ?? this.alignPostscripts,
-        base: base ?? this.base,
-        sub: sub ?? this.sub,
-        sup: sup ?? this.sup,
-        presub: presub ?? this.presub,
-        presup: presup ?? this.presup,
-      );
 }

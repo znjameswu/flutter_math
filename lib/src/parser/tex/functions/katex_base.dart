@@ -1,8 +1,5 @@
 library katex_base;
 
-import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
-
 import '../../../ast/nodes/accent.dart';
 import '../../../ast/nodes/accent_under.dart';
 import '../../../ast/nodes/enclosure.dart';

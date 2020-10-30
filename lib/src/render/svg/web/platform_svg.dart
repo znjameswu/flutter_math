@@ -16,9 +16,9 @@ class PlatformSvg {
     String svgString, {
     double width = 24,
     double height = 24,
-    BoxFit fit,
-    Alignment alignment,
-    String hashCode,
+    BoxFit fit = BoxFit.contain,
+    AlignmentGeometry alignment = Alignment.center,
+    String? hashCode,
   }) {
     if (kIsWeb) {
       hashCode ??= String.fromCharCodes(

@@ -48,7 +48,7 @@ const fontAliases = {
 };
 
 GreenNode _fontHandler(TexParser parser, FunctionContext context) {
-  final body = parser.parseArgNode(mode: null, optional: false);
+  final body = parser.parseArgNode(mode: null, optional: false)!;
   final func = fontAliases.containsKey(context.funcName)
       ? fontAliases[context.funcName]
       : context.funcName;
@@ -61,7 +61,7 @@ GreenNode _fontHandler(TexParser parser, FunctionContext context) {
 }
 
 GreenNode _boldSymbolHandler(TexParser parser, FunctionContext context) {
-  final body = parser.parseArgNode(mode: null, optional: false);
+  final body = parser.parseArgNode(mode: null, optional: false)!;
   // TODO
   // amsbsy.sty's \boldsymbol uses \binrel spacing to inherit the
   // argument's bin|rel|ord status

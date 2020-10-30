@@ -30,15 +30,16 @@ class SourceLocation {
   final int end;
   SourceLocation(this.lexer, this.start, this.end);
 
-  static SourceLocation range(Token first, [Token second]) {
+  static SourceLocation? range(Token first, [Token? second]) {
     if (second == null) {
-      return first?.loc;
-    } else if (first?.loc == null ||
+      return first.loc;
+    } else if (first.loc == null ||
         second.loc == null ||
-        first.loc.lexer != second.loc.lexer) {
+        first.loc!.lexer != second.loc!.lexer) {
       return null;
     } else {
-      return SourceLocation(first.loc.lexer, first.loc.start, second.loc.end);
+      return SourceLocation(
+          first.loc!.lexer, first.loc!.start, second.loc!.end);
     }
   }
 }

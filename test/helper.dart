@@ -12,7 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 void testTexToMatchGoldenFile(
   String description,
   String expression, {
-  String location,
+  String? location,
   double scale = 1,
 }) {
   testWidgets(description, (WidgetTester tester) async {
@@ -260,9 +260,10 @@ class _ToBuild extends Matcher {
   final MathOptions options;
   final TexParserSettings settings;
 
-  _ToBuild(
-      {this.options = MathOptions.displayOptions,
-      this.settings = nonstrictSettings});
+  _ToBuild({
+    MathOptions? options,
+    this.settings = nonstrictSettings,
+  }) : this.options = options ?? MathOptions.displayOptions;
 
   @override
   Description describe(Description description) =>
@@ -276,7 +277,7 @@ class _ToBuild extends Matcher {
         final ast = SyntaxTree(
           greenRoot: TexParser(item, settings).parse(),
         );
-        ast.buildWidget();
+        ast.buildWidget(options);
         return super
             .describeMismatch(item, mismatchDescription, matchState, verbose);
       }
@@ -295,7 +296,7 @@ class _ToBuild extends Matcher {
         final ast = SyntaxTree(
           greenRoot: TexParser(item, settings).parse(),
         );
-        ast.buildWidget();
+        ast.buildWidget(options);
         return true;
       }
       return false;
