@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 
 import '../../render/layout/custom_layout.dart';
-import '../../render/utils/render_box_offset.dart';
 import '../options.dart';
 import '../size.dart';
 import '../style.dart';
@@ -134,87 +133,88 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
       height;
 
   @override
-  AxisConfiguration<_FracPos> performIntrinsicLayout({
-    Axis layoutDirection,
-    double Function(RenderBox child) childSize,
-    Map<_FracPos, RenderBox> childrenTable,
-    bool isComputingIntrinsics,
+  AxisConfiguration<_FracPos> performHorizontalIntrinsicLayout({
+    @required Map<_FracPos, double> childrenWidths,
+    bool isComputingIntrinsics = false,
   }) {
-    final numer = childrenTable[_FracPos.numer];
-    final denom = childrenTable[_FracPos.denom];
-
-    final numerSize = childSize(numer);
-    final denomSize = childSize(denom);
-
-    if (layoutDirection == Axis.horizontal) {
-      final barLength = math.max(numerSize, denomSize);
-      // KaTeX/src/katex.less
-      final nullDelimiterWidth = 0.12.cssEm.toLpUnder(options);
-      final width = barLength + 2 * nullDelimiterWidth;
-      if (!isComputingIntrinsics) {
-        this.barLength = barLength;
-        this.width = width;
-      }
-
-      return AxisConfiguration(
-        size: width,
-        offsetTable: {
-          _FracPos.numer: 0.5 * (width - numerSize),
-          _FracPos.denom: 0.5 * (width - denomSize),
-        },
-      );
-    } else {
-      // Fractions are handled in the TeXbook on pages 444-445, rules 15(a-e).
-      // Rule 15
-      final metrics = options.fontMetrics;
-      final xi8 = metrics.defaultRuleThickness.cssEm.toLpUnder(options);
-      theta = barSize?.toLpUnder(options) ?? xi8;
-      // Rule 15b
-      var u = (options.style > MathStyle.text
-              ? metrics.num1
-              : (theta != 0 ? metrics.num2 : metrics.num3))
-          .cssEm
-          .toLpUnder(options);
-      var v = (options.style > MathStyle.text ? metrics.denom1 : metrics.denom2)
-          .cssEm
-          .toLpUnder(options);
-
-      final hx = isComputingIntrinsics ? numerSize : numer.layoutHeight;
-      final dx = isComputingIntrinsics ? 0.0 : numer.layoutDepth;
-      final hz = isComputingIntrinsics ? denomSize : denom.layoutHeight;
-      final dz = isComputingIntrinsics ? 0.0 : denom.layoutDepth;
-      if (theta == 0) {
-        // Rule 15c
-        final phi = options.style > MathStyle.text ? 7 * xi8 : 3 * xi8;
-        final psi = (u - dx) - (hz - v);
-        if (psi < phi) {
-          u += 0.5 * (phi - psi);
-          v += 0.5 * (phi - psi);
-        }
-      } else {
-        // Rule 15d
-        final phi = options.style > MathStyle.text ? 3 * theta : theta;
-        a = metrics.axisHeight.cssEm.toLpUnder(options);
-        if (u - dx - a - 0.5 * theta < phi) {
-          u = phi + dx + a + 0.5 * theta;
-        }
-        if (a - 0.5 * theta - hz + v < phi) {
-          v = phi + hz - a + 0.5 * theta;
-        }
-      }
-      final height = hx + u;
-      final depth = dz + v;
-      if (!isComputingIntrinsics) {
-        this.height = height;
-      }
-      return AxisConfiguration(
-        size: height + depth,
-        offsetTable: {
-          _FracPos.numer: height - u - hx,
-          _FracPos.denom: height + v - hz,
-        },
-      );
+    final numerSize = childrenWidths[_FracPos.numer];
+    final denomSize = childrenWidths[_FracPos.denom];
+    final barLength = math.max(numerSize, denomSize);
+    // KaTeX/src/katex.less
+    final nullDelimiterWidth = 0.12.cssEm.toLpUnder(options);
+    final width = barLength + 2 * nullDelimiterWidth;
+    if (!isComputingIntrinsics) {
+      this.barLength = barLength;
+      this.width = width;
     }
+
+    return AxisConfiguration(
+      size: width,
+      offsetTable: {
+        _FracPos.numer: 0.5 * (width - numerSize),
+        _FracPos.denom: 0.5 * (width - denomSize),
+      },
+    );
+  }
+
+  @override
+  AxisConfiguration<_FracPos> performVerticalIntrinsicLayout({
+    @required Map<_FracPos, double> childrenHeights,
+    @required Map<_FracPos, double> childrenBaselines,
+    bool isComputingIntrinsics = false,
+  }) {
+    final numerSize = childrenHeights[_FracPos.numer];
+    final denomSize = childrenHeights[_FracPos.denom];
+    final numerHeight = childrenBaselines[_FracPos.numer];
+    final denomHeight = childrenBaselines[_FracPos.denom];
+    final metrics = options.fontMetrics;
+    final xi8 = metrics.defaultRuleThickness.cssEm.toLpUnder(options);
+    theta = barSize?.toLpUnder(options) ?? xi8;
+    // Rule 15b
+    var u = (options.style > MathStyle.text
+            ? metrics.num1
+            : (theta != 0 ? metrics.num2 : metrics.num3))
+        .cssEm
+        .toLpUnder(options);
+    var v = (options.style > MathStyle.text ? metrics.denom1 : metrics.denom2)
+        .cssEm
+        .toLpUnder(options);
+
+    final hx = numerHeight;
+    final dx = numerSize - numerHeight;
+    final hz = denomHeight;
+    final dz = denomSize - denomHeight;
+    if (theta == 0) {
+      // Rule 15c
+      final phi = options.style > MathStyle.text ? 7 * xi8 : 3 * xi8;
+      final psi = (u - dx) - (hz - v);
+      if (psi < phi) {
+        u += 0.5 * (phi - psi);
+        v += 0.5 * (phi - psi);
+      }
+    } else {
+      // Rule 15d
+      final phi = options.style > MathStyle.text ? 3 * theta : theta;
+      a = metrics.axisHeight.cssEm.toLpUnder(options);
+      if (u - dx - a - 0.5 * theta < phi) {
+        u = phi + dx + a + 0.5 * theta;
+      }
+      if (a - 0.5 * theta - hz + v < phi) {
+        v = phi + hz - a + 0.5 * theta;
+      }
+    }
+    final height = hx + u;
+    final depth = dz + v;
+    if (!isComputingIntrinsics) {
+      this.height = height;
+    }
+    return AxisConfiguration(
+      size: height + depth,
+      offsetTable: {
+        _FracPos.numer: height - u - hx,
+        _FracPos.denom: height + v - hz,
+      },
+    );
   }
 
   @override

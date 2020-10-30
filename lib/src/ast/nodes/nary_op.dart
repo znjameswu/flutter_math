@@ -102,14 +102,11 @@ class NaryOperatorNode extends SlotableNode {
       final italic = symbolMetrics.italic.cssEm.toLpUnder(options);
       if (!shouldLimits) {
         operatorWidget = Multiscripts(
-          italic: italic,
           isBaseCharacterBox: false,
-          baseOptions: options,
-          base: operatorWidget,
-          sub: childBuildResults[0]?.widget,
-          subOptions: childBuildResults[0]?.options,
-          sup: childBuildResults[1]?.widget,
-          supOptions: childBuildResults[1]?.options,
+          baseResult: BuildResult(
+              widget: operatorWidget, options: options, italic: italic),
+          subResult: childBuildResults[0],
+          supResult: childBuildResults[1],
         );
       } else {
         final spacing =

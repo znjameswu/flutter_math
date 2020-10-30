@@ -7,8 +7,8 @@ import 'package:tuple/tuple.dart';
 import '../../ast/options.dart';
 import '../../ast/size.dart';
 import '../../ast/style.dart';
+import '../../ast/syntax_tree.dart';
 import '../../utils/iterable_extensions.dart';
-import '../utils/render_box_offset.dart';
 import 'custom_layout.dart';
 
 /// This should be the perfect use case for [CustomMultiChildLayout] and
@@ -33,79 +33,60 @@ class Multiscripts extends StatelessWidget {
   const Multiscripts({
     Key key,
     this.alignPostscripts = false,
-    @required this.italic,
     @required this.isBaseCharacterBox,
-    @required this.baseOptions,
-    this.subOptions,
-    this.supOptions,
-    this.presubOptions,
-    this.presupOptions,
-    @required this.base,
-    this.sub,
-    this.sup,
-    this.presub,
-    this.presup,
-  })  : assert(base != null && baseOptions != null),
-        assert(sup == null || supOptions != null),
-        assert(sub == null || subOptions != null),
-        assert(presup == null || presupOptions != null),
-        assert(presub == null || presubOptions != null),
-        assert(sup != null || sub != null || presub != null || presup != null),
-        assert(italic != null),
+    @required this.baseResult,
+    this.subResult,
+    this.supResult,
+    this.presubResult,
+    this.presupResult,
+  })  : assert(baseResult != null),
         super(key: key);
 
   final bool alignPostscripts;
-  final double italic;
   final bool isBaseCharacterBox;
 
-  final MathOptions baseOptions;
-  final MathOptions subOptions;
-  final MathOptions supOptions;
-  final MathOptions presubOptions;
-  final MathOptions presupOptions;
-
-  final Widget base;
-  final Widget sub;
-  final Widget sup;
-  final Widget presub;
-  final Widget presup;
+  final BuildResult baseResult;
+  final BuildResult subResult;
+  final BuildResult supResult;
+  final BuildResult presubResult;
+  final BuildResult presupResult;
 
   @override
   Widget build(BuildContext context) => CustomLayout(
         delegate: MultiscriptsLayoutDelegate(
           alignPostscripts: alignPostscripts,
-          italic: italic,
+          italic: baseResult.italic,
           isBaseCharacterBox: isBaseCharacterBox,
-          baseOptions: baseOptions,
-          subOptions: subOptions,
-          supOptions: supOptions,
-          presubOptions: presubOptions,
-          presupOptions: presupOptions,
+          baseOptions: baseResult.options,
+          subOptions: subResult?.options,
+          supOptions: supResult?.options,
+          presubOptions: presubResult?.options,
+          presupOptions: presupResult?.options,
         ),
         children: <Widget>[
           CustomLayoutId(
             id: _ScriptPos.base,
-            child: base,
+            child: baseResult.widget,
           ),
-          if (sub != null)
+          if (subResult != null)
             CustomLayoutId(
               id: _ScriptPos.sub,
-              child: sub,
+              child: subResult.widget,
             ),
-          if (sup != null)
+          if (supResult != null)
             CustomLayoutId(
               id: _ScriptPos.sup,
-              child: sup,
+              child: supResult.widget,
             ),
-          if (presub != null)
+          if (presubResult != null)
             CustomLayoutId(
               id: _ScriptPos.presub,
-              child: presub,
+              child: presubResult.widget,
             ),
-          if (presup != null)
+          if (presupResult != null)
             CustomLayoutId(
               id: _ScriptPos.presup,
-              child: presup,
+              child: presupResult.widget,
             ),
         ],
       );
@@ -149,173 +130,162 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
   // );
 
   @override
-  AxisConfiguration<_ScriptPos> performIntrinsicLayout({
-    Axis layoutDirection,
-    double Function(RenderBox child) childSize,
-    Map<_ScriptPos, RenderBox> childrenTable,
-    bool isComputingIntrinsics,
+  AxisConfiguration<_ScriptPos> performHorizontalIntrinsicLayout({
+    @required Map<_ScriptPos, double> childrenWidths,
+    bool isComputingIntrinsics = false,
   }) {
-    final base = childrenTable[_ScriptPos.base];
-    final sub = childrenTable[_ScriptPos.sub];
-    final sup = childrenTable[_ScriptPos.sup];
-    final presub = childrenTable[_ScriptPos.presub];
-    final presup = childrenTable[_ScriptPos.presup];
+    final baseSize = childrenWidths[_ScriptPos.base];
+    final subSize = childrenWidths[_ScriptPos.sub];
+    final supSize = childrenWidths[_ScriptPos.sup];
+    final presubSize = childrenWidths[_ScriptPos.presub];
+    final presupSize = childrenWidths[_ScriptPos.presup];
 
-    final sizeTable =
-        childrenTable.map((id, child) => MapEntry(id, childSize(child)));
+    final scriptSpace = 0.5.pt.toLpUnder(baseOptions);
 
-    final baseSize = sizeTable[_ScriptPos.base];
-    final subSize = sizeTable[_ScriptPos.sub] ?? 0;
-    final supSize = sizeTable[_ScriptPos.sup] ?? 0;
-    final presubSize = sizeTable[_ScriptPos.presub] ?? 0;
-    final presupSize = sizeTable[_ScriptPos.presup] ?? 0;
+    final extendedSubSize = subSize != null ? subSize + scriptSpace : 0.0;
+    final extendedSupSize = supSize != null ? supSize + scriptSpace : 0.0;
+    final extendedPresubSize =
+        presubSize != null ? presubSize + scriptSpace : 0.0;
+    final extendedPresupSize =
+        presupSize != null ? presupSize + scriptSpace : 0.0;
 
-    if (layoutDirection == Axis.horizontal) {
-      final scriptSpace = 0.5.pt.toLpUnder(baseOptions);
+    final postscriptWidth = math.max(
+      extendedSupSize,
+      -(alignPostscripts ? 0.0 : italic) + extendedSubSize,
+    );
+    final prescriptWidth = math.max(extendedPresubSize, extendedPresupSize);
 
-      final extendedSubSize = sub != null ? subSize + scriptSpace : 0.0;
-      final extendedSupSize = sup != null ? supSize + scriptSpace : 0.0;
-      final extendedPresubSize =
-          presub != null ? presubSize + scriptSpace : 0.0;
-      final extendedPresupSize =
-          presup != null ? presupSize + scriptSpace : 0.0;
+    final fullSize = postscriptWidth + prescriptWidth + baseSize;
 
-      final postscriptWidth = math.max(
-        extendedSupSize,
-        -(alignPostscripts ? 0.0 : italic) + extendedSubSize,
-      );
-      final prescriptWidth = math.max(extendedPresubSize, extendedPresupSize);
-
-      final fullSize = postscriptWidth + prescriptWidth + baseSize;
-
-      return AxisConfiguration(
-        size: fullSize,
-        offsetTable: {
-          _ScriptPos.base: prescriptWidth,
+    return AxisConfiguration(
+      size: fullSize,
+      offsetTable: {
+        _ScriptPos.base: prescriptWidth,
+        if (subSize != null)
           _ScriptPos.sub:
               prescriptWidth + baseSize - (alignPostscripts ? 0.0 : italic),
-          _ScriptPos.sup: prescriptWidth + baseSize,
-          _ScriptPos.presub: prescriptWidth - presubSize,
-          _ScriptPos.presup: prescriptWidth - presupSize,
-        },
-      );
-    } else {
-      // Dart is no good without Go-style garbage. ^_^
-      final postscriptRes = calculateUV(
-        base: base,
-        sub: sub,
-        sup: sup,
-        baseSize: baseSize,
-        supSize: supSize,
-        subSize: subSize,
-        baseOptions: baseOptions,
-        subOptions: subOptions,
-        supOptions: supOptions,
-        isBaseCharacterBox: isBaseCharacterBox,
-        isComputingIntrinsics: isComputingIntrinsics,
-      );
+        if (baseSize != null) _ScriptPos.sup: prescriptWidth + baseSize,
+        if (presubSize != null) _ScriptPos.presub: prescriptWidth - presubSize,
+        if (presupSize != null) _ScriptPos.presup: prescriptWidth - presupSize,
+      },
+    );
+  }
 
-      final prescriptRes = calculateUV(
-        base: base,
-        sub: presub,
-        sup: presup,
-        baseSize: baseSize,
-        supSize: presupSize,
-        subSize: presubSize,
-        baseOptions: baseOptions,
-        subOptions: presubOptions,
-        supOptions: presupOptions,
-        isBaseCharacterBox: isBaseCharacterBox,
-        isComputingIntrinsics: isComputingIntrinsics,
-      );
+  @override
+  AxisConfiguration<_ScriptPos> performVerticalIntrinsicLayout({
+    @required Map<_ScriptPos, double> childrenHeights,
+    @required Map<_ScriptPos, double> childrenBaselines,
+    bool isComputingIntrinsics = false,
+  }) {
+    final baseSize = childrenHeights[_ScriptPos.base];
+    final subSize = childrenHeights[_ScriptPos.sub];
+    final supSize = childrenHeights[_ScriptPos.sup];
+    final presubSize = childrenHeights[_ScriptPos.presub];
+    final presupSize = childrenHeights[_ScriptPos.presup];
 
-      final subShift = postscriptRes.item2;
-      final supShift = postscriptRes.item1;
-      final presubShift = prescriptRes.item2;
-      final presupShift = prescriptRes.item1;
+    final baseHeight = childrenBaselines[_ScriptPos.base];
+    final subHeight = childrenBaselines[_ScriptPos.sub];
+    final supHeight = childrenBaselines[_ScriptPos.sup];
+    final presubHeight = childrenBaselines[_ScriptPos.presub];
+    final presupHeight = childrenBaselines[_ScriptPos.presup];
 
-      final baseHeight = isComputingIntrinsics ? baseSize : base.layoutHeight;
-      final baseDepth = baseSize - baseHeight;
+    final postscriptRes = calculateUV(
+      base: _ScriptUvConf(baseSize, baseHeight, baseOptions),
+      sub: subSize != null
+          ? _ScriptUvConf(subSize, subHeight, subOptions)
+          : null,
+      sup: supSize != null
+          ? _ScriptUvConf(supSize, supHeight, supOptions)
+          : null,
+      isBaseCharacterBox: isBaseCharacterBox,
+    );
 
-      final subHeight =
-          isComputingIntrinsics ? subSize : (sub?.layoutHeight ?? 0.0);
-      final subDepth = subSize - subHeight;
-      final supHeight =
-          isComputingIntrinsics ? supSize : (sup?.layoutHeight ?? 0.0);
-      final supDepth = supSize - supHeight;
-      final presubHeight =
-          isComputingIntrinsics ? presubSize : (presub?.layoutHeight ?? 0.0);
-      final presubDepth = presubSize - presubHeight;
-      final presupHeight =
-          isComputingIntrinsics ? presupSize : (presup?.layoutHeight ?? 0.0);
-      final presupDepth = presupSize - presupHeight;
+    final prescriptRes = calculateUV(
+      base: _ScriptUvConf(baseSize, baseHeight, baseOptions),
+      sub: presubSize != null
+          ? _ScriptUvConf(presubSize, presubHeight, presubOptions)
+          : null,
+      sup: presupSize != null
+          ? _ScriptUvConf(presupSize, presupHeight, presupOptions)
+          : null,
+      isBaseCharacterBox: isBaseCharacterBox,
+    );
 
-      // Rule 18f
-      final height = [
-        baseHeight,
-        if (sub != null) subHeight - subShift,
-        if (sup != null) supHeight + supShift,
-        if (presub != null) presubHeight - presubShift,
-        if (presup != null) presupHeight + presupShift,
-      ].max();
-      final depth = [
-        baseDepth,
-        if (sub != null) subDepth + subShift,
-        if (sup != null) supDepth - supShift,
-        if (presub != null) presubDepth + presubShift,
-        if (presup != null) presupDepth - presupShift,
-      ].max();
+    final subShift = postscriptRes.item2;
+    final supShift = postscriptRes.item1;
+    final presubShift = prescriptRes.item2;
+    final presupShift = prescriptRes.item1;
 
-      if (!isComputingIntrinsics) {
-        baselineDistance = height;
-      }
+    // Rule 18f
+    final height = [
+      baseHeight,
+      if (subHeight != null) subHeight - subShift,
+      if (supHeight != null) supHeight + supShift,
+      if (presubHeight != null) presubHeight - presubShift,
+      if (presupHeight != null) presupHeight + presupShift,
+    ].max();
 
-      return AxisConfiguration(
-        size: height + depth,
-        offsetTable: {
-          _ScriptPos.base: height - baseHeight,
-          _ScriptPos.sub: height + subShift - subHeight,
-          _ScriptPos.sup: height - supShift - supHeight,
-          _ScriptPos.presub: height + presubShift - presubHeight,
-          _ScriptPos.presup: height - presupShift - presupHeight,
-        },
-      );
+    final depth = [
+      baseSize - baseHeight,
+      if (subHeight != null) subSize - subHeight + subShift,
+      if (supHeight != null) supSize - supHeight - supShift,
+      if (presubHeight != null) presubSize - presubHeight + presubShift,
+      if (presupHeight != null) presupSize - presupHeight - presupShift,
+    ].max();
+
+    if (!isComputingIntrinsics) {
+      baselineDistance = height;
     }
+
+    return AxisConfiguration(
+      size: height + depth,
+      offsetTable: {
+        _ScriptPos.base: height - baseHeight,
+        if (subHeight != null) _ScriptPos.sub: height + subShift - subHeight,
+        if (supHeight != null) _ScriptPos.sup: height - supShift - supHeight,
+        if (presubHeight != null)
+          _ScriptPos.presub: height + presubShift - presubHeight,
+        if (presupHeight != null)
+          _ScriptPos.presup: height - presupShift - presupHeight,
+      },
+    );
   }
 }
 
+class _ScriptUvConf {
+  final double fullHeight;
+  final double baseline;
+  final MathOptions options;
+
+  const _ScriptUvConf(this.fullHeight, this.baseline, this.options);
+}
+
 Tuple2<double, double> calculateUV({
-  RenderBox base,
-  RenderBox sub,
-  RenderBox sup,
-  double baseSize,
-  double supSize,
-  double subSize,
-  MathOptions baseOptions,
-  MathOptions subOptions,
-  MathOptions supOptions,
+  @required _ScriptUvConf base,
+  _ScriptUvConf sub,
+  _ScriptUvConf sup,
   bool isBaseCharacterBox,
-  bool isComputingIntrinsics,
 }) {
-  final metrics = baseOptions.fontMetrics;
+  final metrics = base.options.fontMetrics;
+  final baseOptions = base.options;
 
   // TexBook Rule 18a
-  final h = isComputingIntrinsics ? baseSize : base.layoutHeight;
-  final d = baseSize - h;
+  final h = base.baseline;
+  final d = base.fullHeight - h;
   var u = 0.0;
   var v = 0.0;
   if (sub != null) {
-    final r = subOptions.fontMetrics.subDrop.cssEm.toLpUnder(subOptions);
+    final r = sub.options.fontMetrics.subDrop.cssEm.toLpUnder(sub.options);
     v = isBaseCharacterBox ? 0 : d + r;
   }
   if (sup != null) {
-    final q = supOptions.fontMetrics.supDrop.cssEm.toLpUnder(supOptions);
+    final q = sup.options.fontMetrics.supDrop.cssEm.toLpUnder(sup.options);
     u = isBaseCharacterBox ? 0 : h - q;
   }
 
   if (sup == null && sub != null) {
     // Rule 18b
-    final hx = isComputingIntrinsics ? subSize : sub.layoutHeight;
+    final hx = sub.baseline;
     v = math.max(
       v,
       math.max(
@@ -325,7 +295,7 @@ Tuple2<double, double> calculateUV({
     );
   } else if (sup != null) {
     // Rule 18c
-    final dx = isComputingIntrinsics ? 0.0 : sup.layoutDepth;
+    final dx = sup.fullHeight - sup.baseline;
     final p = (baseOptions.style == MathStyle.display
             ? metrics.sup1
             : (baseOptions.style.cramped ? metrics.sup3 : metrics.sup2))
@@ -344,7 +314,7 @@ Tuple2<double, double> calculateUV({
       v = math.max(v, metrics.sub2.cssEm.toLpUnder(baseOptions));
       // Rule 18e
       final theta = metrics.defaultRuleThickness.cssEm.toLpUnder(baseOptions);
-      final hy = isComputingIntrinsics ? subSize : sub.layoutHeight;
+      final hy = sub.baseline;
       if ((u - dx) - (hy - v) < 4 * theta) {
         v = 4 * theta - u + dx + hy;
         final psi =

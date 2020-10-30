@@ -226,13 +226,15 @@ class AxisConfiguration<T> {
 abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
   const IntrinsicLayoutDelegate();
 
-  /// This design is to reduce the complexity for intrinsic calculation
-  AxisConfiguration<T> performIntrinsicLayout({
-    Axis layoutDirection,
-    double Function(RenderBox child) childSize,
-    Map<T, RenderBox> childrenTable,
-    // This indicates you cannot use some functionalities including baseline.
-    bool isComputingIntrinsics,
+  AxisConfiguration<T> performHorizontalIntrinsicLayout({
+    @required Map<T, double> childrenWidths,
+    bool isComputingIntrinsics = false,
+  });
+
+  AxisConfiguration<T> performVerticalIntrinsicLayout({
+    @required Map<T, double> childrenHeights,
+    @required Map<T, double> childrenBaselines,
+    bool isComputingIntrinsics = false,
   });
 
   @override
@@ -242,30 +244,38 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
     double extent,
     double Function(RenderBox child, double extent) childSize,
     Map<T, RenderBox> childrenTable,
-  }) =>
-      performIntrinsicLayout(
-        layoutDirection: sizingDirection,
-        childSize: (child) => childSize(child, double.infinity),
-        childrenTable: childrenTable,
+  }) {
+    if (sizingDirection == Axis.horizontal) {
+      return performHorizontalIntrinsicLayout(
+        childrenWidths: childrenTable.map(
+            (key, value) => MapEntry(key, childSize(value, double.infinity))),
         isComputingIntrinsics: true,
       ).size;
+    } else {
+      final childrenHeights = childrenTable.map(
+          (key, value) => MapEntry(key, childSize(value, double.infinity)));
+      return performVerticalIntrinsicLayout(
+        childrenHeights: childrenHeights,
+        childrenBaselines: childrenHeights,
+        isComputingIntrinsics: true,
+      ).size;
+    }
+  }
 
   @override
   Size performLayout(BoxConstraints constraints,
       Map<T, RenderBox> childrenTable, RenderBox renderBox) {
     childrenTable.forEach(
         (_, child) => child.layout(infiniteConstraint, parentUsesSize: true));
-    final hconf = performIntrinsicLayout(
-      layoutDirection: Axis.horizontal,
-      childSize: (child) => child.size.width,
-      childrenTable: childrenTable,
-      isComputingIntrinsics: false,
+    final hconf = performHorizontalIntrinsicLayout(
+      childrenWidths:
+          childrenTable.map((key, value) => MapEntry(key, value.size.width)),
     );
-    final vconf = performIntrinsicLayout(
-      layoutDirection: Axis.vertical,
-      childSize: (child) => child.size.height,
-      childrenTable: childrenTable,
-      isComputingIntrinsics: false,
+    final vconf = performVerticalIntrinsicLayout(
+      childrenHeights:
+          childrenTable.map((key, value) => MapEntry(key, value.size.height)),
+      childrenBaselines: childrenTable.map((key, value) =>
+          MapEntry(key, value.getDistanceToBaseline(TextBaseline.alphabetic))),
     );
     childrenTable.forEach((id, child) =>
         child.offset = Offset(hconf.offsetTable[id], vconf.offsetTable[id]));

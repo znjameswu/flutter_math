@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 
 import '../../render/layout/custom_layout.dart';
 import '../../render/layout/shift_baseline.dart';
-import '../../render/utils/render_box_offset.dart';
 import '../../utils/iterable_extensions.dart';
 import '../options.dart';
 import '../size.dart';
@@ -292,128 +291,128 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
       null;
 
   @override
-  AxisConfiguration<int> performIntrinsicLayout(
-      {Axis layoutDirection,
-      double Function(RenderBox child) childSize,
-      Map<int, RenderBox> childrenTable,
-      bool isComputingIntrinsics}) {
-    if (layoutDirection == Axis.horizontal) {
-      final childWidths = List.generate(cols * rows, (index) {
-        final cell = childrenTable[index];
-        return cell != null ? childSize(cell) : 0.0;
-      }, growable: false);
+  AxisConfiguration<int> performHorizontalIntrinsicLayout({
+    @required Map<int, double> childrenWidths,
+    bool isComputingIntrinsics = false,
+  }) {
+    final childWidths = List.generate(
+        cols * rows, (index) => childrenWidths[index] ?? 0.0,
+        growable: false);
 
-      // Calculate width for each column
-      final colWidths = List.filled(cols, 0.0, growable: false);
-      for (var i = 0; i < cols; i++) {
-        for (var j = 0; j < rows; j++) {
-          colWidths[i] = math.max(
-            colWidths[i],
-            childWidths[j * cols + i],
-          );
-        }
+    // Calculate width for each column
+    final colWidths = List.filled(cols, 0.0, growable: false);
+    for (var i = 0; i < cols; i++) {
+      for (var j = 0; j < rows; j++) {
+        colWidths[i] = math.max(
+          colWidths[i],
+          childWidths[j * cols + i],
+        );
       }
-
-      // Layout each column
-      final colPos = List.filled(cols, 0.0, growable: false);
-
-      var pos = 0.0;
-      vLinePos[0] = pos;
-      pos += (vLines[0] != null) ? ruleThickness : 0.0;
-      pos += hskipBeforeAndAfter ? arraycolsep : 0.0;
-
-      for (var i = 0; i < cols - 1; i++) {
-        colPos[i] = pos;
-        pos += colWidths[i] + arraycolsep;
-        vLinePos[i + 1] = pos;
-        pos += (vLines[i + 1] != null) ? ruleThickness : 0.0;
-        pos += arraycolsep;
-      }
-
-      colPos[cols - 1] = pos;
-      pos += colWidths[cols - 1];
-      pos += hskipBeforeAndAfter ? arraycolsep : 0.0;
-      vLinePos[cols] = pos;
-      pos += (vLines[cols] != null) ? ruleThickness : 0.0;
-
-      width = pos;
-
-      // Determine position of children
-      final childPos = List.generate(rows * cols, (index) {
-        final col = index % cols;
-        switch (columnAligns[col]) {
-          case MatrixColumnAlign.left:
-            return colPos[col];
-          case MatrixColumnAlign.right:
-            return colPos[col] + colWidths[col] - childWidths[index];
-          case MatrixColumnAlign.center:
-          default:
-            return colPos[col] + (colWidths[col] - childWidths[index]) / 2;
-        }
-      }, growable: false);
-
-      return AxisConfiguration(
-        size: width,
-        offsetTable: childPos.asMap(),
-      );
-    } else {
-      final childHeights = List.generate(cols * rows, (index) {
-        final cell = childrenTable[index];
-        return cell != null
-            ? (isComputingIntrinsics ? childSize(cell) : cell.layoutHeight)
-            : 0.0;
-      }, growable: false);
-      final childDepth = List.generate(cols * rows, (index) {
-        final cell = childrenTable[index];
-        return cell != null
-            ? (isComputingIntrinsics ? 0.0 : cell.layoutDepth)
-            : 0.0;
-      }, growable: false);
-
-      // Calculate height and depth for each row
-      // Minimum height and depth are 0.7 * arrayskip and 0.3 * arrayskip
-      final rowHeights = List.filled(rows, 0.7 * arrayskip, growable: false);
-      final rowDepth = List.filled(rows, 0.3 * arrayskip, growable: false);
-      for (var i = 0; i < rows; i++) {
-        for (var j = 0; j < cols; j++) {
-          rowHeights[i] = math.max(
-            rowHeights[i],
-            childHeights[i * cols + j],
-          );
-          rowDepth[i] = math.max(
-            rowDepth[i],
-            childDepth[i * cols + j],
-          );
-        }
-      }
-
-      // Layout rows
-      var pos = 0.0;
-      final rowBaselinePos = List.filled(rows, 0.0, growable: false);
-
-      for (var i = 0; i < rows; i++) {
-        hLinePos[i] = pos;
-        pos += (hLines[i] != null) ? ruleThickness : 0.0;
-        pos += rowHeights[i];
-        rowBaselinePos[i] = pos;
-        pos += rowDepth[i];
-        pos += i < rows - 1 ? rowSpacings[i] : 0;
-      }
-      hLinePos[rows] = pos;
-      pos += (hLines[rows] != null) ? ruleThickness : 0.0;
-
-      totalHeight = pos;
-
-      // Calculate position for each children
-      final childPos = List.generate(rows * cols, (index) {
-        final row = index ~/ cols;
-        return rowBaselinePos[row] - childHeights[index];
-      }, growable: false);
-      return AxisConfiguration(
-        size: totalHeight,
-        offsetTable: childPos.asMap(),
-      );
     }
+
+    // Layout each column
+    final colPos = List.filled(cols, 0.0, growable: false);
+
+    var pos = 0.0;
+    vLinePos[0] = pos;
+    pos += (vLines[0] != null) ? ruleThickness : 0.0;
+    pos += hskipBeforeAndAfter ? arraycolsep : 0.0;
+
+    for (var i = 0; i < cols - 1; i++) {
+      colPos[i] = pos;
+      pos += colWidths[i] + arraycolsep;
+      vLinePos[i + 1] = pos;
+      pos += (vLines[i + 1] != null) ? ruleThickness : 0.0;
+      pos += arraycolsep;
+    }
+
+    colPos[cols - 1] = pos;
+    pos += colWidths[cols - 1];
+    pos += hskipBeforeAndAfter ? arraycolsep : 0.0;
+    vLinePos[cols] = pos;
+    pos += (vLines[cols] != null) ? ruleThickness : 0.0;
+
+    width = pos;
+
+    // Determine position of children
+    final childPos = List.generate(rows * cols, (index) {
+      final col = index % cols;
+      switch (columnAligns[col]) {
+        case MatrixColumnAlign.left:
+          return colPos[col];
+        case MatrixColumnAlign.right:
+          return colPos[col] + colWidths[col] - childWidths[index];
+        case MatrixColumnAlign.center:
+        default:
+          return colPos[col] + (colWidths[col] - childWidths[index]) / 2;
+      }
+    }, growable: false);
+
+    return AxisConfiguration(
+      size: width,
+      offsetTable: childPos.asMap(),
+    );
+  }
+
+  @override
+  AxisConfiguration<int> performVerticalIntrinsicLayout({
+    @required Map<int, double> childrenHeights,
+    @required Map<int, double> childrenBaselines,
+    bool isComputingIntrinsics = false,
+  }) {
+    final childHeights = List.generate(
+      cols * rows,
+      (index) => childrenBaselines[index] ?? 0.0,
+      growable: false,
+    );
+    final childDepth = List.generate(cols * rows, (index) {
+      final height = childrenBaselines[index];
+      return height != null ? childrenHeights[index] - height : 0.0;
+    }, growable: false);
+
+    // Calculate height and depth for each row
+    // Minimum height and depth are 0.7 * arrayskip and 0.3 * arrayskip
+    final rowHeights = List.filled(rows, 0.7 * arrayskip, growable: false);
+    final rowDepth = List.filled(rows, 0.3 * arrayskip, growable: false);
+    for (var i = 0; i < rows; i++) {
+      for (var j = 0; j < cols; j++) {
+        rowHeights[i] = math.max(
+          rowHeights[i],
+          childHeights[i * cols + j],
+        );
+        rowDepth[i] = math.max(
+          rowDepth[i],
+          childDepth[i * cols + j],
+        );
+      }
+    }
+
+    // Layout rows
+    var pos = 0.0;
+    final rowBaselinePos = List.filled(rows, 0.0, growable: false);
+
+    for (var i = 0; i < rows; i++) {
+      hLinePos[i] = pos;
+      pos += (hLines[i] != null) ? ruleThickness : 0.0;
+      pos += rowHeights[i];
+      rowBaselinePos[i] = pos;
+      pos += rowDepth[i];
+      pos += i < rows - 1 ? rowSpacings[i] : 0;
+    }
+    hLinePos[rows] = pos;
+    pos += (hLines[rows] != null) ? ruleThickness : 0.0;
+
+    totalHeight = pos;
+
+    // Calculate position for each children
+    final childPos = List.generate(rows * cols, (index) {
+      final row = index ~/ cols;
+      return rowBaselinePos[row] - childHeights[index];
+    }, growable: false);
+    return AxisConfiguration(
+      size: totalHeight,
+      offsetTable: childPos.asMap(),
+    );
   }
 
   // Paint vlines and hlines
