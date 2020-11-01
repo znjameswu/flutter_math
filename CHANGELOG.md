@@ -1,3 +1,6 @@
+## [0.2.0+2] - 2020/11/1
+Add support for `TextStyle.color` in widget constructors.
+
 ## [0.2.0+1] - 2020/10/28
 Fix `Math.tex` constructor's wrong default value for `MathOptions`.
 

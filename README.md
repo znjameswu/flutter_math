@@ -70,9 +70,10 @@ If you would like to display custom styled error message, you should use `onErro
 ```dart
 Math.tex(
   r'\garbled $tring', 
+  textStyle: TextStyle(color: Colors.green),
   onErrorFallback: (err) => Container(
     color: Colors.red,
-    child: Text(err.messageWithType),
+    child: Text(err.messageWithType, style: TextStyle(color: Colors.yellow)),
   ),
 )
 ```
