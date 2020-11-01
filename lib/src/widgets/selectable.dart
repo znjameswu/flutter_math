@@ -256,6 +256,7 @@ class SelectableMath extends StatelessWidget {
               ? FontOptions(fontWeight: effectiveTextStyle.fontWeight)
               : null,
           logicalPpi: logicalPpi,
+          color: effectiveTextStyle.color,
         );
 
     // A trial build to catch any potential build errors

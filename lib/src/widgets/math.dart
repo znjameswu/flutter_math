@@ -193,6 +193,7 @@ class Math extends StatelessWidget {
             ? FontOptions(fontWeight: effectiveTextStyle.fontWeight)
             : null,
         logicalPpi: logicalPpi,
+        color: textStyle.color,
       );
     }
 
