@@ -276,9 +276,8 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
   })  : vLinePos = List.filled(cols + 1, 0.0, growable: false),
         hLinePos = List.filled(rows + 1, 0.0, growable: false);
 
-  final List<double> hLinePos;
-
-  final List<double> vLinePos;
+  List<double> hLinePos;
+  List<double> vLinePos;
 
   var totalHeight = 0.0;
   var width = 0.0;
@@ -312,6 +311,7 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
 
     // Layout each column
     final colPos = List.filled(cols, 0.0, growable: false);
+    final vLinePos = List.filled(cols + 1, 0.0, growable: false);
 
     var pos = 0.0;
     vLinePos[0] = pos;
@@ -347,6 +347,10 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
           return colPos[col] + (colWidths[col] - childWidths[index]) / 2;
       }
     }, growable: false);
+
+    if (!isComputingIntrinsics) {
+      this.vLinePos = vLinePos;
+    }
 
     return AxisConfiguration(
       size: width,
@@ -390,6 +394,7 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
     // Layout rows
     var pos = 0.0;
     final rowBaselinePos = List.filled(rows, 0.0, growable: false);
+    final hLinePos = List.filled(rows + 1, 0.0, growable: false);
 
     for (var i = 0; i < rows; i++) {
       hLinePos[i] = pos;
@@ -409,6 +414,11 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
       final row = index ~/ cols;
       return rowBaselinePos[row] - childHeights[index];
     }, growable: false);
+
+    if (!isComputingIntrinsics) {
+      this.hLinePos = hLinePos;
+    }
+
     return AxisConfiguration(
       size: totalHeight,
       offsetTable: childPos.asMap(),

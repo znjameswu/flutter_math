@@ -169,7 +169,7 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
     final denomHeight = childrenBaselines[_FracPos.denom];
     final metrics = options.fontMetrics;
     final xi8 = metrics.defaultRuleThickness.cssEm.toLpUnder(options);
-    theta = barSize?.toLpUnder(options) ?? xi8;
+    final theta = barSize?.toLpUnder(options) ?? xi8;
     // Rule 15b
     var u = (options.style > MathStyle.text
             ? metrics.num1
@@ -179,6 +179,7 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
     var v = (options.style > MathStyle.text ? metrics.denom1 : metrics.denom2)
         .cssEm
         .toLpUnder(options);
+    final a = metrics.axisHeight.cssEm.toLpUnder(options);
 
     final hx = numerHeight;
     final dx = numerSize - numerHeight;
@@ -195,7 +196,6 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
     } else {
       // Rule 15d
       final phi = options.style > MathStyle.text ? 3 * theta : theta;
-      a = metrics.axisHeight.cssEm.toLpUnder(options);
       if (u - dx - a - 0.5 * theta < phi) {
         u = phi + dx + a + 0.5 * theta;
       }
@@ -207,6 +207,8 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
     final depth = dz + v;
     if (!isComputingIntrinsics) {
       this.height = height;
+      this.theta = theta;
+      this.a = a;
     }
     return AxisConfiguration(
       size: height + depth,

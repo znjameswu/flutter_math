@@ -154,8 +154,8 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
       0;
 
   @override
-  Size performLayout(BoxConstraints constraints,
-      Map<_SqrtPos, RenderBox> childrenTable, RenderBox renderBox) {
+  Size performLayout(
+      BoxConstraints constraints, Map<_SqrtPos, RenderBox> childrenTable) {
     final base = childrenTable[_SqrtPos.base];
     final index = childrenTable[_SqrtPos.ind];
     final surd = childrenTable[_SqrtPos.surd];

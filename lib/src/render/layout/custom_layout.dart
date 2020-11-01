@@ -9,8 +9,8 @@ abstract class CustomLayoutDelegate<T> {
   const CustomLayoutDelegate();
 
   // last parameter is for a hack to render asynchronously for flutter_svg
-  Size performLayout(BoxConstraints constraints,
-      Map<T, RenderBox> childrenTable, RenderBox renderBox);
+  Size performLayout(
+      BoxConstraints constraints, Map<T, RenderBox> childrenTable);
 
   double getIntrinsicSize({
     Axis sizingDirection,
@@ -46,7 +46,7 @@ class CustomLayoutId<T> extends ParentDataWidget<CustomLayoutParentData<T>> {
     @required Widget child,
   })  : assert(child != null),
         assert(id != null),
-        super(key: key ?? ValueKey<Object>(id), child: child);
+        super(key: key ?? ValueKey<T>(id), child: child);
 
   final T id;
 
@@ -199,7 +199,7 @@ class RenderCustomLayout<T> extends RenderBox
 
   @override
   void performLayout() {
-    final size = delegate.performLayout(constraints, childrenTable, this);
+    final size = delegate.performLayout(constraints, childrenTable);
     this.size = constraints.constrain(size);
   }
 
@@ -263,8 +263,8 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
   }
 
   @override
-  Size performLayout(BoxConstraints constraints,
-      Map<T, RenderBox> childrenTable, RenderBox renderBox) {
+  Size performLayout(
+      BoxConstraints constraints, Map<T, RenderBox> childrenTable) {
     childrenTable.forEach(
         (_, child) => child.layout(infiniteConstraint, parentUsesSize: true));
     final hconf = performHorizontalIntrinsicLayout(
