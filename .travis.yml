@@ -1,4 +1,7 @@
 # language: dart
+branches:
+  only:
+  - master
 
 dart:
   - stable
