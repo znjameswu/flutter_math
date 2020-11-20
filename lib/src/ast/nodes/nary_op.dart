@@ -59,10 +59,16 @@ class NaryOperatorNode extends SlotableNode<EquationRowNode?> {
     Widget operatorWidget;
     CharacterMetrics symbolMetrics;
     if (!_stashedOvalNaryOperator.containsKey(operator)) {
-      symbolMetrics = lookupChar(operator, font, Mode.math);
-      final symbolWidget =
-          makeChar(operator, font, symbolMetrics, options, needItalic: true);
-      operatorWidget = symbolWidget;
+      final lookupResult = lookupChar(operator, font, Mode.math);
+      if (lookupResult == null) {
+        symbolMetrics = const CharacterMetrics(0, 0, 0, 0, 0);
+        operatorWidget = Container();
+      } else {
+        symbolMetrics = lookupResult;
+        final symbolWidget =
+            makeChar(operator, font, symbolMetrics, options, needItalic: true);
+        operatorWidget = symbolWidget;
+      }
     } else {
       final baseSymbol = _stashedOvalNaryOperator[operator]!;
       symbolMetrics = lookupChar(baseSymbol, font, Mode.math)!;

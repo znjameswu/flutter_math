@@ -63,13 +63,18 @@ class AccentNode extends SlotableNode<EquationRowNode> {
         // baseline distance of null due to Flutter rendering pipeline design.
         accentSymbolWidget = staticSvg('vec', options, needBaseline: true);
       } else {
-        accentSymbolWidget = makeBaseSymbol(
-          symbol: accentRenderConfigs[label].overChar,
-          variantForm: false,
-          atomType: AtomType.ord,
-          mode: Mode.text,
-          options: options,
-        ).widget;
+        final accentRenderConfig = accentRenderConfigs[label];
+        if (accentRenderConfig == null || accentRenderConfig.overChar == null) {
+          accentSymbolWidget = Container();
+        } else {
+          accentSymbolWidget = makeBaseSymbol(
+            symbol: accentRenderConfig.overChar!,
+            variantForm: false,
+            atomType: AtomType.ord,
+            mode: Mode.text,
+            options: options,
+          ).widget;
+        }
       }
 
       // Non stretchy accent can not contribute to overall width, thus they must
@@ -105,8 +110,13 @@ class AccentNode extends SlotableNode<EquationRowNode> {
               ),
             );
           } else {
+            final accentRenderConfig = accentRenderConfigs[label];
+            if (accentRenderConfig == null ||
+                accentRenderConfig.overImageName == null) {
+              return Container();
+            }
             var svgWidget = strechySvgSpan(
-              accentRenderConfigs[label].overImageName,
+              accentRenderConfig.overImageName!,
               constraints.minWidth,
               options,
             );

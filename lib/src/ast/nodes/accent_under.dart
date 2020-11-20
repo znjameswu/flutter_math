@@ -57,8 +57,13 @@ class AccentUnderNode extends SlotableNode<EquationRowNode> {
                     ),
                   );
                 } else {
+                  final accentRenderConfig = accentRenderConfigs[label];
+                  if (accentRenderConfig == null ||
+                      accentRenderConfig.underImageName == null) {
+                    return Container();
+                  }
                   return strechySvgSpan(
-                    accentRenderConfigs[label].underImageName,
+                    accentRenderConfig.underImageName!,
                     constraints.minWidth,
                     options,
                   );
