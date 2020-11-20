@@ -6,7 +6,7 @@ class DisplayMath extends StatelessWidget {
   final String expression;
 
   const DisplayMath({
-    Key key,
+    Key? key,
     required this.expression,
   }) : super(key: key);
 
