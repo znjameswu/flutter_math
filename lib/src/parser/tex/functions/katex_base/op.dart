@@ -92,8 +92,7 @@ NaryOperatorNode _parseNaryOperator(
   FunctionContext context,
 ) {
   final scriptsResult = parser.parseScripts(allowLimits: true);
-  final arg =
-      parser.parseAtom(context.breakOnTokenText)?.wrapWithEquationRow();
+  final arg = parser.parseAtom(context.breakOnTokenText)?.wrapWithEquationRow();
 
   return NaryOperatorNode(
     operator: texSymbolCommandConfigs[Mode.math]![command]!.symbol,

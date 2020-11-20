@@ -208,7 +208,7 @@ CharacterMetrics? getCharacterMetrics(
   }
 
   final extraCh = extraCharacterMap[character[0]]?.codeUnitAt(0);
-  if (extraCh!= null) {
+  if (extraCh != null) {
     return metricsMapFont[ch];
   }
   if (mode == Mode.text && supportedCodepoint(ch)) {

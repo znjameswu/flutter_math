@@ -151,7 +151,7 @@ AtomType getDefaultAtomTypeForSymbol(
   final renderConfig =
       mode == Mode.math ? symbolRenderConfig?.math : symbolRenderConfig?.text;
   if (renderConfig != null) {
-    return renderConfig.defaultType ?? AtomType.ord; 
+    return renderConfig.defaultType ?? AtomType.ord;
   }
   if (variantForm == false && mode == Mode.math) {
     if (negatedOperatorSymbols.containsKey(symbol)) {

@@ -160,8 +160,8 @@ class MultiscriptsLayoutDelegate extends IntrinsicLayoutDelegate<_ScriptPos> {
       size: fullSize,
       offsetTable: {
         _ScriptPos.base: prescriptWidth,
-          _ScriptPos.sub:
-              prescriptWidth + baseSize - (alignPostscripts ? 0.0 : italic),
+        _ScriptPos.sub:
+            prescriptWidth + baseSize - (alignPostscripts ? 0.0 : italic),
         _ScriptPos.sup: prescriptWidth + baseSize,
         if (presubSize != null) _ScriptPos.presub: prescriptWidth - presubSize,
         if (presupSize != null) _ScriptPos.presup: prescriptWidth - presupSize,

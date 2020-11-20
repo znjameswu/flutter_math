@@ -54,8 +54,7 @@ abstract class LexerInterface {
 
 class Lexer implements LexerInterface {
   static final tokenRegex = RegExp(tokenRegexString, multiLine: true);
-  Lexer(this.input, this.settings)
-      : it = tokenRegex.allMatches(input).iterator;
+  Lexer(this.input, this.settings) : it = tokenRegex.allMatches(input).iterator;
 
   final String input;
   final TexParserSettings settings;

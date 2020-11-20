@@ -1,3 +1,6 @@
+## [0.3.0-nullsafety]
+Migrate to dart null safety
+
 ## [0.2.0+2] - 2020/11/1
 Add support for `TextStyle.color` in widget constructors.
 

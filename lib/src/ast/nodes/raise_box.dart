@@ -46,8 +46,7 @@ class RaiseBoxNode extends SlotableNode<EquationRowNode> {
       false;
 
   @override
-  RaiseBoxNode updateChildren(
-          List<EquationRowNode> newChildren) =>
+  RaiseBoxNode updateChildren(List<EquationRowNode> newChildren) =>
       copyWith(body: newChildren[0]);
 
   @override

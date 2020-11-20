@@ -376,7 +376,7 @@ class InternalSelectableMath extends StatefulWidget {
     this.showCursor = false,
     required this.textSelectionControls,
     required this.toolbarOptions,
-  })  : assert(ast != null),
+  })   : assert(ast != null),
         assert(options != null),
         assert(textSelectionControls != null),
         assert(toolbarOptions != null),

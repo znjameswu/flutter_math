@@ -147,7 +147,7 @@ Widget strechySvgSpan(String name, double width, MathOptions options) {
 
     switch (numSvgChildren) {
       case 1:
-        aligns = [data.align!]; // Single svg must specify their alignment 
+        aligns = [data.align!]; // Single svg must specify their alignment
         widths = [actualWidth];
         break;
       case 2:
