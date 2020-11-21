@@ -46,7 +46,7 @@ class NaryOperatorNode extends SlotableNode<EquationRowNode?> {
     required this.naryand,
     this.limits,
     this.allowLargeOp = true,
-  }) : assert(naryand != null);
+  });
 
   @override
   BuildResult buildWidget(

@@ -36,8 +36,7 @@ class LineElement extends ParentDataWidget<LineParentData> {
     this.trailingMargin = 0.0,
     this.alignerOrSpacer = false,
     required Widget child,
-  })   : assert(trailingMargin != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   @override
   void applyParentData(RenderObject renderObject) {
@@ -97,10 +96,7 @@ class Line extends MultiChildRenderObjectWidget {
     this.textBaseline = TextBaseline.alphabetic,
     this.textDirection,
     List<Widget> children = const [],
-  })  : assert(textBaseline != null),
-        // assert(baselineOffset != null),
-        assert(crossAxisAlignment != null),
-        super(key: key, children: children);
+  }) : super(key: key, children: children);
 
   final CrossAxisAlignment crossAxisAlignment;
 
@@ -161,9 +157,7 @@ class RenderLine extends RenderBox
     double minHeight = 0,
     TextBaseline textBaseline = TextBaseline.alphabetic,
     TextDirection? textDirection = TextDirection.ltr,
-  })  : assert(textBaseline != null),
-        assert(crossAxisAlignment != null),
-        _crossAxisAlignment = crossAxisAlignment,
+  })  : _crossAxisAlignment = crossAxisAlignment,
         _minDepth = minDepth,
         _minHeight = minHeight,
         _textBaseline = textBaseline,
@@ -217,7 +211,6 @@ class RenderLine extends RenderBox
   }
 
   bool get _debugHasNecessaryDirections {
-    assert(crossAxisAlignment != null);
     assert(textDirection != null,
         'Horizontal $runtimeType has a null textDirection, so the alignment cannot be resolved.');
     return true;
@@ -320,7 +313,6 @@ class RenderLine extends RenderBox
   @override
   void performLayout() {
     assert(_debugHasNecessaryDirections);
-    assert(constraints != null);
 
     // First pass, layout fixed-sized children to calculate height and depth
     maxHeightAboveBaseline = 0.0;

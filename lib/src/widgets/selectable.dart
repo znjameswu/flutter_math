@@ -63,13 +63,6 @@ class SelectableMath extends StatelessWidget {
     this.textStyle,
     ToolbarOptions? toolbarOptions,
   })  : assert(ast != null || parseException != null),
-        assert(autofocus != null),
-        assert(cursorWidth != null),
-        assert(dragStartBehavior != null),
-        assert(enableInteractiveSelection != null),
-        assert(mathStyle != null || options != null),
-        assert(onErrorFallback != null),
-        assert(showCursor != null),
         toolbarOptions = toolbarOptions ??
             const ToolbarOptions(
               selectAll: true,
@@ -264,7 +257,7 @@ class SelectableMath extends StatelessWidget {
       ast!.buildWidget(options);
     } on BuildException catch (e) {
       return onErrorFallback(e);
-    } on dynamic catch (e) {
+    } on Object catch (e) {
       return onErrorFallback(
           BuildException('Unsanitized build exception detected: $e.'
               'Please report this error with correponding input.'));
@@ -376,11 +369,7 @@ class InternalSelectableMath extends StatefulWidget {
     this.showCursor = false,
     required this.textSelectionControls,
     required this.toolbarOptions,
-  })   : assert(ast != null),
-        assert(options != null),
-        assert(textSelectionControls != null),
-        assert(toolbarOptions != null),
-        super(key: key);
+  }) : super(key: key);
 
   final SyntaxTree ast;
 

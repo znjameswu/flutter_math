@@ -38,7 +38,6 @@ class LeftRightNode extends SlotableNode<EquationRowNode> {
     required this.body,
     this.middle = const [],
   })  : assert(body.isNotEmpty),
-        assert(body.every((element) => element != null)),
         assert(middle.length == body.length - 1);
 
   @override

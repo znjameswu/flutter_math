@@ -134,7 +134,6 @@ class MathSelectionOverlay {
   bool get handlesVisible => _handlesVisible;
   bool _handlesVisible;
   set handlesVisible(bool visible) {
-    assert(visible != null);
     if (_handlesVisible == visible) return;
     _handlesVisible = visible;
     // If we are in build state, it will be too late to update visibility.

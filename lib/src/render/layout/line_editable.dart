@@ -35,10 +35,7 @@ class EditableLine extends MultiChildRenderObjectWidget {
     this.textBaseline = TextBaseline.alphabetic,
     this.textDirection,
     List<Widget> children = const [],
-  })  : assert(textBaseline != null),
-        // assert(baselineOffset != null),
-        assert(crossAxisAlignment != null),
-        super(key: key, children: children);
+  }) : super(key: key, children: children);
 
   final CrossAxisAlignment crossAxisAlignment;
 
@@ -468,7 +465,6 @@ class RenderEditableLine extends RenderLine {
 
     Rect _caretPrototype;
 
-    assert(defaultTargetPlatform != null);
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:

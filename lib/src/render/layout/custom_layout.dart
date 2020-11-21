@@ -44,8 +44,7 @@ class CustomLayoutId<T> extends ParentDataWidget<CustomLayoutParentData<T>> {
     Key? key,
     required this.id,
     required Widget child,
-  })   : assert(child != null),
-        assert(id != null),
+  })   : assert(id != null),
         super(key: key ?? ValueKey<T>(id), child: child);
 
   final T id;
@@ -102,8 +101,7 @@ class RenderCustomLayout<T> extends RenderBox
   RenderCustomLayout({
     List<RenderBox>? children,
     required CustomLayoutDelegate<T> delegate,
-  })   : assert(delegate != null),
-        _delegate = delegate {
+  }) : _delegate = delegate {
     addAll(children);
   }
 
@@ -118,7 +116,6 @@ class RenderCustomLayout<T> extends RenderBox
   CustomLayoutDelegate<T> get delegate => _delegate;
   CustomLayoutDelegate<T> _delegate;
   set delegate(CustomLayoutDelegate<T> newDelegate) {
-    assert(newDelegate != null);
     if (_delegate != newDelegate) {
       markNeedsLayout();
     }

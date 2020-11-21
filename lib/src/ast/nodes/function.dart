@@ -16,8 +16,7 @@ class FunctionNode extends SlotableNode<EquationRowNode> {
   FunctionNode({
     required this.functionName,
     required this.argument,
-  })   : assert(functionName != null),
-        assert(argument != null);
+  });
 
   @override
   BuildResult buildWidget(

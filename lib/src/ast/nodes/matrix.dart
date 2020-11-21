@@ -87,9 +87,8 @@ class MatrixNode extends SlotableNode<EquationRowNode?> {
     // this.rowAligns,
     required this.hLines,
     required this.body,
-  })   : assert(body != null),
+  })   : 
         assert(body.length == rows),
-        assert(body.every((row) => row != null)),
         assert(body.every((row) => row.length == cols)),
         assert(columnAligns.length == cols),
         assert(vLines.length == cols + 1),

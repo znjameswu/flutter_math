@@ -9,8 +9,7 @@ class LayoutBuilderPreserveBaseline
   const LayoutBuilderPreserveBaseline({
     Key? key,
     required LayoutWidgetBuilder builder,
-  })   : assert(builder != null),
-        super(key: key, builder: builder);
+  }) : super(key: key, builder: builder);
 
   @override
   LayoutWidgetBuilder get builder => super.builder;

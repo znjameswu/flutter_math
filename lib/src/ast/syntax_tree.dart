@@ -29,7 +29,7 @@ class SyntaxTree {
 
   SyntaxTree({
     required this.greenRoot,
-  }) : assert(greenRoot != null);
+  });
 
   /// Root of the red tree
   late final SyntaxNode root = SyntaxNode(
@@ -134,8 +134,7 @@ class SyntaxNode {
     required this.parent,
     required this.value,
     required this.pos,
-  })   : assert(value != null),
-        assert(pos != null);
+  });
 
   /// Lazily evaluated children of current [SyntaxNode]
   late final List<SyntaxNode?> children = List.generate(
@@ -457,9 +456,10 @@ class EquationRowNode extends ParentableNode<GreenNode>
     }, growable: false);
   }
 
-  EquationRowNode({required this.children, this.overrideType})
-      : assert(children != null),
-        assert(children.every((child) => child != null));
+  EquationRowNode({
+    required this.children,
+    this.overrideType,
+  });
 
   factory EquationRowNode.empty() => EquationRowNode(children: []);
 

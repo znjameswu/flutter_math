@@ -213,7 +213,6 @@ class _MathSelectionHandleOverlayState extends State<MathSelectionHandleOverlay>
   ) {
     if (widget.selection.isCollapsed) return TextSelectionHandleType.collapsed;
 
-    assert(textDirection != null);
     switch (textDirection) {
       case TextDirection.ltr:
         return ltrType;

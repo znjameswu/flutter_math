@@ -30,8 +30,7 @@ class VListElement extends ParentDataWidget<VListParentData> {
     this.trailingMargin = 0.0,
     this.hShift = 0.0,
     required Widget child,
-  })   : assert(trailingMargin != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   @override
   void applyParentData(RenderObject renderObject) {
@@ -113,11 +112,7 @@ class VList extends MultiChildRenderObjectWidget {
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.textDirection,
     List<Widget> children = const [],
-  })  : assert(textBaseline != null),
-        assert(baselineReferenceWidgetIndex != null),
-        // assert(baselineOffset != null),
-        assert(crossAxisAlignment != null),
-        super(key: key, children: children);
+  }) : super(key: key, children: children);
   final TextBaseline textBaseline;
   final int baselineReferenceWidgetIndex;
   // final double baselineOffset;
@@ -180,11 +175,7 @@ class RenderRelativeWidthColumn extends RenderBox
     // double baselineOffset = 0,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
     TextDirection? textDirection = TextDirection.ltr,
-  })  : assert(textBaseline != null),
-        assert(baselineReferenceWidgetIndex != null),
-        // assert(baselineOffset != null),
-        assert(crossAxisAlignment != null),
-        _textBaseline = textBaseline,
+  })  : _textBaseline = textBaseline,
         _baselineReferenceWidgetIndex = baselineReferenceWidgetIndex,
         // _baselineOffset = baselineOffset,
         _crossAxisAlignment = crossAxisAlignment,
@@ -238,7 +229,6 @@ class RenderRelativeWidthColumn extends RenderBox
   }
 
   bool get _debugHasNecessaryDirections {
-    assert(crossAxisAlignment != null);
     if (crossAxisAlignment == CrossAxisAlignment.start ||
         crossAxisAlignment == CrossAxisAlignment.end) {
       assert(textDirection != null,
@@ -352,7 +342,6 @@ class RenderRelativeWidthColumn extends RenderBox
   void performLayout() {
     distanceToBaseline = null;
     assert(_debugHasNecessaryDirections);
-    assert(constraints != null);
 
     // First we lay out all fix-sized children
     var rightMost = 0.0;

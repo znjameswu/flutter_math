@@ -46,8 +46,6 @@ class Math extends StatelessWidget {
     this.textScaleFactor,
     this.textStyle,
   })  : assert(ast != null || parseError != null),
-        assert(onErrorFallback != null),
-        assert(mathStyle != null || options != null),
         super(key: key);
 
   /// The equation to display.
@@ -149,7 +147,7 @@ class Math extends StatelessWidget {
       ast = SyntaxTree(greenRoot: TexParser(expression, settings).parse());
     } on ParseException catch (e) {
       parseError = e;
-    } on dynamic catch (e) {
+    } on Object catch (e) {
       parseError = ParseException('Unsanitized parse exception detected: $e.'
           'Please report this error with correponding input.');
     }
@@ -203,7 +201,7 @@ class Math extends StatelessWidget {
       child = ast!.buildWidget(options);
     } on BuildException catch (e) {
       return onErrorFallback(e);
-    } on dynamic catch (e) {
+    } on Object catch (e) {
       return onErrorFallback(
           BuildException('Unsanitized build exception detected: $e.'
               'Please report this error with correponding input.'));
