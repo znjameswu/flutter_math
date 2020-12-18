@@ -1,3 +1,7 @@
+## [0.2.1] - 2020/12/18
+- Fix overflow in `cases` environment
+- Fix errors caused by null text colors in `Math` widget.
+
 ## [0.2.0+2] - 2020/11/1
 Add support for `TextStyle.color` in widget constructors.
 
