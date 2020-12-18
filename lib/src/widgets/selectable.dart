@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
 import '../ast/options.dart';
 import '../ast/style.dart';
@@ -13,7 +14,6 @@ import '../ast/syntax_tree.dart';
 import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';
-import '../utils/tuple.dart';
 import '../utils/wrapper.dart';
 import 'controller.dart';
 import 'exception.dart';

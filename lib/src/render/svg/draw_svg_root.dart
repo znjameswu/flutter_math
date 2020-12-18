@@ -11,6 +11,6 @@ void drawSvgRoot(DrawableRoot svgRoot, PaintingContext context, Offset offset) {
   );
   canvas.clipRect(Rect.fromLTWH(0.0, 0.0, svgRoot.viewport.viewBox.width,
       svgRoot.viewport.viewBox.height));
-  svgRoot.draw(canvas, null);
+  svgRoot.draw(canvas, Rect.largest);
   canvas.restore();
 }
