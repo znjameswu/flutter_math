@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/rendering.dart';
 
 import 'helper.dart';
 import 'load_fonts.dart';
@@ -145,5 +146,10 @@ void main() {
     'Stretchy op renderer',
     r'\xleftarrow{a}\xrightarrow{b}',
     location: '../doc/img/stretchyop.png',
+  );
+
+  testTexToRender(
+    'Cases should not overflow #17',
+    r'\begin{cases}u=1z\\u=2\end{cases}',
   );
 }
