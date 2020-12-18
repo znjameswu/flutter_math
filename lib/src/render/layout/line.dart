@@ -388,6 +388,7 @@ class RenderLine extends RenderBox
       caretOffsets.add(mainPos);
       child = childParentData.nextSibling;
     }
+    colWidths.add(mainPos - lastColPosition);
 
     size = constraints.constrain(
         Size(mainPos, maxHeightAboveBaseline + maxDepthBelowBaseline));

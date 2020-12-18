@@ -53,9 +53,9 @@ void testTexToMatchGoldenFile(
 
 void testTexToRender(
   String description,
-  String expression,
+  String expression, [
   Future<void> Function(WidgetTester) callback,
-) {
+]) {
   testWidgets(description, (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -79,7 +79,9 @@ void testTexToRender(
       ),
     );
     await tester.pumpAndSettle();
-    await callback(tester);
+    if (callback != null) {
+      await callback(tester);
+    }
   });
 }
 
