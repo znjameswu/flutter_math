@@ -5,12 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
 import '../render/layout/line.dart';
 import '../render/layout/line_editable.dart';
 import '../utils/iterable_extensions.dart';
 import '../utils/num_extension.dart';
-import '../utils/tuple.dart';
 import '../utils/wrapper.dart';
 import '../widgets/mode.dart';
 import '../widgets/selectable.dart';
@@ -650,7 +650,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
       false;
 
   @override
-  ParentableNode<GreenNode> updateChildren(List<GreenNode> newChildren) =>
+  EquationRowNode updateChildren(List<GreenNode> newChildren) =>
       copyWith(children: newChildren);
 
   @override
@@ -710,7 +710,7 @@ mixin _ClipChildrenMixin on ParentableNode<GreenNode> {
         tail = child;
       }
     }
-    return this.updateChildren([
+    return this.updateChildren(<GreenNode>[
       if (head != null) head,
       for (var i = childIndex1Ceil; i < childIndex2Floor; i++) children[i],
       if (tail != null) tail,
