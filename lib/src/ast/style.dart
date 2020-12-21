@@ -43,9 +43,9 @@ extension MathStyleExt on MathStyle {
 
   MathStyle reduce(MathStyleDiff? diff) => diff == null
       ? this
-      : MathStyle.values[reduceTable[diff.index][this.index]];
+      : MathStyle.values[_reduceTable[diff.index][this.index]];
 
-  static const reduceTable = [
+  static const _reduceTable = [
     [4, 5, 4, 5, 6, 7, 6, 7], //sup
     [5, 5, 5, 5, 7, 7, 7, 7], //sub
     [2, 3, 4, 5, 6, 7, 6, 7], //fracNum
@@ -82,10 +82,10 @@ extension MathStyleExtOnSize on MathSize {
     if (style >= MathStyle.textCramped) {
       return this;
     }
-    return MathSize.values[sizeStyleMap[this.index][style.size - 1] - 1];
+    return MathSize.values[_sizeStyleMap[this.index][style.size - 1] - 1];
   }
 
-  static const sizeStyleMap = [
+  static const _sizeStyleMap = [
     [1, 1, 1],
     [2, 1, 1],
     [3, 1, 1],
