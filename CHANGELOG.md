@@ -1,5 +1,8 @@
-## [0.3.0-nullsafety.0]
-Migrate to dart null safety
+## [0.3.0-nullsafety.1] - 2020/12/21
+
+## [0.3.0-nullsafety.0] - 2020/12/21
+- Migrate to dart null safety
+- Migrate to new selection theme api
 
 ## [0.2.1] - 2020/12/18
 - Fix overflow in `cases` environment

@@ -118,32 +118,32 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
       _selectionOverlay?.hide();
       _selectionOverlay = null;
 
-      if (textSelectionControls != null) {
-        _selectionOverlay = MathSelectionOverlay(
-          clipboardStatus: kIsWeb ? null : ClipboardStatusNotifier(),
-          manager: this,
-          toolbarLayerLink: toolbarLayerLink,
-          startHandleLayerLink: startHandleLayerLink,
-          endHandleLayerLink: endHandleLayerLink,
-          onSelectionHandleTapped: () {
-            if (!controller.selection.isCollapsed) {
-              toolbarVisible ? hideToolbar() : showToolbar();
-            }
-          },
-          selectionControls: textSelectionControls,
-          dragStartBehavior: dragStartBehavior,
-          debugRequiredFor: widget,
-        );
-        _selectionOverlay!.handlesVisible = _shouldShowSelectionHandles(cause);
-        if (SchedulerBinding.instance!.schedulerPhase ==
-            SchedulerPhase.persistentCallbacks) {
-          SchedulerBinding.instance!
-              .addPostFrameCallback((_) => _selectionOverlay!.showHandles());
-        } else {
-          _selectionOverlay!.showHandles();
-        }
-        // _selectionOverlay.showHandles();
+      // if (textSelectionControls != null) {
+      _selectionOverlay = MathSelectionOverlay(
+        clipboardStatus: kIsWeb ? null : ClipboardStatusNotifier(),
+        manager: this,
+        toolbarLayerLink: toolbarLayerLink,
+        startHandleLayerLink: startHandleLayerLink,
+        endHandleLayerLink: endHandleLayerLink,
+        onSelectionHandleTapped: () {
+          if (!controller.selection.isCollapsed) {
+            toolbarVisible ? hideToolbar() : showToolbar();
+          }
+        },
+        selectionControls: textSelectionControls,
+        dragStartBehavior: dragStartBehavior,
+        debugRequiredFor: widget,
+      );
+      _selectionOverlay!.handlesVisible = _shouldShowSelectionHandles(cause);
+      if (SchedulerBinding.instance!.schedulerPhase ==
+          SchedulerPhase.persistentCallbacks) {
+        SchedulerBinding.instance!
+            .addPostFrameCallback((_) => _selectionOverlay!.showHandles());
+      } else {
+        _selectionOverlay!.showHandles();
       }
+      // _selectionOverlay.showHandles();
+      // }
     } else {
       _selectionOverlay?.update();
     }

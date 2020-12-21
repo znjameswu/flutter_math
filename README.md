@@ -16,15 +16,15 @@ The TeX parser is a Dart port of the KaTeX parser. There are only a few unsuppor
 
 `x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}`
 
-![Example1](doc/img/delta.png)
+![Example1](https://raw.githubusercontent.com/znjameswu/flutter_math/master/doc/img/delta.png)
 
 `i\hbar\frac{\partial}{\partial t}\Psi(\vec x,t) = -\frac{\hbar}{2m}\nabla^2\Psi(\vec x,t)+ V(\vec x)\Psi(\vec x,t)`
 
-![Example2](doc/img/schrodinger.png)
+![Example2](https://raw.githubusercontent.com/znjameswu/flutter_math/master/doc/img/schrodinger.png)
 
 `\hat f(\xi) = \int_{-\infty}^\infty f(x)e^{- 2\pi i \xi x}\mathrm{d}x`
 
-![Example3](doc/img/fourier.png)
+![Example3](https://raw.githubusercontent.com/znjameswu/flutter_math/master/doc/img/fourier.png)
 
 
 ## How to use
