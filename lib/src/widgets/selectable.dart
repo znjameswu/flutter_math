@@ -283,15 +283,11 @@ class SelectableMath extends StatelessWidget {
         textSelectionControls ??= cupertinoTextSelectionControls;
         paintCursorAboveText = true;
         cursorOpacityAnimates = true;
-        if (theme.useTextSelectionTheme) {
-          cursorColor ??= selectionTheme.cursorColor ??
-              CupertinoTheme.of(context).primaryColor;
-          selectionColor = selectionTheme.selectionColor ??
-              CupertinoTheme.of(context).primaryColor;
-        } else {
-          cursorColor ??= CupertinoTheme.of(context).primaryColor;
-          selectionColor = theme.textSelectionColor;
-        }
+        cursorColor ??= selectionTheme.cursorColor ??
+            CupertinoTheme.of(context).primaryColor;
+        selectionColor = selectionTheme.selectionColor ??
+            CupertinoTheme.of(context).primaryColor;
+
         cursorRadius ??= const Radius.circular(2.0);
         cursorOffset = Offset(
             iOSHorizontalOffset / MediaQuery.of(context).devicePixelRatio, 0);
@@ -305,15 +301,10 @@ class SelectableMath extends StatelessWidget {
         textSelectionControls ??= materialTextSelectionControls;
         paintCursorAboveText = false;
         cursorOpacityAnimates = false;
-        if (theme.useTextSelectionTheme) {
-          cursorColor ??=
-              selectionTheme.cursorColor ?? theme.colorScheme.primary;
-          selectionColor =
-              selectionTheme.selectionColor ?? theme.colorScheme.primary;
-        } else {
-          cursorColor ??= theme.cursorColor;
-          selectionColor = theme.textSelectionColor;
-        }
+        cursorColor ??= selectionTheme.cursorColor ?? theme.colorScheme.primary;
+        selectionColor =
+            selectionTheme.selectionColor ?? theme.colorScheme.primary;
+
         break;
     }
 
