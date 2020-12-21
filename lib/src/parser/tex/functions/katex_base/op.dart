@@ -92,11 +92,10 @@ NaryOperatorNode _parseNaryOperator(
   FunctionContext context,
 ) {
   final scriptsResult = parser.parseScripts(allowLimits: true);
-  EquationRowNode arg;
-  arg = parser.parseAtom(context.breakOnTokenText)?.wrapWithEquationRow();
+  final arg = parser.parseAtom(context.breakOnTokenText)?.wrapWithEquationRow();
 
   return NaryOperatorNode(
-    operator: texSymbolCommandConfigs[Mode.math][command].symbol,
+    operator: texSymbolCommandConfigs[Mode.math]![command]!.symbol,
     lowerLimit: scriptsResult.subscript,
     upperLimit: scriptsResult.superscript,
     naryand: arg ?? EquationRowNode.empty(),
@@ -131,13 +130,13 @@ FunctionNode _parseMathFunction(
     if (scriptsResult.subscript != null) {
       functionName = UnderNode(
         base: functionName,
-        below: scriptsResult.subscript,
+        below: scriptsResult.subscript!,
       ).wrapWithEquationRow();
     }
     if (scriptsResult.superscript != null) {
       functionName = OverNode(
         base: functionName,
-        above: scriptsResult.superscript,
+        above: scriptsResult.superscript!,
       ).wrapWithEquationRow();
     }
     return FunctionNode(
@@ -173,7 +172,7 @@ const singleCharBigOps = {
 
 GreenNode _bigOpHandler(TexParser parser, FunctionContext context) {
   final fName = context.funcName.length == 1
-      ? singleCharBigOps[context.funcName]
+      ? singleCharBigOps[context.funcName]!
       : context.funcName;
   return _parseNaryOperator(fName, parser, context);
 }
@@ -255,7 +254,7 @@ const singleCharIntegrals = {
 };
 GreenNode _integralHandler(TexParser parser, FunctionContext context) {
   final fName = context.funcName.length == 1
-      ? singleCharIntegrals[context.funcName]
+      ? singleCharIntegrals[context.funcName]!
       : context.funcName;
   return _parseNaryOperator(fName, parser, context);
 }

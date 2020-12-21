@@ -16,7 +16,7 @@ EncodeResult _symbolEncoder(GreenNode node) {
   }
   if (mode == Mode.math && negatedOperatorSymbols.containsKey(symbol)) {
     final encodeAsNegatedOp =
-        _baseSymbolEncoder(negatedOperatorSymbols[symbol][1], Mode.math);
+        _baseSymbolEncoder(negatedOperatorSymbols[symbol]![1], Mode.math);
     if (encodeAsNegatedOp != null) {
       return StaticEncodeResult('\\not $encodeAsNegatedOp');
     }
@@ -25,13 +25,13 @@ EncodeResult _symbolEncoder(GreenNode node) {
     'unknown symbol',
     'Unrecognized symbol encountered during TeX encoding: '
         '${unicodeLiteral(symbol)} with mode $mode type ${symbolNode.atomType} '
-        'font ${symbolNode.overrideFont.fontName}',
+        'font ${symbolNode.overrideFont?.fontName}',
     StaticEncodeResult(symbolNode.symbol),
   );
 }
 
-String _baseSymbolEncoder(String symbol, Mode mode,
-    [FontOptions overrideFont, AtomType type, AtomType overrideType]) {
+String? _baseSymbolEncoder(String symbol, Mode mode,
+    [FontOptions? overrideFont, AtomType? type, AtomType? overrideType]) {
   // For alpha-numeric and unescaped symbols, provide a fast track
   if (overrideFont == null && overrideType == null && symbol.length == 1) {
     if (isAlphaNumericUnit(symbol) ||
@@ -45,14 +45,14 @@ String _baseSymbolEncoder(String symbol, Mode mode,
   final candidates = <MapEntry<String, TexSymbolConfig>>[];
   if (mode != Mode.text) {
     candidates.addAll(
-      texSymbolCommandConfigs[Mode.math]
+      texSymbolCommandConfigs[Mode.math]!
           .entries
           .where((entry) => entry.value.symbol == symbol),
     );
   }
   if (mode != Mode.math) {
     candidates.addAll(
-      texSymbolCommandConfigs[Mode.text]
+      texSymbolCommandConfigs[Mode.text]!
           .entries
           .where((entry) => entry.value.symbol == symbol),
     );
@@ -61,9 +61,9 @@ String _baseSymbolEncoder(String symbol, Mode mode,
     final candidFont = candidate.value.font;
     final fontScore = candidFont == overrideFont
         ? 1000
-        : (candidFont.fontFamily == overrideFont.fontFamily ? 500 : 0) +
-            (candidFont.fontShape == overrideFont.fontShape ? 300 : 0) +
-            (candidFont.fontWeight == overrideFont.fontWeight ? 200 : 0);
+        : (candidFont?.fontFamily == overrideFont?.fontFamily ? 500 : 0) +
+            (candidFont?.fontShape == overrideFont?.fontShape ? 300 : 0) +
+            (candidFont?.fontWeight == overrideFont?.fontWeight ? 200 : 0);
     final typeScore = candidate.value.type == overrideType
         ? 150
         : candidate.value.type == type

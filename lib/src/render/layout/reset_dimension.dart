@@ -5,18 +5,18 @@ import '../constants.dart';
 import '../utils/render_box_offset.dart';
 
 class ResetDimension extends SingleChildRenderObjectWidget {
-  final double height;
-  final double depth;
-  final double width;
+  final double? height;
+  final double? depth;
+  final double? width;
   final CrossAxisAlignment horizontalAlignment;
 
   const ResetDimension({
-    Key key,
+    Key? key,
     this.height,
     this.depth,
     this.width,
-    this.horizontalAlignment,
-    Widget child,
+    this.horizontalAlignment = CrossAxisAlignment.center,
+    required Widget child,
   }) : super(key: key, child: child);
 
   @override
@@ -40,38 +40,38 @@ class ResetDimension extends SingleChildRenderObjectWidget {
 
 class RenderResetDimension extends RenderShiftedBox {
   RenderResetDimension({
-    RenderBox child,
-    double layoutHeight,
-    double layoutDepth,
-    double layoutWidth,
-    CrossAxisAlignment horizontalAlignment,
+    RenderBox? child,
+    double? layoutHeight,
+    double? layoutDepth,
+    double? layoutWidth,
+    CrossAxisAlignment horizontalAlignment = CrossAxisAlignment.center,
   })  : _layoutHeight = layoutHeight,
         _layoutDepth = layoutDepth,
         _layoutWidth = layoutWidth,
         _horizontalAlignment = horizontalAlignment,
         super(child);
 
-  double get layoutHeight => _layoutHeight;
-  double _layoutHeight;
-  set layoutHeight(double value) {
+  double? get layoutHeight => _layoutHeight;
+  double? _layoutHeight;
+  set layoutHeight(double? value) {
     if (_layoutHeight != value) {
       _layoutHeight = value;
       markNeedsLayout();
     }
   }
 
-  double get layoutDepth => _layoutDepth;
-  double _layoutDepth;
-  set layoutDepth(double value) {
+  double? get layoutDepth => _layoutDepth;
+  double? _layoutDepth;
+  set layoutDepth(double? value) {
     if (_layoutDepth != value) {
       _layoutDepth = value;
       markNeedsLayout();
     }
   }
 
-  double get layoutWidth => _layoutWidth;
-  double _layoutWidth;
-  set layoutWidth(double value) {
+  double? get layoutWidth => _layoutWidth;
+  double? _layoutWidth;
+  set layoutWidth(double? value) {
     if (_layoutWidth != value) {
       _layoutWidth = value;
       markNeedsLayout();
@@ -101,7 +101,7 @@ class RenderResetDimension extends RenderShiftedBox {
       return super.computeMinIntrinsicHeight(width);
     }
     if (layoutHeight != null && layoutDepth != null) {
-      return layoutHeight + layoutDepth;
+      return layoutHeight! + layoutDepth!;
     }
     return 0;
   }
@@ -112,19 +112,20 @@ class RenderResetDimension extends RenderShiftedBox {
       return super.computeMaxIntrinsicHeight(width);
     }
     if (layoutHeight != null && layoutDepth != null) {
-      return layoutHeight + layoutDepth;
+      return layoutHeight! + layoutDepth!;
     }
     return 0;
   }
 
   @override
-  double computeDistanceToActualBaseline(TextBaseline baseline) =>
+  double? computeDistanceToActualBaseline(TextBaseline baseline) =>
       layoutHeight ?? super.computeDistanceToActualBaseline(baseline);
 
   @override
   void performLayout() {
+    final child = this.child!;
     child.layout(infiniteConstraint, parentUsesSize: true);
-    final childHeight = child.getDistanceToBaseline(TextBaseline.alphabetic);
+    final childHeight = child.getDistanceToBaseline(TextBaseline.alphabetic)!;
     final childDepth = child.size.height - childHeight;
     final childWidth = child.size.width;
 

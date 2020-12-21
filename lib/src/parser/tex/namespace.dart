@@ -28,9 +28,9 @@ class Namespace<T> {
       : current = Map.from(current);
   final Map<String, T> current;
   final Map<String, T> builtins;
-  final undefStack = <Map<String, T>>[];
+  final undefStack = <Map<String, T?>>[];
 
-  T get(String name) {
+  T? get(String name) {
     final currentRes = this.current[name];
     if (currentRes != null) {
       return currentRes;

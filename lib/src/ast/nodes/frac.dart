@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:meta/meta.dart';
 
 import '../../render/layout/custom_layout.dart';
 import '../options.dart';
@@ -11,7 +10,7 @@ import '../style.dart';
 import '../syntax_tree.dart';
 
 /// Frac node.
-class FracNode extends SlotableNode {
+class FracNode extends SlotableNode<EquationRowNode> {
   /// Numerator.
   final EquationRowNode numerator;
 
@@ -21,26 +20,25 @@ class FracNode extends SlotableNode {
   /// Bar size.
   ///
   /// If null, will use default bar size.
-  final Measurement barSize;
+  final Measurement? barSize;
 
   /// Whether it is a continued frac `\cfrac`.
   final bool continued; // TODO continued
 
   FracNode({
     // this.options,
-    @required this.numerator,
-    @required this.denominator,
+    required this.numerator,
+    required this.denominator,
     this.barSize,
     this.continued = false,
-  })  : assert(numerator != null),
-        assert(denominator != null);
+  });
 
   @override
   List<EquationRowNode> computeChildren() => [numerator, denominator];
 
   @override
   BuildResult buildWidget(
-          MathOptions options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult?> childBuildResults) =>
       BuildResult(
         options: options,
         widget: CustomLayout(
@@ -51,11 +49,11 @@ class FracNode extends SlotableNode {
           children: <Widget>[
             CustomLayoutId(
               id: _FracPos.numer,
-              child: childBuildResults[0].widget,
+              child: childBuildResults[0]!.widget,
             ),
             CustomLayoutId(
               id: _FracPos.denom,
-              child: childBuildResults[1].widget,
+              child: childBuildResults[1]!.widget,
             ),
           ],
         ),
@@ -72,9 +70,12 @@ class FracNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
-      this.copyWith(numerator: newChildren[0], denumerator: newChildren[1]);
+  FracNode updateChildren(List<EquationRowNode> newChildren) => FracNode(
+        // options: options ?? this.options,
+        numerator: newChildren[0],
+        denominator: newChildren[1],
+        barSize: barSize,
+      );
 
   @override
   AtomType get leftType => AtomType.ord;
@@ -83,26 +84,13 @@ class FracNode extends SlotableNode {
   AtomType get rightType => AtomType.ord;
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'numerator': numerator.toJson(),
       'denominator': denominator.toJson(),
       if (barSize != null) 'barSize': barSize.toString(),
       if (continued) 'continued': continued,
     });
-
-  FracNode copyWith({
-    MathOptions options,
-    EquationRowNode numerator,
-    EquationRowNode denumerator,
-    Measurement barSize,
-  }) =>
-      FracNode(
-        // options: options ?? this.options,
-        numerator: numerator ?? this.numerator,
-        denominator: denumerator ?? this.denominator,
-        barSize: barSize ?? this.barSize,
-      );
 }
 
 enum _FracPos {
@@ -111,12 +99,12 @@ enum _FracPos {
 }
 
 class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
-  final Measurement barSize;
+  final Measurement? barSize;
   final MathOptions options;
 
   FracLayoutDelegate({
-    @required this.barSize,
-    @required this.options,
+    required this.barSize,
+    required this.options,
   });
 
   var theta = 0.0;
@@ -134,11 +122,11 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
 
   @override
   AxisConfiguration<_FracPos> performHorizontalIntrinsicLayout({
-    @required Map<_FracPos, double> childrenWidths,
+    required Map<_FracPos, double> childrenWidths,
     bool isComputingIntrinsics = false,
   }) {
-    final numerSize = childrenWidths[_FracPos.numer];
-    final denomSize = childrenWidths[_FracPos.denom];
+    final numerSize = childrenWidths[_FracPos.numer]!;
+    final denomSize = childrenWidths[_FracPos.denom]!;
     final barLength = math.max(numerSize, denomSize);
     // KaTeX/src/katex.less
     final nullDelimiterWidth = 0.12.cssEm.toLpUnder(options);
@@ -159,14 +147,14 @@ class FracLayoutDelegate extends IntrinsicLayoutDelegate<_FracPos> {
 
   @override
   AxisConfiguration<_FracPos> performVerticalIntrinsicLayout({
-    @required Map<_FracPos, double> childrenHeights,
-    @required Map<_FracPos, double> childrenBaselines,
+    required Map<_FracPos, double> childrenHeights,
+    required Map<_FracPos, double> childrenBaselines,
     bool isComputingIntrinsics = false,
   }) {
-    final numerSize = childrenHeights[_FracPos.numer];
-    final denomSize = childrenHeights[_FracPos.denom];
-    final numerHeight = childrenBaselines[_FracPos.numer];
-    final denomHeight = childrenBaselines[_FracPos.denom];
+    final numerSize = childrenHeights[_FracPos.numer]!;
+    final denomSize = childrenHeights[_FracPos.denom]!;
+    final numerHeight = childrenBaselines[_FracPos.numer]!;
+    final denomHeight = childrenBaselines[_FracPos.denom]!;
     final metrics = options.fontMetrics;
     final xi8 = metrics.defaultRuleThickness.cssEm.toLpUnder(options);
     final theta = barSize?.toLpUnder(options) ?? xi8;

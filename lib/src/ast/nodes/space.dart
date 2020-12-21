@@ -35,14 +35,14 @@ class SpaceNode extends LeafNode {
 
   final bool alignerOrSpacer;
   SpaceNode({
-    @required this.height,
-    @required this.width,
+    required this.height,
+    required this.width,
     this.shift = Measurement.zero,
     this.depth = Measurement.zero,
     this.noBreak = false,
     this.fill = false,
     // this.background,
-    @required this.mode,
+    required this.mode,
     this.alignerOrSpacer = false,
   });
 
@@ -59,7 +59,7 @@ class SpaceNode extends LeafNode {
 
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     if (alignerOrSpacer == true) {
       return BuildResult(
         options: options,
@@ -97,7 +97,7 @@ class SpaceNode extends LeafNode {
       oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'mode': mode.toString(),
       'height': height.toString(),

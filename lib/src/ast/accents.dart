@@ -1,7 +1,7 @@
 class AccentRenderConfig {
-  final String overChar;
-  final String overImageName;
-  final String underImageName;
+  final String? overChar;
+  final String? overImageName;
+  final String? underImageName;
   // final bool alwaysShifty;
   const AccentRenderConfig({
     this.overChar,

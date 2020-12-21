@@ -13,7 +13,7 @@ EncodeResult _naryEncoder(GreenNode node) {
   return TransparentTexEncodeResult(<dynamic>[
     TexMultiscriptEncodeResult(
       base: naryNode.limits != null
-          ? '$command\\${naryNode.limits ? '' : 'no'}limits'
+          ? '$command\\${naryNode.limits! ? '' : 'no'}limits'
           : command,
       sub: naryNode.lowerLimit,
       sup: naryNode.upperLimit,

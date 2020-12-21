@@ -15,7 +15,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../load_fonts.dart';
 
-Widget overlay({Widget child}) => MaterialApp(
+Widget overlay({required Widget child}) => MaterialApp(
       home: Center(
         child: Material(
           child: child,
@@ -34,7 +34,7 @@ void main() {
     final root = tester.renderObject(find.byType(InternalSelectableMath));
     expect(root, isNotNull);
 
-    RenderEditableLine renderEditable;
+    RenderEditableLine? renderEditable;
     void recursiveFinder(RenderObject child) {
       if (child is RenderEditableLine) {
         renderEditable = child;
@@ -45,7 +45,7 @@ void main() {
 
     root.visitChildren(recursiveFinder);
     expect(renderEditable, isNotNull);
-    return renderEditable;
+    return renderEditable!;
   }
 
   Offset textOffsetToCaretPosition(WidgetTester tester, int index) {
@@ -107,7 +107,7 @@ void main() {
       await tester.pump();
 
       // Collapse selection should not paint.
-      expect(selectableMath.selectionOverlay.handlesAreVisible, isFalse);
+      expect(selectableMath.selectionOverlay!.handlesAreVisible, isFalse);
       // Long press on the 't' character of text 'selectable' to show context
       // menu.
       const dIndex = 5;
@@ -370,8 +370,8 @@ void main() {
 
       final selectableMath = tester.state<InternalSelectableMathState>(
           find.byType(InternalSelectableMath));
-      expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
-      expect(selectableMath.selectionOverlay.toolbarIsVisible, isTrue);
+      expect(selectableMath.selectionOverlay!.handlesAreVisible, isTrue);
+      expect(selectableMath.selectionOverlay!.toolbarIsVisible, isTrue);
     });
 
     testWidgets('Double tap shows handles and toolbar',
@@ -395,8 +395,8 @@ void main() {
 
       final selectableMath = tester.state<InternalSelectableMathState>(
           find.byType(InternalSelectableMath));
-      expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
-      expect(selectableMath.selectionOverlay.toolbarIsVisible, isTrue);
+      expect(selectableMath.selectionOverlay!.handlesAreVisible, isTrue);
+      expect(selectableMath.selectionOverlay!.toolbarIsVisible, isTrue);
     });
 
     testWidgets(
@@ -426,8 +426,8 @@ void main() {
 
         final selectableMath = tester.state<InternalSelectableMathState>(
             find.byType(InternalSelectableMath));
-        expect(selectableMath.selectionOverlay.toolbarIsVisible, isFalse);
-        expect(selectableMath.selectionOverlay.handlesAreVisible, isFalse);
+        expect(selectableMath.selectionOverlay!.toolbarIsVisible, isFalse);
+        expect(selectableMath.selectionOverlay!.handlesAreVisible, isFalse);
       },
     );
 
@@ -458,8 +458,8 @@ void main() {
 
         final selectableMath = tester.state<InternalSelectableMathState>(
             find.byType(InternalSelectableMath));
-        expect(selectableMath.selectionOverlay.toolbarIsVisible, isFalse);
-        expect(selectableMath.selectionOverlay.handlesAreVisible, isFalse);
+        expect(selectableMath.selectionOverlay!.toolbarIsVisible, isFalse);
+        expect(selectableMath.selectionOverlay!.handlesAreVisible, isFalse);
       },
     );
 
@@ -494,8 +494,8 @@ void main() {
 
         final selectableMath = tester.state<InternalSelectableMathState>(
             find.byType(InternalSelectableMath));
-        expect(selectableMath.selectionOverlay.toolbarIsVisible, isFalse);
-        expect(selectableMath.selectionOverlay.handlesAreVisible, isFalse);
+        expect(selectableMath.selectionOverlay!.toolbarIsVisible, isFalse);
+        expect(selectableMath.selectionOverlay!.handlesAreVisible, isFalse);
       },
     );
 
@@ -519,7 +519,7 @@ void main() {
 
       await tester.pump();
 
-      expect(RendererBinding.instance.mouseTracker.debugDeviceActiveCursor(1),
+      expect(RendererBinding.instance!.mouseTracker.debugDeviceActiveCursor(1),
           SystemMouseCursors.text);
     });
 
@@ -547,8 +547,8 @@ void main() {
         expect(find.text('Cut'), findsNothing);
         var selectableMath = tester.state<InternalSelectableMathState>(
             find.byType(InternalSelectableMath));
-        expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
-        expect(selectableMath.selectionOverlay.toolbarIsVisible, isTrue);
+        expect(selectableMath.selectionOverlay!.handlesAreVisible, isTrue);
+        expect(selectableMath.selectionOverlay!.toolbarIsVisible, isTrue);
 
         await tester.tap(find.text('Select all'));
         await tester.pump();
@@ -558,7 +558,7 @@ void main() {
         expect(find.text('Cut'), findsNothing);
         selectableMath = tester.state<InternalSelectableMathState>(
             find.byType(InternalSelectableMath));
-        expect(selectableMath.selectionOverlay.handlesAreVisible, isTrue);
+        expect(selectableMath.selectionOverlay!.handlesAreVisible, isTrue);
       },
       variant: const TargetPlatformVariant(<TargetPlatform>{
         TargetPlatform.android,
@@ -593,7 +593,7 @@ void main() {
 
       final state = tester.state<InternalSelectableMathState>(
           find.byType(InternalSelectableMath));
-      expect(state.selectionOverlay.handlesAreVisible, isFalse);
+      expect(state.selectionOverlay!.handlesAreVisible, isFalse);
       expect(
         state.currentTextEditingValue.selection,
         const TextSelection.collapsed(offset: 0),
@@ -609,7 +609,7 @@ void main() {
           state.currentTextEditingValue.selection,
           const TextSelection(baseOffset: 2, extentOffset: 7),
         );
-        expect(state.selectionOverlay.handlesAreVisible, isFalse);
+        expect(state.selectionOverlay!.handlesAreVisible, isFalse);
       }
     });
 

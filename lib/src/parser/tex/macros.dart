@@ -35,7 +35,7 @@ import 'parse_error.dart';
 import 'symbols.dart';
 import 'token.dart';
 
-Map<String, MacroDefinition> _builtinMacros;
+Map<String, MacroDefinition> _builtinMacros = {};
 
 class MacroDefinition {
   final MacroExpansion Function(MacroContext context) expand;
@@ -53,7 +53,11 @@ class MacroDefinition {
 }
 
 class MacroExpansion {
-  const MacroExpansion({this.tokens, this.numArgs, this.unexpandable = false});
+  const MacroExpansion({
+    required this.tokens,
+    required this.numArgs,
+    this.unexpandable = false,
+  });
   final List<Token> tokens;
   final int numArgs;
 
@@ -80,7 +84,7 @@ class MacroExpansion {
 }
 
 void defineMacro(String name, MacroDefinition body) {
-  _builtinMacros ??= {};
+  // _builtinMacros ??= {};
   _builtinMacros[name] = body;
 }
 
@@ -154,7 +158,7 @@ String newcommand(MacroContext context, bool existsOK, bool nonexistsOK) {
 }
 
 final latexRaiseA =
-    '${fontMetricsData['Main-Regular']["T".codeUnitAt(0)].height - 0.7 * fontMetricsData['Main-Regular']["A".codeUnitAt(0)].height}em';
+    '${fontMetricsData['Main-Regular']!["T".codeUnitAt(0)]!.height - 0.7 * fontMetricsData['Main-Regular']!["A".codeUnitAt(0)]!.height}em';
 
 const dotsByToken = {
   ',': '\\dotsc',
@@ -311,8 +315,8 @@ final Map<String, MacroDefinition> builtinMacros = {
 // calls to a function \@char dealt with in the Parser.
   '\\char': MacroDefinition.fromCtxString((context) {
     var token = context.popToken();
-    int base;
-    int number;
+    int? base;
+    int? number;
     if (token.text == "'") {
       base = 8;
       token = context.popToken();
@@ -337,10 +341,10 @@ final Map<String, MacroDefinition> builtinMacros = {
       if (number == null || number >= base) {
         throw ParseException('Invalid base-$base digit ${token.text}');
       }
-      int digit;
+      int? digit;
       while ((digit = digitToNumber[context.future().text]) != null &&
-          digit < base) {
-        number *= base;
+          digit! < base) {
+        number = number! * base;
         number += digit;
         context.popToken();
       }
@@ -374,7 +378,7 @@ final Map<String, MacroDefinition> builtinMacros = {
     final tok = context.popToken();
     final name = tok.text;
     info('$tok, ${context.macros.get(name)}, ${functions[name]},'
-        '${texSymbolCommandConfigs[Mode.math][name]}, ${texSymbolCommandConfigs[Mode.text][name]}');
+        '${texSymbolCommandConfigs[Mode.math]![name]}, ${texSymbolCommandConfigs[Mode.text]![name]}');
     return '';
   }),
 
@@ -524,14 +528,14 @@ final Map<String, MacroDefinition> builtinMacros = {
     var thedots = '\\dotso';
     final next = context.expandAfterFuture().text;
     if (dotsByToken.containsKey(next)) {
-      thedots = dotsByToken[next];
-    } else if (next != null &&
-        next.length >= 4 &&
-        next.substring(0, 4) == '\\not') {
+      thedots = dotsByToken[next]!;
+    } else if (
+        // next != null &&
+        next.length >= 4 && next.substring(0, 4) == '\\not') {
       thedots = '\\dotsb';
-    } else if (texSymbolCommandConfigs[Mode.math].containsKey(next)) {
-      if (texSymbolCommandConfigs[Mode.math][next].type == AtomType.bin ||
-          texSymbolCommandConfigs[Mode.math][next].type == AtomType.rel) {
+    } else if (texSymbolCommandConfigs[Mode.math]!.containsKey(next)) {
+      final command = texSymbolCommandConfigs[Mode.math]![next]!;
+      if (command.type == AtomType.bin || command.type == AtomType.rel) {
         thedots = '\\dotsb';
       }
     }

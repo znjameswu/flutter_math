@@ -29,7 +29,7 @@ const _phantomEntries = {
 };
 
 GreenNode _phantomHandler(TexParser parser, FunctionContext context) {
-  final body = parser.parseArgNode(mode: null, optional: false);
+  final body = parser.parseArgNode(mode: null, optional: false)!;
   return PhantomNode(
     phantomChild: body.wrapWithEquationRow(),
     zeroHeight: context.funcName == '\\hphantom',

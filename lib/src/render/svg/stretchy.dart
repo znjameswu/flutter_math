@@ -11,7 +11,7 @@ class _KatexImagesData {
   final List<String> paths;
   final double minWidth;
   final double viewBoxHeight;
-  final Alignment align;
+  final Alignment? align;
   const _KatexImagesData(this.paths, this.minWidth, this.viewBoxHeight,
       [this.align]);
 }
@@ -129,13 +129,16 @@ Widget strechySvgSpan(String name, double width, MathOptions options) {
     }
     height = height.cssEm.toLpUnder(options);
     return svgWidgetFromPath(
-      svgPaths[pathName],
+      svgPaths[pathName]!,
       Size(width, height),
       Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
       options.color,
     );
   } else {
     final data = katexImagesData[name];
+    if (data == null) {
+      throw ArgumentError.value(name, 'name', 'Invalid stretchy svg name');
+    }
     final height = (data.viewBoxHeight / 1000).cssEm.toLpUnder(options);
     final numSvgChildren = data.paths.length;
     final actualWidth = math.max(width, data.minWidth.cssEm.toLpUnder(options));
@@ -144,7 +147,7 @@ Widget strechySvgSpan(String name, double width, MathOptions options) {
 
     switch (numSvgChildren) {
       case 1:
-        aligns = [data.align];
+        aligns = [data.align!]; // Single svg must specify their alignment
         widths = [actualWidth];
         break;
       case 2:
@@ -159,6 +162,8 @@ Widget strechySvgSpan(String name, double width, MathOptions options) {
         ];
         widths = [actualWidth / 4, actualWidth / 2, actualWidth / 4];
         break;
+      default:
+        throw StateError('Bug inside stretchy svg code');
     }
 
     return Row(
@@ -167,7 +172,7 @@ Widget strechySvgSpan(String name, double width, MathOptions options) {
       children: List.generate(
         numSvgChildren,
         (index) => svgWidgetFromPath(
-          svgPaths[data.paths[index]],
+          svgPaths[data.paths[index]]!,
           Size(widths[index], height),
           Rect.fromLTWH(0, 0, viewBoxWidth, data.viewBoxHeight),
           options.color,

@@ -48,65 +48,110 @@ const tokenRegexString = '($spaceRegexString+)|' // white space
     '|$controlSymbolRegexString)'; // \\, \', etc.
 
 abstract class LexerInterface {
-  String input;
+  String get input;
   static final RegExp tokenRegex = RegExp(tokenRegexString, multiLine: true);
 }
 
 class Lexer implements LexerInterface {
   static final tokenRegex = RegExp(tokenRegexString, multiLine: true);
-  Lexer(this.input, this.settings) {
-    this.matches = tokenRegex.allMatches(input).toList(growable: false);
-    it = matches.iterator;
-  }
-  String input;
-  TexParserSettings settings;
+  Lexer(this.input, this.settings) : it = tokenRegex.allMatches(input).iterator;
+
+  final String input;
+  final TexParserSettings settings;
   final Map<String, int> catCodes = {'%': 14};
   int pos = 0;
-  Iterable<RegExpMatch> matches;
-  Iterator<RegExpMatch> it;
+  // final Iterable<RegExpMatch> matches;
+  final Iterator<RegExpMatch> it;
 
   Token lex() {
-    final input = this.input;
-    pos = (it.current?.end) ?? pos;
     if (this.pos == input.length) {
       return Token('EOF', SourceLocation(this, pos, pos));
     }
-
-    it.moveNext();
-    final match = it.current;
-
-    // Validate current match
-    if (match == null || match.start != pos) {
+    final hasMatch = it.moveNext();
+    if (!hasMatch) {
       throw ParseException('Unexpected character: \'${input[pos]}\'',
           Token(input[pos], SourceLocation(this, pos, pos + 1)));
     }
 
-    // pos = match.end;
+    final match = it.current;
+    if (match.start != pos) {
+      throw ParseException('Unexpected character: \'${input[pos]}\'',
+          Token(input[pos], SourceLocation(this, pos, pos + 1)));
+    }
+    pos = match.end;
+
     var text = match[2] ?? ' ';
-    if (this.catCodes[text] == 14) {
+    if (text == '%') {
       // comment character
       final nlIndex = input.indexOf('\n', it.current.end);
       if (nlIndex == -1) {
         pos = input.length;
-        while (it != null && it.current != null) {
-          it.moveNext();
+        while (it.moveNext()) {
+          pos = it.current.end;
         }
         this.settings.reportNonstrict(
             'commentAtEnd',
             '% comment has no terminating newline; LaTeX would '
                 'fail because of commenting the end of math mode (e.g. \$)');
       } else {
-        while (
-            it != null && it.current != null && it.current.end < nlIndex + 1) {
-          it.moveNext();
+        while (it.current.end < nlIndex + 1) {
+          final canMoveNext = it.moveNext();
+          if (canMoveNext) {
+            pos = it.current.end;
+          } else {
+            break;
+          }
         }
       }
       return this.lex();
     }
     final controlMatch = controlWordWhitespaceRegex.firstMatch(text);
     if (controlMatch != null) {
-      text = controlMatch.group(1);
+      text = controlMatch.group(1)!;
     }
     return Token(text, SourceLocation(this, match.start, match.end));
+
+    // // final input = this.input;
+    // pos = (it.current?.end) ?? pos;
+    // if (this.pos == input.length) {
+    //   return Token('EOF', SourceLocation(this, pos, pos));
+    // }
+
+    // it.moveNext();
+    // final match = it.current;
+
+    // // Validate current match
+    // if (match == null || match.start != pos) {
+    //   throw ParseException('Unexpected character: \'${input[pos]}\'',
+    //       Token(input[pos], SourceLocation(this, pos, pos + 1)));
+    // }
+
+    // // pos = match.end;
+    // var text = match[2] ?? ' ';
+    // if (text == '%') {
+    //   // comment character
+    //   final nlIndex = input.indexOf('\n', it.current.end);
+    //   if (nlIndex == -1) {
+    //     pos = input.length;
+    //     while (it != null && it.current != null) {
+    //       it.moveNext();
+    //     }
+    //     this.settings.reportNonstrict(
+    //         'commentAtEnd',
+    //         '% comment has no terminating newline; LaTeX would '
+    //             'fail because of commenting the end of math mode (e.g. \$)');
+    //   } else {
+    //     while (
+    //         it != null && it.current != null && it.current.end < nlIndex + 1) {
+    //       it.moveNext();
+    //     }
+    //   }
+    //   return this.lex();
+    // }
+    // final controlMatch = controlWordWhitespaceRegex.firstMatch(text);
+    // if (controlMatch != null) {
+    //   text = controlMatch.group(1);
+    // }
+    // return Token(text, SourceLocation(this, match.start, match.end));
   }
 }

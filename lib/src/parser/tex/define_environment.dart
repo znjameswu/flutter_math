@@ -21,8 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:meta/meta.dart';
-
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import 'environments/array.dart';
@@ -34,9 +32,9 @@ class EnvContext {
   final String envName;
   // final TexParser parser;
   const EnvContext({
-    @required this.mode,
-    @required this.envName,
-    // @required this.parser,
+    required this.mode,
+    required this.envName,
+    // required this.parser,
   });
 }
 
@@ -47,11 +45,11 @@ class EnvSpec {
   final int numOptionalArgs;
   final GreenNode Function(TexParser parser, EnvContext context) handler;
   const EnvSpec({
-    @required this.numArgs,
+    required this.numArgs,
     this.greediness = 1,
     this.allowedInText = false,
     this.numOptionalArgs = 0,
-    @required this.handler,
+    required this.handler,
   });
 }
 

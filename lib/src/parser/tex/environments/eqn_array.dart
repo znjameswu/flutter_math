@@ -21,6 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import 'package:collection/collection.dart';
+
 import '../../../ast/nodes/equation_array.dart';
 import '../../../ast/nodes/left_right.dart';
 import '../../../ast/nodes/matrix.dart';
@@ -32,7 +34,6 @@ import '../../../ast/size.dart';
 import '../../../ast/style.dart';
 import '../../../ast/syntax_tree.dart';
 import '../../../ast/types.dart';
-import '../../../utils/iterable_extensions.dart';
 import '../define_environment.dart';
 import '../functions/katex_base.dart';
 import '../macros.dart';
@@ -144,14 +145,14 @@ GreenNode _alignedAtHandler(TexParser parser, EnvContext context) {
 EquationArrayNode parseEqnArray(
   TexParser parser, {
   bool addJot = false,
-  EquationRowNode Function(List<EquationRowNode> cells) concatRow,
+  required EquationRowNode Function(List<EquationRowNode> cells) concatRow,
 }) {
   // Parse body of array with \\ temporarily mapped to \cr
   parser.macroExpander.beginGroup();
   parser.macroExpander.macros.set('\\\\', MacroDefinition.fromString('\\cr'));
 
   // Get current arraystretch if it's not set by the environment
-  var arrayStretch = 1.0;
+  double? arrayStretch = 1.0;
   // if (arrayStretch == null) {
   final stretch = parser.macroExpander.expandMacroAsText('\\arraystretch');
   if (stretch == null) {
@@ -174,7 +175,8 @@ EquationArrayNode parseEqnArray(
   final hLinesBeforeRow = <MatrixSeparatorStyle>[];
 
   // Test for \hline at the top of the array.
-  hLinesBeforeRow.add(getHLines(parser).lastOrNull);
+  hLinesBeforeRow
+      .add(getHLines(parser).lastOrNull ?? MatrixSeparatorStyle.none);
 
   while (true) {
     // Parse each cell in its own group (namespace)
@@ -197,7 +199,7 @@ EquationArrayNode parseEqnArray(
         body.removeLast();
       }
       if (hLinesBeforeRow.length < body.length + 1) {
-        hLinesBeforeRow.add(null);
+        hLinesBeforeRow.add(MatrixSeparatorStyle.none);
       }
       break;
     } else if (next == '\\cr') {
@@ -205,7 +207,8 @@ EquationArrayNode parseEqnArray(
       rowGaps.add(cr.size ?? Measurement.zero);
 
       // check for \hline(s) following the row separator
-      hLinesBeforeRow.add(getHLines(parser).lastOrNull);
+      hLinesBeforeRow
+          .add(getHLines(parser).lastOrNull ?? MatrixSeparatorStyle.none);
 
       row = [];
       body.add(row);

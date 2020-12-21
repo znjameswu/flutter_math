@@ -18,7 +18,7 @@ import '../types.dart';
 /// Accent node.
 ///
 /// Examples: `\hat`
-class AccentNode extends SlotableNode {
+class AccentNode extends SlotableNode<EquationRowNode> {
   /// Base where the accent is applied upon.
   final EquationRowNode base;
 
@@ -35,18 +35,19 @@ class AccentNode extends SlotableNode {
   /// Shifty accent will shift according to the italic of [base].
   final bool isShifty;
   AccentNode({
-    @required this.base,
-    @required this.label,
-    @required this.isStretchy,
-    @required this.isShifty,
+    required this.base,
+    required this.label,
+    required this.isStretchy,
+    required this.isShifty,
   });
 
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     // Checking of character box is done automatically by the passing of
     // BuildResult, so we don't need to check it here.
-    final skew = isShifty ? childBuildResults[0].skew : 0.0;
+    final baseResult = childBuildResults[0]!;
+    final skew = isShifty ? baseResult.skew : 0.0;
     Widget accentWidget;
     if (!isStretchy) {
       Widget accentSymbolWidget;
@@ -62,13 +63,18 @@ class AccentNode extends SlotableNode {
         // baseline distance of null due to Flutter rendering pipeline design.
         accentSymbolWidget = staticSvg('vec', options, needBaseline: true);
       } else {
-        accentSymbolWidget = makeBaseSymbol(
-          symbol: accentRenderConfigs[label].overChar,
-          variantForm: false,
-          atomType: AtomType.ord,
-          mode: Mode.text,
-          options: options,
-        ).widget;
+        final accentRenderConfig = accentRenderConfigs[label];
+        if (accentRenderConfig == null || accentRenderConfig.overChar == null) {
+          accentSymbolWidget = Container();
+        } else {
+          accentSymbolWidget = makeBaseSymbol(
+            symbol: accentRenderConfig.overChar!,
+            variantForm: false,
+            atomType: AtomType.ord,
+            mode: Mode.text,
+            options: options,
+          ).widget;
+        }
       }
 
       // Non stretchy accent can not contribute to overall width, thus they must
@@ -104,8 +110,13 @@ class AccentNode extends SlotableNode {
               ),
             );
           } else {
+            final accentRenderConfig = accentRenderConfigs[label];
+            if (accentRenderConfig == null ||
+                accentRenderConfig.overImageName == null) {
+              return Container();
+            }
             var svgWidget = strechySvgSpan(
-              accentRenderConfigs[label].overImageName,
+              accentRenderConfig.overImageName!,
               constraints.minWidth,
               options,
             );
@@ -124,8 +135,8 @@ class AccentNode extends SlotableNode {
     }
     return BuildResult(
       options: options,
-      italic: childBuildResults[0].italic,
-      skew: childBuildResults[0].skew,
+      italic: baseResult.italic,
+      skew: baseResult.skew,
       widget: VList(
         baselineReferenceWidgetIndex: 1,
         children: <Widget>[
@@ -139,7 +150,7 @@ class AccentNode extends SlotableNode {
           MinDimension(
             minHeight: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
             topPadding: 0,
-            child: childBuildResults[0].widget,
+            child: baseResult.widget,
           ),
         ],
       ),
@@ -164,12 +175,11 @@ class AccentNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
+  AccentNode updateChildren(List<EquationRowNode> newChildren) =>
       copyWith(base: newChildren[0]);
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'base': base.toJson(),
       'label': unicodeLiteral(label),
@@ -178,10 +188,10 @@ class AccentNode extends SlotableNode {
     });
 
   AccentNode copyWith({
-    EquationRowNode base,
-    String label,
-    bool isStretchy,
-    bool isShifty,
+    EquationRowNode? base,
+    String? label,
+    bool? isStretchy,
+    bool? isShifty,
   }) =>
       AccentNode(
         base: base ?? this.base,

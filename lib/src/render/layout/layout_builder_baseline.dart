@@ -7,10 +7,9 @@ class LayoutBuilderPreserveBaseline
   ///
   /// The [builder] argument must not be null.
   const LayoutBuilderPreserveBaseline({
-    Key key,
-    @required LayoutWidgetBuilder builder,
-  })  : assert(builder != null),
-        super(key: key, builder: builder);
+    Key? key,
+    required LayoutWidgetBuilder builder,
+  }) : super(key: key, builder: builder);
 
   @override
   LayoutWidgetBuilder get builder => super.builder;
@@ -26,8 +25,8 @@ class _RenderLayoutBuilderPreserveBaseline extends RenderBox
         RenderObjectWithChildMixin<RenderBox>,
         RenderConstrainedLayoutBuilder<BoxConstraints, RenderBox> {
   @override
-  double computeDistanceToActualBaseline(TextBaseline baseline) =>
-      child.getDistanceToActualBaseline(baseline);
+  double? computeDistanceToActualBaseline(TextBaseline baseline) =>
+      child?.getDistanceToActualBaseline(baseline);
 
   @override
   double computeMinIntrinsicWidth(double height) {
@@ -59,20 +58,20 @@ class _RenderLayoutBuilderPreserveBaseline extends RenderBox
     // layoutAndBuildChild(); // Flutter >=1.17.0 <1.18.0
     rebuildIfNecessary(); // Flutter >=1.18.0
     if (child != null) {
-      child.layout(constraints, parentUsesSize: true);
-      size = constraints.constrain(child.size);
+      child!.layout(constraints, parentUsesSize: true);
+      size = constraints.constrain(child!.size);
     } else {
       size = constraints.biggest;
     }
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) =>
       child?.hitTest(result, position: position) ?? false;
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (child != null) context.paintChild(child, offset);
+    if (child != null) context.paintChild(child!, offset);
   }
 
   bool _debugThrowIfNotCheckingIntrinsics() {

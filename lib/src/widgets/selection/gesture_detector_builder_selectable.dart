@@ -7,7 +7,7 @@ import 'overlay_manager.dart';
 class SelectableMathSelectionGestureDetectorBuilder
     extends MathSelectionGestureDetectorBuilder {
   SelectableMathSelectionGestureDetectorBuilder({
-    @required SelectionOverlayManagerMixin delegate,
+    required SelectionOverlayManagerMixin delegate,
   }) : super(delegate: delegate);
 
   @override
@@ -43,7 +43,7 @@ class SelectableMathSelectionGestureDetectorBuilder
         case TargetPlatform.iOS:
         case TargetPlatform.macOS:
           delegate.selectPositionAt(
-            from: lastTapDownPosition,
+            from: lastTapDownPosition!,
             cause: SelectionChangedCause.tap,
           );
           // Should select word edge here, but not supporting now
@@ -53,7 +53,7 @@ class SelectableMathSelectionGestureDetectorBuilder
         case TargetPlatform.linux:
         case TargetPlatform.windows:
           delegate.selectPositionAt(
-            from: lastTapDownPosition,
+            from: lastTapDownPosition!,
             cause: SelectionChangedCause.tap,
           );
           break;

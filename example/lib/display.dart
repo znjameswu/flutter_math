@@ -6,8 +6,8 @@ class DisplayMath extends StatelessWidget {
   final String expression;
 
   const DisplayMath({
-    Key key,
-    @required this.expression,
+    Key? key,
+    required this.expression,
   }) : super(key: key);
 
   @override

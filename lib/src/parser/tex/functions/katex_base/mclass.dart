@@ -37,7 +37,7 @@ const _mclassEntries = {
 };
 
 GreenNode _mclassHandler(TexParser parser, FunctionContext context) {
-  final body = parser.parseArgNode(mode: null, optional: false);
+  final body = parser.parseArgNode(mode: null, optional: false)!;
   return EquationRowNode(
       children: body.expandEquationRow(),
       overrideType: const {

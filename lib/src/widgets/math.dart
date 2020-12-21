@@ -36,7 +36,7 @@ class Math extends StatelessWidget {
   ///
   /// See [Math] for its member documentation
   const Math({
-    Key key,
+    Key? key,
     this.ast,
     this.mathStyle = MathStyle.display,
     this.logicalPpi,
@@ -46,14 +46,12 @@ class Math extends StatelessWidget {
     this.textScaleFactor,
     this.textStyle,
   })  : assert(ast != null || parseError != null),
-        assert(onErrorFallback != null),
-        assert(mathStyle != null || options != null),
         super(key: key);
 
   /// The equation to display.
   ///
   /// It can be null only when [parseError] is not null.
-  final SyntaxTree ast;
+  final SyntaxTree? ast;
 
   /// {@template flutter_math.widgets.math.options}
   /// Equation style.
@@ -75,7 +73,7 @@ class Math extends StatelessWidget {
   /// Will be overruled if [options] is present.
   ///
   /// {@endtemplate}
-  final double logicalPpi;
+  final double? logicalPpi;
 
   /// {@template flutter_math.widgets.math.onErrorFallback}
   /// Fallback widget when there are uncaught errors during parsing or building.
@@ -95,17 +93,17 @@ class Math extends StatelessWidget {
   ///
   /// Will overrule [mathStyle] and [textStyle] if not null.
   /// {@endtemplate}
-  final MathOptions options;
+  final MathOptions? options;
 
   /// {@template flutter_math.widgets.math.parseError}
   /// Errors generated during parsing.
   ///
   /// If not null, the [onErrorFallback] widget will be presented.
   /// {@endtemplate}
-  final ParseException parseError;
+  final ParseException? parseError;
 
   /// {@macro flutter.widgets.editableText.textScaleFactor}
-  final double textScaleFactor;
+  final double? textScaleFactor;
 
   /// {@template fluttermath.widgets.math.textStyle}
   /// The style for rendered math analogous to [Text.style].
@@ -117,7 +115,7 @@ class Math extends StatelessWidget {
   ///
   /// Will be overruled if [options] is present.
   /// {@endtemplate}
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   /// Math builder using a TeX string
   ///
@@ -135,21 +133,21 @@ class Math extends StatelessWidget {
   /// * [Math.textStyle]
   factory Math.tex(
     String expression, {
-    Key key,
-    MathOptions options,
-    TexParserSettings settings = const TexParserSettings(),
-    OnErrorFallback onErrorFallback = defaultOnErrorFallback,
+    Key? key,
     MathStyle mathStyle = MathStyle.display,
-    double textScaleFactor,
-    TextStyle textStyle,
+    TextStyle? textStyle,
+    OnErrorFallback onErrorFallback = defaultOnErrorFallback,
+    TexParserSettings settings = const TexParserSettings(),
+    double? textScaleFactor,
+    MathOptions? options,
   }) {
-    SyntaxTree ast;
-    ParseException parseError;
+    SyntaxTree? ast;
+    ParseException? parseError;
     try {
       ast = SyntaxTree(greenRoot: TexParser(expression, settings).parse());
     } on ParseException catch (e) {
       parseError = e;
-    } on dynamic catch (e) {
+    } on Object catch (e) {
       parseError = ParseException('Unsanitized parse exception detected: $e.'
           'Please report this error with correponding input.');
     }
@@ -168,13 +166,13 @@ class Math extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (parseError != null) {
-      return onErrorFallback(parseError);
+      return onErrorFallback(parseError!);
     }
 
     var options = this.options;
     if (options == null) {
       var effectiveTextStyle = textStyle;
-      if (textStyle == null || textStyle.inherit) {
+      if (effectiveTextStyle == null || effectiveTextStyle.inherit) {
         effectiveTextStyle =
             DefaultTextStyle.of(context).style.merge(textStyle);
       }
@@ -188,22 +186,22 @@ class Math extends StatelessWidget {
 
       options = MathOptions(
         style: mathStyle,
-        fontSize: effectiveTextStyle.fontSize * textScaleFactor,
+        fontSize: effectiveTextStyle.fontSize! * textScaleFactor,
         mathFontOptions: effectiveTextStyle.fontWeight != FontWeight.normal
-            ? FontOptions(fontWeight: effectiveTextStyle.fontWeight)
+            ? FontOptions(fontWeight: effectiveTextStyle.fontWeight!)
             : null,
         logicalPpi: logicalPpi,
-        color: effectiveTextStyle.color,
+        color: effectiveTextStyle.color!,
       );
     }
 
     Widget child;
 
     try {
-      child = ast.buildWidget(options);
+      child = ast!.buildWidget(options);
     } on BuildException catch (e) {
       return onErrorFallback(e);
-    } on dynamic catch (e) {
+    } on Object catch (e) {
       return onErrorFallback(
           BuildException('Unsanitized build exception detected: $e.'
               'Please report this error with correponding input.'));

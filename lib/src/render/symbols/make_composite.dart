@@ -8,6 +8,7 @@ import '../../ast/size.dart';
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../parser/tex/font.dart';
+import '../../utils/unicode_literal.dart';
 import '../layout/line.dart';
 import '../layout/reset_dimension.dart';
 import '../layout/shift_baseline.dart';
@@ -92,7 +93,7 @@ BuildResult makeDecoratedEqualSymbol(
   MathOptions options,
 ) {
   List<String> decoratorSymbols;
-  FontOptions decoratorFont;
+  FontOptions? decoratorFont;
   MathSize decoratorSize;
 
   switch (symbol) {
@@ -113,17 +114,20 @@ BuildResult makeDecoratedEqualSymbol(
     case '\u225D':
       decoratorSymbols = ['d', 'e', 'f'];
       decoratorSize = MathSize.tiny;
-      decoratorFont = texMathFontOptions['\\mathrm'];
+      decoratorFont = texMathFontOptions['\\mathrm']!;
       break;
     case '\u225E':
       decoratorSymbols = ['m'];
       decoratorSize = MathSize.tiny;
-      decoratorFont = texMathFontOptions['\\mathrm'];
+      decoratorFont = texMathFontOptions['\\mathrm']!;
       break;
     case '\u225F':
       decoratorSymbols = ['?'];
       decoratorSize = MathSize.tiny;
       break;
+    default:
+      throw ArgumentError.value(
+          unicodeLiteral(symbol), 'symbol', 'Not a decorator character');
   }
 
   final decorator = StyleNode(

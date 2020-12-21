@@ -21,6 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import 'package:collection/collection.dart';
+
 import '../../../ast/nodes/left_right.dart';
 import '../../../ast/nodes/matrix.dart';
 import '../../../ast/nodes/style.dart';
@@ -29,7 +31,6 @@ import '../../../ast/options.dart';
 import '../../../ast/size.dart';
 import '../../../ast/style.dart';
 import '../../../ast/syntax_tree.dart';
-import '../../../utils/iterable_extensions.dart';
 import '../define_environment.dart';
 import '../functions/katex_base.dart';
 import '../macros.dart';
@@ -89,10 +90,10 @@ List<MatrixSeparatorStyle> getHLines(TexParser parser) {
 MatrixNode parseArray(
   TexParser parser, {
   bool hskipBeforeAndAfter = false,
-  double arrayStretch,
+  double? arrayStretch,
   List<MatrixSeparatorStyle> separators = const [],
   List<MatrixColumnAlign> colAligns = const [],
-  MathStyle style,
+  MathStyle? style,
   bool isSmall = false,
 }) {
   // Parse body of array with \\ temporarily mapped to \cr
@@ -122,7 +123,8 @@ MatrixNode parseArray(
   final hLinesBeforeRow = <MatrixSeparatorStyle>[];
 
   // Test for \hline at the top of the array.
-  hLinesBeforeRow.add(getHLines(parser).lastOrNull);
+  hLinesBeforeRow
+      .add(getHLines(parser).lastOrNull ?? MatrixSeparatorStyle.none);
 
   while (true) {
     // Parse each cell in its own group (namespace)
@@ -150,7 +152,7 @@ MatrixNode parseArray(
         body.removeLast();
       }
       if (hLinesBeforeRow.length < body.length + 1) {
-        hLinesBeforeRow.add(null);
+        hLinesBeforeRow.add(MatrixSeparatorStyle.none);
       }
       break;
     } else if (next == '\\cr') {
@@ -158,7 +160,8 @@ MatrixNode parseArray(
       rowGaps.add(cr.size ?? Measurement.zero);
 
       // check for \hline(s) following the row separator
-      hLinesBeforeRow.add(getHLines(parser).lastOrNull);
+      hLinesBeforeRow
+          .add(getHLines(parser).lastOrNull ?? MatrixSeparatorStyle.none);
 
       row = [];
       body.add(row);
@@ -202,8 +205,8 @@ MathStyle _dCellStyle(String envName) =>
 //   // final bool hskipBeforeAndAfter;
 //   // final double arrayStretch;
 //   ColumnConf({
-//     @required this.separators,
-//     @required this.aligns,
+//     required this.separators,
+//     required this.aligns,
 //     // this.hskipBeforeAndAfter = false,
 //     // this.arrayStretch = 1,
 //   });
@@ -217,21 +220,23 @@ GreenNode _arrayHandler(TexParser parser, EnvContext context) {
   final separators = <MatrixSeparatorStyle>[];
   final aligns = <MatrixColumnAlign>[];
   var alignSpecified = true;
-  bool lastIsSeparator;
+  var lastIsSeparator = false;
+
   for (final nde in colalign) {
     final node = assertNodeType<SymbolNode>(nde);
     final ca = node.symbol;
     switch (ca) {
+      //ignore_for_file: switch_case_completes_normally
       case 'l':
       case 'c':
       case 'r':
         aligns.add(const {
           'l': MatrixColumnAlign.left,
-          'r': MatrixColumnAlign.right,
           'c': MatrixColumnAlign.center,
-        }[ca]);
+          'r': MatrixColumnAlign.right,
+        }[ca]!);
         if (alignSpecified) {
-          separators.add(null);
+          separators.add(MatrixSeparatorStyle.none);
         }
         alignSpecified = true;
         lastIsSeparator = false;
@@ -242,7 +247,7 @@ GreenNode _arrayHandler(TexParser parser, EnvContext context) {
           separators.add(const {
             '|': MatrixSeparatorStyle.solid,
             ':': MatrixSeparatorStyle.dashed,
-          }[ca]);
+          }[ca]!);
           // aligns.add(MatrixColumnAlign.center);
         }
         alignSpecified = false;
@@ -253,7 +258,7 @@ GreenNode _arrayHandler(TexParser parser, EnvContext context) {
     }
   }
   if (!lastIsSeparator) {
-    separators.add(null);
+    separators.add(MatrixSeparatorStyle.none);
   }
   return parseArray(
     parser,

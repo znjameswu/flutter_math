@@ -27,7 +27,7 @@ const _environmentEntries = {
   ['\\begin', '\\end']: FunctionSpec(numArgs: 1, handler: _enviromentHandler)
 };
 GreenNode _enviromentHandler(TexParser parser, FunctionContext context) {
-  final nameGroup = parser.parseArgNode(mode: Mode.text, optional: false);
+  final nameGroup = parser.parseArgNode(mode: Mode.text, optional: false)!;
   if (nameGroup.children.any((element) => element is! SymbolNode)) {
     throw ParseException('Invalid environment name');
   }
@@ -41,7 +41,7 @@ GreenNode _enviromentHandler(TexParser parser, FunctionContext context) {
     }
     // Build the environment object. Arguments and other information will
     // be made available to the begin and end methods using properties.
-    final env = environments[envName];
+    final env = environments[envName]!;
     final result = env.handler(
       parser,
       EnvContext(
@@ -68,5 +68,5 @@ GreenNode _enviromentHandler(TexParser parser, FunctionContext context) {
 
 class _EndEnvironmentNode extends TemporaryNode {
   final String name;
-  _EndEnvironmentNode({this.name});
+  _EndEnvironmentNode({required this.name});
 }

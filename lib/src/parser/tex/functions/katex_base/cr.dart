@@ -35,10 +35,10 @@ const _crEntries = {
 class CrNode extends TemporaryNode {
   final bool newLine;
   final bool newRow;
-  final Measurement size;
+  final Measurement? size;
   CrNode({
-    @required this.newLine,
-    @required this.newRow,
+    required this.newLine,
+    required this.newRow,
     this.size,
   });
 }

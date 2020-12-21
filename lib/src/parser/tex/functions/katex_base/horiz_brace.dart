@@ -29,7 +29,7 @@ const _horizBraceEntries = {
 };
 
 GreenNode _horizBraceHandler(TexParser parser, FunctionContext context) {
-  final base = parser.parseArgNode(mode: null, optional: false);
+  final base = parser.parseArgNode(mode: null, optional: false)!;
   final scripts = parser.parseScripts();
   var res = base;
   if (context.funcName == '\\overbrace') {
@@ -42,13 +42,13 @@ GreenNode _horizBraceHandler(TexParser parser, FunctionContext context) {
     if (scripts.superscript != null) {
       res = OverNode(
         base: res.wrapWithEquationRow(),
-        above: scripts.superscript,
+        above: scripts.superscript!,
       );
     }
     if (scripts.subscript != null) {
       res = UnderNode(
         base: res.wrapWithEquationRow(),
-        below: scripts.subscript,
+        below: scripts.subscript!,
       );
     }
     return res;
@@ -60,13 +60,13 @@ GreenNode _horizBraceHandler(TexParser parser, FunctionContext context) {
     if (scripts.subscript != null) {
       res = UnderNode(
         base: res.wrapWithEquationRow(),
-        below: scripts.subscript,
+        below: scripts.subscript!,
       );
     }
     if (scripts.superscript != null) {
       res = OverNode(
         base: res.wrapWithEquationRow(),
-        above: scripts.superscript,
+        above: scripts.superscript!,
       );
     }
     return res;

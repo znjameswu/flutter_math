@@ -10,7 +10,7 @@ import '../syntax_tree.dart';
 /// Over node.
 ///
 /// Examples: `\underset`
-class OverNode extends SlotableNode {
+class OverNode extends SlotableNode<EquationRowNode> {
   /// Base where the over node is applied upon.
   final EquationRowNode base;
 
@@ -21,16 +21,15 @@ class OverNode extends SlotableNode {
   final bool stackRel;
 
   OverNode({
-    @required this.base,
-    this.above,
+    required this.base,
+    required this.above,
     this.stackRel = false,
-  })  : assert(base != null),
-        assert(above != null);
+  });
 
   // KaTeX's corresponding code is in /src/functions/utils/assembleSubSup.js
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     final spacing = options.fontMetrics.bigOpSpacing5.cssEm.toLpUnder(options);
     return BuildResult(
       options: options,
@@ -45,9 +44,9 @@ class OverNode extends SlotableNode {
                   options.fontMetrics.bigOpSpacing3.cssEm.toLpUnder(options),
               bottomPadding:
                   options.fontMetrics.bigOpSpacing1.cssEm.toLpUnder(options),
-              child: childBuildResults[1].widget,
+              child: childBuildResults[1]!.widget,
             ),
-            childBuildResults[0].widget,
+            childBuildResults[0]!.widget,
           ],
         ),
       ),
@@ -78,12 +77,11 @@ class OverNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
+  OverNode updateChildren(List<EquationRowNode> newChildren) =>
       copyWith(base: newChildren[0], above: newChildren[1]);
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'base': base.toJson(),
       'above': above.toJson(),
@@ -91,9 +89,9 @@ class OverNode extends SlotableNode {
     });
 
   OverNode copyWith({
-    EquationRowNode base,
-    EquationRowNode above,
-    bool stackRel,
+    EquationRowNode? base,
+    EquationRowNode? above,
+    bool? stackRel,
   }) =>
       OverNode(
         base: base ?? this.base,

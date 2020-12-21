@@ -11,16 +11,16 @@ import 'overlay_manager.dart';
 
 class MathSelectionHandleOverlay extends StatefulWidget {
   MathSelectionHandleOverlay({
-    Key key,
-    // @required this.ast,
-    @required this.manager,
-    @required this.selection,
-    @required this.position,
-    @required this.startHandleLayerLink,
-    @required this.endHandleLayerLink,
-    @required this.onSelectionHandleChanged,
-    @required this.onSelectionHandleTapped,
-    @required this.selectionControls,
+    Key? key,
+    // required this.ast,
+    required this.manager,
+    required this.selection,
+    required this.position,
+    required this.startHandleLayerLink,
+    required this.endHandleLayerLink,
+    required this.onSelectionHandleChanged,
+    this.onSelectionHandleTapped,
+    required this.selectionControls,
     this.dragStartBehavior = DragStartBehavior.start,
   }) : super(key: key);
 
@@ -31,7 +31,7 @@ class MathSelectionHandleOverlay extends StatefulWidget {
   final LayerLink startHandleLayerLink;
   final LayerLink endHandleLayerLink;
   final ValueChanged<TextSelection> onSelectionHandleChanged;
-  final VoidCallback onSelectionHandleTapped;
+  final VoidCallback? onSelectionHandleTapped;
   final TextSelectionControls selectionControls;
   final DragStartBehavior dragStartBehavior;
 
@@ -46,9 +46,9 @@ class MathSelectionHandleOverlay extends StatefulWidget {
 
 class _MathSelectionHandleOverlayState extends State<MathSelectionHandleOverlay>
     with SingleTickerProviderStateMixin {
-  Offset _dragPosition;
+  late Offset _dragPosition;
 
-  AnimationController _controller;
+  late AnimationController _controller;
   Animation<double> get _opacity => _controller.view;
 
   @override
@@ -114,7 +114,7 @@ class _MathSelectionHandleOverlayState extends State<MathSelectionHandleOverlay>
 
   void _handleTap() {
     if (widget.onSelectionHandleTapped != null) {
-      widget.onSelectionHandleTapped();
+      widget.onSelectionHandleTapped!();
     }
   }
 
@@ -213,13 +213,11 @@ class _MathSelectionHandleOverlayState extends State<MathSelectionHandleOverlay>
   ) {
     if (widget.selection.isCollapsed) return TextSelectionHandleType.collapsed;
 
-    assert(textDirection != null);
     switch (textDirection) {
       case TextDirection.ltr:
         return ltrType;
       case TextDirection.rtl:
         return rtlType;
     }
-    return null;
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -27,16 +28,15 @@ class SyntaxTree {
   final EquationRowNode greenRoot;
 
   SyntaxTree({
-    @required this.greenRoot,
-  }) : assert(greenRoot != null);
+    required this.greenRoot,
+  });
 
   /// Root of the red tree
-  SyntaxNode _root;
-  SyntaxNode get root => _root ??= SyntaxNode(
-        parent: null,
-        value: greenRoot,
-        pos: -1, // Important
-      );
+  late final SyntaxNode root = SyntaxNode(
+    parent: null,
+    value: greenRoot,
+    pos: -1, // Important
+  );
 
   /// Replace node at [pos] with [newNode]
   SyntaxTree replaceNode(SyntaxNode pos, GreenNode newNode) {
@@ -46,14 +46,15 @@ class SyntaxTree {
     if (identical(pos, root)) {
       return SyntaxTree(greenRoot: newNode.wrapWithEquationRow());
     }
-    if (pos.parent == null) {
+    final posParent = pos.parent;
+    if (posParent == null) {
       throw ArgumentError(
           'The replaced node is not the root of this tree but has no parent');
     }
     return replaceNode(
-        pos.parent,
-        pos.parent.value.updateChildren(pos.parent.children
-            .map((child) => identical(child, pos) ? newNode : child.value)
+        posParent,
+        posParent.value.updateChildren(posParent.children
+            .map((child) => identical(child, pos) ? newNode : child?.value)
             .toList(growable: false)));
   }
 
@@ -114,8 +115,7 @@ class SyntaxTree {
   }
 
   // Build widget tree
-  Widget buildWidget([MathOptions options = MathOptions.displayOptions]) =>
-      root.buildWidget(options).widget;
+  Widget buildWidget(MathOptions options) => root.buildWidget(options).widget;
 }
 
 /// Red Node. Immutable facade for math nodes.
@@ -127,35 +127,29 @@ class SyntaxTree {
 /// be stored inside [GreenNode]. Every node of the red tree is evaluated
 /// top-down on demand.
 class SyntaxNode {
-  final SyntaxNode parent;
+  final SyntaxNode? parent;
   final GreenNode value;
   final int pos;
   SyntaxNode({
-    @required this.parent,
-    @required this.value,
-    @required this.pos,
-  })  : assert(value != null),
-        assert(pos != null);
+    required this.parent,
+    required this.value,
+    required this.pos,
+  });
 
   /// Lazily evaluated children of current [SyntaxNode]
-  List<SyntaxNode> _children;
-  List<SyntaxNode> get children {
-    if (_children != null) return _children;
-    return _children = List.generate(
-        value.children.length,
-        (index) => value.children[index] != null
-            ? SyntaxNode(
-                parent: this,
-                value: value.children[index],
-                pos: this.pos + value.childPositions[index],
-              )
-            : null,
-        growable: false);
-  }
+  late final List<SyntaxNode?> children = List.generate(
+      value.children.length,
+      (index) => value.children[index] != null
+          ? SyntaxNode(
+              parent: this,
+              value: value.children[index]!,
+              pos: this.pos + value.childPositions[index],
+            )
+          : null,
+      growable: false);
 
   /// [GreenNode.getRange]
-  TextRange _range;
-  TextRange get range => _range ??= value.getRange(pos);
+  late final TextRange range = value.getRange(pos);
 
   /// [GreenNode.editingWidth]
   int get width => value.editingWidth;
@@ -177,25 +171,25 @@ class SyntaxNode {
     }
 
     if (value._oldOptions != null && options == value._oldOptions) {
-      return value._oldBuildResult;
+      return value._oldBuildResult!;
     }
     final childOptions = value.computeChildOptions(options);
 
     final newChildBuildResults = _buildChildWidgets(childOptions);
 
     final bypassRebuild = value._oldOptions != null &&
-        !value.shouldRebuildWidget(value._oldOptions, options) &&
+        !value.shouldRebuildWidget(value._oldOptions!, options) &&
         listEquals(newChildBuildResults, value._oldChildBuildResults);
 
     value._oldOptions = options;
     value._oldChildBuildResults = newChildBuildResults;
     return bypassRebuild
-        ? value._oldBuildResult
+        ? value._oldBuildResult!
         : (value._oldBuildResult =
             value.buildWidget(options, newChildBuildResults));
   }
 
-  List<BuildResult> _buildChildWidgets(List<MathOptions> childOptions) {
+  List<BuildResult?> _buildChildWidgets(List<MathOptions> childOptions) {
     assert(children.length == childOptions.length);
     if (children.isEmpty) return const [];
     return List.generate(children.length,
@@ -229,7 +223,7 @@ abstract class GreenNode {
   ///
   /// Please ensure [children] works in the same order as [updateChildren],
   /// [computeChildOptions], and [buildWidget].
-  List<GreenNode> get children;
+  List<GreenNode?> get children;
 
   /// Return a copy of this node with new children.
   ///
@@ -239,7 +233,7 @@ abstract class GreenNode {
   ///
   /// Please ensure [children] works in the same order as [updateChildren],
   /// [computeChildOptions], and [buildWidget].
-  GreenNode updateChildren(covariant List<GreenNode> newChildren);
+  GreenNode updateChildren(covariant List<GreenNode?> newChildren);
 
   /// Calculate the options passed to children when given [options] from parent
   ///
@@ -260,7 +254,7 @@ abstract class GreenNode {
   /// Please ensure [children] works in the same order as [updateChildren],
   /// [computeChildOptions], and [buildWidget].
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults);
+      MathOptions options, List<BuildResult?> childBuildResults);
 
   /// Whether the specific [MathOptions] parameters that this node directly
   /// depends upon have changed.
@@ -314,36 +308,34 @@ abstract class GreenNode {
   /// [AtomType] observed from the right side.
   AtomType get rightType;
 
-  MathOptions _oldOptions;
-  BuildResult _oldBuildResult;
-  List<BuildResult> _oldChildBuildResults;
+  MathOptions? _oldOptions;
+  BuildResult? _oldBuildResult;
+  List<BuildResult?>? _oldChildBuildResults;
 
-  Map<String, Object> toJson() => {
+  Map<String, Object?> toJson() => {
         'type': runtimeType.toString(),
       };
 }
 
 /// [GreenNode] that can have children
-abstract class ParentableNode<T extends GreenNode> extends GreenNode {
+abstract class ParentableNode<T extends GreenNode?> extends GreenNode {
   @override
   List<T> get children;
 
-  int _width;
   @override
-  int get editingWidth => _width ??= computeWidth();
+  late final int editingWidth = computeWidth();
 
   /// Compute width from children. Abstract.
   int computeWidth();
 
-  List<int> _childPositions;
   @override
-  List<int> get childPositions => _childPositions ??= computeChildPositions();
+  late final List<int> childPositions = computeChildPositions();
 
   /// Compute children positions. Abstract.
   List<int> computeChildPositions();
 
   @override
-  ParentableNode<T> updateChildren(covariant List<T> newChildren);
+  ParentableNode<T> updateChildren(covariant List<T?> newChildren);
 }
 
 mixin PositionDependentMixin<T extends GreenNode> on ParentableNode<T> {
@@ -365,11 +357,10 @@ mixin PositionDependentMixin<T extends GreenNode> on ParentableNode<T> {
 /// Depending on node type, some [SlotableNode] can have nulls inside their
 /// children list. When null is allowed, it usually means that node will have
 /// different layout slot logic depending on non-null children number.
-abstract class SlotableNode<T extends EquationRowNode>
+abstract class SlotableNode<T extends EquationRowNode?>
     extends ParentableNode<T> {
-  List<T> _children;
   @override
-  List<T> get children => _children ??= computeChildren();
+  late final List<T> children = computeChildren();
 
   /// Compute children. Abstract.
   ///
@@ -378,7 +369,7 @@ abstract class SlotableNode<T extends EquationRowNode>
 
   @override
   int computeWidth() =>
-      children.map((child) => child?.capturedCursor ?? 0).sum() + 1;
+      children.map((child) => child?.capturedCursor ?? 0).sum + 1;
 
   @override
   List<int> computeChildPositions() {
@@ -401,7 +392,7 @@ abstract class SlotableNode<T extends EquationRowNode>
 abstract class TransparentNode extends ParentableNode<GreenNode>
     with _ClipChildrenMixin {
   @override
-  int computeWidth() => children.map((child) => child.editingWidth).sum();
+  int computeWidth() => children.map((child) => child.editingWidth).sum;
 
   @override
   List<int> computeChildPositions() {
@@ -414,32 +405,28 @@ abstract class TransparentNode extends ParentableNode<GreenNode>
 
   @override
   BuildResult buildWidget(
-          MathOptions options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult?> childBuildResults) =>
       BuildResult(
         widget: const Text('This widget should not appear. '
             'It means one of FlutterMath\'s AST nodes '
             'forgot to handle the case for TransparentNodes'),
         options: options,
         results: childBuildResults
-            .expand((result) => result.results ?? [result])
+            .expand((result) => result!.results ?? [result])
             .toList(growable: false),
       );
 
-  List<GreenNode> _flattenedChildList;
-
   /// Children list when fully expand any underlying [TransparentNode]
-  List<GreenNode> get flattenedChildList => _flattenedChildList ??= children
+  late final List<GreenNode> flattenedChildList = children
       .expand((child) =>
           child is TransparentNode ? child.flattenedChildList : [child])
       .toList(growable: false);
 
-  AtomType _leftType;
   @override
-  AtomType get leftType => _leftType ??= children[0].leftType;
+  late final AtomType leftType = children[0].leftType;
 
-  AtomType _rightType;
   @override
-  AtomType get rightType => _rightType ??= children.last.rightType;
+  late final AtomType rightType = children.last.rightType;
 }
 
 /// A row of unrelated [GreenNode]s.
@@ -449,16 +436,16 @@ abstract class TransparentNode extends ParentableNode<GreenNode>
 class EquationRowNode extends ParentableNode<GreenNode>
     with PositionDependentMixin, _ClipChildrenMixin {
   /// If non-null, the leftmost and rightmost [AtomType] will be overriden.
-  final AtomType overrideType;
+  final AtomType? overrideType;
 
   @override
   final List<GreenNode> children;
 
-  GlobalKey _key;
-  GlobalKey get key => _key;
+  GlobalKey? _key;
+  GlobalKey? get key => _key;
 
   @override
-  int computeWidth() => children.map((child) => child.editingWidth).sum() + 2;
+  int computeWidth() => children.map((child) => child.editingWidth).sum + 2;
 
   @override
   List<int> computeChildPositions() {
@@ -469,23 +456,22 @@ class EquationRowNode extends ParentableNode<GreenNode>
     }, growable: false);
   }
 
-  EquationRowNode({@required this.children, this.overrideType})
-      : assert(children != null),
-        assert(children.every((child) => child != null));
+  EquationRowNode({
+    required this.children,
+    this.overrideType,
+  });
 
   factory EquationRowNode.empty() => EquationRowNode(children: []);
 
   /// Children list when fully expanded any underlying [TransparentNode].
-  List<GreenNode> get flattenedChildList => _flattenedChildList ??= children
+  late final List<GreenNode> flattenedChildList = children
       .expand((child) =>
           child is TransparentNode ? child.flattenedChildList : [child])
       .toList(growable: false);
-  List<GreenNode> _flattenedChildList;
 
   /// Children positions when fully expanded underlying [TransparentNode], but
   /// appended an extra position entry for the end.
-  List<int> get caretPositions => _caretPositions ??= computeCaretPositions();
-  List<int> _caretPositions;
+  late final List<int> caretPositions = computeCaretPositions();
   List<int> computeCaretPositions() {
     var curPos = 1;
     return List.generate(flattenedChildList.length + 1, (index) {
@@ -496,9 +482,9 @@ class EquationRowNode extends ParentableNode<GreenNode>
 
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     final flattenedBuildResults = childBuildResults
-        .expand((result) => result.results ?? [result])
+        .expand((result) => result!.results ?? [result])
         .toList(growable: false);
     final flattenedChildOptions =
         flattenedBuildResults.map((e) => e.options).toList(growable: false);
@@ -527,7 +513,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
             AtomType.punct,
             null,
           }.contains(curr?.leftType)) {
-        prev.rightType = AtomType.ord;
+        prev!.rightType = AtomType.ord;
         if (prev.leftType == AtomType.bin) {
           prev.leftType = AtomType.ord;
         }
@@ -540,7 +526,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
             AtomType.punct,
             null
           }.contains(prev?.rightType)) {
-        curr.leftType = AtomType.ord;
+        curr!.leftType = AtomType.ord;
         if (curr.rightType == AtomType.bin) {
           curr.rightType = AtomType.ord;
         }
@@ -574,7 +560,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
     final widget = Consumer<FlutterMathMode>(builder: (context, mode, child) {
       if (mode == FlutterMathMode.view) {
         return Line(
-          key: _key,
+          key: _key!,
           children: lineChildren,
         );
       }
@@ -591,7 +577,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
         // Selector translates global cursor position to local caret index
         // Will only update Line when selection range actually changes
         child: Selector2<TextSelection, Tuple2<LayerLink, LayerLink>,
-            Tuple3<TextSelection, LayerLink, LayerLink>>(
+            Tuple3<TextSelection, LayerLink?, LayerLink?>>(
           selector: (context, selection, handleLayerLinks) {
             final start = selection.start - this.pos;
             final end = selection.end - this.pos;
@@ -622,7 +608,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
             return EditableLine(
               key: _key,
               children: lineChildren,
-              devicePixelRatio: MediaQuery.of(context).devicePixelRatio ?? 1.0,
+              devicePixelRatio: MediaQuery.of(context).devicePixelRatio,
               node: this,
               preferredLineHeight: options.fontSize,
               cursorBlinkOpacityController:
@@ -664,7 +650,7 @@ class EquationRowNode extends ParentableNode<GreenNode>
       false;
 
   @override
-  ParentableNode<GreenNode> updateChildren(List<GreenNode> newChildren) =>
+  EquationRowNode updateChildren(List<GreenNode> newChildren) =>
       copyWith(children: newChildren);
 
   @override
@@ -673,16 +659,16 @@ class EquationRowNode extends ParentableNode<GreenNode>
   @override
   AtomType get rightType => overrideType ?? AtomType.ord;
 
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
-      'children': children.map<Object>((child) => child?.toJson()).toList(),
+      'children': children.map((child) => child.toJson()).toList(),
       if (overrideType != null) 'overrideType': overrideType,
     });
 
   /// Utility method.
   EquationRowNode copyWith({
-    AtomType overrideType,
-    List<GreenNode> children,
+    AtomType? overrideType,
+    List<GreenNode>? children,
   }) =>
       EquationRowNode(
         overrideType: overrideType ?? this.overrideType,
@@ -690,16 +676,16 @@ class EquationRowNode extends ParentableNode<GreenNode>
       );
 }
 
-mixin _ClipChildrenMixin on ParentableNode {
-  GreenNode clipChildrenBetween(int pos1, int pos2) {
+mixin _ClipChildrenMixin on ParentableNode<GreenNode> {
+  ParentableNode<GreenNode> clipChildrenBetween(int pos1, int pos2) {
     final childIndex1 = childPositions.slotFor(pos1);
     final childIndex2 = childPositions.slotFor(pos2);
     final childIndex1Floor = childIndex1.floor();
     final childIndex1Ceil = childIndex1.ceil();
     final childIndex2Floor = childIndex2.floor();
     final childIndex2Ceil = childIndex2.ceil();
-    GreenNode head;
-    GreenNode tail;
+    GreenNode? head;
+    GreenNode? tail;
     if (childIndex1Floor != childIndex1 &&
         childIndex1Floor >= 0 &&
         childIndex1Floor <= children.length - 1) {
@@ -724,7 +710,7 @@ mixin _ClipChildrenMixin on ParentableNode {
         tail = child;
       }
     }
-    return this.updateChildren([
+    return this.updateChildren(<GreenNode>[
       if (head != null) head,
       for (var i = childIndex1Ceil; i < childIndex2Floor; i++) children[i],
       if (tail != null) tail,
@@ -747,13 +733,9 @@ extension GreenNodeWrappingExt on GreenNode {
   /// itself will be returned in a list.
   List<GreenNode> expandEquationRow() {
     if (this is EquationRowNode) {
-      return this.children;
+      return (this as EquationRowNode).children;
     }
-    if (this != null) {
-      return [this];
-    } else {
-      return null;
-    }
+    return [this];
   }
 
   /// Return the only child of [EquationRowNode]
@@ -762,7 +744,7 @@ extension GreenNodeWrappingExt on GreenNode {
   GreenNode unwrapEquationRow() {
     if (this is EquationRowNode) {
       if (this.children.length == 1) {
-        return this.children[0];
+        return (this as EquationRowNode).children[0];
       }
       throw ArgumentError(
           'Unwrap equation row failed due to multiple children inside');
@@ -837,7 +819,7 @@ class TemporaryNode extends LeafNode {
 
   @override
   BuildResult buildWidget(
-          MathOptions options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult?> childBuildResults) =>
       throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
@@ -862,10 +844,10 @@ class BuildResult {
   final MathOptions options;
   final double italic;
   final double skew;
-  final List<BuildResult> results;
+  final List<BuildResult>? results;
   const BuildResult({
-    @required this.widget,
-    @required this.options,
+    required this.widget,
+    required this.options,
     this.italic = 0.0,
     this.skew = 0.0,
     this.results,
@@ -874,13 +856,9 @@ class BuildResult {
 
 void _traverseNonSpaceNodes(
   List<_NodeSpacingConf> childTypeList,
-  void Function(
-    _NodeSpacingConf prev,
-    _NodeSpacingConf curr,
-  )
-      callback,
+  void Function(_NodeSpacingConf? prev, _NodeSpacingConf? curr) callback,
 ) {
-  _NodeSpacingConf prev;
+  _NodeSpacingConf? prev;
   // Tuple2<AtomType, AtomType> curr;
   for (final child in childTypeList) {
     if (child.leftType == AtomType.spacing ||

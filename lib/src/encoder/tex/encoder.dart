@@ -1,13 +1,12 @@
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
+import 'package:collection/collection.dart';
 
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import '../../parser/tex/functions.dart';
 import '../../parser/tex/settings.dart';
 import '../../utils/alpha_numeric.dart';
-import '../../utils/iterable_extensions.dart';
 import '../encoder.dart';
 import 'functions.dart';
 
@@ -63,7 +62,7 @@ class TexEncodeConf extends EncodeConf {
     this.mode = Mode.math,
     this.removeRowBracket = false,
     Strict strict = Strict.warn,
-    StrictFun strictFun,
+    StrictFun? strictFun,
   }) : super(strict: strict, strictFun: strictFun);
 
   static const mathConf = TexEncodeConf();
@@ -103,10 +102,10 @@ class TexEncodeConf extends EncodeConf {
   }
 
   TexEncodeConf copyWith({
-    Mode mode,
-    bool removeRowBracket,
-    Strict strict,
-    StrictFun strictFun,
+    Mode? mode,
+    bool? removeRowBracket,
+    Strict? strict,
+    StrictFun? strictFun,
   }) =>
       TexEncodeConf(
         mode: mode ?? this.mode,
@@ -156,24 +155,22 @@ class TexCommandEncodeResult extends EncodeResult {
   /// Accepted type: [Null], [String], [EncodeResult], [GreenNode]
   final List<dynamic> args;
 
-  FunctionSpec _spec;
-  FunctionSpec get spec => _spec ??= functions[command];
+  late final FunctionSpec spec = functions[command]!;
 
-  int _numArgs;
-  int get numArgs => _numArgs ??= spec.numArgs;
+  final int? _numArgs;
+  late final int numArgs = _numArgs ?? spec.numArgs;
 
-  int _numOptionalArgs;
-  int get numOptionalArgs => _numOptionalArgs ??= spec.numOptionalArgs;
+  final int? _numOptionalArgs;
+  late final int numOptionalArgs = _numOptionalArgs ?? spec.numOptionalArgs;
 
-  List<Mode> _argModes;
-  List<Mode> get argModes => _argModes ??= spec.argModes ??
+  late final List<Mode?> argModes = spec.argModes ??
       List.filled(numArgs + numOptionalArgs, null, growable: false);
 
   TexCommandEncodeResult({
-    @required this.command,
-    @required this.args,
-    int numArgs,
-    int numOptionalArgs,
+    required this.command,
+    required this.args,
+    int? numArgs,
+    int? numOptionalArgs,
   })  : _numArgs = numArgs,
         _numOptionalArgs = numOptionalArgs;
 
@@ -284,7 +281,8 @@ class TexModeCommandEncodeResult extends EncodeResult {
 
   final List<dynamic> children;
 
-  const TexModeCommandEncodeResult({this.command, this.children});
+  const TexModeCommandEncodeResult(
+      {required this.command, required this.children});
 
   @override
   String stringify(TexEncodeConf conf) {
@@ -311,7 +309,7 @@ class TexMultiscriptEncodeResult extends EncodeResult {
   final dynamic presup;
 
   const TexMultiscriptEncodeResult({
-    @required this.base,
+    required this.base,
     this.sub,
     this.sup,
     this.presub,

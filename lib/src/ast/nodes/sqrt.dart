@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -13,7 +14,6 @@ import '../../render/svg/delimiter.dart';
 import '../../render/svg/svg_geomertry.dart';
 import '../../render/svg/svg_string.dart';
 import '../../render/utils/render_box_offset.dart';
-import '../../utils/iterable_extensions.dart';
 import '../options.dart';
 import '../size.dart';
 import '../style.dart';
@@ -27,54 +27,57 @@ import '../syntax_tree.dart';
 /// - MathML: `msqrt`   `mroot`
 class SqrtNode extends SlotableNode {
   /// The index.
-  final EquationRowNode index;
+  final EquationRowNode? index;
 
   /// The sqrt-and.
   final EquationRowNode base;
 
   SqrtNode({
-    @required this.index,
-    @required this.base,
-  }) : assert(base != null);
+    required this.index,
+    required this.base,
+  });
 
   @override
   BuildResult buildWidget(
-          MathOptions options, List<BuildResult> childBuildResults) =>
-      BuildResult(
-        options: options,
-        widget: CustomLayout<_SqrtPos>(
-          delegate: SqrtLayoutDelegate(
-            options: options,
-            baseOptions: childBuildResults[1].options,
-            indexOptions: childBuildResults[0]?.options,
-          ),
-          children: <Widget>[
-            CustomLayoutId(
-              id: _SqrtPos.base,
-              child: MinDimension(
-                minHeight: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
-                topPadding: 0,
-                child: childBuildResults[1].widget,
-              ),
-            ),
-            CustomLayoutId(
-              id: _SqrtPos.surd,
-              child: LayoutBuilderPreserveBaseline(
-                builder: (context, constraints) => sqrtSvg(
-                  minDelimiterHeight: constraints.minHeight,
-                  baseWidth: constraints.minWidth,
-                  options: options,
-                ),
-              ),
-            ),
-            if (index != null)
-              CustomLayoutId(
-                id: _SqrtPos.ind,
-                child: childBuildResults[0].widget,
-              ),
-          ],
+      MathOptions options, List<BuildResult?> childBuildResults) {
+    final baseResult = childBuildResults[1]!;
+    final indexResult = childBuildResults[0];
+    return BuildResult(
+      options: options,
+      widget: CustomLayout<_SqrtPos>(
+        delegate: SqrtLayoutDelegate(
+          options: options,
+          baseOptions: baseResult.options,
+          // indexOptions: indexResult?.options,
         ),
-      );
+        children: <Widget>[
+          CustomLayoutId(
+            id: _SqrtPos.base,
+            child: MinDimension(
+              minHeight: options.fontMetrics.xHeight.cssEm.toLpUnder(options),
+              topPadding: 0,
+              child: baseResult.widget,
+            ),
+          ),
+          CustomLayoutId(
+            id: _SqrtPos.surd,
+            child: LayoutBuilderPreserveBaseline(
+              builder: (context, constraints) => sqrtSvg(
+                minDelimiterHeight: constraints.minHeight,
+                baseWidth: constraints.minWidth,
+                options: options,
+              ),
+            ),
+          ),
+          if (index != null)
+            CustomLayoutId(
+              id: _SqrtPos.ind,
+              child: indexResult!.widget,
+            ),
+        ],
+      ),
+    );
+  }
 
   @override
   List<MathOptions> computeChildOptions(MathOptions options) => [
@@ -83,7 +86,7 @@ class SqrtNode extends SlotableNode {
       ];
 
   @override
-  List<EquationRowNode> computeChildren() => [index, base];
+  List<EquationRowNode?> computeChildren() => [index, base];
 
   @override
   AtomType get leftType => AtomType.ord;
@@ -96,20 +99,21 @@ class SqrtNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
-      copyWith(index: newChildren[0], base: newChildren[1]);
+  SqrtNode updateChildren(List<EquationRowNode?> newChildren) => SqrtNode(
+        index: newChildren[0],
+        base: newChildren[1]!,
+      );
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
-      'index': index.toJson(),
+      'index': index?.toJson(),
       'base': base.toJson(),
     });
 
   SqrtNode copyWith({
-    EquationRowNode index,
-    EquationRowNode base,
+    EquationRowNode? index,
+    EquationRowNode? base,
   }) =>
       SqrtNode(
         index: index ?? this.index,
@@ -127,12 +131,12 @@ enum _SqrtPos {
 class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
   final MathOptions options;
   final MathOptions baseOptions;
-  final MathOptions indexOptions;
+  // final MathOptions indexOptions;
 
   SqrtLayoutDelegate({
-    @required this.options,
-    @required this.baseOptions,
-    @required this.indexOptions,
+    required this.options,
+    required this.baseOptions,
+    // required this.indexOptions,
   });
   var heightAboveBaseline = 0.0;
   var svgHorizontalPos = 0.0;
@@ -145,20 +149,20 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
 
   @override
   double getIntrinsicSize({
-    Axis sizingDirection,
-    bool max,
-    double extent,
-    double Function(RenderBox child, double extent) childSize,
-    Map<_SqrtPos, RenderBox> childrenTable,
+    required Axis sizingDirection,
+    required bool max,
+    required double extent,
+    required double Function(RenderBox child, double extent) childSize,
+    required Map<_SqrtPos, RenderBox> childrenTable,
   }) =>
       0;
 
   @override
   Size performLayout(
       BoxConstraints constraints, Map<_SqrtPos, RenderBox> childrenTable) {
-    final base = childrenTable[_SqrtPos.base];
+    final base = childrenTable[_SqrtPos.base]!;
     final index = childrenTable[_SqrtPos.ind];
-    final surd = childrenTable[_SqrtPos.surd];
+    final surd = childrenTable[_SqrtPos.surd]!;
 
     base.layout(infiniteConstraint, parentUsesSize: true);
     index?.layout(infiniteConstraint, parentUsesSize: true);
@@ -167,7 +171,7 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
     // final baseDepth = base.layoutDepth;
     final baseWidth = base.size.width;
     final indexHeight = index?.layoutHeight ?? 0.0;
-    final indexWidth = index?.size?.width ?? 0.0;
+    final indexWidth = index?.size.width ?? 0.0;
 
     final theta = baseOptions.fontMetrics.defaultRuleThickness.cssEm
         .toLpUnder(baseOptions);
@@ -251,7 +255,7 @@ double getSqrtAdvanceWidth(
   );
   if (delimConf != null) {
     final delimOptions = options.havingStyle(delimConf.style);
-    if (delimConf?.font?.fontName == 'Main-Regular') {
+    if (delimConf.font.fontName == 'Main-Regular') {
       final advanceWidth = 0.833.cssEm.toLpUnder(delimOptions);
       return advanceWidth;
     } else {
@@ -271,8 +275,11 @@ double getSqrtAdvanceWidth(
 // KaTeX chooses the style and font of the \\surd to cover inner at *normalsize*
 // We will use a highly similar strategy while sticking to the strict meaning
 // of TexBook Rule 11. We do not choose the style at *normalsize*
-Widget sqrtSvg(
-    {double minDelimiterHeight, double baseWidth, MathOptions options}) {
+Widget sqrtSvg({
+  required double minDelimiterHeight,
+  required double baseWidth,
+  required MathOptions options,
+}) {
   // final newOptions = options.havingBaseSize();
   final delimConf = sqrtDelimieterSequence.firstWhereOrNull(
     (element) =>
@@ -298,11 +305,11 @@ Widget sqrtSvg(
       'Size2-Regular': 1.8,
       'Size3-Regular': 2.4,
       'Size4-Regular': 3.0,
-    }[delimConf.font.fontName];
+    }[delimConf.font.fontName]!;
     final delimOptions = options.havingStyle(delimConf.style);
     final viewPortHeight =
         (fontHeight + extraViniculum + emPad).cssEm.toLpUnder(delimOptions);
-    if (delimConf?.font?.fontName == 'Main-Regular') {
+    if (delimConf.font.fontName == 'Main-Regular') {
       // We will be vertically stretching the sqrtMain path (by viewPort vs
       // viewBox) to mimic the height of \u221A under Main-Regular font and
       // corresponding Mathstyle.

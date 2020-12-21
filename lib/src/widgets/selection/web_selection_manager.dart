@@ -23,13 +23,13 @@ import 'selection_manager.dart';
 mixin WebSelectionControlsManagerMixin<T extends StatefulWidget>
     on SelectionManagerMixin<T> implements TextInputClient {
   FocusNode get focusNode;
-  FocusNode _oldFocusNode;
+  late FocusNode _oldFocusNode;
 
-  TextInputConnection _textInputConnection;
+  TextInputConnection? _textInputConnection;
 
   bool get hasFocus => focusNode.hasFocus;
 
-  MathController _oldController;
+  late MathController _oldController;
 
   @override
   void initState() {
@@ -72,7 +72,7 @@ mixin WebSelectionControlsManagerMixin<T extends StatefulWidget>
   }
 
   bool get _hasInputConnection =>
-      _textInputConnection != null && _textInputConnection.attached;
+      _textInputConnection != null && _textInputConnection!.attached;
 
   void _openInputConnection() {
     if (!_hasInputConnection) {
@@ -85,7 +85,7 @@ mixin WebSelectionControlsManagerMixin<T extends StatefulWidget>
           enableSuggestions: false,
         ),
       );
-      _textInputConnection
+      _textInputConnection!
         ..show()
         ..setStyle(
           fontSize: 10000, // An absurd size to cover all
@@ -97,13 +97,13 @@ mixin WebSelectionControlsManagerMixin<T extends StatefulWidget>
         ..setEditingState(currentTextEditingValue);
       _updateSizeAndTransform();
     } else {
-      _textInputConnection.show();
+      _textInputConnection!.show();
     }
   }
 
   void _closeInputConnectionIfNeeded() {
     if (_hasInputConnection) {
-      _textInputConnection.close();
+      _textInputConnection!.close();
       _textInputConnection = null;
     }
   }
@@ -116,7 +116,7 @@ mixin WebSelectionControlsManagerMixin<T extends StatefulWidget>
         final transform = renderBox.getTransformTo(null);
         _textInputConnection?.setEditableSizeAndTransform(size, transform);
       }
-      SchedulerBinding.instance
+      SchedulerBinding.instance!
           .addPostFrameCallback((Duration _) => _updateSizeAndTransform());
     }
   }
@@ -128,7 +128,7 @@ mixin WebSelectionControlsManagerMixin<T extends StatefulWidget>
   }
 
   @override
-  AutofillScope get currentAutofillScope => null;
+  AutofillScope? get currentAutofillScope => null;
 
   @override
   TextEditingValue get currentTextEditingValue => super.textEditingValue;
@@ -153,7 +153,7 @@ mixin WebSelectionControlsManagerMixin<T extends StatefulWidget>
     // Disregard and reset.
     final currentTextEditingValue = this.currentTextEditingValue;
     if (value != currentTextEditingValue) {
-      _textInputConnection.setEditingState(currentTextEditingValue);
+      _textInputConnection!.setEditingState(currentTextEditingValue);
     }
   }
 

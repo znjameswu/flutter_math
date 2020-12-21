@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import '../../render/layout/line.dart';
 import '../options.dart';
 import '../spacing.dart';
@@ -8,7 +6,7 @@ import '../syntax_tree.dart';
 /// Function node
 ///
 /// Examples: `\sin`, `\lim`, `\operatorname`
-class FunctionNode extends SlotableNode {
+class FunctionNode extends SlotableNode<EquationRowNode> {
   /// Name of the function.
   final EquationRowNode functionName;
 
@@ -16,14 +14,13 @@ class FunctionNode extends SlotableNode {
   final EquationRowNode argument;
 
   FunctionNode({
-    @required this.functionName,
-    @required this.argument,
-  })  : assert(functionName != null),
-        assert(argument != null);
+    required this.functionName,
+    required this.argument,
+  });
 
   @override
   BuildResult buildWidget(
-          MathOptions options, List<BuildResult> childBuildResults) =>
+          MathOptions options, List<BuildResult?> childBuildResults) =>
       BuildResult(
         options: options,
         widget: Line(children: [
@@ -31,11 +28,11 @@ class FunctionNode extends SlotableNode {
             trailingMargin:
                 getSpacingSize(AtomType.op, argument.leftType, options.style)
                     .toLpUnder(options),
-            child: childBuildResults[0].widget,
+            child: childBuildResults[0]!.widget,
           ),
           LineElement(
             trailingMargin: 0.0,
-            child: childBuildResults[1].widget,
+            child: childBuildResults[1]!.widget,
           ),
         ]),
       );
@@ -58,20 +55,19 @@ class FunctionNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
+  FunctionNode updateChildren(List<EquationRowNode> newChildren) =>
       copyWith(functionName: newChildren[0], argument: newChildren[2]);
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'functionName': functionName.toJson(),
       'argument': argument.toJson(),
     });
 
   FunctionNode copyWith({
-    EquationRowNode functionName,
-    EquationRowNode argument,
+    EquationRowNode? functionName,
+    EquationRowNode? argument,
   }) =>
       FunctionNode(
         functionName: functionName ?? this.functionName,

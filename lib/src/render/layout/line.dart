@@ -12,7 +12,7 @@ class LineParentData extends ContainerBoxParentData<RenderBox> {
   // The first canBreakBefore has no effect
   bool canBreakBefore = false;
 
-  BoxConstraints Function(double height, double depth) customCrossSize;
+  BoxConstraints Function(double height, double depth)? customCrossSize;
 
   double trailingMargin = 0.0;
 
@@ -25,19 +25,18 @@ class LineParentData extends ContainerBoxParentData<RenderBox> {
 
 class LineElement extends ParentDataWidget<LineParentData> {
   final bool canBreakBefore;
-  final BoxConstraints Function(double height, double depth) customCrossSize;
+  final BoxConstraints Function(double height, double depth)? customCrossSize;
   final double trailingMargin;
   final bool alignerOrSpacer;
 
   const LineElement({
-    Key key,
+    Key? key,
     this.canBreakBefore = false,
     this.customCrossSize,
     this.trailingMargin = 0.0,
     this.alignerOrSpacer = false,
-    @required Widget child,
-  })  : assert(trailingMargin != null),
-        super(key: key, child: child);
+    required Widget child,
+  }) : super(key: key, child: child);
 
   @override
   void applyParentData(RenderObject renderObject) {
@@ -90,17 +89,14 @@ class LineElement extends ParentDataWidget<LineParentData> {
 /// Line provides abilities for line breaks, delim-sizing and background color indicator.
 class Line extends MultiChildRenderObjectWidget {
   Line({
-    Key key,
+    Key? key,
     this.crossAxisAlignment = CrossAxisAlignment.baseline,
     this.minDepth = 0.0,
     this.minHeight = 0.0,
     this.textBaseline = TextBaseline.alphabetic,
     this.textDirection,
     List<Widget> children = const [],
-  })  : assert(textBaseline != null),
-        // assert(baselineOffset != null),
-        assert(crossAxisAlignment != null),
-        super(key: key, children: children);
+  }) : super(key: key, children: children);
 
   final CrossAxisAlignment crossAxisAlignment;
 
@@ -110,12 +106,12 @@ class Line extends MultiChildRenderObjectWidget {
 
   final TextBaseline textBaseline;
 
-  final TextDirection textDirection;
+  final TextDirection? textDirection;
 
   bool get _needTextDirection => true;
 
   @protected
-  TextDirection getEffectiveTextDirection(BuildContext context) =>
+  TextDirection? getEffectiveTextDirection(BuildContext context) =>
       textDirection ?? (_needTextDirection ? Directionality.of(context) : null);
 
   @override
@@ -155,15 +151,13 @@ class RenderLine extends RenderBox
         RenderBoxContainerDefaultsMixin<RenderBox, LineParentData>,
         DebugOverflowIndicatorMixin {
   RenderLine({
-    List<RenderBox> children,
+    List<RenderBox>? children,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.baseline,
-    double minDepth,
-    double minHeight,
+    double minDepth = 0,
+    double minHeight = 0,
     TextBaseline textBaseline = TextBaseline.alphabetic,
-    TextDirection textDirection = TextDirection.ltr,
-  })  : assert(textBaseline != null),
-        assert(crossAxisAlignment != null),
-        _crossAxisAlignment = crossAxisAlignment,
+    TextDirection? textDirection = TextDirection.ltr,
+  })  : _crossAxisAlignment = crossAxisAlignment,
         _minDepth = minDepth,
         _minHeight = minHeight,
         _textBaseline = textBaseline,
@@ -207,9 +201,9 @@ class RenderLine extends RenderBox
     }
   }
 
-  TextDirection get textDirection => _textDirection;
-  TextDirection _textDirection;
-  set textDirection(TextDirection value) {
+  TextDirection? get textDirection => _textDirection;
+  TextDirection? _textDirection;
+  set textDirection(TextDirection? value) {
     if (_textDirection != value) {
       _textDirection = value;
       markNeedsLayout();
@@ -217,14 +211,13 @@ class RenderLine extends RenderBox
   }
 
   bool get _debugHasNecessaryDirections {
-    assert(crossAxisAlignment != null);
     assert(textDirection != null,
         'Horizontal $runtimeType has a null textDirection, so the alignment cannot be resolved.');
     return true;
   }
 
-  double _overflow;
-  bool get _hasOverflow => _overflow > precisionErrorTolerance;
+  double? _overflow;
+  bool get _hasOverflow => _overflow! > precisionErrorTolerance;
 
   @override
   void setupParentData(RenderBox child) {
@@ -234,10 +227,10 @@ class RenderLine extends RenderBox
   }
 
   double _getIntrinsicSize({
-    Axis sizingDirection,
-    double
+    required Axis sizingDirection,
+    required double
         extent, // the extent in the direction that isn't the sizing direction
-    double Function(RenderBox child, double extent)
+    required double Function(RenderBox child, double extent)
         childSize, // a method to find the size in the sizing direction
   }) {
     if (sizingDirection == Axis.horizontal) {
@@ -313,12 +306,13 @@ class RenderLine extends RenderBox
   }
 
   @protected
-  List<double> caretOffsets;
+  late List<double> caretOffsets;
+
+  List<double>? alignColWidth;
 
   @override
   void performLayout() {
     assert(_debugHasNecessaryDirections);
-    assert(constraints != null);
 
     // First pass, layout fixed-sized children to calculate height and depth
     maxHeightAboveBaseline = 0.0;
@@ -336,7 +330,7 @@ class RenderLine extends RenderBox
         // final innerConstraints =
         //     BoxConstraints(maxHeight: constraints.maxHeight);
         child.layout(infiniteConstraint, parentUsesSize: true);
-        final distance = child.getDistanceToBaseline(textBaseline);
+        final distance = child.getDistanceToBaseline(textBaseline)!;
         maxHeightAboveBaseline = math.max(maxHeightAboveBaseline, distance);
         maxDepthBelowBaseline =
             math.max(maxDepthBelowBaseline, child.size.height - distance);
@@ -350,11 +344,11 @@ class RenderLine extends RenderBox
       final childParentData = child.parentData as LineParentData;
       assert(childParentData.customCrossSize != null);
       child.layout(
-        childParentData.customCrossSize(
+        childParentData.customCrossSize!(
             maxHeightAboveBaseline, maxDepthBelowBaseline),
         parentUsesSize: true,
       );
-      final distance = child.getDistanceToBaseline(textBaseline);
+      final distance = child.getDistanceToBaseline(textBaseline)!;
       maxHeightAboveBaseline = math.max(maxHeightAboveBaseline, distance);
       maxDepthBelowBaseline =
           math.max(maxDepthBelowBaseline, child.size.height - distance);
@@ -400,7 +394,7 @@ class RenderLine extends RenderBox
     // If we are have no aligning instructions, no need to do the fourth pass.
     if (this.alignColWidth == null) {
       // Report column width
-      alignColWidth = colWidths;
+      this.alignColWidth = colWidths;
       return;
     }
 
@@ -408,8 +402,9 @@ class RenderLine extends RenderBox
     // aligning instructions.
 
     // First report first column width.
-    alignColWidth = List.of(alignColWidth, growable: false)
+    final alignColWidth = List.of(this.alignColWidth!, growable: false)
       ..[0] = colWidths.first;
+    this.alignColWidth = alignColWidth;
 
     // We will determine the width of the spacers using aligning instructions
     ///
@@ -465,10 +460,8 @@ class RenderLine extends RenderBox
     _overflow = mainPos - size.width;
   }
 
-  List<double> alignColWidth;
-
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) =>
       defaultHitTestChildren(result, position: position);
 
   // List<Rect> get rects {
@@ -529,7 +522,7 @@ class RenderLine extends RenderBox
       // rect is never used for drawing, just for determining the overflow
       // location and amount.
       Rect overflowChildRect;
-      overflowChildRect = Rect.fromLTWH(0.0, 0.0, size.width + _overflow, 0.0);
+      overflowChildRect = Rect.fromLTWH(0.0, 0.0, size.width + _overflow!, 0.0);
 
       paintOverflowIndicator(
           context, offset, Offset.zero & size, overflowChildRect,
@@ -539,13 +532,13 @@ class RenderLine extends RenderBox
   }
 
   @override
-  Rect describeApproximatePaintClip(RenderObject child) =>
+  Rect? describeApproximatePaintClip(RenderObject child) =>
       _hasOverflow ? Offset.zero & size : null;
 
   @override
   String toStringShort() {
     var header = super.toStringShort();
-    if (_overflow is double && _hasOverflow) header += ' OVERFLOWING';
+    if (_overflow != null && _hasOverflow) header += ' OVERFLOWING';
     return header;
   }
 

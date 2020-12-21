@@ -28,7 +28,7 @@ class MathOptions {
   final Color color;
 
   /// Real size applied to equation elements under current style.
-  MathSize get size => sizeUnderTextStyle.underStyle(style);
+  late final MathSize size = sizeUnderTextStyle.underStyle(style);
 
   /// Declared size for equation elements.
   ///
@@ -40,22 +40,22 @@ class MathOptions {
   ///
   /// Text-mode font options will merge on top of each other. And they will be
   /// reset if any math-mode font style is declared
-  final FontOptions textFontOptions;
+  final FontOptions? textFontOptions;
 
   /// Font options for math mode.
   ///
   /// Math-mode font options will override each other.
-  final FontOptions mathFontOptions;
+  final FontOptions? mathFontOptions;
 
   /// Size multiplier applied to equation elements.
-  double get sizeMultiplier => this.size.sizeMultiplier;
+  late final double sizeMultiplier = this.size.sizeMultiplier;
 
   // final double maxSize;
   // final num minRuleThickness; //???
   // final bool isBlank;
 
   /// Font metrics under current size.
-  FontMetrics get fontMetrics => getGlobalMetrics(size);
+  late final FontMetrics fontMetrics = getGlobalMetrics(size);
 
   /// Font size under current size.
   ///
@@ -72,16 +72,16 @@ class MathOptions {
   /// {@endtemplate}
   final double logicalPpi;
 
-  const MathOptions._({
-    @required this.fontSize,
-    @required this.logicalPpi,
-    @required this.style,
+  MathOptions._({
+    required this.fontSize,
+    required this.logicalPpi,
+    required this.style,
     this.color = Colors.black,
     this.sizeUnderTextStyle = MathSize.normalsize,
     this.textFontOptions,
     this.mathFontOptions,
-    // @required this.maxSize,
-    // @required this.minRuleThickness,
+    // required this.maxSize,
+    // required this.minRuleThickness,
   });
 
   /// Factory constructor for [MathOptions].
@@ -95,16 +95,16 @@ class MathOptions {
     MathStyle style = MathStyle.display,
     Color color = Colors.black,
     MathSize sizeUnderTextStyle = MathSize.normalsize,
-    FontOptions textFontOptions,
-    FontOptions mathFontOptions,
-    @required double fontSize,
-    double logicalPpi,
-    // @required this.maxSize,
-    // @required this.minRuleThickness,
+    FontOptions? textFontOptions,
+    FontOptions? mathFontOptions,
+    double? fontSize,
+    double? logicalPpi,
+    // required this.maxSize,
+    // required this.minRuleThickness,
   }) {
     final effectiveFontSize = fontSize ??
         (logicalPpi == null
-            ? _defaultPtPerEm / Unit.lp.toPt
+            ? _defaultPtPerEm / Unit.lp.toPt!
             : defaultFontSizeFor(logicalPpi: logicalPpi));
     final effectiveLogicalPPI =
         logicalPpi ?? defaultLogicalPpiFor(fontSize: effectiveFontSize);
@@ -140,22 +140,22 @@ class MathOptions {
   static const defaultFontSize = _defaultPtPerEm / _defaultLpPerPt;
 
   /// Default value for [logicalPpi] when [fontSize] has been set.
-  static double defaultLogicalPpiFor({double fontSize}) =>
-      fontSize * Unit.inches.toPt / _defaultPtPerEm;
+  static double defaultLogicalPpiFor({required double fontSize}) =>
+      fontSize * Unit.inches.toPt! / _defaultPtPerEm;
 
   /// Default value for [fontSize] when [logicalPpi] has been set.
-  static double defaultFontSizeFor({double logicalPpi}) =>
-      _defaultPtPerEm / Unit.inches.toPt * logicalPpi;
+  static double defaultFontSizeFor({required double logicalPpi}) =>
+      _defaultPtPerEm / Unit.inches.toPt! * logicalPpi;
 
   /// Default options for displayed equations
-  static const displayOptions = MathOptions._(
+  static final displayOptions = MathOptions._(
     fontSize: defaultFontSize,
     logicalPpi: defaultLogicalPpi,
     style: MathStyle.display,
   );
 
   /// Default options for in-line equations
-  static const textOptions = MathOptions._(
+  static final textOptions = MathOptions._(
     fontSize: defaultFontSize,
     logicalPpi: defaultLogicalPpi,
     style: MathStyle.text,
@@ -189,7 +189,7 @@ class MathOptions {
   /// Returns [MathOptions] with size reset to [MathSize.normalsize] and given
   /// style. If style is not given, then the current style will be increased to
   /// at least [MathStyle.text]
-  MathOptions havingStyleUnderBaseSize(MathStyle style) {
+  MathOptions havingStyleUnderBaseSize(MathStyle? style) {
     style = style ?? this.style.atLeastText();
     if (this.sizeUnderTextStyle == MathSize.normalsize && this.style == style) {
       return this;
@@ -230,11 +230,11 @@ class MathOptions {
 
   /// Utility method copyWith
   MathOptions copyWith({
-    MathStyle style,
-    Color color,
-    MathSize sizeUnderTextStyle,
-    FontOptions textFontOptions,
-    FontOptions mathFontOptions,
+    MathStyle? style,
+    Color? color,
+    MathSize? sizeUnderTextStyle,
+    FontOptions? textFontOptions,
+    FontOptions? mathFontOptions,
     // double maxSize,
     // num minRuleThickness,
   }) =>
@@ -254,22 +254,22 @@ class MathOptions {
   MathOptions merge(OptionsDiff partialOptions) {
     var res = this;
     if (partialOptions.size != null) {
-      res = res.havingSize(partialOptions.size);
+      res = res.havingSize(partialOptions.size!);
     }
     if (partialOptions.style != null) {
-      res = res.havingStyle(partialOptions.style);
+      res = res.havingStyle(partialOptions.style!);
     }
     if (partialOptions.color != null) {
-      res = res.withColor(partialOptions.color);
+      res = res.withColor(partialOptions.color!);
     }
     // if (partialOptions.phantom == true) {
     //   res = res.withPhantom();
     // }
     if (partialOptions.textFontOptions != null) {
-      res = res.withTextFont(partialOptions.textFontOptions);
+      res = res.withTextFont(partialOptions.textFontOptions!);
     }
     if (partialOptions.mathFontOptions != null) {
-      res = res.withMathFont(partialOptions.mathFontOptions);
+      res = res.withMathFont(partialOptions.mathFontOptions!);
     }
     return res;
   }
@@ -280,19 +280,19 @@ class MathOptions {
 /// This is used to declaratively describe the modifications to [MathOptions].
 class OptionsDiff {
   /// Override [MathOptions.style]
-  final MathStyle style;
+  final MathStyle? style;
 
   /// Override declared size.
-  final MathSize size;
+  final MathSize? size;
 
   /// Override text color.
-  final Color color;
+  final Color? color;
 
   /// Merge font differences into text-mode font options.
-  final PartialFontOptions textFontOptions;
+  final PartialFontOptions? textFontOptions;
 
   /// Override math-mode font.
-  final FontOptions mathFontOptions;
+  final FontOptions? mathFontOptions;
 
   const OptionsDiff({
     this.style,
@@ -364,10 +364,10 @@ class FontOptions {
 
   /// Utility method.
   FontOptions copyWith({
-    String fontFamily,
-    FontWeight fontWeight,
-    FontStyle fontShape,
-    List<FontOptions> fallback,
+    String? fontFamily,
+    FontWeight? fontWeight,
+    FontStyle? fontShape,
+    List<FontOptions>? fallback,
   }) =>
       FontOptions(
         fontFamily: fontFamily ?? this.fontFamily,
@@ -377,7 +377,7 @@ class FontOptions {
       );
 
   /// Merge a font difference into current font.
-  FontOptions mergeWith(PartialFontOptions value) {
+  FontOptions mergeWith(PartialFontOptions? value) {
     if (value == null) return this;
     return copyWith(
       fontFamily: value.fontFamily,
@@ -407,13 +407,13 @@ class FontOptions {
 /// This is used to declaratively describe the modifications to [FontOptions].
 class PartialFontOptions {
   /// Override font family.
-  final String fontFamily;
+  final String? fontFamily;
 
   /// Override font weight.
-  final FontWeight fontWeight;
+  final FontWeight? fontWeight;
 
   /// Override font style.
-  final FontStyle fontShape;
+  final FontStyle? fontShape;
 
   const PartialFontOptions({
     this.fontFamily,

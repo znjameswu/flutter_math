@@ -18,13 +18,16 @@ const svgData = {
 Widget staticSvg(String name, MathOptions options,
     {bool needBaseline = false}) {
   final dimen = svgData[name];
+  if (dimen == null) {
+    throw ArgumentError.value(name, 'name', 'Invalid static svg name');
+  }
   final width = dimen[0];
   final height = dimen[1];
   final viewPortWidth = width.cssEm.toLpUnder(options);
   final viewPortHeight = height.cssEm.toLpUnder(options);
 
   final svgWidget = svgWidgetFromPath(
-      svgPaths[name],
+      svgPaths[name]!,
       Size(viewPortWidth, viewPortHeight),
       Rect.fromLTWH(0, 0, 1000 * width, 1000 * height),
       options.color);

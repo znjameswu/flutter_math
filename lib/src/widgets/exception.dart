@@ -8,7 +8,7 @@ abstract class FlutterMathException implements Exception {
 /// Exceptions occured during build.
 class BuildException implements FlutterMathException {
   final String message;
-  final StackTrace trace;
+  final StackTrace? trace;
 
   const BuildException(this.message, {this.trace});
 

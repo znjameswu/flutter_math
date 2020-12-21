@@ -58,7 +58,7 @@ extension UnitExt on Unit {
     // Unit.lp: 72.27 / 200,
     Unit.cssEm: null,
   };
-  double get toPt => _ptPerUnit[this];
+  double? get toPt => _ptPerUnit[this];
 
   String get name => const {
         Unit.pt: 'pt',
@@ -78,13 +78,13 @@ extension UnitExt on Unit {
         Unit.mu: 'mu',
         Unit.lp: 'lp',
         Unit.cssEm: 'cssEm',
-      }[this];
+      }[this]!;
 
-  static Unit parse(String unit) => unit.parseUnit();
+  static Unit? parse(String unit) => unit.parseUnit();
 }
 
 extension UnitExtOnString on String {
-  Unit parseUnit() => const {
+  Unit? parseUnit() => const {
         'pt': Unit.pt,
         'mm': Unit.mm,
         'cm': Unit.cm,
@@ -108,12 +108,12 @@ extension UnitExtOnString on String {
 class Measurement {
   final double value;
   final Unit unit;
-  const Measurement({this.value, this.unit});
+  const Measurement({required this.value, required this.unit});
 
   double toLpUnder(MathOptions options) {
     if (unit == Unit.lp) return value;
     if (unit.toPt != null) {
-      return value * unit.toPt / Unit.inches.toPt * options.logicalPpi;
+      return value * unit.toPt! / Unit.inches.toPt! * options.logicalPpi;
     }
     switch (unit) {
       case Unit.cssEm:

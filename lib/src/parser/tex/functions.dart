@@ -21,8 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:meta/meta.dart';
-
 import '../../ast/syntax_tree.dart';
 import '../../ast/types.dart';
 import 'functions/katex_base.dart';
@@ -32,13 +30,13 @@ import 'token.dart';
 
 class FunctionContext {
   final String funcName;
-  final Token token;
-  final String breakOnTokenText;
+  final Token? token;
+  final String? breakOnTokenText;
   final List<GreenNode> infixExistingArguments;
   const FunctionContext({
-    @required this.funcName,
+    required this.funcName,
     this.token,
-    @required this.breakOnTokenText,
+    required this.breakOnTokenText,
     this.infixExistingArguments = const [],
   });
 }
@@ -56,16 +54,16 @@ class FunctionSpec<T extends GreenNode> {
   final FunctionHandler<T> handler;
 
   // Has no real usage during parsing. Serves as hint during encoding.
-  final List<Mode> argModes;
+  final List<Mode?>? argModes;
 
   const FunctionSpec({
-    @required this.numArgs,
+    required this.numArgs,
     this.greediness = 1,
     this.allowedInText = false,
     this.allowedInMath = true,
     this.numOptionalArgs = 0,
     this.infix = false,
-    @required this.handler,
+    required this.handler,
     this.argModes,
   });
 
@@ -82,8 +80,6 @@ extension RegisterFunctionExt on Map<String, FunctionSpec> {
   }
 }
 
-Map<String, FunctionSpec> _functions;
-Map<String, FunctionSpec> get functions =>
-    _functions ??= <String, FunctionSpec>{}
-      ..registerFunctions(katexBaseFunctionEntries)
-      ..registerFunctions(katexExtFunctionEntries);
+final Map<String, FunctionSpec> functions = <String, FunctionSpec>{}
+  ..registerFunctions(katexBaseFunctionEntries)
+  ..registerFunctions(katexExtFunctionEntries);

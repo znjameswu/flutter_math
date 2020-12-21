@@ -4,9 +4,9 @@ import 'package:flutter/widgets.dart';
 class ResetBaseline extends SingleChildRenderObjectWidget {
   final double height;
   const ResetBaseline({
-    Key key,
-    @required this.height,
-    Widget child,
+    Key? key,
+    required this.height,
+    required Widget child,
   }) : super(key: key, child: child);
 
   @override
@@ -20,7 +20,7 @@ class ResetBaseline extends SingleChildRenderObjectWidget {
 }
 
 class RenderResetBaseline extends RenderProxyBox {
-  RenderResetBaseline({double height, RenderBox child})
+  RenderResetBaseline({required double height, RenderBox? child})
       : _height = height,
         super(child);
 

@@ -92,13 +92,13 @@ const sigmasAndXis = {
 };
 
 final textFontMetrics = FontMetrics.fromMap(
-    sigmasAndXis.map((key, value) => MapEntry(key, value[0])));
+    sigmasAndXis.map((key, value) => MapEntry(key, value[0])))!;
 
 final scriptFontMetrics = FontMetrics.fromMap(
-    sigmasAndXis.map((key, value) => MapEntry(key, value[1])));
+    sigmasAndXis.map((key, value) => MapEntry(key, value[1])))!;
 
 final scriptscriptFontMetrics = FontMetrics.fromMap(
-    sigmasAndXis.map((key, value) => MapEntry(key, value[2])));
+    sigmasAndXis.map((key, value) => MapEntry(key, value[2])))!;
 
 const extraCharacterMap = {
   // Latin-1
@@ -195,18 +195,21 @@ class CharacterMetrics {
 
 final Map<String, Map<int, CharacterMetrics>> metricsMap = fontMetricsData;
 
-CharacterMetrics getCharacterMetrics(
-    {String character, String fontName, Mode mode}) {
-  if (!metricsMap.containsKey(fontName)) {
+CharacterMetrics? getCharacterMetrics(
+    {required String character, required String fontName, required Mode mode}) {
+  final metricsMapFont = metricsMap[fontName];
+  if (metricsMapFont == null) {
     throw Exception('Font metrics not found for font: $fontName.');
   }
+
   final ch = character.codeUnitAt(0);
-  if (metricsMap[fontName].containsKey(ch)) {
-    return metricsMap[fontName][ch];
+  if (metricsMapFont.containsKey(ch)) {
+    return metricsMapFont[ch];
   }
-  if (extraCharacterMap.containsKey(character[0])) {
-    final ch = extraCharacterMap[character[0]].codeUnitAt(0);
-    return metricsMap[fontName][ch];
+
+  final extraCh = extraCharacterMap[character[0]]?.codeUnitAt(0);
+  if (extraCh != null) {
+    return metricsMapFont[ch];
   }
   if (mode == Mode.text && supportedCodepoint(ch)) {
     // We don't typically have font metrics for Asian scripts.
@@ -217,7 +220,7 @@ CharacterMetrics getCharacterMetrics(
     // the Latin capital letter M. This is close enough because
     // we (currently) only care about the height of the glpyh
     // not its width.
-    return metricsMap[fontName][77]; // 77 is the charcode for 'M'
+    return metricsMapFont[77]; // 77 is the charcode for 'M'
   }
   return null;
 }

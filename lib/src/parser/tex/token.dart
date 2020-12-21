@@ -25,7 +25,7 @@ import 'source_location.dart';
 
 class Token {
   String text;
-  SourceLocation loc;
+  SourceLocation? loc;
   bool noexpand = false;
   bool treatAsRelax = false;
   Token(this.text, [this.loc]);

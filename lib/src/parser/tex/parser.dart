@@ -24,7 +24,7 @@
 import 'dart:collection';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
+import 'package:collection/collection.dart';
 
 import '../../ast/nodes/multiscripts.dart';
 import '../../ast/nodes/over.dart';
@@ -53,18 +53,17 @@ import 'unicode_accents.dart';
 ///
 /// Convert TeX string to Flutter Math's AST
 class TexParser {
-  TexParser(this.content, this.settings)
+  TexParser(String content, this.settings)
       : this.leftrightDepth = 0,
         this.mode = Mode.math,
         this.macroExpander = MacroExpander(content, settings, Mode.math);
 
-  String content;
-  TexParserSettings settings;
+  final TexParserSettings settings;
   Mode mode;
   int leftrightDepth;
 
   final MacroExpander macroExpander;
-  Token nextToken;
+  Token? nextToken;
 
   /// Get parse result
   EquationRowNode parse() {
@@ -89,7 +88,7 @@ class TexParser {
 
   List<GreenNode> parseExpression({
     bool breakOnInfix = false,
-    String breakOnTokenText,
+    String? breakOnTokenText,
     bool infixArgumentMode = false,
   }) {
     final body = <GreenNode>[];
@@ -105,8 +104,8 @@ class TexParser {
         break;
       }
       // Detects a infix function
-      if (functions.containsKey(lex.text) &&
-          functions[lex.text].infix == true) {
+      final funcData = functions[lex.text];
+      if (funcData != null && funcData.infix == true) {
         if (infixArgumentMode) {
           throw ParseException('only one infix operator per group', lex);
         }
@@ -114,10 +113,10 @@ class TexParser {
           break;
         }
         this.consume();
-        _enterArgumentParsingMode(lex.text, functions[lex.text]);
+        _enterArgumentParsingMode(lex.text, funcData);
         try {
           // A new way to handle infix operations
-          final atom = functions[lex.text].handler(
+          final atom = funcData.handler(
             this,
             FunctionContext(
               funcName: lex.text,
@@ -188,7 +187,7 @@ class TexParser {
     }
   }
 
-  GreenNode parseAtom(String breakOnTokenText) {
+  GreenNode? parseAtom(String? breakOnTokenText) {
     final base = this.parseGroup('atom',
         optional: false, greediness: null, breakOnTokenText: breakOnTokenText);
 
@@ -210,12 +209,13 @@ class TexParser {
       } else {
         var res = scriptsResult.superscript != null
             ? OverNode(
-                base: base.wrapWithEquationRow(),
-                above: scriptsResult.superscript)
+                base: base?.wrapWithEquationRow() ?? EquationRowNode.empty(),
+                above: scriptsResult.superscript!)
             : base;
         res = scriptsResult.subscript != null
             ? UnderNode(
-                base: res.wrapWithEquationRow(), below: scriptsResult.subscript)
+                base: res?.wrapWithEquationRow() ?? EquationRowNode.empty(),
+                below: scriptsResult.subscript!)
             : res;
         return res;
       }
@@ -227,9 +227,9 @@ class TexParser {
   /// The following functions are separated from parseAtoms in KaTeX
   /// This function will only be invoked in math mode
   ScriptsParsingResults parseScripts({bool allowLimits = false}) {
-    EquationRowNode subscript;
-    EquationRowNode superscript;
-    bool limits;
+    EquationRowNode? subscript;
+    EquationRowNode? superscript;
+    bool? limits;
     loop:
     while (true) {
       this.consumeSpaces();
@@ -260,7 +260,7 @@ class TexParser {
           if (superscript != null) {
             throw ParseException('Double superscript', lex);
           }
-          final primeCommand = texSymbolCommandConfigs[Mode.math]['\\prime'];
+          final primeCommand = texSymbolCommandConfigs[Mode.math]!['\\prime']!;
           final superscriptList = <GreenNode>[
             SymbolNode(
               mode: mode,
@@ -318,10 +318,11 @@ class TexParser {
   static const supsubGreediness = 1;
 
   Token fetch() {
-    if (this.nextToken == null) {
-      this.nextToken = this.macroExpander.expandNextToken();
+    final nextToken = this.nextToken;
+    if (nextToken == null) {
+      return this.nextToken = this.macroExpander.expandNextToken();
     }
-    return this.nextToken;
+    return nextToken;
   }
 
   void consume() {
@@ -342,13 +343,13 @@ class TexParser {
   /// bracket-enclosed group.
   /// If `mode` is present, switches to that mode while parsing the group,
   /// and switches back after.
-  GreenNode parseGroup(
+  GreenNode? parseGroup(
     String name, {
-    bool optional,
-    int greediness,
-    String breakOnTokenText,
-    Mode mode,
-    bool consumeSpaces,
+    required bool optional,
+    int? greediness,
+    String? breakOnTokenText,
+    Mode? mode,
+    bool consumeSpaces = false,
   }) {
     // Save current mode and restore after completion
     final outerMode = this.mode;
@@ -363,11 +364,11 @@ class TexParser {
     // Get first token
     final firstToken = this.fetch();
     final text = firstToken.text;
-    GreenNode result;
+    GreenNode? result;
     // Try to parse an open brace or \begingroup
     if (optional ? text == '[' : text == '{' || text == '\\begingroup') {
       this.consume();
-      final groupEnd = endOfGroup[text];
+      final groupEnd = endOfGroup[text]!;
       // Start a new group namespace
       this.macroExpander.beginGroup();
       // If we get a brace, parse an expression
@@ -404,8 +405,8 @@ class TexParser {
 
   ///Parses an entire function, including its base and all of its arguments.
 
-  GreenNode parseFunction(
-      String breakOnTokenText, String name, int greediness) {
+  GreenNode? parseFunction(
+      String? breakOnTokenText, String? name, int? greediness) {
     final token = this.fetch();
     final func = token.text;
     final funcData = functions[func];
@@ -415,7 +416,7 @@ class TexParser {
     this.consume();
 
     if (greediness != null &&
-        funcData.greediness != null &&
+        // funcData.greediness != null &&
         funcData.greediness <= greediness) {
       throw ParseException(
           '''Got function '$func' with no arguments ${name != null ? ' as $name' : ''}''',
@@ -436,16 +437,16 @@ class TexParser {
       breakOnTokenText: breakOnTokenText,
     );
 
-    if (funcData.handler != null) {
-      _enterArgumentParsingMode(func, funcData);
-      try {
-        return funcData.handler(this, context);
-      } finally {
-        _leaveArgumentParsingMode(func);
-      }
-    } else {
-      throw ParseException('''No function handler for $name''');
+    // if (funcData.handler != null) {
+    _enterArgumentParsingMode(func, funcData);
+    try {
+      return funcData.handler(this, context);
+    } finally {
+      _leaveArgumentParsingMode(func);
     }
+    // } else {
+    //   throw ParseException('''No function handler for $name''');
+    // }
     // return this.callFunction(func, token, breakOnTokenText);
   }
 
@@ -462,7 +463,7 @@ class TexParser {
     argParsingContexts.removeLast();
   }
 
-  void _assertOptionalBeforeReturn(dynamic value, {@required bool optional}) {
+  void _assertOptionalBeforeReturn(dynamic value, {required bool optional}) {
     if (!optional && value == null) {
       throw ParseException(
           'Expected group after ${currArgParsingContext.funcName}',
@@ -480,7 +481,7 @@ class TexParser {
   //     RegExp(r'^(#[a-f0-9]{3}|#?[a-f0-9]{6}|[a-z]+)$', caseSensitive: false);
   // static final _matchColorRegex =
   //     RegExp(r'[0-9a-f]{6}', caseSensitive: false);
-  Color parseArgColor({@required bool optional}) {
+  Color? parseArgColor({required bool optional}) {
     currArgParsingContext.newArgument(optional: optional);
     final i = currArgParsingContext.currArgNum;
     final consumeSpaces =
@@ -498,7 +499,7 @@ class TexParser {
     final match3 = _parseColorRegex3.firstMatch(res.text);
 
     if (match3 != null) {
-      final color = colorByName[match3[0].toLowerCase()];
+      final color = colorByName[match3[0]!.toLowerCase()];
       if (color != null) {
         return color;
       }
@@ -508,9 +509,9 @@ class TexParser {
     if (match2 != null) {
       return Color.fromARGB(
         0xff,
-        int.parse(match2[1], radix: 16),
-        int.parse(match2[2], radix: 16),
-        int.parse(match2[3], radix: 16),
+        int.parse(match2[1]!, radix: 16),
+        int.parse(match2[2]!, radix: 16),
+        int.parse(match2[3]!, radix: 16),
       );
     }
 
@@ -518,9 +519,9 @@ class TexParser {
     if (match1 != null) {
       return Color.fromARGB(
         0xff,
-        int.parse(match1[1] * 2, radix: 16),
-        int.parse(match1[2] * 2, radix: 16),
-        int.parse(match1[3] * 2, radix: 16),
+        int.parse(match1[1]! * 2, radix: 16),
+        int.parse(match1[2]! * 2, radix: 16),
+        int.parse(match1[3]! * 2, radix: 16),
       );
     }
     throw ParseException("Invalid color: '${res.text}'");
@@ -530,7 +531,7 @@ class TexParser {
       RegExp(r'^[-+]? *(?:$|\d+|\d+\.\d*|\.\d*) *[a-z]{0,2} *$');
   static final _parseMeasurementRegex =
       RegExp(r'([-+]?) *(\d+(?:\.\d*)?|\.\d+) *([a-z]{2})');
-  Measurement parseArgSize({@required bool optional}) {
+  Measurement? parseArgSize({required bool optional}) {
     currArgParsingContext.newArgument(optional: optional);
     final i = currArgParsingContext.currArgNum;
     final consumeSpaces =
@@ -540,7 +541,7 @@ class TexParser {
     }
 
     // final res = this.parseSizeGroup(optional: optional);
-    Token res;
+    Token? res;
     if (!optional && this.fetch().text != '{') {
       res = _parseRegexGroup(_parseSizeRegex, 'size');
     } else {
@@ -560,16 +561,16 @@ class TexParser {
       throw ParseException("Invalid size: '${res.text}'", res);
     }
 
-    final unit = match[3].parseUnit();
+    final unit = match[3]!.parseUnit();
     if (unit == null) {
       throw ParseException("Invalid unit: '${match[3]}'", res);
     }
     final size =
-        Measurement(value: double.parse(match[1] + match[2]), unit: unit);
+        Measurement(value: double.parse(match[1]! + match[2]!), unit: unit);
     return size;
   }
 
-  String parseArgUrl({@required bool optional}) {
+  String parseArgUrl({required bool optional}) {
     currArgParsingContext.newArgument(optional: optional);
     // final i = currArgParsingContext.currArgNum;
     // final consumeSpaces =
@@ -581,7 +582,7 @@ class TexParser {
     throw UnimplementedError();
   }
 
-  GreenNode parseArgNode({@required Mode mode, @required bool optional}) {
+  GreenNode? parseArgNode({required Mode? mode, required bool optional}) {
     currArgParsingContext.newArgument(optional: optional);
     final i = currArgParsingContext.currArgNum;
     final consumeSpaces =
@@ -600,7 +601,7 @@ class TexParser {
     return res;
   }
 
-  GreenNode parseArgHbox({@required bool optional}) {
+  GreenNode parseArgHbox({required bool optional}) {
     final res = parseArgNode(mode: Mode.text, optional: optional);
     if (res is EquationRowNode) {
       return EquationRowNode(children: [
@@ -612,12 +613,12 @@ class TexParser {
     } else {
       return StyleNode(
         optionsDiff: OptionsDiff(style: MathStyle.text),
-        children: res.children,
+        children: res?.children.whereNotNull().toList(growable: false) ?? [],
       );
     }
   }
 
-  String parseArgRaw({@required bool optional}) {
+  String? parseArgRaw({required bool optional}) {
     currArgParsingContext.newArgument(optional: optional);
     final i = currArgParsingContext.currArgNum;
     final consumeSpaces =
@@ -638,8 +639,8 @@ class TexParser {
 
   static final _parseStringGroupRegex = RegExp('''[^{}[\]]''');
 
-  Token _parseStringGroup(String modeName,
-      {@required bool optional, bool raw = false}) {
+  Token? _parseStringGroup(String modeName,
+      {required bool optional, bool raw = false}) {
     final groupBegin = optional ? '[' : '{';
     final groupEnd = optional ? ']' : '}';
     final beginToken = this.fetch();
@@ -702,7 +703,7 @@ class TexParser {
   }
 
   static final _parseVerbRegex = RegExp(r'^\\verb[^a-zA-Z]');
-  GreenNode _parseSymbol() {
+  GreenNode? _parseSymbol() {
     final nucleus = this.fetch();
     var text = nucleus.text;
     if (_parseVerbRegex.hasMatch(text)) {
@@ -734,7 +735,7 @@ class TexParser {
     // At this point, we should have a symbol, possibly with accents.
     // First expand any accented base symbol according to unicodeSymbols.
     if (unicodeSymbols.containsKey(text[0]) &&
-        !texSymbolCommandConfigs[this.mode].containsKey(text[0])) {
+        !texSymbolCommandConfigs[this.mode]!.containsKey(text[0])) {
       if (this.mode == Mode.math) {
         this.settings.reportNonstrict(
             'unicodeTextInMathMode',
@@ -748,22 +749,22 @@ class TexParser {
     var combiningMarks = '';
     if (match != null) {
       text = text.substring(0, match.start);
-      for (var i = 0; i < match[0].length; i++) {
-        final accent = match[0][i];
+      for (var i = 0; i < match[0]!.length; i++) {
+        final accent = match[0]![i];
         if (!unicodeAccents.containsKey(accent)) {
           throw ParseException("Unknown accent ' $accent'", nucleus);
         }
-        final command = unicodeAccents[accent][this.mode];
+        final command = unicodeAccents[accent]![this.mode];
         if (command == null) {
           throw ParseException(
               'Accent $accent unsupported in ${this.mode} mode', nucleus);
         }
       }
-      combiningMarks = match[0];
+      combiningMarks = match[0]!;
     }
     // Recognize base symbol
     GreenNode symbol;
-    final symbolCommandConfig = texSymbolCommandConfigs[this.mode][text];
+    final symbolCommandConfig = texSymbolCommandConfigs[this.mode]![text];
     if (symbolCommandConfig != null) {
       if (this.mode == Mode.math && extraLatin.contains(text)) {
         this.settings.reportNonstrict(
@@ -825,32 +826,32 @@ class ArgumentParsingContext {
   String get name => 'argument to $funcName';
 
   ArgumentParsingContext({
-    @required this.funcData,
-    @required this.funcName,
+    required this.funcData,
+    required this.funcName,
     this.currArgNum = -1,
     bool optional = true,
   }) : _optional = optional;
 
-  void newArgument({bool optional}) {
+  void newArgument({required bool optional}) {
     currArgNum++;
     this.optional = optional;
   }
 }
 
 class ScriptsParsingResults {
-  final EquationRowNode subscript;
-  final EquationRowNode superscript;
-  final bool limits;
+  final EquationRowNode? subscript;
+  final EquationRowNode? superscript;
+  final bool? limits;
   const ScriptsParsingResults({
-    @required this.subscript,
-    @required this.superscript,
+    required this.subscript,
+    required this.superscript,
     this.limits,
   });
 
   bool get empty => subscript == null && superscript == null;
 }
 
-T assertNodeType<T extends GreenNode>(GreenNode node) {
+T assertNodeType<T extends GreenNode?>(GreenNode? node) {
   if (node is T) {
     return node;
   }

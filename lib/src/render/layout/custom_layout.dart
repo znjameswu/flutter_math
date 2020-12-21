@@ -13,16 +13,16 @@ abstract class CustomLayoutDelegate<T> {
       BoxConstraints constraints, Map<T, RenderBox> childrenTable);
 
   double getIntrinsicSize({
-    Axis sizingDirection,
-    bool max,
-    double
+    required Axis sizingDirection,
+    required bool max,
+    required double
         extent, // the extent in the direction that isn't the sizing direction
-    double Function(RenderBox child, double extent)
+    required double Function(RenderBox child, double extent)
         childSize, // a method to find the size in the sizing direction);
-    Map<T, RenderBox> childrenTable,
+    required Map<T, RenderBox> childrenTable,
   });
 
-  double computeDistanceToActualBaseline(
+  double? computeDistanceToActualBaseline(
       TextBaseline baseline, Map<T, RenderBox> childrenTable);
 
   void additionalPaint(PaintingContext context, Offset offset) {}
@@ -30,7 +30,7 @@ abstract class CustomLayoutDelegate<T> {
 
 class CustomLayoutParentData<T> extends ContainerBoxParentData<RenderBox> {
   /// An object representing the identity of this child.
-  T id;
+  T? id;
 
   @override
   String toString() => '${super.toString()}; id=$id';
@@ -41,11 +41,10 @@ class CustomLayoutId<T> extends ParentDataWidget<CustomLayoutParentData<T>> {
   ///
   /// Both the child and the id arguments must not be null.
   CustomLayoutId({
-    Key key,
-    @required this.id,
-    @required Widget child,
-  })  : assert(child != null),
-        assert(id != null),
+    Key? key,
+    required this.id,
+    required Widget child,
+  })   : assert(id != null),
         super(key: key ?? ValueKey<T>(id), child: child);
 
   final T id;
@@ -76,11 +75,10 @@ class CustomLayout<T> extends MultiChildRenderObjectWidget {
   ///
   /// The [delegate] argument must not be null.
   CustomLayout({
-    Key key,
-    @required this.delegate,
-    @required List<Widget> children,
-  })  : assert(delegate != null),
-        super(key: key, children: children);
+    Key? key,
+    required this.delegate,
+    required List<Widget> children,
+  }) : super(key: key, children: children);
 
   /// The delegate that controls the layout of the children.
   final CustomLayoutDelegate<T> delegate;
@@ -101,10 +99,9 @@ class RenderCustomLayout<T> extends RenderBox
         ContainerRenderObjectMixin<RenderBox, CustomLayoutParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, CustomLayoutParentData> {
   RenderCustomLayout({
-    List<RenderBox> children,
-    @required CustomLayoutDelegate<T> delegate,
-  })  : assert(delegate != null),
-        _delegate = delegate {
+    List<RenderBox>? children,
+    required CustomLayoutDelegate<T> delegate,
+  }) : _delegate = delegate {
     addAll(children);
   }
 
@@ -119,7 +116,6 @@ class RenderCustomLayout<T> extends RenderBox
   CustomLayoutDelegate<T> get delegate => _delegate;
   CustomLayoutDelegate<T> _delegate;
   set delegate(CustomLayoutDelegate<T> newDelegate) {
-    assert(newDelegate != null);
     if (_delegate != newDelegate) {
       markNeedsLayout();
     }
@@ -136,22 +132,22 @@ class RenderCustomLayout<T> extends RenderBox
           throw FlutterError.fromParts(<DiagnosticsNode>[
             ErrorSummary('Every child of a RenderCustomLayout must have an ID '
                 'in its parent data.'),
-            child.describeForError('The following child has no ID'),
+            child!.describeForError('The following child has no ID'),
           ]);
         }
         if (res.containsKey(childParentData.id)) {
           throw FlutterError.fromParts(<DiagnosticsNode>[
             ErrorSummary(
                 'Every child of a RenderCustomLayout must have a unique ID.'),
-            child.describeForError(
+            child!.describeForError(
                 'The following child has a ID of ${childParentData.id}'),
-            res[childParentData.id]
+            res[childParentData.id!]!
                 .describeForError('While the following child has the same ID')
           ]);
         }
         return true;
       }());
-      res[childParentData.id] = child;
+      res[childParentData.id!] = child;
       child = childParentData.nextSibling;
     }
     return res;
@@ -194,7 +190,7 @@ class RenderCustomLayout<T> extends RenderBox
       childrenTable: childrenTable);
 
   @override
-  double computeDistanceToActualBaseline(TextBaseline baseline) =>
+  double? computeDistanceToActualBaseline(TextBaseline baseline) =>
       delegate.computeDistanceToActualBaseline(baseline, childrenTable);
 
   @override
@@ -210,7 +206,7 @@ class RenderCustomLayout<T> extends RenderBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) =>
       defaultHitTestChildren(result, position: position);
 }
 
@@ -218,8 +214,8 @@ class AxisConfiguration<T> {
   final double size;
   final Map<T, double> offsetTable;
   AxisConfiguration({
-    @required this.size,
-    @required this.offsetTable,
+    required this.size,
+    required this.offsetTable,
   });
 }
 
@@ -227,23 +223,23 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
   const IntrinsicLayoutDelegate();
 
   AxisConfiguration<T> performHorizontalIntrinsicLayout({
-    @required Map<T, double> childrenWidths,
+    required Map<T, double> childrenWidths,
     bool isComputingIntrinsics = false,
   });
 
   AxisConfiguration<T> performVerticalIntrinsicLayout({
-    @required Map<T, double> childrenHeights,
-    @required Map<T, double> childrenBaselines,
+    required Map<T, double> childrenHeights,
+    required Map<T, double> childrenBaselines,
     bool isComputingIntrinsics = false,
   });
 
   @override
   double getIntrinsicSize({
-    Axis sizingDirection,
-    bool max,
-    double extent,
-    double Function(RenderBox child, double extent) childSize,
-    Map<T, RenderBox> childrenTable,
+    required Axis sizingDirection,
+    required bool max,
+    required double extent,
+    required double Function(RenderBox child, double extent) childSize,
+    required Map<T, RenderBox> childrenTable,
   }) {
     if (sizingDirection == Axis.horizontal) {
       return performHorizontalIntrinsicLayout(
@@ -274,11 +270,14 @@ abstract class IntrinsicLayoutDelegate<T> extends CustomLayoutDelegate<T> {
     final vconf = performVerticalIntrinsicLayout(
       childrenHeights:
           childrenTable.map((key, value) => MapEntry(key, value.size.height)),
-      childrenBaselines: childrenTable.map((key, value) =>
-          MapEntry(key, value.getDistanceToBaseline(TextBaseline.alphabetic))),
+      childrenBaselines: childrenTable.map((key, value) => MapEntry(
+            key,
+            value.getDistanceToBaseline(TextBaseline.alphabetic,
+                onlyReal: true)!,
+          )),
     );
     childrenTable.forEach((id, child) =>
-        child.offset = Offset(hconf.offsetTable[id], vconf.offsetTable[id]));
+        child.offset = Offset(hconf.offsetTable[id]!, vconf.offsetTable[id]!));
     return Size(hconf.size, vconf.size);
   }
 }

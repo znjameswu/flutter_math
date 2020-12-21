@@ -52,14 +52,15 @@ const _notRemap = {
   '\u2203': '\u2204'
 };
 GreenNode _notHandler(TexParser parser, FunctionContext context) {
-  final base = parser.parseArgNode(mode: null, optional: false);
+  final base = parser.parseArgNode(mode: null, optional: false)!;
   final node = assertNodeType<SymbolNode>(base);
+  final remappedSymbol = _notRemap[node.symbol];
   if (node.mode != Mode.math ||
       node.variantForm == true ||
-      !_notRemap.containsKey(node.symbol)) {
+      remappedSymbol == null) {
     throw ParseException('\\not has to be followed by a combinable character');
   }
-  return node.copyWith(
-    symbol: _notRemap[node.symbol],
+  return node.withSymbol(
+    remappedSymbol,
   );
 }

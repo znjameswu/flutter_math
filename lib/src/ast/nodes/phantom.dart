@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 
 import '../../render/layout/reset_dimension.dart';
 import '../options.dart';
@@ -28,7 +27,7 @@ class PhantomNode extends LeafNode {
   final bool zeroDepth;
 
   PhantomNode({
-    @required this.phantomChild,
+    required this.phantomChild,
     this.zeroHeight = false,
     this.zeroWidth = false,
     this.zeroDepth = false,
@@ -36,7 +35,7 @@ class PhantomNode extends LeafNode {
 
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     final phantomRedNode =
         SyntaxNode(parent: null, value: phantomChild, pos: 0);
     final phantomResult = phantomRedNode.buildWidget(options);
@@ -68,7 +67,7 @@ class PhantomNode extends LeafNode {
       phantomChild.shouldRebuildWidget(oldOptions, newOptions);
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'phantomChild': phantomChild.toJson(),
       if (zeroWidth != false) 'zeroWidth': zeroWidth,

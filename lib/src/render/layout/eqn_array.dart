@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:collection/collection.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
@@ -19,22 +20,23 @@ class EqnArray extends MultiChildRenderObjectWidget {
   final List<double> rowSpacings;
 
   EqnArray({
-    Key key,
-    @required this.ruleThickness,
-    @required this.jotSize,
-    @required this.arrayskip,
-    @required this.hlines,
-    @required this.rowSpacings,
-    @required List<Widget> children,
+    Key? key,
+    required this.ruleThickness,
+    required this.jotSize,
+    required this.arrayskip,
+    required this.hlines,
+    required this.rowSpacings,
+    required List<Widget> children,
   }) : super(key: key, children: children);
 
   @override
   RenderObject createRenderObject(BuildContext context) => RenderEqnArray(
-      ruleThickness: ruleThickness,
-      jotSize: jotSize,
-      arrayskip: arrayskip,
-      hlines: hlines,
-      rowSpacings: rowSpacings);
+        ruleThickness: ruleThickness,
+        jotSize: jotSize,
+        arrayskip: arrayskip,
+        hlines: hlines,
+        rowSpacings: rowSpacings,
+      );
 }
 
 class RenderEqnArray extends RenderBox
@@ -43,13 +45,13 @@ class RenderEqnArray extends RenderBox
         RenderBoxContainerDefaultsMixin<RenderBox, EqnArrayParentData>,
         DebugOverflowIndicatorMixin {
   RenderEqnArray({
-    List<RenderBox> children,
-    @required double ruleThickness,
-    @required double jotSize,
-    @required double arrayskip,
-    @required List<MatrixSeparatorStyle> hlines,
-    @required List<double> rowSpacings,
-  })  : _ruleThickness = ruleThickness,
+    List<RenderBox>? children,
+    required double ruleThickness,
+    required double jotSize,
+    required double arrayskip,
+    required List<MatrixSeparatorStyle> hlines,
+    required List<double> rowSpacings,
+  })   : _ruleThickness = ruleThickness,
         _jotSize = jotSize,
         _arrayskip = arrayskip,
         _hlines = hlines,
@@ -149,8 +151,8 @@ class RenderEqnArray extends RenderBox
     }
 
     final nonAligningChildrenWidth =
-        nonAligningChildren.map((e) => e.size.width).max() ?? 0.0;
-    final aligningChildrenWidth = colWidths.sum();
+        nonAligningChildren.map((e) => e.size.width).maxOrNull ?? 0.0;
+    final aligningChildrenWidth = colWidths.sum;
     width = math.max(nonAligningChildrenWidth, aligningChildrenWidth);
 
     // Second pass, re-layout each RenderLine using column width constraint
@@ -170,7 +172,7 @@ class RenderEqnArray extends RenderBox
             parentUsesSize: true);
         hPos = (width - aligningChildrenWidth) / 2 +
             colWidths[0] -
-            child.alignColWidth[0];
+            child.alignColWidth![0];
       } else {
         hPos = (width - child.size.width) / 2;
       }
@@ -183,7 +185,7 @@ class RenderEqnArray extends RenderBox
           jotSize +
           rowSpacings[index - 1];
       hlinePos.add(vPos);
-      vPos += hlines[index] != null ? ruleThickness : 0.0;
+      vPos += hlines[index] != MatrixSeparatorStyle.none ? ruleThickness : 0.0;
       index++;
 
       child = childParentData.nextSibling;
@@ -193,20 +195,21 @@ class RenderEqnArray extends RenderBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) =>
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) =>
       defaultHitTestChildren(result, position: position);
 
   @override
   void paint(PaintingContext context, Offset offset) {
     defaultPaint(context, offset);
     for (var i = 0; i < hlines.length; i++) {
-      if (hlines[i] != null) {
+      if (hlines[i] != MatrixSeparatorStyle.none) {
         context.canvas.drawLine(
           Offset(0, hlinePos[i] + ruleThickness / 2),
           Offset(width, hlinePos[i] + ruleThickness / 2),
           Paint()..strokeWidth = ruleThickness,
         );
       }
+      // TODO dashed line
     }
   }
 }

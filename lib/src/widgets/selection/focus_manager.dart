@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 mixin FocusManagerMixin<T extends StatefulWidget> on State<T> {
   FocusNode get focusNode;
 
-  FocusNode _oldFocusNode;
+  late FocusNode _oldFocusNode;
 
-  FocusAttachment _focusAttachment;
+  late FocusAttachment _focusAttachment;
 
   @override
   void initState() {

@@ -3,14 +3,13 @@ import 'package:flutter/widgets.dart';
 
 class ShiftBaseline extends SingleChildRenderObjectWidget {
   const ShiftBaseline({
-    Key key,
+    Key? key,
     this.relativePos,
     this.offset = 0,
-    Widget child,
-  })  : assert(offset != null),
-        super(key: key, child: child);
+    required Widget child,
+  }) : super(key: key, child: child);
 
-  final double relativePos;
+  final double? relativePos;
 
   final double offset;
 
@@ -29,17 +28,16 @@ class ShiftBaseline extends SingleChildRenderObjectWidget {
 
 class RenderShiftBaseline extends RenderProxyBox {
   RenderShiftBaseline({
-    RenderBox child,
-    double relativePos,
+    RenderBox? child,
+    double? relativePos,
     double offset = 0,
-  })  : assert(offset != null),
-        _relativePos = relativePos,
+  })  : _relativePos = relativePos,
         _offset = offset,
         super(child);
 
-  double get relativePos => _relativePos;
-  double _relativePos;
-  set relativePos(double value) {
+  double? get relativePos => _relativePos;
+  double? _relativePos;
+  set relativePos(double? value) {
     if (_relativePos != value) {
       _relativePos = value;
       markNeedsLayout();
@@ -58,14 +56,14 @@ class RenderShiftBaseline extends RenderProxyBox {
   var _height = 0.0;
 
   @override
-  double computeDistanceToActualBaseline(TextBaseline baseline) {
+  double? computeDistanceToActualBaseline(TextBaseline baseline) {
     if (relativePos != null) {
-      return relativePos * _height + offset;
+      return relativePos! * _height + offset;
     }
     if (child != null) {
       // assert(!debugNeedsLayout);
       final childBaselineDistance =
-          child.getDistanceToActualBaseline(baseline) ?? _height;
+          child!.getDistanceToActualBaseline(baseline) ?? _height;
       //ignore: avoid_returning_null
       // if (childBaselineDistance == null) return null;
       return childBaselineDistance + offset;

@@ -12,62 +12,69 @@ import '../syntax_tree.dart';
 /// AccentUnder Nodes.
 ///
 /// Examples: `\utilde`
-class AccentUnderNode extends SlotableNode {
+class AccentUnderNode extends SlotableNode<EquationRowNode> {
   /// Base where the accentUnder is applied upon.
   final EquationRowNode base;
 
   /// Unicode symbol of the accent character.
   final String label;
   AccentUnderNode({
-    @required this.base,
-    @required this.label,
+    required this.base,
+    required this.label,
   });
 
   @override
   BuildResult buildWidget(
-          MathOptions options, List<BuildResult> childBuildResults) =>
-      BuildResult(
-        options: options,
-        italic: childBuildResults[0].italic,
-        skew: childBuildResults[0].skew,
-        widget: VList(
-          baselineReferenceWidgetIndex: 0,
-          children: <Widget>[
-            VListElement(
-              trailingMargin:
-                  label == '\u007e' ? 0.12.cssEm.toLpUnder(options) : 0.0,
-              // Special case for \utilde
-              child: childBuildResults[0].widget,
-            ),
-            VListElement(
-              customCrossSize: (width) => BoxConstraints(minWidth: width),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  if (label == '\u00AF') {
-                    final defaultRuleThickness = options
-                        .fontMetrics.defaultRuleThickness.cssEm
-                        .toLpUnder(options);
-                    return Padding(
-                      padding: EdgeInsets.only(top: 3 * defaultRuleThickness),
-                      child: Container(
-                        width: constraints.minWidth,
-                        height: defaultRuleThickness, // TODO minRuleThickness
-                        color: options.color,
-                      ),
-                    );
-                  } else {
-                    return strechySvgSpan(
-                      accentRenderConfigs[label].underImageName,
-                      constraints.minWidth,
-                      options,
-                    );
+      MathOptions options, List<BuildResult?> childBuildResults) {
+    final baseResult = childBuildResults[0]!;
+    return BuildResult(
+      options: options,
+      italic: baseResult.italic,
+      skew: baseResult.skew,
+      widget: VList(
+        baselineReferenceWidgetIndex: 0,
+        children: <Widget>[
+          VListElement(
+            trailingMargin:
+                label == '\u007e' ? 0.12.cssEm.toLpUnder(options) : 0.0,
+            // Special case for \utilde
+            child: baseResult.widget,
+          ),
+          VListElement(
+            customCrossSize: (width) => BoxConstraints(minWidth: width),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (label == '\u00AF') {
+                  final defaultRuleThickness = options
+                      .fontMetrics.defaultRuleThickness.cssEm
+                      .toLpUnder(options);
+                  return Padding(
+                    padding: EdgeInsets.only(top: 3 * defaultRuleThickness),
+                    child: Container(
+                      width: constraints.minWidth,
+                      height: defaultRuleThickness, // TODO minRuleThickness
+                      color: options.color,
+                    ),
+                  );
+                } else {
+                  final accentRenderConfig = accentRenderConfigs[label];
+                  if (accentRenderConfig == null ||
+                      accentRenderConfig.underImageName == null) {
+                    return Container();
                   }
-                },
-              ),
-            )
-          ],
-        ),
-      );
+                  return strechySvgSpan(
+                    accentRenderConfig.underImageName!,
+                    constraints.minWidth,
+                    options,
+                  );
+                }
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   List<MathOptions> computeChildOptions(MathOptions options) =>
@@ -87,20 +94,19 @@ class AccentUnderNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
+  AccentUnderNode updateChildren(List<EquationRowNode> newChildren) =>
       copyWith(base: newChildren[0]);
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'base': base.toJson(),
       'label': unicodeLiteral(label),
     });
 
   AccentUnderNode copyWith({
-    EquationRowNode base,
-    String label,
+    EquationRowNode? base,
+    String? label,
   }) =>
       AccentUnderNode(
         base: base ?? this.base,

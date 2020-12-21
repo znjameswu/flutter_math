@@ -23,22 +23,21 @@ class SymbolNode extends LeafNode {
   final bool variantForm;
 
   /// Effective atom type for this symbol;
-  AtomType get atomType => _atomType ??= overrideAtomType ??
+  late final AtomType atomType = overrideAtomType ??
       getDefaultAtomTypeForSymbol(symbol, variantForm: variantForm, mode: mode);
-  AtomType _atomType;
 
   /// Overriding atom type;
-  final AtomType overrideAtomType;
+  final AtomType? overrideAtomType;
 
   /// Overriding atom font;
-  final FontOptions overrideFont;
+  final FontOptions? overrideFont;
 
   final Mode mode;
 
   // bool get noBreak => symbol == '\u00AF';
 
   SymbolNode({
-    @required this.symbol,
+    required this.symbol,
     this.variantForm = false,
     this.overrideAtomType,
     this.overrideFont,
@@ -47,7 +46,7 @@ class SymbolNode extends LeafNode {
 
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     final expanded = symbol.runes.expand((code) {
       final ch = String.fromCharCode(code);
       return unicodeSymbols[ch]?.split('') ?? [ch];
@@ -71,7 +70,7 @@ class SymbolNode extends LeafNode {
           expanded[0] = '\u0237'; // dotless j, in math and text mode
         }
       }
-      GreenNode res = this.copyWith(symbol: expanded[0]);
+      GreenNode res = this.withSymbol(expanded[0]);
       for (var ch in expanded.skip(1)) {
         final accent = unicodeAccents[ch];
         if (accent == null) {
@@ -112,28 +111,24 @@ class SymbolNode extends LeafNode {
   AtomType get rightType => atomType;
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'mode': mode.toString(),
       'symbol': unicodeLiteral(symbol),
       if (variantForm) 'variantForm': variantForm,
-      if (_atomType != null) 'atomType': _atomType.toString(),
+      if (overrideAtomType != null) 'atomType': overrideAtomType.toString(),
     });
 
-  SymbolNode copyWith({
-    String symbol,
-    bool variantForm,
-    AtomType atomType,
-    FontOptions overrideFont,
-    Mode mode,
-  }) =>
-      SymbolNode(
-        symbol: symbol ?? this.symbol,
-        variantForm: variantForm ?? this.variantForm,
-        overrideAtomType: _atomType ?? this._atomType,
-        overrideFont: overrideFont ?? this.overrideFont,
-        mode: mode ?? this.mode,
-      );
+  SymbolNode withSymbol(String symbol) {
+    if (symbol == this.symbol) return this;
+    return SymbolNode(
+      symbol: symbol,
+      variantForm: variantForm,
+      overrideAtomType: overrideAtomType,
+      overrideFont: overrideFont,
+      mode: mode,
+    );
+  }
 }
 
 EquationRowNode stringToNode(String string, [Mode mode = Mode.text]) =>
@@ -147,7 +142,7 @@ EquationRowNode stringToNode(String string, [Mode mode = Mode.text]) =>
 AtomType getDefaultAtomTypeForSymbol(
   String symbol, {
   bool variantForm = false,
-  @required Mode mode,
+  required Mode mode,
 }) {
   var symbolRenderConfig = symbolRenderConfigs[symbol];
   if (variantForm) {
@@ -156,14 +151,14 @@ AtomType getDefaultAtomTypeForSymbol(
   final renderConfig =
       mode == Mode.math ? symbolRenderConfig?.math : symbolRenderConfig?.text;
   if (renderConfig != null) {
-    return renderConfig.defaultType;
+    return renderConfig.defaultType ?? AtomType.ord;
   }
   if (variantForm == false && mode == Mode.math) {
     if (negatedOperatorSymbols.containsKey(symbol)) {
       return AtomType.rel;
     }
     if (compactedCompositeSymbols.containsKey(symbol)) {
-      return compactedCompositeSymbolTypes[symbol];
+      return compactedCompositeSymbolTypes[symbol]!;
     }
     if (decoratedEqualSymbols.contains(symbol)) {
       return AtomType.rel;

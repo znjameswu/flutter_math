@@ -1,35 +1,73 @@
-import 'dart:math' as math;
-
-T orNull<T>() => null;
-
 extension NumIterableExtension<T extends num> on Iterable<T> {
-  T sum() => this.isEmpty ? 0 as T : this.reduce((a, b) => a + b as T);
-  T max() => this.isEmpty ? null : this.reduce(math.max);
-  T min() => this.isEmpty ? null : this.reduce(math.min);
-}
-
-extension NullableListGetterExt<T> on Iterable<T> {
-  T get firstOrNull => this.isEmpty ? null : this.first;
-  T get lastOrNull => this.isEmpty ? null : this.last;
-  T firstWhereOrNull(bool Function(T element) f) =>
-      this.firstWhere(f, orElse: orNull);
-}
-
-extension IterableExtension<T> on Iterable<T> {
-  Iterable<T2> mapIndexed<T2>(T2 Function(T element, int index) f) sync* {
-    var index = 0;
-    for (final item in this) {
-      yield f(item, index);
-      index++;
+  T? get minOrNull {
+    var iterator = this.iterator;
+    if (iterator.moveNext()) {
+      var value = iterator.current;
+      while (iterator.moveNext()) {
+        var newValue = iterator.current;
+        if (value.compareTo(newValue) > 0) {
+          value = newValue;
+        }
+      }
+      return value;
     }
+    return null;
+  }
+
+  /// A minimal element of the iterable.
+  ///
+  /// The iterable must not be empty.
+  T get min {
+    var iterator = this.iterator;
+    if (iterator.moveNext()) {
+      var value = iterator.current;
+      while (iterator.moveNext()) {
+        var newValue = iterator.current;
+        if (value.compareTo(newValue) > 0) {
+          value = newValue;
+        }
+      }
+      return value;
+    }
+    throw StateError('No element');
+  }
+
+  /// A maximal element of the iterable, or `null` if the iterable is empty.
+  T? get maxOrNull {
+    var iterator = this.iterator;
+    if (iterator.moveNext()) {
+      var value = iterator.current;
+      while (iterator.moveNext()) {
+        var newValue = iterator.current;
+        if (value.compareTo(newValue) < 0) {
+          value = newValue;
+        }
+      }
+      return value;
+    }
+    return null;
+  }
+
+  /// A maximal element of the iterable.
+  ///
+  /// The iterable must not be empty.
+  T get max {
+    var iterator = this.iterator;
+    if (iterator.moveNext()) {
+      var value = iterator.current;
+      while (iterator.moveNext()) {
+        var newValue = iterator.current;
+        if (value.compareTo(newValue) < 0) {
+          value = newValue;
+        }
+      }
+      return value;
+    }
+    throw StateError('No element');
   }
 }
 
 extension ListExtension<T> on List<T> {
-  void sortBy<T2 extends Comparable<T2>>(T2 Function(T element) f) {
-    this.sort((a, b) => f(a).compareTo(f(b)));
-  }
-
   List<T> extendToByFill(int desiredLength, T fill) =>
       this.length >= desiredLength
           ? this
@@ -68,13 +106,3 @@ extension NumListSearchExt<T extends num> on List<T> {
     // return this.length.toDouble();
   }
 }
-
-// extension MapExtension<K, V> on Map<K, V> {
-//   Iterable<T2> mapToIterable<T2>(T2 Function(K key, V value) f) sync* {
-//     var index = 0;
-//     for (final item in this) {
-//       yield f(item, index);
-//       index++;
-//     }
-//   }
-// }

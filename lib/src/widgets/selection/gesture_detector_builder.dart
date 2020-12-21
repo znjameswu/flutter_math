@@ -11,7 +11,7 @@ abstract class MathSelectionGestureDetectorBuilderDelegate {
 
 class MathSelectionGestureDetectorBuilder {
   MathSelectionGestureDetectorBuilder({
-    @required this.delegate,
+    required this.delegate,
   });
   final SelectionOverlayManagerMixin delegate;
 
@@ -24,7 +24,7 @@ class MathSelectionGestureDetectorBuilder {
   bool _shouldShowSelectionToolbar = true;
 
   @protected
-  Offset lastTapDownPosition;
+  Offset? lastTapDownPosition;
 
   /// Handler for [TextSelectionGestureDetector.onTapDown].
   @protected
@@ -98,7 +98,7 @@ class MathSelectionGestureDetectorBuilder {
   void onSingleTapUp(TapUpDetails details) {
     if (delegate.selectionEnabled) {
       delegate.selectPositionAt(
-          from: lastTapDownPosition, cause: SelectionChangedCause.tap);
+          from: lastTapDownPosition!, cause: SelectionChangedCause.tap);
       // Should select word edge, but not supporting it now
       // renderEditable.selectWordEdge(cause: SelectionChangedCause.tap);
     }
@@ -177,9 +177,9 @@ class MathSelectionGestureDetectorBuilder {
   }
 
   TextSelectionGestureDetector buildGestureDetector({
-    Key key,
-    HitTestBehavior behavior,
-    Widget child,
+    Key? key,
+    HitTestBehavior? behavior,
+    required Widget child,
   }) =>
       TextSelectionGestureDetector(
         key: key,

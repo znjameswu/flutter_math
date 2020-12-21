@@ -28,7 +28,7 @@ const _operatorNameEntries = {
       FunctionSpec(numArgs: 1, handler: _operatorNameHandler),
 };
 GreenNode _operatorNameHandler(TexParser parser, FunctionContext context) {
-  var name = parser.parseArgNode(mode: null, optional: false);
+  var name = parser.parseArgNode(mode: null, optional: false)!;
   final scripts =
       parser.parseScripts(allowLimits: context.funcName == '\\operatorname*');
   final body = parser.parseGroup(context.funcName,
@@ -47,13 +47,13 @@ GreenNode _operatorNameHandler(TexParser parser, FunctionContext context) {
       name = scripts.superscript != null
           ? OverNode(
               base: name.wrapWithEquationRow(),
-              above: scripts.superscript,
+              above: scripts.superscript!,
             )
           : name;
       name = scripts.subscript != null
           ? UnderNode(
               base: name.wrapWithEquationRow(),
-              below: scripts.subscript,
+              below: scripts.subscript!,
             )
           : name;
     } else {

@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../font/metrics/font_metrics.dart';
@@ -10,7 +10,6 @@ import '../../render/layout/line.dart';
 import '../../render/layout/shift_baseline.dart';
 import '../../render/svg/delimiter.dart';
 import '../../render/symbols/make_symbol.dart';
-import '../../utils/iterable_extensions.dart';
 import '../options.dart';
 import '../size.dart';
 import '../spacing.dart';
@@ -18,12 +17,12 @@ import '../syntax_tree.dart';
 import '../types.dart';
 
 /// Left right node.
-class LeftRightNode extends SlotableNode {
+class LeftRightNode extends SlotableNode<EquationRowNode> {
   /// Unicode symbol for the left delimiter character.
-  final String leftDelim;
+  final String? leftDelim;
 
   /// Unicode symbol for the right delimiter character.
-  final String rightDelim;
+  final String? rightDelim;
 
   /// List of inside bodys.
   ///
@@ -31,20 +30,19 @@ class LeftRightNode extends SlotableNode {
   final List<EquationRowNode> body;
 
   /// List of middle delimiter characters.
-  final List<String> middle;
+  final List<String?> middle;
 
   LeftRightNode({
-    @required this.leftDelim,
-    @required this.rightDelim,
-    @required this.body,
+    required this.leftDelim,
+    required this.rightDelim,
+    required this.body,
     this.middle = const [],
   })  : assert(body.isNotEmpty),
-        assert(body.every((element) => element != null)),
         assert(middle.length == body.length - 1);
 
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     final numElements = 2 + body.length + middle.length;
     final a = options.fontMetrics.axisHeight.cssEm.toLpUnder(options);
 
@@ -83,7 +81,7 @@ class LeftRightNode extends SlotableNode {
                   index == numElements - 2 ? AtomType.close : AtomType.rel,
                   options.style)
               .toLpUnder(options),
-          child: childBuildResults[index ~/ 2].widget,
+          child: childBuildResults[index ~/ 2]!.widget,
         );
       }
     }, growable: false);
@@ -113,31 +111,22 @@ class LeftRightNode extends SlotableNode {
       false;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
-      copyWith(body: newChildren);
+  LeftRightNode updateChildren(List<EquationRowNode> newChildren) =>
+      LeftRightNode(
+        leftDelim: leftDelim,
+        rightDelim: rightDelim,
+        body: newChildren,
+        middle: middle,
+      );
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'body': body.map((e) => e.toJson()),
       'leftDelim': leftDelim,
       'rightDelim': rightDelim,
       if (middle.isNotEmpty) 'middle': middle,
     });
-
-  LeftRightNode copyWith({
-    String leftDelim,
-    String rightDelim,
-    List<EquationRowNode> body,
-    List<String> middle,
-  }) =>
-      LeftRightNode(
-        leftDelim: leftDelim ?? this.leftDelim,
-        rightDelim: rightDelim ?? this.rightDelim,
-        body: body ?? this.body,
-        middle: middle ?? this.middle,
-      );
 }
 
 // TexBook Appendix B
@@ -181,7 +170,7 @@ const stackNeverDelimiters = {
 };
 
 Widget buildCustomSizedDelimWidget(
-    String delim, double minDelimiterHeight, MathOptions options) {
+    String? delim, double minDelimiterHeight, MathOptions options) {
   if (delim == null) {
     final axisHeight = options.fontMetrics.xHeight.cssEm.toLpUnder(options);
     return ShiftBaseline(
@@ -230,10 +219,10 @@ Widget buildCustomSizedDelimWidget(
 
 Widget makeStackedDelim(
     String delim, double minDelimiterHeight, Mode mode, MathOptions options) {
-  final conf = stackDelimiterConfs[delim];
-  final topMetrics = lookupChar(conf.top, conf.font, Mode.math);
-  final repeatMetrics = lookupChar(conf.repeat, conf.font, Mode.math);
-  final bottomMetrics = lookupChar(conf.bottom, conf.font, Mode.math);
+  final conf = stackDelimiterConfs[delim]!;
+  final topMetrics = lookupChar(conf.top, conf.font, Mode.math)!;
+  final repeatMetrics = lookupChar(conf.repeat, conf.font, Mode.math)!;
+  final bottomMetrics = lookupChar(conf.bottom, conf.font, Mode.math)!;
 
   final topHeight =
       (topMetrics.height + topMetrics.depth).cssEm.toLpUnder(options);
@@ -244,9 +233,9 @@ Widget makeStackedDelim(
 
   var middleHeight = 0.0;
   var middleFactor = 1;
-  CharacterMetrics middleMetrics;
+  CharacterMetrics? middleMetrics;
   if (conf.middle != null) {
-    middleMetrics = lookupChar(conf.middle, conf.font, Mode.math);
+    middleMetrics = lookupChar(conf.middle!, conf.font, Mode.math)!;
     middleHeight =
         (middleMetrics.height + middleMetrics.depth).cssEm.toLpUnder(options);
     middleFactor = 2;
@@ -273,7 +262,7 @@ Widget makeStackedDelim(
         for (var i = 0; i < repeatCount; i++)
           makeChar(conf.repeat, conf.font, repeatMetrics, options),
         if (conf.middle != null)
-          makeChar(conf.middle, conf.font, middleMetrics, options),
+          makeChar(conf.middle!, conf.font, middleMetrics!, options),
         if (conf.middle != null)
           for (var i = 0; i < repeatCount; i++)
             makeChar(conf.repeat, conf.font, repeatMetrics, options),
@@ -288,15 +277,15 @@ const size1Font = FontOptions(fontFamily: 'Size1');
 
 class StackDelimiterConf {
   final String top;
-  final String middle;
+  final String? middle;
   final String repeat;
   final String bottom;
   final FontOptions font;
   const StackDelimiterConf({
-    this.top,
+    required this.top,
     this.middle,
-    this.repeat,
-    this.bottom,
+    required this.repeat,
+    required this.bottom,
     this.font = size4Font,
   });
 }

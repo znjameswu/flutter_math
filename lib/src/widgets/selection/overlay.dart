@@ -14,12 +14,12 @@ enum MathSelectionHandlePosition { start, end }
 class MathSelectionOverlay {
   MathSelectionOverlay({
     this.debugRequiredFor,
-    @required this.toolbarLayerLink,
-    @required this.startHandleLayerLink,
-    @required this.endHandleLayerLink,
+    required this.toolbarLayerLink,
+    required this.startHandleLayerLink,
+    required this.endHandleLayerLink,
     this.selectionControls,
     bool handlesVisible = false,
-    @required this.manager,
+    required this.manager,
     this.dragStartBehavior = DragStartBehavior.start,
     this.onSelectionHandleTapped,
     this.clipboardStatus,
@@ -34,7 +34,7 @@ class MathSelectionOverlay {
       'builder parameter.',
     );
     _toolbarController =
-        AnimationController(duration: fadeDuration, vsync: overlay);
+        AnimationController(duration: fadeDuration, vsync: overlay!);
   }
 
   /// The context in which the selection handles should appear.
@@ -44,7 +44,7 @@ class MathSelectionOverlay {
   BuildContext get context => manager.context;
 
   /// Debugging information for explaining why the [Overlay] is required.
-  final Widget debugRequiredFor;
+  final Widget? debugRequiredFor;
 
   /// The object supplied to the [CompositedTransformTarget] that wraps the text
   /// field.
@@ -59,7 +59,7 @@ class MathSelectionOverlay {
   final LayerLink endHandleLayerLink;
 
   /// Builds text selection handles and toolbar.
-  final TextSelectionControls selectionControls;
+  final TextSelectionControls? selectionControls;
 
   /// The delegate for manipulating the current selection in the owning
   /// text field.
@@ -88,32 +88,32 @@ class MathSelectionOverlay {
   ///
   /// Both regular taps and long presses invoke this callback, but a drag
   /// gesture won't.
-  final VoidCallback onSelectionHandleTapped;
+  final VoidCallback? onSelectionHandleTapped;
 
   /// Maintains the status of the clipboard for determining if its contents can
   /// be pasted or not.
   ///
   /// Useful because the actual value of the clipboard can only be checked
   /// asynchronously (see [Clipboard.getData]).
-  final ClipboardStatusNotifier clipboardStatus;
+  final ClipboardStatusNotifier? clipboardStatus;
 
   /// Controls the fade-in and fade-out animations for the toolbar and handles.
   static const Duration fadeDuration = Duration(milliseconds: 150);
 
-  AnimationController _toolbarController;
+  late AnimationController _toolbarController;
   Animation<double> get _toolbarOpacity => _toolbarController.view;
 
   /// Retrieve current value.
   @visibleForTesting
-  SyntaxTree get value => _value;
-  SyntaxTree _value;
+  SyntaxTree? get value => _value;
+  SyntaxTree? _value;
 
   /// A pair of handles. If this is non-null, there are always 2, though the
   /// second is hidden when the selection is collapsed.
-  List<OverlayEntry> _handles;
+  List<OverlayEntry>? _handles;
 
   /// A copy/paste toolbar.
-  OverlayEntry _toolbar;
+  OverlayEntry? _toolbar;
 
   TextSelection get _selection => manager.controller.selection;
 
@@ -134,14 +134,13 @@ class MathSelectionOverlay {
   bool get handlesVisible => _handlesVisible;
   bool _handlesVisible;
   set handlesVisible(bool visible) {
-    assert(visible != null);
     if (_handlesVisible == visible) return;
     _handlesVisible = visible;
     // If we are in build state, it will be too late to update visibility.
     // We will need to schedule the build in next frame.
-    if (SchedulerBinding.instance.schedulerPhase ==
+    if (SchedulerBinding.instance!.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
-      SchedulerBinding.instance.addPostFrameCallback(_markNeedsBuild);
+      SchedulerBinding.instance!.addPostFrameCallback(_markNeedsBuild);
     } else {
       _markNeedsBuild();
     }
@@ -159,15 +158,15 @@ class MathSelectionOverlay {
               _buildHandle(context, MathSelectionHandlePosition.end)),
     ];
 
-    Overlay.of(context, rootOverlay: true, debugRequiredFor: debugRequiredFor)
-        .insertAll(_handles);
+    Overlay.of(context, rootOverlay: true, debugRequiredFor: debugRequiredFor)!
+        .insertAll(_handles!);
   }
 
   /// Destroys the handles by removing them from overlay.
   void hideHandles() {
     if (_handles != null) {
-      _handles[0].remove();
-      _handles[1].remove();
+      _handles![0].remove();
+      _handles![1].remove();
       _handles = null;
     }
   }
@@ -176,8 +175,8 @@ class MathSelectionOverlay {
   void showToolbar() {
     assert(_toolbar == null);
     _toolbar = OverlayEntry(builder: _buildToolbar);
-    Overlay.of(context, rootOverlay: true, debugRequiredFor: debugRequiredFor)
-        .insert(_toolbar);
+    Overlay.of(context, rootOverlay: true, debugRequiredFor: debugRequiredFor)!
+        .insert(_toolbar!);
     _toolbarController.forward(from: 0.0);
   }
 
@@ -191,18 +190,18 @@ class MathSelectionOverlay {
   /// that if you do call this during a build, the UI will not update until the
   /// next frame (i.e. many milliseconds later).
   void update() {
-    if (SchedulerBinding.instance.schedulerPhase ==
+    if (SchedulerBinding.instance!.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
-      SchedulerBinding.instance.addPostFrameCallback(_markNeedsBuild);
+      SchedulerBinding.instance!.addPostFrameCallback(_markNeedsBuild);
     } else {
       _markNeedsBuild();
     }
   }
 
-  void _markNeedsBuild([Duration duration]) {
+  void _markNeedsBuild([Duration? duration]) {
     if (_handles != null) {
-      _handles[0].markNeedsBuild();
-      _handles[1].markNeedsBuild();
+      _handles![0].markNeedsBuild();
+      _handles![1].markNeedsBuild();
     }
     _toolbar?.markNeedsBuild();
   }
@@ -216,8 +215,8 @@ class MathSelectionOverlay {
   /// Hides the entire overlay including the toolbar and the handles.
   void hide() {
     if (_handles != null) {
-      _handles[0].remove();
-      _handles[1].remove();
+      _handles![0].remove();
+      _handles![1].remove();
       _handles = null;
     }
     if (_toolbar != null) {
@@ -231,7 +230,7 @@ class MathSelectionOverlay {
   void hideToolbar() {
     assert(_toolbar != null);
     _toolbarController.stop();
-    _toolbar.remove();
+    _toolbar!.remove();
     _toolbar = null;
   }
 
@@ -259,7 +258,7 @@ class MathSelectionOverlay {
         startHandleLayerLink: startHandleLayerLink,
         endHandleLayerLink: endHandleLayerLink,
         selection: _selection,
-        selectionControls: selectionControls,
+        selectionControls: selectionControls!,
         position: position,
         dragStartBehavior: dragStartBehavior,
       ),
@@ -299,7 +298,7 @@ class MathSelectionOverlay {
         link: toolbarLayerLink,
         showWhenUnlinked: false,
         offset: -editingRegion.topLeft,
-        child: selectionControls.buildToolbar(
+        child: selectionControls!.buildToolbar(
           context,
           editingRegion,
           manager.preferredLineHeight,
@@ -309,7 +308,7 @@ class MathSelectionOverlay {
             TextSelectionPoint(endpoint2, TextDirection.ltr),
           ],
           manager,
-          clipboardStatus,
+          clipboardStatus!,
         ),
       ),
     );

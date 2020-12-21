@@ -38,8 +38,8 @@ const _colorEntries = {
   ),
 };
 GreenNode _textcolorHandler(TexParser parser, FunctionContext context) {
-  final color = parser.parseArgColor(optional: false);
-  final body = parser.parseArgNode(mode: null, optional: false);
+  final color = parser.parseArgColor(optional: false)!;
+  final body = parser.parseArgNode(mode: null, optional: false)!;
   return StyleNode(
     optionsDiff: OptionsDiff(color: color),
     children: body.expandEquationRow(),

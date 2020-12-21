@@ -116,7 +116,7 @@ final _functionOptimizationEntries = [
     optimize: (node) {
       final functionNode = node as FunctionNode;
       var nameNode = functionNode.functionName.children.first;
-      GreenNode sub, sup;
+      GreenNode? sub, sup;
       final outer = nameNode;
       if (outer is OverNode) {
         sup = outer.above;

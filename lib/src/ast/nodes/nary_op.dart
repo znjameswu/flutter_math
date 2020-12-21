@@ -20,37 +20,37 @@ import '../types.dart';
 /// N-ary operator node.
 ///
 /// Examples: `\sum`, `\int`
-class NaryOperatorNode extends SlotableNode {
+class NaryOperatorNode extends SlotableNode<EquationRowNode?> {
   /// Unicode symbol for the operator character.
   final String operator;
 
   /// Lower limit.
-  final EquationRowNode lowerLimit;
+  final EquationRowNode? lowerLimit;
 
   /// Upper limit.
-  final EquationRowNode upperLimit;
+  final EquationRowNode? upperLimit;
 
   /// Argument for the N-ary operator.
   final EquationRowNode naryand;
 
   /// Whether the limits are displayed as under/over or as scripts.
-  final bool limits;
+  final bool? limits;
 
   /// Special flag for `\smallint`.
   final bool allowLargeOp; // for \smallint
 
   NaryOperatorNode({
-    @required this.operator,
-    @required this.lowerLimit,
-    @required this.upperLimit,
-    @required this.naryand,
+    required this.operator,
+    required this.lowerLimit,
+    required this.upperLimit,
+    required this.naryand,
     this.limits,
     this.allowLargeOp = true,
-  }) : assert(naryand != null);
+  });
 
   @override
   BuildResult buildWidget(
-      MathOptions options, List<BuildResult> childBuildResults) {
+      MathOptions options, List<BuildResult?> childBuildResults) {
     final large =
         allowLargeOp && (options.style.size == MathStyle.display.size);
     final font = large
@@ -59,13 +59,19 @@ class NaryOperatorNode extends SlotableNode {
     Widget operatorWidget;
     CharacterMetrics symbolMetrics;
     if (!_stashedOvalNaryOperator.containsKey(operator)) {
-      symbolMetrics = lookupChar(operator, font, Mode.math);
-      final symbolWidget =
-          makeChar(operator, font, symbolMetrics, options, needItalic: true);
-      operatorWidget = symbolWidget;
+      final lookupResult = lookupChar(operator, font, Mode.math);
+      if (lookupResult == null) {
+        symbolMetrics = const CharacterMetrics(0, 0, 0, 0, 0);
+        operatorWidget = Container();
+      } else {
+        symbolMetrics = lookupResult;
+        final symbolWidget =
+            makeChar(operator, font, symbolMetrics, options, needItalic: true);
+        operatorWidget = symbolWidget;
+      }
     } else {
-      final baseSymbol = _stashedOvalNaryOperator[operator];
-      symbolMetrics = lookupChar(baseSymbol, font, Mode.math);
+      final baseSymbol = _stashedOvalNaryOperator[operator]!;
+      symbolMetrics = lookupChar(baseSymbol, font, Mode.math)!;
       final baseSymbolWidget =
           makeChar(baseSymbol, font, symbolMetrics, options, needItalic: true);
 
@@ -127,7 +133,7 @@ class NaryOperatorNode extends SlotableNode {
                         .toLpUnder(options),
                     bottomPadding: options.fontMetrics.bigOpSpacing1.cssEm
                         .toLpUnder(options),
-                    child: childBuildResults[1].widget,
+                    child: childBuildResults[1]!.widget,
                   ),
                 ),
               operatorWidget,
@@ -139,7 +145,7 @@ class NaryOperatorNode extends SlotableNode {
                         .toLpUnder(options),
                     topPadding: options.fontMetrics.bigOpSpacing2.cssEm
                         .toLpUnder(options),
-                    child: childBuildResults[0].widget,
+                    child: childBuildResults[0]!.widget,
                   ),
                 ),
             ],
@@ -156,7 +162,7 @@ class NaryOperatorNode extends SlotableNode {
                   .toLpUnder(options),
         ),
         LineElement(
-          child: childBuildResults[2].widget,
+          child: childBuildResults[2]!.widget,
           trailingMargin: 0.0,
         ),
       ],
@@ -164,7 +170,7 @@ class NaryOperatorNode extends SlotableNode {
     return BuildResult(
       widget: widget,
       options: options,
-      italic: childBuildResults[2].italic,
+      italic: childBuildResults[2]!.italic,
     );
   }
 
@@ -176,7 +182,7 @@ class NaryOperatorNode extends SlotableNode {
       ];
 
   @override
-  List<EquationRowNode> computeChildren() => [lowerLimit, upperLimit, naryand];
+  List<EquationRowNode?> computeChildren() => [lowerLimit, upperLimit, naryand];
 
   @override
   AtomType get leftType => AtomType.op;
@@ -189,41 +195,26 @@ class NaryOperatorNode extends SlotableNode {
       oldOptions.sizeMultiplier != newOptions.sizeMultiplier;
 
   @override
-  ParentableNode<EquationRowNode> updateChildren(
-          List<EquationRowNode> newChildren) =>
-      copyWith(
+  NaryOperatorNode updateChildren(List<EquationRowNode?> newChildren) =>
+      NaryOperatorNode(
+        operator: operator,
         lowerLimit: newChildren[0],
         upperLimit: newChildren[1],
-        naryand: newChildren[2],
+        naryand: newChildren[2]!,
+        limits: limits,
+        allowLargeOp: allowLargeOp,
       );
 
   @override
-  Map<String, Object> toJson() => super.toJson()
+  Map<String, Object?> toJson() => super.toJson()
     ..addAll({
       'operator': unicodeLiteral(operator),
-      if (upperLimit != null) 'upperLimit': upperLimit.toJson(),
-      if (lowerLimit != null) 'lowerLimit': lowerLimit.toJson(),
+      if (upperLimit != null) 'upperLimit': upperLimit!.toJson(),
+      if (lowerLimit != null) 'lowerLimit': lowerLimit!.toJson(),
       'naryand': naryand.toJson(),
       if (limits != null) 'limits': limits,
-      if (allowLargeOp != null) 'allowLargeOp': allowLargeOp,
+      if (allowLargeOp != true) 'allowLargeOp': allowLargeOp,
     });
-
-  NaryOperatorNode copyWith({
-    String operator,
-    EquationRowNode lowerLimit,
-    EquationRowNode upperLimit,
-    EquationRowNode naryand,
-    bool limits,
-    bool allowLargeOp,
-  }) =>
-      NaryOperatorNode(
-        operator: operator ?? this.operator,
-        lowerLimit: lowerLimit ?? this.lowerLimit,
-        upperLimit: upperLimit ?? this.upperLimit,
-        naryand: naryand ?? this.naryand,
-        limits: limits ?? this.limits,
-        allowLargeOp: allowLargeOp ?? this.allowLargeOp,
-      );
 }
 
 const _naryDefaultLimit = {
