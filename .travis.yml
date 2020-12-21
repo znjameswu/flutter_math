@@ -21,7 +21,7 @@ addons:
       - fonts-noto
 
 env:
-  - FLUTTER_VERSION=stable
+  - FLUTTER_VERSION=beta
 
 before_script:
   - pwd

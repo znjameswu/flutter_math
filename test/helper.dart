@@ -54,7 +54,7 @@ void testTexToMatchGoldenFile(
 void testTexToRender(
   String description,
   String expression, [
-  Future<void> Function(WidgetTester) callback,
+  Future<void> Function(WidgetTester)? callback,
 ]) {
   testWidgets(description, (WidgetTester tester) async {
     await tester.pumpWidget(
