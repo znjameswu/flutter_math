@@ -428,7 +428,7 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
   FocusNode? _focusNode;
   FocusNode get focusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
 
-  bool get showCursor => widget.showCursor ?? false;
+  bool get showCursor => widget.showCursor; //?? false;
 
   bool get cursorOpacityAnimates => widget.cursorOpacityAnimates;
 

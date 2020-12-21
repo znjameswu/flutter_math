@@ -377,7 +377,7 @@ class FontOptions {
       );
 
   /// Merge a font difference into current font.
-  FontOptions mergeWith(PartialFontOptions value) {
+  FontOptions mergeWith(PartialFontOptions? value) {
     if (value == null) return this;
     return copyWith(
       fontFamily: value.fontFamily,

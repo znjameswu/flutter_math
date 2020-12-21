@@ -416,7 +416,7 @@ class TexParser {
     this.consume();
 
     if (greediness != null &&
-        funcData.greediness != null &&
+        // funcData.greediness != null &&
         funcData.greediness <= greediness) {
       throw ParseException(
           '''Got function '$func' with no arguments ${name != null ? ' as $name' : ''}''',
@@ -437,16 +437,16 @@ class TexParser {
       breakOnTokenText: breakOnTokenText,
     );
 
-    if (funcData.handler != null) {
-      _enterArgumentParsingMode(func, funcData);
-      try {
-        return funcData.handler(this, context);
-      } finally {
-        _leaveArgumentParsingMode(func);
-      }
-    } else {
-      throw ParseException('''No function handler for $name''');
+    // if (funcData.handler != null) {
+    _enterArgumentParsingMode(func, funcData);
+    try {
+      return funcData.handler(this, context);
+    } finally {
+      _leaveArgumentParsingMode(func);
     }
+    // } else {
+    //   throw ParseException('''No function handler for $name''');
+    // }
     // return this.callFunction(func, token, breakOnTokenText);
   }
 

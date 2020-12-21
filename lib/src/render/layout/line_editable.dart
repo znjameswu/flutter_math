@@ -175,7 +175,8 @@ class RenderEditableLine extends RenderLine {
     LayerLink? endHandleLayerLink,
     TextBaseline textBaseline = TextBaseline.alphabetic,
     TextDirection? textDirection = TextDirection.ltr,
-  })  : assert(!showCursor || cursorColor != null),
+  })  :
+        // assert(!showCursor || cursorColor != null),
         _cursorBlinkOpacityController = cursorBlinkOpacityController,
         _cursorColor = cursorColor,
         _cursorOffset = cursorOffset,

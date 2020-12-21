@@ -41,7 +41,7 @@ extension MathStyleExt on MathStyle {
   bool get cramped => this.index.isEven;
   int get size => this.index ~/ 2;
 
-  MathStyle reduce(MathStyleDiff diff) => diff == null
+  MathStyle reduce(MathStyleDiff? diff) => diff == null
       ? this
       : MathStyle.values[reduceTable[diff.index][this.index]];
 
