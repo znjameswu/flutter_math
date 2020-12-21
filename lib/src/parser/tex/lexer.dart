@@ -110,48 +110,5 @@ class Lexer implements LexerInterface {
       text = controlMatch.group(1)!;
     }
     return Token(text, SourceLocation(this, match.start, match.end));
-
-    // // final input = this.input;
-    // pos = (it.current?.end) ?? pos;
-    // if (this.pos == input.length) {
-    //   return Token('EOF', SourceLocation(this, pos, pos));
-    // }
-
-    // it.moveNext();
-    // final match = it.current;
-
-    // // Validate current match
-    // if (match == null || match.start != pos) {
-    //   throw ParseException('Unexpected character: \'${input[pos]}\'',
-    //       Token(input[pos], SourceLocation(this, pos, pos + 1)));
-    // }
-
-    // // pos = match.end;
-    // var text = match[2] ?? ' ';
-    // if (text == '%') {
-    //   // comment character
-    //   final nlIndex = input.indexOf('\n', it.current.end);
-    //   if (nlIndex == -1) {
-    //     pos = input.length;
-    //     while (it != null && it.current != null) {
-    //       it.moveNext();
-    //     }
-    //     this.settings.reportNonstrict(
-    //         'commentAtEnd',
-    //         '% comment has no terminating newline; LaTeX would '
-    //             'fail because of commenting the end of math mode (e.g. \$)');
-    //   } else {
-    //     while (
-    //         it != null && it.current != null && it.current.end < nlIndex + 1) {
-    //       it.moveNext();
-    //     }
-    //   }
-    //   return this.lex();
-    // }
-    // final controlMatch = controlWordWhitespaceRegex.firstMatch(text);
-    // if (controlMatch != null) {
-    //   text = controlMatch.group(1);
-    // }
-    // return Token(text, SourceLocation(this, match.start, match.end));
   }
 }
