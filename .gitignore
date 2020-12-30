@@ -10,7 +10,6 @@
 .svn/
 .katex_symbol_mapping/
 ._breakable/
-lib/src/parser/unicode_math/
 lib/src/render/layout/breakable/
 coverage
 .fvm

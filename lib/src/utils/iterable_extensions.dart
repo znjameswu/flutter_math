@@ -106,3 +106,39 @@ extension NumListSearchExt<T extends num> on List<T> {
     // return this.length.toDouble();
   }
 }
+
+extension SplitExt<T> on Iterable<T> {
+  Iterable<List<T>> splitAt(bool Function(T element) test) sync* {
+    var iterator = this.iterator;
+
+    var chunk = <T>[];
+    while (iterator.moveNext()) {
+      var element = iterator.current;
+      if (test(element)) {
+        yield chunk;
+        chunk = [];
+      } else {
+        chunk.add(element);
+      }
+    }
+    yield chunk;
+  }
+
+  Iterable<List<T>> splitAtIndexed(
+      bool Function(int index, T element) test) sync* {
+    var iterator = this.iterator;
+
+    var index = 0;
+    var chunk = <T>[];
+    while (iterator.moveNext()) {
+      var element = iterator.current;
+      if (test(index++, element)) {
+        yield chunk;
+        chunk = [];
+      } else {
+        chunk.add(element);
+      }
+    }
+    yield chunk;
+  }
+}

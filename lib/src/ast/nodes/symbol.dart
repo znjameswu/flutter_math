@@ -36,12 +36,15 @@ class SymbolNode extends LeafNode {
 
   // bool get noBreak => symbol == '\u00AF';
 
+  final bool unicodeMathEscaped;
+
   SymbolNode({
     required this.symbol,
     this.variantForm = false,
     this.overrideAtomType,
     this.overrideFont,
     this.mode = Mode.math,
+    this.unicodeMathEscaped = true,
   }) : assert(symbol.isNotEmpty);
 
   @override
