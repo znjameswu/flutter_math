@@ -10,7 +10,7 @@ Comparison between the two modes.
 | Status               | Done                                                                | Planning                                             |
 | Scenario             | In-line equations only                                              | Display equations only                               |
 | Break Point Level    | Only the outermost level. E.g., not inside \left \right constructs. | Any nested node as long as in a single-line context  |
-| Break Point Position | Before `bin` and `rel` atoms                                        | Before `bin` atoms or after `rel` atoms.             |
+| Break Point Position | After `bin` and `rel` atoms                                         | Before `bin` atoms or after `rel` atoms.             |
 | API Style            | Generate a list of broken-down widgets                              | A dedicated RenderObject subtype and layout protocol |
 
 ## Standard TeX Style Quick Start
