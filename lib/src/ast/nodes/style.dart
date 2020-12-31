@@ -28,7 +28,7 @@ class StyleNode extends TransparentNode {
   @override
   Map<String, Object?> toJson() => super.toJson()
     ..addAll({
-      'children': children.map((e) => e.toJson()),
+      'children': children.map((e) => e.toJson()).toList(growable: false),
       'optionsDiff': optionsDiff.toString(),
     });
 
