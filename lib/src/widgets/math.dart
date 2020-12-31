@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-import '../ast/tex_break.dart';
 import '../ast/options.dart';
 import '../ast/style.dart';
 import '../ast/syntax_tree.dart';
+import '../ast/tex_break.dart';
 import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';

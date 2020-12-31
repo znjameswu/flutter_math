@@ -12,7 +12,7 @@ import 'helper.dart';
 import 'load_fonts.dart';
 
 BreakResult<EquationRowNode> getBreak(String input) =>
-    (getParsed(input) as EquationRowNode).texBreak();
+    getParsed(input).texBreak();
 void main() {
   setUpAll(loadKaTeXFonts);
 
@@ -49,7 +49,7 @@ void main() {
       );
 
       expect(
-        (getParsed(r'a+b>c') as EquationRowNode)
+        getParsed(r'a+b>c')
             .texBreak(relPenalty: 999, binOpPenalty: 9)
             .penalties,
         [9, 999, 10000],
@@ -80,9 +80,7 @@ class _ToBreakLike extends Matcher {
   final List<int>? targetPenalties;
 
   _ToBreakLike(List<String> target, this.targetPenalties)
-      : target = target
-            .map((e) => getParsed(e) as EquationRowNode)
-            .toList(growable: false);
+      : target = target.map(getParsed).toList(growable: false);
 
   @override
   Description describe(Description description) => description
