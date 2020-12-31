@@ -221,6 +221,7 @@ class Math extends StatelessWidget {
   BreakResult<Math> texBreak({
     int relPenalty = 500,
     int binOpPenalty = 700,
+    bool enforceNoBreak = true,
   }) {
     final ast = this.ast;
     if (ast == null || parseError != null) {
@@ -229,6 +230,7 @@ class Math extends StatelessWidget {
     final astBreakResult = ast.texBreak(
       relPenalty: relPenalty,
       binOpPenalty: binOpPenalty,
+      enforceNoBreak: enforceNoBreak,
     );
     return BreakResult(
       parts: astBreakResult.parts

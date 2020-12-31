@@ -6,10 +6,12 @@ extension SyntaxTreeTexStyleBreakExt on SyntaxTree {
   BreakResult<SyntaxTree> texBreak({
     int relPenalty = 500,
     int binOpPenalty = 700,
+    bool enforceNoBreak = true,
   }) {
     final eqRowBreakResult = greenRoot.texBreak(
       relPenalty: relPenalty,
       binOpPenalty: binOpPenalty,
+      enforceNoBreak: true,
     );
     return BreakResult(
       parts: eqRowBreakResult.parts
@@ -24,11 +26,30 @@ extension EquationRowNodeTexStyleBreakExt on EquationRowNode {
   BreakResult<EquationRowNode> texBreak({
     int relPenalty = 500,
     int binOpPenalty = 700,
+    bool enforceNoBreak = true,
   }) {
     final breakIndices = <int>[];
     final penalties = <int>[];
     for (var i = 0; i < flattenedChildList.length; i++) {
       final child = flattenedChildList[i];
+
+      // Peek ahead to see if the next child is a no-break
+      if (i < flattenedChildList.length - 1) {
+        final nextChild = flattenedChildList[i + 1];
+        if (nextChild is SpaceNode &&
+            nextChild.breakPenalty != null &&
+            nextChild.breakPenalty! >= 10000) {
+          if (!enforceNoBreak) {
+            // The break point should be moved to the next child, which is a \nobreak.
+            continue;
+          } else {
+            // In enforced mode, we should cancel the break point all together.
+            i++;
+            continue;
+          }
+        }
+      }
+
       if (child.rightType == AtomType.bin) {
         breakIndices.add(i);
         penalties.add(binOpPenalty);

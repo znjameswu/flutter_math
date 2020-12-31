@@ -31,28 +31,28 @@ void main() {
       expect(r'a!>b', toBreakLike(['a!>', 'b']));
       expect(
         r'a\allowbreak >\nobreak +b',
-        toBreakLike([r'a\allowbreak', '>', r'\nobreak', '+', 'b']),
+        toBreakLike([r'a\allowbreak', r'>\nobreak +', 'b']),
       ); // Need to change after future encoder improvement
     });
 
     test('does not break inside nested nodes', () {
-      expect(getBreak('a{1+2>3\\allowbreak (4)}c').parts.length, 1);
+      expect(getBreak(r'a{1+2>3\allowbreak (4)}c').parts.length, 1);
     });
 
     test('produces correct penalty values', () {
       expect(
-        r'a\allowbreak >\nobreak +b',
+        r'a\allowbreak >+b',
         toBreakLike(
-          [r'a\allowbreak', '>', r'\nobreak', '+', 'b'],
-          [0, 500, 10000, 700, 10000],
+          [r'a\allowbreak', '>', '+', 'b'],
+          [0, 500, 700, 10000],
         ),
       );
 
       expect(
-        getParsed(r'a+b>c')
-            .texBreak(relPenalty: 999, binOpPenalty: 9)
+        getParsed(r'a+b>+\nobreak c')
+            .texBreak(relPenalty: 999, binOpPenalty: 9, enforceNoBreak: false)
             .penalties,
-        [9, 999, 10000],
+        [9, 999, 10000, 10000],
       );
     });
 
