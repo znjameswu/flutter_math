@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+import '../ast/tex_break.dart';
 import '../ast/options.dart';
 import '../ast/style.dart';
 import '../ast/syntax_tree.dart';
@@ -216,4 +217,33 @@ class Math extends StatelessWidget {
   /// Default fallback function for [Math], [SelectableMath]
   static Widget defaultOnErrorFallback(FlutterMathException error) =>
       SelectableText(error.messageWithType);
+
+  BreakResult<Math> texBreak({
+    int relPenalty = 500,
+    int binOpPenalty = 700,
+  }) {
+    final ast = this.ast;
+    if (ast == null || parseError != null) {
+      return BreakResult(parts: [this], penalties: [10000]);
+    }
+    final astBreakResult = ast.texBreak(
+      relPenalty: relPenalty,
+      binOpPenalty: binOpPenalty,
+    );
+    return BreakResult(
+      parts: astBreakResult.parts
+          .map((part) => Math(
+                ast: part,
+                mathStyle: this.mathStyle,
+                logicalPpi: this.logicalPpi,
+                onErrorFallback: this.onErrorFallback,
+                options: this.options,
+                parseError: this.parseError,
+                textScaleFactor: this.textScaleFactor,
+                textStyle: this.textStyle,
+              ))
+          .toList(growable: false),
+      penalties: astBreakResult.penalties,
+    );
+  }
 }
