@@ -1,7 +1,7 @@
 # Line Breaking
 
 ## Standard TeX Style vs. Advanced Display Style
-This library plans to support two types of line breaking: standard TeX style and an advanced display style.
+This library plans to support two types of line breaking: standard TeX style and advanced display style.
 
 Comparison between the two modes.
 
@@ -11,9 +11,9 @@ Comparison between the two modes.
 | Scenario             | In-line equations only                                              | Display equations only                               |
 | Break Point Level    | Only the outermost level. E.g., not inside \left \right constructs. | Any nested node as long as in a single-line context  |
 | Break Point Position | Before `bin` and `rel` atoms                                        | Before `bin` atoms or after `rel` atoms.             |
-| API style            | Generate a list of broken-down widgets                              | A dedicated RenderObject subtype and layout protocol |
+| API Style            | Generate a list of broken-down widgets                              | A dedicated RenderObject subtype and layout protocol |
 
-## Standart TeX Style Quick Start
+## Standard TeX Style Quick Start
  Currently you can try standard TeX-style line breaking through a very simplistic API:
 
 ```dart
@@ -29,7 +29,7 @@ If you wish to implement a custom line breaking policy to manage the penalties, 
 
 
 ## Background
-TeX equation line breaking are documented in TeXBook Chapter 18.8. It reads
+TeX equation line breaking are documented in TeXBook Chapter 18.6. It reads
 > When you have formulas in a paragraph, TEX may have to
 break them between lines. ... A formula will be broken only after a relation symbol like = or < or →,
 or after a binary operation symbol like + or − or ×, where the relation or binary
