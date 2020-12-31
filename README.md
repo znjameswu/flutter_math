@@ -94,6 +94,8 @@ SelectableMath(
 )
 ```
 
+## [Line Breaking](doc/line_breaking.md)
+
 ## Credits
 This project is possible thanks to the inspirations and resources from [the KaTeX Project](https://katex.org/), [MathJax](www.mathjax.org), [Zefyr](https://github.com/memspace/zefyr), and [CaTeX](https://github.com/simpleclub/CaTeX).
 
