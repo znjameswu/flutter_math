@@ -25,8 +25,12 @@ class SpaceNode extends LeafNode {
   ///  For the sole purpose of `\rule`
   final Measurement shift;
 
-  /// Whether to allow linebreak.
-  final bool noBreak;
+  /// Break penalty for a manual line breaking command.
+  /// 
+  /// Related TeX command: \nobreak, \allowbreak, \penalty<number>.
+  /// 
+  /// Should be null for normal space commands.
+  final int? breakPenalty;
 
   /// Whether to fill with text color.
   final bool fill;
@@ -39,7 +43,7 @@ class SpaceNode extends LeafNode {
     required this.width,
     this.shift = Measurement.zero,
     this.depth = Measurement.zero,
-    this.noBreak = false,
+    this.breakPenalty,
     this.fill = false,
     // this.background,
     required this.mode,
@@ -51,7 +55,7 @@ class SpaceNode extends LeafNode {
         width = Measurement.zero,
         shift = Measurement.zero,
         depth = Measurement.zero,
-        noBreak = false,
+        breakPenalty = null,
         fill = true,
         // background = null,
         mode = Mode.math,
@@ -104,7 +108,8 @@ class SpaceNode extends LeafNode {
       'width': width.toString(),
       if (depth != Measurement.zero) 'depth': depth.toString(),
       if (shift != Measurement.zero) 'shift': shift.toString(),
-      if (noBreak != false) 'noBreak': noBreak,
+      // if (noBreak != false) 'noBreak': noBreak,
+      if (breakPenalty != null) 'breakPenalty': breakPenalty,
       if (fill != false) 'fill': fill,
       if (alignerOrSpacer != false) 'alignerOrSpacer': alignerOrSpacer,
     });

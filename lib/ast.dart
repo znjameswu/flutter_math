@@ -33,4 +33,5 @@ export 'src/ast/size.dart';
 export 'src/ast/style.dart';
 export 'src/ast/syntax_tree.dart'
     hide TemporaryNode, BuildResult, PositionDependentMixin;
+export 'src/ast/tex_break.dart' hide BreakResult;
 export 'src/ast/types.dart';

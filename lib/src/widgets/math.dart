@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../ast/options.dart';
 import '../ast/style.dart';
 import '../ast/syntax_tree.dart';
+import '../ast/tex_break.dart';
 import '../parser/tex/parse_error.dart';
 import '../parser/tex/parser.dart';
 import '../parser/tex/settings.dart';
@@ -216,4 +217,56 @@ class Math extends StatelessWidget {
   /// Default fallback function for [Math], [SelectableMath]
   static Widget defaultOnErrorFallback(FlutterMathException error) =>
       SelectableText(error.messageWithType);
+
+  /// Line breaking results using standard TeX-style line breaking.
+  /// 
+  /// This function will return a list of `Math` widget along with a list of 
+  /// line breaking penalties.
+  /// 
+  /// {@template flutter_math.widgets.math.tex_break}
+  /// 
+  /// This function will break the equation into pieces according to TeX spec 
+  /// **as much as possible** (some exceptions exist when `enforceNoBreak: true`
+  /// ). Then, you can assemble the pieces in whatever way you like. The most 
+  /// simple way is to put the parts inside a `Wrap`.
+  /// 
+  /// If you wish to implement a custom line breaking policy to manage the 
+  /// penalties, you can access the penalties in `BreakResult.penalties`. The 
+  /// values in `BreakResult.penalties` represent the line-breaking penalty 
+  /// generated at the right end of each `BreakResult.parts`. Note that 
+  /// `\nobreak` or `\penalty<number>=10000>` are left unbroken by default, you 
+  /// need to supply `enforceNoBreak: false` into `Math.texBreak` to expose 
+  /// those break points and their penalties.
+  /// 
+  /// {@endtemplate}
+  BreakResult<Math> texBreak({
+    int relPenalty = 500,
+    int binOpPenalty = 700,
+    bool enforceNoBreak = true,
+  }) {
+    final ast = this.ast;
+    if (ast == null || parseError != null) {
+      return BreakResult(parts: [this], penalties: [10000]);
+    }
+    final astBreakResult = ast.texBreak(
+      relPenalty: relPenalty,
+      binOpPenalty: binOpPenalty,
+      enforceNoBreak: enforceNoBreak,
+    );
+    return BreakResult(
+      parts: astBreakResult.parts
+          .map((part) => Math(
+                ast: part,
+                mathStyle: this.mathStyle,
+                logicalPpi: this.logicalPpi,
+                onErrorFallback: this.onErrorFallback,
+                options: this.options,
+                parseError: this.parseError,
+                textScaleFactor: this.textScaleFactor,
+                textStyle: this.textStyle,
+              ))
+          .toList(growable: false),
+      penalties: astBreakResult.penalties,
+    );
+  }
 }
