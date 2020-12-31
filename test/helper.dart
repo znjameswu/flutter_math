@@ -156,7 +156,7 @@ void testTexToRenderLike(
 const strictSettings = TexParserSettings(strict: Strict.error);
 const nonstrictSettings = TexParserSettings(strict: Strict.ignore);
 
-GreenNode getParsed(String expr,
+EquationRowNode getParsed(String expr,
         [TexParserSettings settings = const TexParserSettings()]) =>
     TexParser(expr, settings).parse();
 

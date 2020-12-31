@@ -74,7 +74,7 @@ void main() {
       final parse = getParsed(expression);
 
       for (var i = 0; i < parse.children.length; i++) {
-        final group = parse.children[i]!;
+        final group = parse.children[i];
         expect(group, isA<SymbolNode>());
         expect(group.leftType, AtomType.ord);
       }
@@ -98,7 +98,7 @@ void main() {
       final parse = getParsed(expression);
 
       for (var i = 0; i < parse.children.length; i++) {
-        final group = parse.children[i]!;
+        final group = parse.children[i];
         expect(group, isA<SymbolNode>());
         expect(group.leftType, AtomType.bin);
       }
@@ -136,7 +136,7 @@ void main() {
       final parse = getParsed(expression);
 
       for (var i = 0; i < parse.children.length; i++) {
-        final group = parse.children[i]!;
+        final group = parse.children[i];
         expect(group, isA<SymbolNode>());
         expect(group.leftType, AtomType.punct);
       }
@@ -154,7 +154,7 @@ void main() {
       final parse = getParsed(expression);
 
       for (var i = 0; i < parse.children.length; i++) {
-        final group = parse.children[i]!;
+        final group = parse.children[i];
         expect(group, isA<SymbolNode>());
         expect(group.leftType, AtomType.open);
       }
@@ -172,7 +172,7 @@ void main() {
       final parse = getParsed(expression);
 
       for (var i = 0; i < parse.children.length; i++) {
-        final group = parse.children[i]!;
+        final group = parse.children[i];
         expect(group, isA<SymbolNode>());
         expect(group.leftType, AtomType.close);
       }
@@ -414,7 +414,7 @@ void main() {
 
       expect(parse.children.length, 2);
 
-      final sizing = parse.children[1]!;
+      final sizing = parse.children[1];
 
       expect(sizing, isA<StyleNode>());
       expect(sizing.children.length, 3);
@@ -423,7 +423,7 @@ void main() {
     test("should stop at the ends of groups", () {
       final parse = getParsed(r'a { b \Large c } d');
 
-      final group = parse.children[1]!;
+      final group = parse.children[1];
       final sizing = group.children[1]!;
 
       expect(sizing, isA<StyleNode>());
@@ -516,7 +516,7 @@ void main() {
     });
 
     test("should parse cfrac, dfrac, tfrac, and genfrac as fracs", () {
-      final dfracParse = getParsed(dfracExpression).children[0]!.children[0];
+      final dfracParse = getParsed(dfracExpression).children[0].children[0];
 
       expect(dfracParse, isA<FracNode>());
       if (dfracParse is FracNode) {
@@ -524,7 +524,7 @@ void main() {
         expect(dfracParse.denominator, isNotNull);
       }
 
-      final tfracParse = getParsed(tfracExpression).children[0]!.children[0];
+      final tfracParse = getParsed(tfracExpression).children[0].children[0];
 
       expect(tfracParse, isA<FracNode>());
       if (tfracParse is FracNode) {
@@ -532,7 +532,7 @@ void main() {
         expect(tfracParse.denominator, isNotNull);
       }
 
-      final cfracParse = getParsed(cfracExpression).children[0]!.children[0];
+      final cfracParse = getParsed(cfracExpression).children[0].children[0];
 
       expect(cfracParse, isA<FracNode>());
       if (cfracParse is FracNode) {
@@ -540,7 +540,7 @@ void main() {
         expect(cfracParse.denominator, isNotNull);
       }
 
-      var genfracParse = getParsed(genfrac1).children[0]!;
+      var genfracParse = getParsed(genfrac1).children[0];
 
       expect(genfracParse, isA<StyleNode>());
       genfracParse = genfracParse.children[0]!;
@@ -597,7 +597,7 @@ void main() {
     test("should produce a frac", () {
       GreenNode parse;
 
-      parse = getParsed(simpleOver).children[0]!;
+      parse = getParsed(simpleOver).children[0];
 
       expect(parse, isA<FracNode>());
       if (parse is FracNode) {
@@ -605,14 +605,14 @@ void main() {
         expect(parse.denominator, isNotNull);
       }
 
-      parse = getParsed(complexOver).children[0]!;
+      parse = getParsed(complexOver).children[0];
 
       expect(parse, isA<FracNode>());
       if (parse is FracNode) {
         expect(parse.numerator, isNotNull);
         expect(parse.denominator, isNotNull);
       }
-      var parseBraceFrac = getParsed(braceFrac).children[0]!;
+      var parseBraceFrac = getParsed(braceFrac).children[0];
 
       expect(parseBraceFrac, isA<LeftRightNode>());
       if (parseBraceFrac is LeftRightNode) {
@@ -627,7 +627,7 @@ void main() {
         expect(parseBraceFrac.denominator, isNotNull);
       }
 
-      var parseBrackFrac = getParsed(brackFrac).children[0]!;
+      var parseBrackFrac = getParsed(brackFrac).children[0];
 
       expect(parseBrackFrac, isA<LeftRightNode>());
       if (parseBrackFrac is LeftRightNode) {
@@ -981,19 +981,19 @@ void main() {
     test("should produce spacing in math mode", () {
       final parse = getParsed(mathTie);
 
-      expect(parse.children[1]!.leftType, AtomType.spacing);
+      expect(parse.children[1].leftType, AtomType.spacing);
     });
 
     test("should produce spacing in text mode", () {
       final text = getParsed(textTie);
 
-      expect(text.children[1]!.leftType, AtomType.spacing);
+      expect(text.children[1].leftType, AtomType.spacing);
     });
 
     test("should not contract with spaces in text mode", () {
       final text = getParsed(textTie);
 
-      expect(text.children[2]!.leftType, AtomType.spacing);
+      expect(text.children[2].leftType, AtomType.spacing);
     });
   });
 
@@ -1019,8 +1019,8 @@ void main() {
     });
 
     test("should produce the correct direction delimiter", () {
-      final leftParse = getParsed(normalDelim).children[0]!;
-      final rightParse = getParsed(bigDelim).children[0]!;
+      final leftParse = getParsed(normalDelim).children[0];
+      final rightParse = getParsed(bigDelim).children[0];
 
       expect(leftParse.leftType, AtomType.open);
       expect(rightParse.leftType, AtomType.close);
@@ -1590,7 +1590,7 @@ void main() {
       final text = r'a b { c d \displaystyle e f } g h';
       final parse = getParsed(text);
 
-      final displayNode = parse.children[2]!.children[2] as StyleNode;
+      final displayNode = parse.children[2].children[2] as StyleNode;
 
       // expect(displayNode.type, "styling");
 
