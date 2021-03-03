@@ -309,6 +309,7 @@ class MathSelectionOverlay {
           ],
           manager,
           clipboardStatus!,
+          null,
         ),
       ),
     );

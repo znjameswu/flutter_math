@@ -1,3 +1,7 @@
+## 0.3.0-nullsafety.2
+
+* Addressed breaking change in the Flutter framework (https://github.com/flutter/flutter/pull/73882#discussion_r568851444).
+
 ## [0.3.0-nullsafety.1] - 2020/12/21
 
 ## [0.3.0-nullsafety.0] - 2020/12/21
