@@ -1,9 +1,7 @@
 name: flutter_math_fork
 description: Fast and high-quality TeX math equation rendering with pure Dart & Flutter. 
 version: 0.3.0
-author: znjameswu <znjameswu@gmail.com>
 homepage: https://github.com/znjameswu/flutter_math
-repository: https://github.com/znjameswu/flutter_math
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
