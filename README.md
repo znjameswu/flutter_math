@@ -1,6 +1,16 @@
 # Flutter Math
 
-[![Build Status](https://travis-ci.com/znjameswu/flutter_math.svg?branch=master)](https://travis-ci.com/znjameswu/flutter_math) [![codecov](https://codecov.io/gh/znjameswu/flutter_math/branch/master/graph/badge.svg)](https://codecov.io/gh/znjameswu/flutter_math) [![Pub Version](https://img.shields.io/pub/v/flutter_math)](https://pub.dev/packages/flutter_math)
+[![Build Status](https://travis-ci.com/znjameswu/flutter_math.svg?branch=master)](https://travis-ci.com/znjameswu/flutter_math) [![codecov](https://codecov.io/gh/znjameswu/flutter_math/branch/master/graph/badge.svg)](https://codecov.io/gh/znjameswu/flutter_math) [![Pub Version](https://img.shields.io/pub/v/flutter_math_fork)](https://pub.dev/packages/flutter_math_fork)
+
+
+## ⚠ fork
+
+This is a fork of [flutter_math](https://github.com/znjameswu/flutter_math) addressing compatibility
+problems while `flutter_math` is not being maintained. 
+
+---
+
+
 
 Math equation rendering in pure Dart & Flutter. 
 
