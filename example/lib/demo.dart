@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_math/flutter_math.dart';
-import 'package:provider/provider.dart';
-
+import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_tex/flutter_tex.dart';
+import 'package:provider/provider.dart';
 
 class DemoPage extends StatelessWidget {
   @override

@@ -1,7 +1,7 @@
 /// Basic utilities to render math equations.
 ///
 /// Please refer to README for usage.
-library flutter_math;
+library flutter_math_fork;
 
 export 'src/ast/options.dart' show MathOptions, FontOptions;
 export 'src/ast/size.dart' show MathSize;

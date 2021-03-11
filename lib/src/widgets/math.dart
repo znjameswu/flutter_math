@@ -54,7 +54,7 @@ class Math extends StatelessWidget {
   /// It can be null only when [parseError] is not null.
   final SyntaxTree? ast;
 
-  /// {@template flutter_math.widgets.math.options}
+  /// {@template flutter_math_fork.widgets.math.options}
   /// Equation style.
   ///
   /// Choose [MathStyle.display] for displayed equations and [MathStyle.text]
@@ -64,8 +64,8 @@ class Math extends StatelessWidget {
   /// {@endtemplate}
   final MathStyle mathStyle;
 
-  /// {@template flutter_math.widgets.math.logicalPpi}
-  /// {@macro flutter_math.math_options.logicalPpi}
+  /// {@template flutter_math_fork.widgets.math.logicalPpi}
+  /// {@macro flutter_math_fork.math_options.logicalPpi}
   ///
   /// If set to null, the effective [logicalPpi] will scale with
   /// [TextStyle.fontSize]. You can obtain the default scaled value by
@@ -76,7 +76,7 @@ class Math extends StatelessWidget {
   /// {@endtemplate}
   final double? logicalPpi;
 
-  /// {@template flutter_math.widgets.math.onErrorFallback}
+  /// {@template flutter_math_fork.widgets.math.onErrorFallback}
   /// Fallback widget when there are uncaught errors during parsing or building.
   ///
   /// Will be invoked when:
@@ -89,14 +89,14 @@ class Math extends StatelessWidget {
   /// {@endtemplate}
   final OnErrorFallback onErrorFallback;
 
-  /// {@template flutter_math.widgets.math.options}
+  /// {@template flutter_math_fork.widgets.math.options}
   /// Overriding [MathOptions] to build the AST.
   ///
   /// Will overrule [mathStyle] and [textStyle] if not null.
   /// {@endtemplate}
   final MathOptions? options;
 
-  /// {@template flutter_math.widgets.math.parseError}
+  /// {@template flutter_math_fork.widgets.math.parseError}
   /// Errors generated during parsing.
   ///
   /// If not null, the [onErrorFallback] widget will be presented.
@@ -120,7 +120,7 @@ class Math extends StatelessWidget {
 
   /// Math builder using a TeX string
   ///
-  /// {@template flutter_math.widgets.math.tex_builder}
+  /// {@template flutter_math_fork.widgets.math.tex_builder}
   /// [expression] will first be parsed under [settings]. Then the acquired
   /// [SyntaxTree] will be built under a specific options. If [ParseException]
   /// is thrown or a build error occurs, [onErrorFallback] will be displayed.
@@ -219,25 +219,25 @@ class Math extends StatelessWidget {
       SelectableText(error.messageWithType);
 
   /// Line breaking results using standard TeX-style line breaking.
-  /// 
-  /// This function will return a list of `Math` widget along with a list of 
+  ///
+  /// This function will return a list of `Math` widget along with a list of
   /// line breaking penalties.
-  /// 
-  /// {@template flutter_math.widgets.math.tex_break}
-  /// 
-  /// This function will break the equation into pieces according to TeX spec 
+  ///
+  /// {@template flutter_math_fork.widgets.math.tex_break}
+  ///
+  /// This function will break the equation into pieces according to TeX spec
   /// **as much as possible** (some exceptions exist when `enforceNoBreak: true`
-  /// ). Then, you can assemble the pieces in whatever way you like. The most 
+  /// ). Then, you can assemble the pieces in whatever way you like. The most
   /// simple way is to put the parts inside a `Wrap`.
-  /// 
-  /// If you wish to implement a custom line breaking policy to manage the 
-  /// penalties, you can access the penalties in `BreakResult.penalties`. The 
-  /// values in `BreakResult.penalties` represent the line-breaking penalty 
-  /// generated at the right end of each `BreakResult.parts`. Note that 
-  /// `\nobreak` or `\penalty<number>=10000>` are left unbroken by default, you 
-  /// need to supply `enforceNoBreak: false` into `Math.texBreak` to expose 
+  ///
+  /// If you wish to implement a custom line breaking policy to manage the
+  /// penalties, you can access the penalties in `BreakResult.penalties`. The
+  /// values in `BreakResult.penalties` represent the line-breaking penalty
+  /// generated at the right end of each `BreakResult.parts`. Note that
+  /// `\nobreak` or `\penalty<number>=10000>` are left unbroken by default, you
+  /// need to supply `enforceNoBreak: false` into `Math.texBreak` to expose
   /// those break points and their penalties.
-  /// 
+  ///
   /// {@endtemplate}
   BreakResult<Math> texBreak({
     int relPenalty = 500,

@@ -124,19 +124,19 @@ class SelectableMath extends StatelessWidget {
   /// If null, this widget will create its own [FocusNode].
   final FocusNode? focusNode;
 
-  /// {@macro flutter_math.widgets.math.mathStyle}
+  /// {@macro flutter_math_fork.widgets.math.mathStyle}
   final MathStyle mathStyle;
 
-  /// {@macro flutter_math.widgets.math.logicalPpi}
+  /// {@macro flutter_math_fork.widgets.math.logicalPpi}
   final double? logicalPpi;
 
-  /// {@macro flutter_math.widgets.math.onErrorFallback}
+  /// {@macro flutter_math_fork.widgets.math.onErrorFallback}
   final OnErrorFallback onErrorFallback;
 
-  /// {@macro flutter_math.widgets.math.options}
+  /// {@macro flutter_math_fork.widgets.math.options}
   final MathOptions? options;
 
-  /// {@macro flutter_math.widgets.math.parseError}
+  /// {@macro flutter_math_fork.widgets.math.parseError}
   final ParseException? parseException;
 
   /// {@macro flutter.widgets.editableText.showCursor}
@@ -162,7 +162,7 @@ class SelectableMath extends StatelessWidget {
 
   /// SelectableMath builder using a TeX string
   ///
-  /// {@macro flutter_math.widgets.math.tex_builder}
+  /// {@macro flutter_math_fork.widgets.math.tex_builder}
   ///
   /// See alse:
   ///

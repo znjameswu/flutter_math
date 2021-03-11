@@ -1,8 +1,8 @@
-import 'package:flutter_math/ast.dart';
-import 'package:flutter_math/src/encoder/encoder.dart';
+import 'package:flutter_math_fork/ast.dart';
+import 'package:flutter_math_fork/src/encoder/encoder.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_math/src/encoder/tex/encoder.dart';
+import 'package:flutter_math_fork/src/encoder/tex/encoder.dart';
 
 import 'recode.dart';
 
