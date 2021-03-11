@@ -12,60 +12,60 @@ Future<void> loadKaTeXFonts() async {
   }
 
   final katexMainLoader = FontLoader(
-      'packages/flutter_math_fork_fork/KaTeX_Main')
+      'packages/flutter_math_fork/KaTeX_Main')
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Main-Regular.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Main-Italic.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Main-Bold.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Main-BoldItalic.ttf'));
 
   final katexMathLoader = FontLoader(
-      'packages/flutter_math_fork_fork/KaTeX_Math')
+      'packages/flutter_math_fork/KaTeX_Math')
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Math-Italic.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Math-BoldItalic.ttf'));
 
-  final katexAMSLoader = FontLoader('packages/flutter_math_fork_fork/KaTeX_AMS')
+  final katexAMSLoader = FontLoader('packages/flutter_math_fork/KaTeX_AMS')
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_AMS-Regular.ttf'));
 
   final katexCaligraphicLoader = FontLoader(
-      'packages/flutter_math_fork_fork/KaTeX_Caligraphic')
+      'packages/flutter_math_fork/KaTeX_Caligraphic')
     ..addFont(
         getFontData('lib/katex_fonts/fonts/KaTeX_Caligraphic-Regular.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Caligraphic-Bold.ttf'));
 
   final katexFrakturLoader = FontLoader(
-      'packages/flutter_math_fork_fork/KaTeX_Fraktur')
+      'packages/flutter_math_fork/KaTeX_Fraktur')
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Fraktur-Regular.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Fraktur-Bold.ttf'));
 
   final katexSansSerifLoader = FontLoader(
-      'packages/flutter_math_fork_fork/KaTeX_SansSerif')
+      'packages/flutter_math_fork/KaTeX_SansSerif')
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_SansSerif-Regular.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_SansSerif-Bold.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_SansSerif-Italic.ttf'));
 
   final katexScriptLoader = FontLoader(
-      'packages/flutter_math_fork_fork/KaTeX_Script')
+      'packages/flutter_math_fork/KaTeX_Script')
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Script-Regular.ttf'));
 
   final katexTypewriterLoader =
-      FontLoader('packages/flutter_math_fork_fork/KaTeX_Typewriter')
+      FontLoader('packages/flutter_math_fork/KaTeX_Typewriter')
         ..addFont(
             getFontData('lib/katex_fonts/fonts/KaTeX_Typewriter-Regular.ttf'));
 
   final katexSize1Loader =
-      FontLoader('packages/flutter_math_fork_fork/KaTeX_Size1')
+      FontLoader('packages/flutter_math_fork/KaTeX_Size1')
         ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size1-Regular.ttf'));
 
   final katexSize2Loader =
-      FontLoader('packages/flutter_math_fork_fork/KaTeX_Size2')
+      FontLoader('packages/flutter_math_fork/KaTeX_Size2')
         ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size2-Regular.ttf'));
 
   final katexSize3Loader =
-      FontLoader('packages/flutter_math_fork_fork/KaTeX_Size3')
+      FontLoader('packages/flutter_math_fork/KaTeX_Size3')
         ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size3-Regular.ttf'));
 
   final katexSize4Loader =
-      FontLoader('packages/flutter_math_fork_fork/KaTeX_Size4')
+      FontLoader('packages/flutter_math_fork/KaTeX_Size4')
         ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size4-Regular.ttf'));
 
   await Future.wait([
