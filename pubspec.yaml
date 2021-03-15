@@ -1,13 +1,11 @@
 name: flutter_math_fork
 description: Fast and high-quality TeX math equation rendering with pure Dart & Flutter. 
-version: 0.3.0+1
+version: 0.3.0+2
 homepage: https://github.com/znjameswu/flutter_math
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
-  flutter: ">=2.0.0"
-  # Flutter has a breaking change in ParentDataWidget in 1.17.0 https://flutter.dev/docs/release/breaking-changes/parent-data-widget-generic-type
-  # Flutter has a breaking change in LayoutBuilder in 1.18.0
+  flutter: '>=2.0.0'
 
 dependencies:
   flutter:

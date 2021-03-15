@@ -417,6 +417,7 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
       widget.textSelectionControls;
 
   FocusNode? _focusNode;
+
   FocusNode get focusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool get showCursor => widget.showCursor; //?? false;
@@ -556,6 +557,10 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
 
   @override
   void bringIntoView(TextPosition position) {}
+
+  @override
+  void userUpdateTextEditingValue(
+      TextEditingValue value, SelectionChangedCause cause) {}
 }
 
 class SelectionStyle {
@@ -568,6 +573,7 @@ class SelectionStyle {
   final bool paintCursorAboveText;
   final Color? selectionColor;
   final bool showCursor;
+
   const SelectionStyle({
     required this.cursorColor,
     this.cursorOffset,

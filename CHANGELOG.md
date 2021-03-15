@@ -1,3 +1,8 @@
+## 0.3.0+2
+
+* Added missing `userUpdateTextEditingValue` implementation
+  to `InternalSelectableMathState`.
+
 ## 0.3.0+1
 
 * Fixed font references.
