@@ -1,3 +1,7 @@
+## 0.3.0+3
+
+* Bump `flutter_svg`.
+
 ## 0.3.0+2
 
 * Added missing `userUpdateTextEditingValue` implementation
