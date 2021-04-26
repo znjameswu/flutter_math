@@ -1,4 +1,4 @@
-/// Utilites for Tex encoding and parsing.
+/// Utilities for Tex encoding and parsing.
 library tex;
 
 export 'src/ast/syntax_tree.dart'
@@ -6,6 +6,6 @@ export 'src/ast/syntax_tree.dart'
 export 'src/encoder/tex/encoder.dart'
     show TexEncoder, TexEncoderExt, ListTexEncoderExt;
 export 'src/parser/tex/colors.dart';
-export 'src/parser/tex/macros.dart' show MacroDefinition;
+export 'src/parser/tex/macros.dart' show MacroDefinition, defineMacro;
 export 'src/parser/tex/parser.dart' show TexParser;
 export 'src/parser/tex/settings.dart';

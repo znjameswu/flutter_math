@@ -35,8 +35,6 @@ import 'parse_error.dart';
 import 'symbols.dart';
 import 'token.dart';
 
-Map<String, MacroDefinition> _builtinMacros = {};
-
 class MacroDefinition {
   final MacroExpansion Function(MacroContext context) expand;
   const MacroDefinition(this.expand, {this.unexpandable = false});
@@ -84,8 +82,7 @@ class MacroExpansion {
 }
 
 void defineMacro(String name, MacroDefinition body) {
-  // _builtinMacros ??= {};
-  _builtinMacros[name] = body;
+  builtinMacros[name] = body;
 }
 
 const digitToNumber = {
