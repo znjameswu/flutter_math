@@ -1,3 +1,7 @@
+## 0.3.1+1
+
+* Exposed `MacroExpansion` in `package:flutter_math/tex.dart`.
+
 ## 0.3.1
 
 * Added support for custom macros by exposing `defineMacro` in `package:flutter_math/tex.dart`.
