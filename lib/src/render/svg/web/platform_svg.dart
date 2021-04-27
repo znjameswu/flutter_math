@@ -2,9 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+
+import '../../../utils/canvas_kit/canvas_kit.dart';
 import 'fake_flutter_svg.dart'
     if (dart.library.io) 'package:flutter_svg/svg.dart';
-
 import 'fake_html.dart' if (dart.library.html) 'dart:html' as html;
 import 'fake_ui.dart' if (dart.library.html) 'dart:ui' as ui;
 
@@ -20,7 +21,7 @@ class PlatformSvg {
     AlignmentGeometry alignment = Alignment.center,
     String? hashCode,
   }) {
-    if (kIsWeb) {
+    if (kIsWeb && !isCanvasKit) {
       hashCode ??= String.fromCharCodes(
           List<int>.generate(128, (i) => _random.nextInt(256)));
       ui.platformViewRegistry.registerViewFactory('img-svg-$hashCode',

@@ -48,13 +48,6 @@ Widget svgWidgetFromPath(String path, Size viewPort, Rect viewBox, Color color,
   return Container(
     height: viewPort.height,
     width: viewPort.width,
-    // child: SvgPicture.string(
-    //   svgString,
-    //   width: viewPort.width, // There is some funcky bug with futter_svg
-    //   height: viewPort.height,
-    //   fit: fit,
-    //   alignment: align,
-    // ),
     child: PlatformSvg.string(
       svgString,
       width: viewPort.width, // There is some funcky bug with futter_svg

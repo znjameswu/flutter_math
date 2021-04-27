@@ -1,3 +1,7 @@
+## 0.3.2
+
+* Fixed WebGL crashing by using `flutter_svg` on web when CanvasKit is enabled.
+
 ## 0.3.1+1
 
 * Exposed `MacroExpansion` in `package:flutter_math/tex.dart`.
