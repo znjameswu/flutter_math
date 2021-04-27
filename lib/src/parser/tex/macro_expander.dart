@@ -252,6 +252,7 @@ abstract class MacroContext {
   Token popToken();
   void consumeSpaces();
 //  Token expandAfterFuture();
+  // ignore: avoid_positional_boolean_parameters
   Token? expandOnce([bool expandableOnly]);
   Token expandAfterFuture();
   Token expandNextToken();

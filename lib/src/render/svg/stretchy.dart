@@ -176,8 +176,8 @@ Widget strechySvgSpan(String name, double width, MathOptions options) {
           Size(widths[index], height),
           Rect.fromLTWH(0, 0, viewBoxWidth, data.viewBoxHeight),
           options.color,
-          aligns[index],
-          BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
+          align: aligns[index],
+          fit: BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
         ),
         growable: false,
       ),

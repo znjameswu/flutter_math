@@ -13,6 +13,10 @@ import 'fake_ui.dart' if (dart.library.html) 'dart:ui' as ui;
 class PlatformSvg {
   static final Random _random = Random();
 
+  /// Returns an SVG widget based on the current platform.
+  ///
+  /// If [forcePlatformView] is `true`, an [HtmlElementView] will be used
+  /// on web, even when on CanvasKit.
   static Widget string(
     String svgString, {
     double width = 24,
@@ -20,8 +24,9 @@ class PlatformSvg {
     BoxFit fit = BoxFit.contain,
     AlignmentGeometry alignment = Alignment.center,
     String? hashCode,
+    bool forcePlatformView = false,
   }) {
-    if (kIsWeb && !isCanvasKit) {
+    if (kIsWeb && (!isCanvasKit || forcePlatformView)) {
       hashCode ??= String.fromCharCodes(
           List<int>.generate(128, (i) => _random.nextInt(256)));
       ui.platformViewRegistry.registerViewFactory('img-svg-$hashCode',

@@ -329,8 +329,9 @@ Widget sqrtSvg({
             Size(viewPortWidth, viewPortHeight),
             Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
             options.color,
-            Alignment.topLeft,
-            BoxFit.fill,
+            align: Alignment.topLeft,
+            fit: BoxFit.fill,
+            forcePlatformView: true,
           ),
         ),
       );
@@ -357,8 +358,9 @@ Widget sqrtSvg({
             Size(viewPortWidth, viewPortHeight),
             Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
             options.color,
-            Alignment.topLeft,
-            BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
+            align: Alignment.topLeft,
+            fit: BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
+            forcePlatformView: true,
           ),
         ),
       );
@@ -385,8 +387,9 @@ Widget sqrtSvg({
           Size(viewPortWidth, viewPortHeight),
           Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
           options.color,
-          Alignment.topLeft,
-          BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
+          align: Alignment.topLeft,
+          fit: BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
+          forcePlatformView: true,
         ),
       ),
     );

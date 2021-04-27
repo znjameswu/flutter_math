@@ -30,8 +30,15 @@ final _alignmentToString = {
   Alignment.bottomRight: 'xMaxYMax',
 };
 
-Widget svgWidgetFromPath(String path, Size viewPort, Rect viewBox, Color color,
-    [Alignment align = Alignment.topLeft, BoxFit fit = BoxFit.fill]) {
+Widget svgWidgetFromPath(
+  String path,
+  Size viewPort,
+  Rect viewBox,
+  Color color, {
+  Alignment align = Alignment.topLeft,
+  BoxFit fit = BoxFit.fill,
+  bool forcePlatformView = false,
+}) {
   final alignment = _alignmentToString[align];
 
   assert(fit != BoxFit.none &&
@@ -54,6 +61,7 @@ Widget svgWidgetFromPath(String path, Size viewPort, Rect viewBox, Color color,
       height: viewPort.height,
       fit: fit,
       alignment: align,
+      forcePlatformView: forcePlatformView,
     ),
   );
 }

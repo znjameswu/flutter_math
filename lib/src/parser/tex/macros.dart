@@ -110,6 +110,7 @@ const digitToNumber = {
   "F": 15,
 };
 
+// ignore: avoid_positional_boolean_parameters
 String newcommand(MacroContext context, bool existsOK, bool nonexistsOK) {
   var arg = context.consumeArgs(1)[0];
   if (arg.length != 1) {

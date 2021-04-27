@@ -1,3 +1,7 @@
+## 0.3.2+1
+
+* Fixed `\sqrt` not displaying in CanvasKit by forcing platform views for sqrt.
+
 ## 0.3.2
 
 * Fixed WebGL crashing by using `flutter_svg` on web when CanvasKit is enabled.
