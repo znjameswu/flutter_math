@@ -27,10 +27,11 @@ Widget staticSvg(String name, MathOptions options,
   final viewPortHeight = height.cssEm.toLpUnder(options);
 
   final svgWidget = svgWidgetFromPath(
-      svgPaths[name]!,
-      Size(viewPortWidth, viewPortHeight),
-      Rect.fromLTWH(0, 0, 1000 * width, 1000 * height),
-      options.color);
+    svgPaths[name]!,
+    Size(viewPortWidth, viewPortHeight),
+    Rect.fromLTWH(0, 0, 1000 * width, 1000 * height),
+    options.color,
+  );
   if (needBaseline) {
     return ResetBaseline(
       height: viewPortHeight,

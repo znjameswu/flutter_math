@@ -1,3 +1,8 @@
+## 0.3.3
+
+* Fixed all SVG-related bugs on web (`\sqrt`, stretchies, etc.) as `flutter_svg`
+  is now supported using both CanvasKit and the HTML renderer.
+
 ## 0.3.2+1
 
 * Fixed `\sqrt` not displaying in CanvasKit by forcing platform views for sqrt.

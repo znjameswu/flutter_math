@@ -331,7 +331,6 @@ Widget sqrtSvg({
             options.color,
             align: Alignment.topLeft,
             fit: BoxFit.fill,
-            forcePlatformView: true,
           ),
         ),
       );
@@ -360,7 +359,6 @@ Widget sqrtSvg({
             options.color,
             align: Alignment.topLeft,
             fit: BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
-            forcePlatformView: true,
           ),
         ),
       );
@@ -389,7 +387,6 @@ Widget sqrtSvg({
           options.color,
           align: Alignment.topLeft,
           fit: BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
-          forcePlatformView: true,
         ),
       ),
     );
