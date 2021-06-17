@@ -35,8 +35,6 @@ import 'parse_error.dart';
 import 'symbols.dart';
 import 'token.dart';
 
-Map<String, MacroDefinition> _builtinMacros = {};
-
 class MacroDefinition {
   final MacroExpansion Function(MacroContext context) expand;
   const MacroDefinition(this.expand, {this.unexpandable = false});
@@ -84,8 +82,7 @@ class MacroExpansion {
 }
 
 void defineMacro(String name, MacroDefinition body) {
-  // _builtinMacros ??= {};
-  _builtinMacros[name] = body;
+  builtinMacros[name] = body;
 }
 
 const digitToNumber = {
@@ -113,6 +110,7 @@ const digitToNumber = {
   "F": 15,
 };
 
+// ignore: avoid_positional_boolean_parameters
 String newcommand(MacroContext context, bool existsOK, bool nonexistsOK) {
   var arg = context.consumeArgs(1)[0];
   if (arg.length != 1) {

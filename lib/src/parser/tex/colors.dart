@@ -60,7 +60,7 @@ const colorByName = {
   'cornflowerblue': Color(0xff6495ed),
   'cornsilk': Color(0xfffff8dc),
   'crimson': Color(0xffdc143c),
-  'cyan (synonym of aqua)': Color(0xff00ffff),
+  'cyan': Color(0xff00ffff),
   'darkblue': Color(0xff00008b),
   'darkcyan': Color(0xff008b8b),
   'darkgoldenrod': Color(0xffb8860b),

@@ -4,11 +4,11 @@ import 'syntax_tree.dart';
 
 extension SyntaxTreeTexStyleBreakExt on SyntaxTree {
   /// Line breaking results using standard TeX-style line breaking.
-  /// 
+  ///
   /// This function will return a list of `SyntaxTree` along with a list
   /// of line breaking penalties.
-  /// 
-  /// {@macro flutter_math.widgets.math.tex_break}
+  ///
+  /// {@macro flutter_math_fork.widgets.math.tex_break}
   BreakResult<SyntaxTree> texBreak({
     int relPenalty = 500,
     int binOpPenalty = 700,
@@ -30,11 +30,11 @@ extension SyntaxTreeTexStyleBreakExt on SyntaxTree {
 
 extension EquationRowNodeTexStyleBreakExt on EquationRowNode {
   /// Line breaking results using standard TeX-style line breaking.
-  /// 
+  ///
   /// This function will return a list of `EquationRowNode` along with a list
   /// of line breaking penalties.
-  /// 
-  /// {@macro flutter_math.widgets.math.tex_break}
+  ///
+  /// {@macro flutter_math_fork.widgets.math.tex_break}
   BreakResult<EquationRowNode> texBreak({
     int relPenalty = 500,
     int binOpPenalty = 700,

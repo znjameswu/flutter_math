@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_math/src/ast/nodes/symbol.dart';
-import 'package:flutter_math/src/ast/syntax_tree.dart';
-import 'package:flutter_math/src/ast/types.dart';
-import 'package:flutter_math/src/encoder/tex/encoder.dart';
-import 'package:flutter_math/src/parser/tex/parser.dart';
-import 'package:flutter_math/src/parser/tex/settings.dart';
+import 'package:flutter_math_fork/src/ast/nodes/symbol.dart';
+import 'package:flutter_math_fork/src/ast/syntax_tree.dart';
+import 'package:flutter_math_fork/src/ast/types.dart';
+import 'package:flutter_math_fork/src/encoder/tex/encoder.dart';
+import 'package:flutter_math_fork/src/parser/tex/parser.dart';
+import 'package:flutter_math_fork/src/parser/tex/settings.dart';
 
 String recodeTexSymbol(String tex, [Mode mode = Mode.math]) {
   if (mode == Mode.text) {

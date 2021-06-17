@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
-
-import 'web/platform_svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 String svgStringFromPath(
   String path,
@@ -30,8 +29,14 @@ final _alignmentToString = {
   Alignment.bottomRight: 'xMaxYMax',
 };
 
-Widget svgWidgetFromPath(String path, Size viewPort, Rect viewBox, Color color,
-    [Alignment align = Alignment.topLeft, BoxFit fit = BoxFit.fill]) {
+Widget svgWidgetFromPath(
+  String path,
+  Size viewPort,
+  Rect viewBox,
+  Color color, {
+  Alignment align = Alignment.topLeft,
+  BoxFit fit = BoxFit.fill,
+}) {
   final alignment = _alignmentToString[align];
 
   assert(fit != BoxFit.none &&
@@ -48,16 +53,9 @@ Widget svgWidgetFromPath(String path, Size viewPort, Rect viewBox, Color color,
   return Container(
     height: viewPort.height,
     width: viewPort.width,
-    // child: SvgPicture.string(
-    //   svgString,
-    //   width: viewPort.width, // There is some funcky bug with futter_svg
-    //   height: viewPort.height,
-    //   fit: fit,
-    //   alignment: align,
-    // ),
-    child: PlatformSvg.string(
+    child: SvgPicture.string(
       svgString,
-      width: viewPort.width, // There is some funcky bug with futter_svg
+      width: viewPort.width,
       height: viewPort.height,
       fit: fit,
       alignment: align,

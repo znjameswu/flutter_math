@@ -1,10 +1,10 @@
-import 'package:flutter_math/flutter_math.dart';
-import 'package:flutter_math/src/ast/nodes/frac.dart';
-import 'package:flutter_math/src/ast/nodes/symbol.dart';
-import 'package:flutter_math/tex.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:flutter_math_fork/src/ast/nodes/frac.dart';
+import 'package:flutter_math_fork/src/ast/nodes/symbol.dart';
+import 'package:flutter_math_fork/tex.dart';
 import 'package:flutter_test/flutter_test.dart' hide isA, isNull;
 
-import 'package:flutter_math/src/encoder/matcher.dart';
+import 'package:flutter_math_fork/src/encoder/matcher.dart';
 
 void main() {
   group('Matcher test', () {
