@@ -49,6 +49,7 @@ class _MathSelectionHandleOverlayState extends State<MathSelectionHandleOverlay>
   late Offset _dragPosition;
 
   late AnimationController _controller;
+
   Animation<double> get _opacity => _controller.view;
 
   @override
@@ -170,6 +171,34 @@ class _MathSelectionHandleOverlayState extends State<MathSelectionHandleOverlay>
       math.max((interactiveRect.width - handleRect.width) / 2, 0),
       math.max((interactiveRect.height - handleRect.height) / 2, 0),
     );
+    Widget child;
+    if (widget.selectionControls.buildHandle is Widget Function(
+        BuildContext context,
+        TextSelectionHandleType type,
+        double textLineHeight,
+        VoidCallback? onTap)) {
+      child = (widget.selectionControls.buildHandle as Widget Function(
+        BuildContext context,
+        TextSelectionHandleType type,
+        double textLineHeight,
+        VoidCallback? onTap,
+      ))(
+        context,
+        type,
+        widget.manager.preferredLineHeight,
+        null,
+      );
+    } else {
+      child = (widget.selectionControls.buildHandle as Widget Function(
+        BuildContext context,
+        TextSelectionHandleType type,
+        double textLineHeight,
+      ))(
+        context,
+        type,
+        widget.manager.preferredLineHeight,
+      );
+    }
 
     return CompositedTransformFollower(
       link: layerLink,
@@ -194,11 +223,7 @@ class _MathSelectionHandleOverlayState extends State<MathSelectionHandleOverlay>
                 right: padding.right,
                 bottom: padding.bottom,
               ),
-              child: widget.selectionControls.buildHandle(
-                context,
-                type,
-                widget.manager.preferredLineHeight,
-              ),
+              child: child,
             ),
           ),
         ),
