@@ -1,3 +1,7 @@
+## 0.3.3+1
+
+* Fixed breaking change in `TextSelectionControls.buildHandle`.
+
 ## 0.3.3
 
 * Fixed all SVG-related bugs on web (`\sqrt`, stretchies, etc.) as `flutter_svg`
