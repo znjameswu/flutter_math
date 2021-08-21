@@ -1,3 +1,7 @@
+## 0.4.0
+
+* Bumped `provider` to `^6.0.0`.
+
 ## 0.3.3+1
 
 * Fixed breaking change in `TextSelectionControls.buildHandle`.
