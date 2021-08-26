@@ -556,11 +556,11 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
   double get preferredLineHeight => widget.options.fontSize;
 
   @override
-  void bringIntoView(TextPosition position) {}
-
-  @override
-  void userUpdateTextEditingValue(
-      TextEditingValue value, SelectionChangedCause cause) {}
+  dynamic noSuchMethod(Invocation invocation) {
+    // We override noSuchMethod since we do not have concrete implementations
+    // for all methods of the selection manager mixins.
+    throw NoSuchMethodError.withInvocation(this, invocation);
+  }
 }
 
 class SelectionStyle {

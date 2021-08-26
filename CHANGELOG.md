@@ -1,3 +1,7 @@
+## 0.4.0+1
+
+* Fixed missing implementations compile-time error on `master`.
+
 ## 0.4.0
 
 * Bumped `provider` to `^6.0.0`.

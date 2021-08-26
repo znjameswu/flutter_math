@@ -69,7 +69,7 @@ class DemoPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(
+                if(false)Expanded(
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
