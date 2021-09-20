@@ -1,3 +1,7 @@
+## 0.4.1
+
+* Fixed styling of umlauts in text mode.
+
 ## 0.4.0+1
 
 * Fixed missing implementations compile-time error on `master`.
