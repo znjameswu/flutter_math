@@ -39,12 +39,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<key>NSAppTransportSecurity</key>
 	<dict>
     	<key>NSAllowsArbitraryLoads</key> <true/>
-  	</dict>Example
+  	</dict>
 	<key>io.flutter.embedded_views_preview</key> <true/> 
-	<false/>
 </dict>
 </plist>
