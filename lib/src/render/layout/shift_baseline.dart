@@ -56,6 +56,10 @@ class RenderShiftBaseline extends RenderProxyBox {
   var _height = 0.0;
 
   @override
+  Size computeDryLayout(BoxConstraints constraints) =>
+      child?.getDryLayout(constraints) ?? Size.zero;
+
+  @override
   double? computeDistanceToActualBaseline(TextBaseline baseline) {
     if (relativePos != null) {
       return relativePos! * _height + offset;

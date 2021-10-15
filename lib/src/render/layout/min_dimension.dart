@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import '../utils/render_box_offset.dart';
+import '../utils/render_box_layout.dart';
 
 class MinDimension extends SingleChildRenderObjectWidget {
   final double minHeight;
@@ -107,18 +108,32 @@ class RenderMinDimension extends RenderShiftedBox {
       distanceToBaseline;
 
   @override
+  Size computeDryLayout(BoxConstraints constraints) =>
+      _computeLayout(constraints);
+
+  @override
   void performLayout() {
+    size = _computeLayout(constraints, dry: false);
+  }
+
+  Size _computeLayout(
+    BoxConstraints constraints, {
+    bool dry = true,
+  }) {
     final child = this.child!;
-    child.layout(constraints, parentUsesSize: true);
-    final childHeight = child.getDistanceToBaseline(TextBaseline.alphabetic)!;
-    final childDepth = child.size.height - childHeight;
-    final width = child.size.width;
+    final childSize = child.getLayoutSize(constraints, dry: dry);
+    final childHeight =
+        dry ? 0 : child.getDistanceToBaseline(TextBaseline.alphabetic)!;
+    final childDepth = childSize.height - childHeight;
+    final width = childSize.width;
 
     final height = math.max(minHeight, childHeight + topPadding);
     final depth = math.max(minDepth, childDepth + bottomPadding);
 
-    child.offset = Offset(0, height - childHeight);
-    size = constraints.constrain(Size(width, height + depth));
-    distanceToBaseline = height;
+    if (!dry) {
+      child.offset = Offset(0, height - childHeight);
+      distanceToBaseline = height;
+    }
+    return constraints.constrain(Size(width, height + depth));
   }
 }

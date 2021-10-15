@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import '../constants.dart';
 import '../utils/render_box_offset.dart';
+import '../utils/render_box_layout.dart';
 
 class ResetDimension extends SingleChildRenderObjectWidget {
   final double? height;
@@ -122,12 +123,25 @@ class RenderResetDimension extends RenderShiftedBox {
       layoutHeight ?? super.computeDistanceToActualBaseline(baseline);
 
   @override
+  Size computeDryLayout(BoxConstraints constraints) =>
+      _computeLayout(constraints);
+
+  @override
   void performLayout() {
+    size = _computeLayout(constraints, dry: false);
+  }
+
+  Size _computeLayout(
+    BoxConstraints constraints, {
+    bool dry = true,
+  }) {
     final child = this.child!;
-    child.layout(infiniteConstraint, parentUsesSize: true);
-    final childHeight = child.getDistanceToBaseline(TextBaseline.alphabetic)!;
-    final childDepth = child.size.height - childHeight;
-    final childWidth = child.size.width;
+    final childSize = child.getLayoutSize(constraints, dry: dry);
+
+    final childHeight =
+        dry ? 0.0 : child.getDistanceToBaseline(TextBaseline.alphabetic)!;
+    final childDepth = childSize.height - childHeight;
+    final childWidth = childSize.width;
 
     final height = layoutHeight ?? childHeight;
     final depth = layoutDepth ?? childDepth;
@@ -147,7 +161,11 @@ class RenderResetDimension extends RenderShiftedBox {
         dx = (width - childWidth) / 2;
         break;
     }
-    child.offset = Offset(dx, height - childHeight);
-    size = Size(width, height + depth);
+
+    if (!dry) {
+      child.offset = Offset(dx, height - childHeight);
+    }
+
+    return Size(width, height + depth);
   }
 }

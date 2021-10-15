@@ -14,6 +14,7 @@ import '../../render/svg/delimiter.dart';
 import '../../render/svg/svg_geomertry.dart';
 import '../../render/svg/svg_string.dart';
 import '../../render/utils/render_box_offset.dart';
+import '../../render/utils/render_box_layout.dart';
 import '../options.dart';
 import '../size.dart';
 import '../style.dart';
@@ -158,20 +159,26 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
       0;
 
   @override
-  Size performLayout(
-      BoxConstraints constraints, Map<_SqrtPos, RenderBox> childrenTable) {
+  Size computeLayout(
+    BoxConstraints constraints,
+    Map<_SqrtPos, RenderBox> childrenTable, {
+    bool dry = true,
+  }) {
     final base = childrenTable[_SqrtPos.base]!;
     final index = childrenTable[_SqrtPos.ind];
     final surd = childrenTable[_SqrtPos.surd]!;
 
-    base.layout(infiniteConstraint, parentUsesSize: true);
-    index?.layout(infiniteConstraint, parentUsesSize: true);
+    final Size baseSize = base.getLayoutSize(infiniteConstraint, dry: dry);
+    final Size indexSize = index?.getLayoutSize(
+          infiniteConstraint,
+          dry: dry,
+        ) ??
+        Size.zero;
 
-    final baseHeight = base.layoutHeight;
-    // final baseDepth = base.layoutDepth;
-    final baseWidth = base.size.width;
-    final indexHeight = index?.layoutHeight ?? 0.0;
-    final indexWidth = index?.size.width ?? 0.0;
+    final baseHeight = dry ? 0 : base.layoutHeight;
+    final baseWidth = baseSize.width;
+    final indexHeight = dry ? 0 : index?.layoutHeight ?? 0.0;
+    final indexWidth = indexSize.width;
 
     final theta = baseOptions.fontMetrics.defaultRuleThickness.cssEm
         .toLpUnder(baseOptions);
@@ -180,11 +187,13 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
         : theta;
     var psi = theta + 0.25 * phi.abs();
 
-    final minSqrtHeight = base.size.height + psi + theta;
+    final minSqrtHeight = baseSize.height + psi + theta;
+    final surdConstraints = BoxConstraints(
+      minWidth: baseWidth,
+      minHeight: minSqrtHeight,
+    );
+    final Size surdSize = surd.getLayoutSize(surdConstraints, dry: dry);
 
-    // Pick sqrt svg
-    surd.layout(BoxConstraints(minWidth: baseWidth, minHeight: minSqrtHeight),
-        parentUsesSize: true);
     final advanceWidth = getSqrtAdvanceWidth(minSqrtHeight, baseWidth, options);
 
     // Parameters for index
@@ -195,31 +204,37 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
 
     // Horizontal layout
     final sqrtHorizontalPos =
-        math.max(0.0, indexLeftPadding + indexWidth + indexRightPadding);
-    final width = sqrtHorizontalPos + surd.size.width;
+        math.max(0.0, indexLeftPadding + indexSize.width + indexRightPadding);
+    final width = sqrtHorizontalPos + surdSize.width;
     svgHorizontalPos = sqrtHorizontalPos;
 
     // Vertical layout
-    final delimDepth = surd.layoutDepth;
-    final ruleWidth = surd.layoutHeight;
-    if (delimDepth > base.size.height + psi) {
-      psi += 0.5 * (delimDepth - base.size.height - psi);
-    }
+    final delimDepth = dry ? baseSize.height : surd.layoutDepth;
+    final ruleWidth = dry ? 0 : surd.layoutHeight;
+
     final bodyHeight = baseHeight + psi + ruleWidth;
-    final bodyDepth = surd.size.height - bodyHeight;
+    final bodyDepth = surdSize.height - bodyHeight;
     final indexShift = 0.6 * (bodyHeight - bodyDepth);
     final sqrtVerticalPos =
         math.max(0.0, indexHeight + indexShift - baseHeight - psi - ruleWidth);
     heightAboveBaseline = bodyHeight + sqrtVerticalPos;
-    final fullHeight = sqrtVerticalPos + surd.size.height;
 
-    base.offset = Offset(
-        sqrtHorizontalPos + advanceWidth, heightAboveBaseline - baseHeight);
-    index?.offset = Offset(sqrtHorizontalPos - indexRightPadding - indexWidth,
-        heightAboveBaseline - indexShift - indexHeight);
-    surd.offset = Offset(sqrtHorizontalPos, sqrtVerticalPos);
+    // Position children
+    if (!dry) {
+      final delimDepth = dry ? baseSize.height : surd.layoutDepth;
 
-    return Size(width, fullHeight);
+      if (delimDepth > baseSize.height + psi) {
+        psi += 0.5 * (delimDepth - baseSize.height - psi);
+      }
+
+      base.offset = Offset(
+          sqrtHorizontalPos + advanceWidth, heightAboveBaseline - baseHeight);
+      index?.offset = Offset(sqrtHorizontalPos - indexRightPadding - indexWidth,
+          heightAboveBaseline - indexShift - indexHeight);
+      surd.offset = Offset(sqrtHorizontalPos, sqrtVerticalPos);
+    }
+
+    return Size(width, sqrtVerticalPos + surdSize.height);
   }
 }
 
@@ -358,7 +373,8 @@ Widget sqrtSvg({
             Rect.fromLTWH(0, 0, viewBoxWidth, viewBoxHeight),
             options.color,
             align: Alignment.topLeft,
-            fit: BoxFit.cover, // BoxFit.fitHeight, // For DomCanvas compatibility
+            fit: BoxFit
+                .cover, // BoxFit.fitHeight, // For DomCanvas compatibility
           ),
         ),
       );

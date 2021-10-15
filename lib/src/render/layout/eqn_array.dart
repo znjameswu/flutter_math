@@ -8,6 +8,7 @@ import '../../ast/nodes/matrix.dart';
 import '../../utils/iterable_extensions.dart';
 import '../constants.dart';
 import '../utils/render_box_offset.dart';
+import '../utils/render_box_layout.dart';
 import 'line.dart';
 
 class EqnArrayParentData extends ContainerBoxParentData<RenderBox> {}
@@ -51,7 +52,7 @@ class RenderEqnArray extends RenderBox
     required double arrayskip,
     required List<MatrixSeparatorStyle> hlines,
     required List<double> rowSpacings,
-  })   : _ruleThickness = ruleThickness,
+  })  : _ruleThickness = ruleThickness,
         _jotSize = jotSize,
         _arrayskip = arrayskip,
         _hlines = hlines,
@@ -116,15 +117,29 @@ class RenderEqnArray extends RenderBox
   double width = 0.0;
 
   @override
+  Size computeDryLayout(BoxConstraints constraints) =>
+      _computeLayout(constraints);
+
+  @override
   void performLayout() {
-    final nonAligningChildren = <RenderBox>[];
+    size = _computeLayout(constraints, dry: false);
+  }
+
+  Size _computeLayout(
+    BoxConstraints constraints, {
+    bool dry = true,
+  }) {
+    final nonAligningSizes = <Size>[];
     // First pass, calculate width for each column.
     var child = firstChild;
+    var width = 0.0;
     final colWidths = <double>[];
+    final sizeMap = <RenderBox, Size>{};
     while (child != null) {
+      final childSize = child.getLayoutSize(infiniteConstraint, dry: dry);
+      sizeMap[child] = childSize;
       if (child is RenderLine) {
         child.alignColWidth = null;
-        child.layout(infiniteConstraint, parentUsesSize: true);
         final childColWidth = child.alignColWidth;
         if (childColWidth != null) {
           for (var i = 0; i < childColWidth.length; i++) {
@@ -138,32 +153,34 @@ class RenderEqnArray extends RenderBox
             }
           }
         } else {
-          nonAligningChildren.add(child);
+          nonAligningSizes.add(childSize);
         }
       } else {
-        child.layout(infiniteConstraint, parentUsesSize: true);
         colWidths[0] = math.max(
           colWidths[0],
-          child.size.width,
+          childSize.width,
         );
       }
       child = (child.parentData as EqnArrayParentData).nextSibling;
     }
 
     final nonAligningChildrenWidth =
-        nonAligningChildren.map((e) => e.size.width).maxOrNull ?? 0.0;
+        nonAligningSizes.map((size) => size.width).maxOrNull ?? 0.0;
     final aligningChildrenWidth = colWidths.sum;
     width = math.max(nonAligningChildrenWidth, aligningChildrenWidth);
 
     // Second pass, re-layout each RenderLine using column width constraint
     var index = 0;
     var vPos = 0.0;
-    hlinePos.add(vPos);
+    if (!dry) {
+      hlinePos.add(vPos);
+    }
     index++;
     child = firstChild;
     while (child != null) {
       final childParentData = child.parentData as EqnArrayParentData;
       var hPos = 0.0;
+      final childSize = sizeMap[child] ?? Size.zero;
       if (child is RenderLine && child.alignColWidth != null) {
         child.alignColWidth = colWidths;
         // Hack: We use a different constraint to trigger another layout or
@@ -174,24 +191,33 @@ class RenderEqnArray extends RenderBox
             colWidths[0] -
             child.alignColWidth![0];
       } else {
-        hPos = (width - child.size.width) / 2;
+        hPos = (width - childSize.width) / 2;
       }
-      vPos += math.max(child.layoutHeight, 0.7 * arrayskip);
-      childParentData.offset = Offset(
-        hPos,
-        vPos - child.layoutHeight,
-      );
-      vPos += math.max(child.layoutDepth, 0.3 * arrayskip) +
+      final layoutHeight = dry ? 0 : child.layoutHeight;
+      final layoutDepth = dry ? childSize.height : child.layoutDepth;
+
+      vPos += math.max(layoutHeight, 0.7 * arrayskip);
+      if (!dry) {
+        childParentData.offset = Offset(
+          hPos,
+          vPos - child.layoutHeight,
+        );
+      }
+      vPos += math.max(layoutDepth, 0.3 * arrayskip) +
           jotSize +
           rowSpacings[index - 1];
-      hlinePos.add(vPos);
+      if (!dry) {
+        hlinePos.add(vPos);
+      }
       vPos += hlines[index] != MatrixSeparatorStyle.none ? ruleThickness : 0.0;
       index++;
 
       child = childParentData.nextSibling;
     }
 
-    size = Size(width, vPos);
+    this.width = width;
+
+    return Size(width, vPos);
   }
 
   @override

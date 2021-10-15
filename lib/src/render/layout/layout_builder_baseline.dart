@@ -53,6 +53,10 @@ class _RenderLayoutBuilderPreserveBaseline extends RenderBox
   }
 
   @override
+  Size computeDryLayout(BoxConstraints constraints) =>
+      child?.getDryLayout(constraints) ?? Size.zero;
+
+  @override
   void performLayout() {
     final constraints = this.constraints;
     // layoutAndBuildChild(); // Flutter >=1.17.0 <1.18.0

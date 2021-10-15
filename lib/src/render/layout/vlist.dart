@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import '../utils/render_box_layout.dart';
+
 class VListParentData extends ContainerBoxParentData<RenderBox> {
   BoxConstraints Function(double width)? customCrossSize;
 
@@ -339,9 +341,19 @@ class RenderRelativeWidthColumn extends RenderBox
   }
 
   @override
+  Size computeDryLayout(BoxConstraints constraints) =>
+      _computeLayout(constraints);
+
+  @override
   void performLayout() {
-    distanceToBaseline = null;
-    assert(_debugHasNecessaryDirections);
+    size = _computeLayout(constraints, dry: false);
+  }
+
+  Size _computeLayout(BoxConstraints constraints, {bool dry = true}) {
+    if (!dry) {
+      distanceToBaseline = null;
+      assert(_debugHasNecessaryDirections);
+    }
 
     // First we lay out all fix-sized children
     var rightMost = 0.0;
@@ -355,12 +367,13 @@ class RenderRelativeWidthColumn extends RenderBox
         relativeChildren.add(child);
       } else {
         final innerConstraints = BoxConstraints(maxWidth: constraints.maxWidth);
-        child.layout(innerConstraints, parentUsesSize: true);
-        final width = child.size.width;
+        final childSize = child.getLayoutSize(innerConstraints, dry: dry);
+        final width = childSize.width;
         final right = getRightMost(crossAxisAlignment, width);
+
         leftMost = math.min(leftMost, right - width);
         rightMost = math.max(rightMost, right);
-        allocatedSize += child.size.height + childParentData.trailingMargin;
+        allocatedSize += childSize.height + childParentData.trailingMargin;
       }
       assert(child.parentData == childParentData);
       child = childParentData.nextSibling;
@@ -372,17 +385,26 @@ class RenderRelativeWidthColumn extends RenderBox
     for (final child in relativeChildren) {
       final childParentData = child.parentData as VListParentData;
       assert(childParentData.customCrossSize != null);
-      child.layout(childParentData.customCrossSize!(fixedChildrenCrossSize),
-          parentUsesSize: true);
-      final width = child.size.width;
+
+      final childConstraints =
+          childParentData.customCrossSize!(fixedChildrenCrossSize);
+      final childSize = child.getLayoutSize(childConstraints, dry: dry);
+      final width = childSize.width;
       final right = getRightMost(crossAxisAlignment, width);
+
       leftMost = math.min(leftMost, right - width);
       rightMost = math.max(rightMost, right);
-      allocatedSize += child.size.height + childParentData.trailingMargin;
+      allocatedSize += childSize.height + childParentData.trailingMargin;
     }
 
     // Calculate size
-    size = constraints.constrain(Size(rightMost - leftMost, allocatedSize));
+    final size =
+        constraints.constrain(Size(rightMost - leftMost, allocatedSize));
+    if (dry) {
+      // We can return the size at this point when doing the dry layout.
+      return size;
+    }
+
     final actualSize = size.height;
     final crossSize = size.width;
     final actualSizeDelta = actualSize - allocatedSize;
@@ -426,6 +448,8 @@ class RenderRelativeWidthColumn extends RenderBox
       child = childParentData.nextSibling;
       index++;
     }
+
+    return size;
   }
 
   @override
