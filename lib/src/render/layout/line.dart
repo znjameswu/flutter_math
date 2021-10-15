@@ -479,10 +479,12 @@ class RenderLine extends RenderBox
       this.caretOffsets.add(mainPos);
       child = childParentData.nextSibling;
     }
+
+    size = constraints.constrain(
+        Size(mainPos, maxHeightAboveBaseline + maxDepthBelowBaseline));
     this._overflow = mainPos - size.width;
 
-    return constraints.constrain(
-        Size(mainPos, maxHeightAboveBaseline + maxDepthBelowBaseline));
+    return size;
   }
 
   @override

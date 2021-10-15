@@ -136,10 +136,10 @@ class RenderEqnArray extends RenderBox
     final colWidths = <double>[];
     final sizeMap = <RenderBox, Size>{};
     while (child != null) {
-      final childSize = child.getLayoutSize(infiniteConstraint, dry: dry);
-      sizeMap[child] = childSize;
+      Size childSize = Size.zero;
       if (child is RenderLine) {
         child.alignColWidth = null;
+        childSize = child.getLayoutSize(infiniteConstraint, dry: dry);
         final childColWidth = child.alignColWidth;
         if (childColWidth != null) {
           for (var i = 0; i < childColWidth.length; i++) {
@@ -156,11 +156,13 @@ class RenderEqnArray extends RenderBox
           nonAligningSizes.add(childSize);
         }
       } else {
+        childSize = child.getLayoutSize(infiniteConstraint, dry: dry);
         colWidths[0] = math.max(
           colWidths[0],
           childSize.width,
         );
       }
+      sizeMap[child] = childSize;
       child = (child.parentData as EqnArrayParentData).nextSibling;
     }
 
@@ -215,7 +217,9 @@ class RenderEqnArray extends RenderBox
       child = childParentData.nextSibling;
     }
 
-    this.width = width;
+    if (!dry) {
+      this.width = width;
+    }
 
     return Size(width, vPos);
   }
