@@ -1,3 +1,7 @@
+## 0.4.2+1
+
+* Fixed `aligned` environment.
+
 ## 0.4.2
 
 * Added dry layout support.
