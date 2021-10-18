@@ -1,3 +1,7 @@
+## 0.4.2+2
+
+* Fixed `\sqrt` child positioning.
+
 ## 0.4.2+1
 
 * Fixed `aligned` environment.
