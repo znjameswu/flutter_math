@@ -206,26 +206,29 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
     final sqrtHorizontalPos =
         math.max(0.0, indexLeftPadding + indexSize.width + indexRightPadding);
     final width = sqrtHorizontalPos + surdSize.width;
-    svgHorizontalPos = sqrtHorizontalPos;
 
     // Vertical layout
-    final delimDepth = dry ? baseSize.height : surd.layoutDepth;
     final ruleWidth = dry ? 0 : surd.layoutHeight;
+
+    if (!dry) {
+      final delimDepth = dry ? surdSize.height : surd.layoutDepth;
+
+      if (delimDepth > baseSize.height + psi) {
+        psi += 0.5 * (delimDepth - baseSize.height - psi);
+      }
+    }
 
     final bodyHeight = baseHeight + psi + ruleWidth;
     final bodyDepth = surdSize.height - bodyHeight;
     final indexShift = 0.6 * (bodyHeight - bodyDepth);
     final sqrtVerticalPos =
         math.max(0.0, indexHeight + indexShift - baseHeight - psi - ruleWidth);
-    heightAboveBaseline = bodyHeight + sqrtVerticalPos;
+    final height = sqrtVerticalPos + surdSize.height;
 
     // Position children
     if (!dry) {
-      final delimDepth = dry ? baseSize.height : surd.layoutDepth;
-
-      if (delimDepth > baseSize.height + psi) {
-        psi += 0.5 * (delimDepth - baseSize.height - psi);
-      }
+      svgHorizontalPos = sqrtHorizontalPos;
+      heightAboveBaseline = bodyHeight + sqrtVerticalPos;
 
       base.offset = Offset(
           sqrtHorizontalPos + advanceWidth, heightAboveBaseline - baseHeight);
@@ -234,7 +237,7 @@ class SqrtLayoutDelegate extends CustomLayoutDelegate<_SqrtPos> {
       surd.offset = Offset(sqrtHorizontalPos, sqrtVerticalPos);
     }
 
-    return Size(width, sqrtVerticalPos + surdSize.height);
+    return Size(width, height);
   }
 }
 
