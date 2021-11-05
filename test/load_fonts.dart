@@ -11,15 +11,13 @@ Future<void> loadKaTeXFonts() async {
     Directory.current = Directory.current.parent;
   }
 
-  final katexMainLoader = FontLoader(
-      'packages/flutter_math_fork/KaTeX_Main')
+  final katexMainLoader = FontLoader('packages/flutter_math_fork/KaTeX_Main')
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Main-Regular.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Main-Italic.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Main-Bold.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Main-BoldItalic.ttf'));
 
-  final katexMathLoader = FontLoader(
-      'packages/flutter_math_fork/KaTeX_Math')
+  final katexMathLoader = FontLoader('packages/flutter_math_fork/KaTeX_Math')
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Math-Italic.ttf'))
     ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Math-BoldItalic.ttf'));
 
@@ -52,21 +50,17 @@ Future<void> loadKaTeXFonts() async {
         ..addFont(
             getFontData('lib/katex_fonts/fonts/KaTeX_Typewriter-Regular.ttf'));
 
-  final katexSize1Loader =
-      FontLoader('packages/flutter_math_fork/KaTeX_Size1')
-        ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size1-Regular.ttf'));
+  final katexSize1Loader = FontLoader('packages/flutter_math_fork/KaTeX_Size1')
+    ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size1-Regular.ttf'));
 
-  final katexSize2Loader =
-      FontLoader('packages/flutter_math_fork/KaTeX_Size2')
-        ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size2-Regular.ttf'));
+  final katexSize2Loader = FontLoader('packages/flutter_math_fork/KaTeX_Size2')
+    ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size2-Regular.ttf'));
 
-  final katexSize3Loader =
-      FontLoader('packages/flutter_math_fork/KaTeX_Size3')
-        ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size3-Regular.ttf'));
+  final katexSize3Loader = FontLoader('packages/flutter_math_fork/KaTeX_Size3')
+    ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size3-Regular.ttf'));
 
-  final katexSize4Loader =
-      FontLoader('packages/flutter_math_fork/KaTeX_Size4')
-        ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size4-Regular.ttf'));
+  final katexSize4Loader = FontLoader('packages/flutter_math_fork/KaTeX_Size4')
+    ..addFont(getFontData('lib/katex_fonts/fonts/KaTeX_Size4-Regular.ttf'));
 
   await Future.wait([
     katexMainLoader.load(),

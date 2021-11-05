@@ -1,3 +1,7 @@
+## 0.5.0
+
+* Upgraded `flutter_svg` dependency.
+
 ## 0.4.2+2
 
 * Fixed `\sqrt` child positioning.

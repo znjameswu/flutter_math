@@ -69,49 +69,50 @@ class DemoPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                if(false)Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      // mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Center(
-                          child: Text(
-                            "Flutter TeX's output",
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 1),
-                              borderRadius: BorderRadius.circular(5.0),
+                if (false)
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        // mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Center(
+                            child: Text(
+                              "Flutter TeX's output",
+                              style: Theme.of(context).textTheme.headline6,
                             ),
-                            padding: const EdgeInsets.all(10),
-                            child: Consumer<TextEditingController>(
-                              builder: (context, controller, _) => TeXView(
-                                // Must use a GlobalKey, otherwise it will stack
-                                key: GlobalKey(debugLabel: 'texView'),
-                                renderingEngine:
-                                    const TeXViewRenderingEngine.katex(),
-                                child: TeXViewDocument(
-                                  '\$\$${controller.value.text}\$\$',
-                                  id: '0',
+                          ),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 1),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              child: Consumer<TextEditingController>(
+                                builder: (context, controller, _) => TeXView(
+                                  // Must use a GlobalKey, otherwise it will stack
+                                  key: GlobalKey(debugLabel: 'texView'),
+                                  renderingEngine:
+                                      const TeXViewRenderingEngine.katex(),
+                                  child: TeXViewDocument(
+                                    '\$\$${controller.value.text}\$\$',
+                                    id: '0',
+                                    style: TeXViewStyle(
+                                        backgroundColor: Colors.white),
+                                  ),
                                   style: TeXViewStyle(
                                       backgroundColor: Colors.white),
                                 ),
-                                style:
-                                    TeXViewStyle(backgroundColor: Colors.white),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                )
+                  )
               ],
             ),
           ),

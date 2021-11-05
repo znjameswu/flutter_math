@@ -87,7 +87,7 @@ class MatrixNode extends SlotableNode<EquationRowNode?> {
     // this.rowAligns,
     required this.hLines,
     required this.body,
-  })   : assert(body.length == rows),
+  })  : assert(body.length == rows),
         assert(body.every((row) => row.length == cols)),
         assert(columnAligns.length == cols),
         assert(vLines.length == cols + 1),
@@ -276,7 +276,7 @@ class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {
     required this.arraycolsep,
     required this.vLines,
     required this.columnAligns,
-  })   : vLinePos = List.filled(cols + 1, 0.0, growable: false),
+  })  : vLinePos = List.filled(cols + 1, 0.0, growable: false),
         hLinePos = List.filled(rows + 1, 0.0, growable: false);
 
   List<double> hLinePos;
