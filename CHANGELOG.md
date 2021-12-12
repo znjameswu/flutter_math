@@ -1,3 +1,7 @@
+## 0.6.0
+
+* Upgraded `flutter_svg` dependency to `1.0.0` release.
+
 ## 0.5.0
 
 * Upgraded `flutter_svg` dependency.
