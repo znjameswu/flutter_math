@@ -1,6 +1,6 @@
 name: flutter_math
-description: Fast and high-quality TeX math equation rendering with pure Dart & Flutter. 
-version: 0.3.0-nullsafety.1
+description: Fast and high-quality TeX math equation rendering with pure Dart & Flutter.
+version: 0.4.0
 author: znjameswu <znjameswu@gmail.com>
 homepage: https://github.com/znjameswu/flutter_math
 repository: https://github.com/znjameswu/flutter_math
@@ -9,16 +9,16 @@ environment:
   sdk: ">=2.12.0-0 <3.0.0"
   flutter: ">=1.24.0-6.0.pre"
   # Flutter has a breaking change in ParentDataWidget in 1.17.0 https://flutter.dev/docs/release/breaking-changes/parent-data-widget-generic-type
-  # FLutter has a breaking change in LayoutBuilder in 1.18.0 
+  # FLutter has a breaking change in LayoutBuilder in 1.18.0
 
 dependencies:
+  collection: ^1.15.0
   flutter:
     sdk: flutter
-  flutter_svg: ^0.20.0-nullsafety.3
-  provider: ^5.0.0-nullsafety.2
-  meta: ^1.3.0-nullsafety.6
-  collection: ^1.15.0-nullsafety.5
-  tuple: ^2.0.0-nullsafety.0
+  flutter_svg: ^0.23.0+1
+  meta: ^1.7.0
+  provider: ^6.0.1
+  tuple: ^2.0.0
 
 dev_dependencies:
   flutter_test:

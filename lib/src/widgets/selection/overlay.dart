@@ -299,17 +299,17 @@ class MathSelectionOverlay {
         showWhenUnlinked: false,
         offset: -editingRegion.topLeft,
         child: selectionControls!.buildToolbar(
-          context,
-          editingRegion,
-          manager.preferredLineHeight,
-          midpoint,
-          [
-            TextSelectionPoint(endpoint1, TextDirection.ltr),
-            TextSelectionPoint(endpoint2, TextDirection.ltr),
-          ],
-          manager,
-          clipboardStatus!,
-        ),
+            context,
+            editingRegion,
+            manager.preferredLineHeight,
+            midpoint,
+            [
+              TextSelectionPoint(endpoint1, TextDirection.ltr),
+              TextSelectionPoint(endpoint2, TextDirection.ltr),
+            ],
+            manager,
+            clipboardStatus!,
+            Offset.zero),
       ),
     );
   }
