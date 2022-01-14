@@ -1,3 +1,7 @@
+## 0.6.1
+
+* Fixed text selection (`SelectableMath`).
+
 ## 0.6.0
 
 * Upgraded `flutter_svg` dependency to `1.0.0` release.
