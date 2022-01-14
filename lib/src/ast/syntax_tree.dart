@@ -12,6 +12,7 @@ import '../render/layout/line_editable.dart';
 import '../utils/iterable_extensions.dart';
 import '../utils/num_extension.dart';
 import '../utils/wrapper.dart';
+import '../widgets/controller.dart';
 import '../widgets/mode.dart';
 import '../widgets/selectable.dart';
 import 'nodes/space.dart';
@@ -566,14 +567,17 @@ class EquationRowNode extends ParentableNode<GreenNode>
       }
       // Each EquationRow will filter out unrelated selection changes (changes
       // happen entirely outside the range of this EquationRow)
-      return ProxyProvider<TextSelection, TextSelection>(
+      return ProxyProvider<MathController, TextSelection>(
         create: (_) => const TextSelection.collapsed(offset: -1),
-        update: (context, selection, _) => selection.copyWith(
-          baseOffset:
-              selection.baseOffset.clampInt(range.start - 1, range.end + 1),
-          extentOffset:
-              selection.extentOffset.clampInt(range.start - 1, range.end + 1),
-        ),
+        update: (context, controller, _) {
+          final selection = controller.selection;
+          return selection.copyWith(
+            baseOffset:
+                selection.baseOffset.clampInt(range.start - 1, range.end + 1),
+            extentOffset:
+                selection.extentOffset.clampInt(range.start - 1, range.end + 1),
+          );
+        },
         // Selector translates global cursor position to local caret index
         // Will only update Line when selection range actually changes
         child: Selector2<TextSelection, Tuple2<LayerLink, LayerLink>,
